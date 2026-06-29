@@ -59,6 +59,10 @@ run.py
 
 Eleven editorial categories with production-style story targets.
 
+![Per-run diagnostics: stage waterfall with timings, token counts, and LLM share](assets/diagnostics.png)
+
+*Per-run diagnostics — stage waterfall with timings, token counts, and LLM share (browse the archive at `diagnostics/index.html`).*
+
 ---
 
 ## 💡 Inspiration & credits
