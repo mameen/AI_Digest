@@ -6,13 +6,13 @@ Local-first pipeline for a daily AI news digest. It ingests public sources, runs
 
 Staged design: explicit ingest → enrich → validate → render steps, typed schemas, and a diagnostics waterfall you can open in the browser.
 
-👤 **Author:** [Ameen Demiry](https://www.linkedin.com/in/ademiry/) · [Portfolio](https://demiry.net/)
+👤 **Author:** [Ameen Demiry](https://www.linkedin.com/in/ademiry/) · [Portfolio](https://demiry.net/) · [GitHub repo](https://github.com/mameen/AI_Digest)
 
 ---
 
 ## 🌐 GitHub Pages
 
-Live site on **`main`**: `https://YOUR_USER.github.io/AI_Digest/` (digest archive + ⚙️ diagnostics). Enable **Settings → Pages → GitHub Actions**. Work on **`dev`**, merge to **`main`** to publish.
+Live site on **`main`**: `https://mameen.github.io/AI_Digest/` (digest archive + ⚙️ diagnostics). Enable **Settings → Pages → GitHub Actions**. Work on **`dev`**, merge to **`main`** to publish.
 
 ---
 
@@ -25,7 +25,7 @@ Enrichment runs on a **consumer-grade NVIDIA RTX 4090** 🎮 workstation via **O
 ## 🚀 Quick start
 
 ```powershell
-git clone https://github.com/YOUR_GITHUB_USER/AI_Digest.git
+git clone https://github.com/mameen/AI_Digest.git
 cd AI_Digest
 python -m venv .venv
 .\.venv\Scripts\activate

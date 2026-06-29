@@ -1,0 +1,10 @@
+# GitHub Linguist language stats.
+# The real work lives in Python (pipeline/, scripts/, run.py). The HTML/JSON
+# under reports/ and diagnostics/ are generated pipeline artifacts, and
+# vendor/ holds third-party templates + bundled JS — keep them out of the
+# repository language breakdown so Python is reported accurately.
+
+reports/**      linguist-generated=true
+diagnostics/**  linguist-generated=true
+index.html      linguist-generated=true
+vendor/**       linguist-vendored=true

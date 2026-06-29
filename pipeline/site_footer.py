@@ -6,10 +6,13 @@ from typing import Any
 
 
 def site_footer_html(cfg: dict[str, Any]) -> str:
+    from pipeline.frame_author import GITHUB_MARK
+
     site = cfg.get("site") or {}
     name = (site.get("author_short") or site.get("author_name") or "AI Digest").strip()
     linkedin = (site.get("linkedin_url") or "").strip()
     portfolio = (site.get("portfolio_url") or "").strip()
+    github = (site.get("github_url") or "").strip()
 
     parts = [
         '<footer class="site-footer">',
@@ -29,6 +32,14 @@ def site_footer_html(cfg: dict[str, Any]) -> str:
             [
                 '  <span class="site-footer-sep">·</span>',
                 f'  <a href="{portfolio}" target="_blank" rel="noopener">Portfolio</a>',
+            ]
+        )
+    if github:
+        parts.extend(
+            [
+                '  <span class="site-footer-sep">·</span>',
+                f'  <a href="{github}" target="_blank" rel="noopener" '
+                f'title="Source on GitHub">{GITHUB_MARK}GitHub</a>',
             ]
         )
     parts.append("</footer>")

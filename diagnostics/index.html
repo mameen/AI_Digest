@@ -48,16 +48,17 @@
 
   .heatmap-body, .archive-body { position: relative; padding-bottom: 4px; }
   @media (min-width: 901px) {
-    .heatmap-body, .archive-body { padding-right: 400px; min-height: 88px; }
+    .heatmap-body, .archive-body { padding-right: 410px; min-height: 108px; }
   }
   .frame-author {
     position: absolute; bottom: 14px; right: 20px; z-index: 40;
-    display: flex; align-items: center; gap: 10px;
-    max-width: min(380px, calc(100% - 40px));
+    display: flex; flex-direction: column; gap: 8px;
+    max-width: min(390px, calc(100% - 40px));
     padding: 8px 12px; border: 1px solid var(--border, #30363d);
     border-radius: 8px; background: var(--card-bg, #161b22);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
   }
+  .frame-author-main { display: flex; align-items: center; gap: 10px; }
   .frame-author img {
     width: 40px; height: 40px; border-radius: 50%;
     object-fit: cover; flex-shrink: 0;
@@ -71,6 +72,15 @@
   .frame-author-links { font-size: 10px; margin-top: 1px; }
   .frame-author-links a { color: var(--accent, #58a6ff); text-decoration: none; }
   .frame-author-links a:hover { text-decoration: underline; }
+  .frame-author-oss {
+    font-size: 10px; color: var(--muted, #8b949e); line-height: 1.4;
+  }
+  .frame-author-oss a { color: var(--accent, #58a6ff); text-decoration: none; white-space: nowrap; }
+  .frame-author-oss a:hover { text-decoration: underline; }
+  .frame-author-divider {
+    height: 1px; width: 100%; flex-shrink: 0;
+    background: var(--border, #30363d);
+  }
   @media (max-width: 900px) {
     .frame-author { display: none; }
   }
@@ -129,11 +139,15 @@
     </div>
     <div class="year-pills" id="year-pills"></div>
     <div class="frame-author" onclick="event.stopPropagation()">
-  <img src="../assets/ademiry.jpg" alt="Ameen Demiry" width="40" height="40" loading="lazy">
-  <div class="frame-author-text">
-    <span class="frame-author-name">Ameen Demiry</span>
-    <span class="frame-author-bio">Senior engineer with extensive experience in developing distributed and cloud-based solutions.</span>
-    <span class="frame-author-links"><a href="https://www.linkedin.com/in/ademiry/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://demiry.net/" target="_blank" rel="noopener">Portfolio</a></span>
+  <div class="frame-author-oss">This pipeline is open source and available on <a href="https://github.com/mameen/AI_Digest" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" width="11" height="11" fill="currentColor" aria-hidden="true" style="vertical-align:-1px;margin-right:2px"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>.</div>
+  <div class="frame-author-divider"></div>
+  <div class="frame-author-main">
+    <img src="../assets/ademiry.jpg" alt="Ameen Demiry" width="40" height="40" loading="lazy">
+    <div class="frame-author-text">
+      <span class="frame-author-name">Ameen Demiry</span>
+      <span class="frame-author-bio">Senior engineer with extensive experience in developing distributed and cloud-based solutions.</span>
+      <span class="frame-author-links"><a href="https://www.linkedin.com/in/ademiry/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://demiry.net/" target="_blank" rel="noopener">Portfolio</a></span>
+    </div>
   </div>
 </div>
   </div>
@@ -145,7 +159,7 @@
 <iframe class="diag-panel" id="diag-panel" title="Pipeline diagnostics detail"></iframe>
 <div class="d3-tooltip" id="tooltip"></div>
 
-<script>window.__DIAG_INDEX__ = {"schema": "direct_pipeline_py.diagnostics_index/v1", "updated_at": "2026-06-29T05:14:29Z", "latest": "20260629120000", "runs": [{"prefix": "20260629120000", "date": "2026-06-29", "display_date": "Jun 29, 2026", "started_at": "2026-06-29T03:34:34Z", "finished_at": "2026-06-29T03:45:50Z", "total_duration_ms": 676422.9, "total_duration_label": "11.3m", "total_tokens": 194835, "llm_call_count": 15, "llm_duration_ms": 666108.9, "llm_share_pct": 98.5, "model": "qwen3.6:35b", "poc_id": "direct_pipeline_py", "intensity": 0.6571056092639974}], "by_date": [{"prefix": "20260629120000", "date": "2026-06-29", "display_date": "Jun 29, 2026", "started_at": "2026-06-29T03:34:34Z", "finished_at": "2026-06-29T03:45:50Z", "total_duration_ms": 676422.9, "total_duration_label": "11.3m", "total_tokens": 194835, "llm_call_count": 15, "llm_duration_ms": 666108.9, "llm_share_pct": 98.5, "model": "qwen3.6:35b", "poc_id": "direct_pipeline_py", "intensity": 0.6571056092639974}]};</script>
+<script>window.__DIAG_INDEX__ = {"schema": "direct_pipeline_py.diagnostics_index/v1", "updated_at": "2026-06-29T06:45:08Z", "latest": "20260629120000", "runs": [{"prefix": "20260629120000", "date": "2026-06-29", "display_date": "Jun 29, 2026", "started_at": "2026-06-29T03:34:34Z", "finished_at": "2026-06-29T03:45:50Z", "total_duration_ms": 676422.9, "total_duration_label": "11.3m", "total_tokens": 194835, "llm_call_count": 15, "llm_duration_ms": 666108.9, "llm_share_pct": 98.5, "model": "qwen3.6:35b", "poc_id": "direct_pipeline_py", "intensity": 0.6571056092639974}], "by_date": [{"prefix": "20260629120000", "date": "2026-06-29", "display_date": "Jun 29, 2026", "started_at": "2026-06-29T03:34:34Z", "finished_at": "2026-06-29T03:45:50Z", "total_duration_ms": 676422.9, "total_duration_label": "11.3m", "total_tokens": 194835, "llm_call_count": 15, "llm_duration_ms": 666108.9, "llm_share_pct": 98.5, "model": "qwen3.6:35b", "poc_id": "direct_pipeline_py", "intensity": 0.6571056092639974}]};</script>
 <script>
 const HEAT_COLORS = [[0,'#21262d'],[0.25,'#1a3a5c'],[0.45,'#1a4a7a'],[0.65,'#1a6fa0'],[0.85,'#58a6ff']];
 let currentPrefix = null;
@@ -356,6 +370,8 @@ init().catch(err => {
   <a href="https://www.linkedin.com/in/ademiry/" target="_blank" rel="noopener">LinkedIn</a>
   <span class="site-footer-sep">·</span>
   <a href="https://demiry.net/" target="_blank" rel="noopener">Portfolio</a>
+  <span class="site-footer-sep">·</span>
+  <a href="https://github.com/mameen/AI_Digest" target="_blank" rel="noopener" title="Source on GitHub"><svg viewBox="0 0 16 16" width="11" height="11" fill="currentColor" aria-hidden="true" style="vertical-align:-1px;margin-right:2px"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
 </footer>
 </body>
 </html>
