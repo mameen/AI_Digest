@@ -1,0 +1,80 @@
+# AI Digest pipeline configuration
+# Local LLM via Ollama (default). Copy .env.example → .env only if you add cloud keys.
+
+run:
+  history_days: 10
+
+output:
+  reports_dir: reports
+  cache_dir: .cache
+  preflight_dir: .preflight
+
+diagnostics:
+  enabled: true
+  output_dir: diagnostics
+
+ingestion:
+  preflight: true
+  force_refetch: false
+
+  crawl4ai:
+    enabled: true
+    urls_from_preflight: true
+    max_pages: 12
+    timeout_seconds: 60
+
+llm:
+  enabled: true
+  provider: ollama
+  model: qwen3.6:35b
+  base_url: http://localhost:11434/v1
+  max_retries: 3
+  structured_output:
+    library: instructor
+
+enrich:
+  stories_per_batch: 18
+  gap_categories_per_call: 3
+  category_targets:
+    leaderboard: 6
+    analytics: 5
+    aisearch: 10
+    agentic-ai: 5
+    llm: 5
+    rag: 5
+    image-gen: 5
+    design-ai: 5
+    typography: 4
+    robotics: 5
+    research: 6
+
+validation:
+  min_total_stories: 55
+  min_categories: 11
+  required_category_ids:
+    - leaderboard
+    - analytics
+    - aisearch
+    - agentic-ai
+    - llm
+    - rag
+    - image-gen
+    - design-ai
+    - typography
+    - robotics
+    - research
+  fail_on_missing: false
+
+render:
+  rebuild_html: true
+  rebuild_index: true
+  open_browser: false
+
+# Footer links in archive frames (reports/index.html, diagnostics/index.html)
+site:
+  author_name: Ameen Demiry
+  author_short: ademiry
+  author_bio: Senior engineer with extensive experience in developing distributed and cloud-based solutions.
+  author_photo: ademiry.jpg
+  linkedin_url: https://www.linkedin.com/in/ademiry/
+  portfolio_url: https://demiry.net/

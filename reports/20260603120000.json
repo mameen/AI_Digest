@@ -1,0 +1,1076 @@
+{
+  "generated_at": "2026-06-03T12:00:00Z",
+  "filename_prefix": "20260603120000",
+  "summary": "NVIDIA Cosmos 3 sweeps every open-source leaderboard (T2I, I2V, robot policy) with 8,680 HuggingFace stars on debut; Microsoft Build 2026 ships a family of 7 in-house MAI models plus a 1-petaflop dev box; Anthropic confidentially files S-1 for a potential trillion-dollar IPO; and MiniMax M3 lands with 1M-context native multimodality.",
+  "aisearch_video_url": "https://www.youtube.com/watch?v=DlvhlQOBHBw",
+  "aisearch_video_label": "Jun 2 — NVIDIA PiD 4K images, Higgsfield, Z-image workflows",
+  "categories": [
+    {
+      "id": "leaderboard",
+      "label": "Leaderboard Rankings",
+      "icon": "🏆",
+      "stories": [
+        {
+          "id": "lb-opus48-stable1",
+          "title": "Claude Opus 4.8 holds #1 (score 61) as MiniMax M3 enters AA top 10",
+          "summary": "Claude Opus 4.8 (max) remains the Artificial Analysis #1 with an intelligence score of 61, unchanged since its May 28 debut. New entrant MiniMax M3 lands at #10 with a score of 55 on its first day of API availability (June 1), joining Gemini 3.5 Flash (#8, score 55) and Gemini 3.5 Flash Medium (#9, score 55) as fresh faces in the top 10. Qwen3.7 Max climbed from score 55 to 57, now at #7.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "leaderboard",
+            "minimax",
+            "anthropic",
+            "google",
+            "alibaba"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-price-wave",
+          "title": "Frontier price collapse continues: Gemini 3.1 Pro drops from $4.50 to $1.74/M",
+          "summary": "This week's AA snapshot reveals continued aggressive price compression. Gemini 3.1 Pro Preview (score 57, #5) fell from $4.50 to $1.74/M — a 61% reduction. Kimi K2.6 dropped from $1.71 to $0.70/M; Grok 4.3 (high) from $1.56 to $0.64/M; MiMo-V2.5-Pro holds at $0.18/M with a score-54 intelligence. GPT-5.3 Codex (xhigh) fell from $4.81 to $1.87/M. The gap between #1 and mid-tier pricing is collapsing rapidly.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "pricing",
+            "leaderboard",
+            "google",
+            "kimi",
+            "frontier"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-mythos-sweb",
+          "title": "Claude Mythos Preview: 93.9% SWE-bench Verified — 13 points above any public model",
+          "summary": "Claude Mythos Preview, released April 7 but not made generally available due to cybersecurity risks, holds 93.9% on SWE-bench Verified (next best: 88.6% by Opus 4.8). It also scores 77.8% on the harder SWE-bench Pro and 97.6% on USAMO 2026. The model powers Project Glasswing — a closed coalition of Apple, Google, Microsoft, and Amazon — rather than being sold as an API product. The benchmark gap raises the question of whether frontier AI is being withheld from developers for safety rather than commercial reasons.",
+          "source": "BenchLM.ai / Anthropic",
+          "url": "https://benchlm.ai/models/claude-mythos-preview",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "benchmark",
+            "anthropic",
+            "swe-bench",
+            "safety",
+            "frontier"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-opus48-hle",
+          "title": "Claude Opus 4.8 leads Humanity's Last Exam at 57.9% — new high watermark",
+          "summary": "Vellum's latest HLE tracking shows Claude Opus 4.8 at 57.9%, well ahead of Gemini 3 Pro (45.8%) and Kimi K2 Thinking (44.9%). This is significantly higher than the 48.2% figure from the prior week's tracking, suggesting continued scoring improvements as the model is refined post-launch. On SWE-bench Verified, Opus 4.8 sits at 88.6% — second only to the restricted Mythos Preview.",
+          "source": "Vellum AI",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "benchmark",
+            "anthropic",
+            "hle",
+            "reasoning"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-kimi-open-leader",
+          "title": "Kimi K2.5 leads open-weight benchmarks across GPQA, SWE-bench, and AIME",
+          "summary": "Vellum's open-weight leaderboard shows Kimi K2.5 (Moonshot AI) at the top of three categories: GPQA Diamond (87.6%), SWE-bench Verified (76.8%), and AIME 2025 (96.1%). Kimi K2 Thinking leads HLE at 44.9%. The Kimi family now dominates open reasoning benchmarks more decisively than any single provider, surpassing GPT-oss-120b (80.1% GPQA) and DeepSeek across coding. Open-weight performance is now 4–6 percentage points behind closed models on most benchmarks.",
+          "source": "Vellum AI",
+          "url": "https://www.vellum.ai/open-llm-leaderboard",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "open-source",
+            "kimi",
+            "leaderboard",
+            "benchmark"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-image-arena-reve",
+          "title": "Reve 2.0 jumps to #2 on Image Arena (Elo 1280), displacing MAI-Image and Gemini models",
+          "summary": "Arena.ai's text-to-image leaderboard shows GPT Image 2 (medium) still at #1 (Elo 1384), but Reve 2.0 — a model from a relatively unknown lab — has rocketed to #2 (1280), ahead of Gemini 3.1 Flash Image Preview (#3, 1269), MAI-Image-2.5 (#4, 1254), and Gemini 3 Pro Image (#5, 1245). Grok Imagine and Luma AI Uni 1.1 Max also appear in the top 10. NVIDIA Cosmos 3 is separately ranked as the best open-source T2I on Artificial Analysis.",
+          "source": "Arena.ai / Artificial Analysis",
+          "url": "https://arena.ai/leaderboard/text-to-image",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "image-gen",
+            "leaderboard",
+            "reve",
+            "arena"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "aisearch",
+      "label": "AI Search",
+      "icon": "🔍",
+      "stories": [
+        {
+          "id": "ais-pid-intro",
+          "title": "theAIsearch deep-dive: NVIDIA PiD (Pixel Diffusion) — open-source 4K image decoder",
+          "summary": "theAIsearch's June 2 video focuses entirely on NVIDIA's PiD (Pixel Diffusion Decoder), a free open-source replacement for the VAE decoder in diffusion pipelines. PiD runs as a plug-and-play upgrade: it replaces only the decoder stage, leaving UNet and conditioning untouched, and supports FLUX.1, FLUX.2, SD3, Z-Image, and RAE latent spaces. Personal demos in the video show dramatic detail recovery at 4K resolution compared to standard VAE output.",
+          "source": "theAIsearch / NVIDIA",
+          "url": "https://www.youtube.com/watch?v=DlvhlQOBHBw",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "nvidia",
+            "open-source",
+            "image-gen",
+            "4K",
+            "comfyui"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-pid-demos",
+          "title": "PiD personal demos: skin pores, fabric threads, text details that VAE destroys",
+          "summary": "The video's personal demo section shows side-by-side comparisons of PiD output versus standard VAE decoding. PiD recovers fine skin texture, fabric weave, and typographic detail that the VAE compresses away. The demos were run live on an NVIDIA RTX 5000 Ada GPU using ComfyUI, demonstrating that the quality improvement is accessible on prosumer hardware — not just data-center GPUs.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=DlvhlQOBHBw&t=19",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "pid",
+            "demo",
+            "quality",
+            "typography",
+            "comfyui"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-pid-how-it-works",
+          "title": "How PiD works: denoising in pixel space rather than latent space",
+          "summary": "PiD reformulates the final decoder as a conditional pixel-space diffusion model. Instead of a single deterministic pass (VAE), it denoises in high-resolution pixel space, sharpening fine details in one learned pass. The 4-step distilled variant makes 4K decoding practical without the multi-second latency of cascade methods. Compared to SeedVR2 (a prior high-res cascade), PiD is 5.9× faster: 211ms vs 1,237ms at 2K output.",
+          "source": "theAIsearch / NVIDIA Research",
+          "url": "https://research.nvidia.com/labs/sil/projects/pid/",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "pid",
+            "diffusion",
+            "architecture",
+            "nvidia",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-pid-vs-seedvr2",
+          "title": "PiD vs SeedVR2: 5.9× speed advantage at equivalent 2K quality",
+          "summary": "The video's head-to-head section shows PiD (211ms/image) vs SeedVR2 (1,237ms/image) at identical 2K output resolution on the same hardware, with comparable or better detail retention. SeedVR2 is a cascaded approach that runs a full new diffusion pass; PiD adds only the decoder. For workflows that generate many images, the speed difference is decisive — a 100-image batch drops from ~2 minutes to ~21 seconds.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=DlvhlQOBHBw&t=172",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "pid",
+            "seedvr2",
+            "benchmark",
+            "speed",
+            "comparison"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-pid-install",
+          "title": "PiD installation via ComfyUI — models on HuggingFace, no separate training needed",
+          "summary": "The installation section shows PiD being added to existing ComfyUI setups. Model weights are hosted on HuggingFace (Comfy-Org/PixelDiT) and require downloading a Gemma 2B text encoder and the PiD diffusion models. No fine-tuning is needed; PiD works with any compatible latent space immediately. The ComfyUI pull request (#14103) adds native PiD nodes, making it beginner-accessible.",
+          "source": "theAIsearch",
+          "url": "https://github.com/Comfy-Org/ComfyUI/pull/14103",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "pid",
+            "comfyui",
+            "open-source",
+            "install",
+            "huggingface"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-pid-workflows",
+          "title": "ComfyUI PiD workflow templates: standardized high-res pipelines for creators",
+          "summary": "Pre-built ComfyUI workflow files for PiD are available at the GitHub PR. The video shows the standard workflow: generate at base resolution (e.g. 1K), then feed the latent directly to PiD for 4K decode without a separate upscale step. The workflow is modular — PiD slots in after any FLUX.1, FLUX.2, or SD3 generation node with no rewiring of the generation graph.",
+          "source": "theAIsearch",
+          "url": "https://github.com/Comfy-Org/ComfyUI/pull/14103",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "comfyui",
+            "workflow",
+            "pid",
+            "open-source"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-pid-upscaler",
+          "title": "PiD upscaler workflow: 4K image decode in one step on a consumer GPU",
+          "summary": "The upscaler workflow section demonstrates generating at 1K and decoding to 4K using PiD's 4× and 8× upscaling modes. The result is true 4K detail — not bicubic interpolation — achieved in a single diffusion pass on an RTX 5000. The presenter emphasizes this makes 4K image generation practical for individual creators for the first time, without requiring A100-class hardware or multi-step workflows.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=DlvhlQOBHBw&t=384",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "4K",
+            "upscale",
+            "pid",
+            "consumer-gpu",
+            "workflow"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-higgsfield",
+          "title": "Higgsfield Supercomputer: cloud-based video AI rendering platform",
+          "summary": "The video's Higgsfield segment (sponsor section) covers Higgsfield's cloud rendering platform for AI-generated video. Higgsfield Supercomputer offers batch video rendering with managed GPU queues and is positioned as a complement to local ComfyUI workflows — useful when local VRAM is insufficient for long video sequences or multi-pass pipelines. The platform integrates with popular generation models.",
+          "source": "theAIsearch / Higgsfield",
+          "url": "https://higgsfield.ai/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "higgsfield",
+            "video-gen",
+            "cloud",
+            "rendering"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-before-after",
+          "title": "Before/after slider tool for image comparison in ComfyUI presentations",
+          "summary": "The video demonstrates a before/after image comparison slider node in ComfyUI, useful for showcasing the difference between VAE-decoded and PiD-decoded outputs. The slider is a presentation utility but also a practical QA tool — letting creators quickly verify that PiD is actually improving detail before committing to a full batch. The tool is available as a ComfyUI custom node.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=DlvhlQOBHBw&t=796",
+          "significance": 2,
+          "novelty": 2,
+          "relevance_design": 3,
+          "tags": [
+            "comfyui",
+            "tool",
+            "comparison",
+            "qa"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-zimage-pid",
+          "title": "Z-Image + PiD workflow: combining two NVIDIA open-source models for extreme detail",
+          "summary": "The final workflow section shows chaining Z-Image (Comfy-Org/z_image_turbo) — a fast Qwen3-4B-based latent generator — with PiD as the decoder. Z-Image generates at 512px latent resolution in seconds; PiD then decodes to 4K with sharp detail. Both models are fully open-source and run locally. The presenter calls this the most practical high-quality local pipeline available in mid-2026.",
+          "source": "theAIsearch / NVIDIA",
+          "url": "https://huggingface.co/Comfy-Org/z_image_turbo",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "z-image",
+            "pid",
+            "open-source",
+            "workflow",
+            "nvidia"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-pid-t2i",
+          "title": "PiD text-to-image mode: direct T2I generation with the Pixel Diffusion model",
+          "summary": "The closing segment shows PiD used directly in text-to-image mode — not just as a decoder upgrade — using the Gemma 2B text encoder. Results are compared to FLUX.2 Standard at the same prompt. PiD T2I produces notably sharper fine text and fabric detail, though FLUX.2 has stronger stylistic variety. For designers needing accurate typography or material rendering in generated images, PiD T2I is a compelling option.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=DlvhlQOBHBw&t=1195",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "pid",
+            "text-to-image",
+            "typography",
+            "open-source"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "agentic-ai",
+      "label": "Agentic AI",
+      "icon": "🤖",
+      "stories": [
+        {
+          "id": "agent-anthropic-ipo",
+          "title": "Anthropic confidentially files S-1 with SEC — potential trillion-dollar IPO",
+          "summary": "Anthropic submitted a draft Form S-1 registration statement to the SEC on June 1, 2026, for a proposed IPO of its common stock. The company's revenue run rate has grown from $10B annually last year to $47B as of May 2026 — a nearly 5× jump. The filing comes ahead of rival OpenAI, which is also preparing a confidential IPO submission. At its $965B last-round valuation, a public offering could surpass any prior tech IPO. Market conditions and SEC review remain the gating factors.",
+          "source": "CNBC / Anthropic / TechCrunch",
+          "url": "https://techcrunch.com/2026/06/01/anthropic-files-to-go-public/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "anthropic",
+            "ipo",
+            "finance",
+            "openai",
+            "frontier"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agent-msft-iq-platform",
+          "title": "Microsoft Build 2026: IQ platform makes every Microsoft surface agent-native",
+          "summary": "Microsoft announced a unified \"IQ\" intelligence layer across its product suite at Build 2026 (June 2). Microsoft IQ grounds agents in world and enterprise knowledge; Work IQ captures organizational data (APIs available June 16); Web IQ returns passages at 2.5× standard search speed; Foundry IQ enables cross-enterprise retrieval planning; Fabric IQ provides a semantic layer over structured data. The Foundry Agent Service adds instant-on sandboxed agent hosting, and OpenClaw enables multi-step workflow execution on Windows.",
+          "source": "Microsoft Blog",
+          "url": "https://blogs.microsoft.com/blog/2026/06/02/microsoft-build-2026-be-yourself-at-work/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "microsoft",
+            "agents",
+            "build-2026",
+            "enterprise",
+            "platform"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agent-msft-scout",
+          "title": "Microsoft Scout: personal agent for meetings, scheduling, and routine work tasks",
+          "summary": "Microsoft Scout, announced at Build 2026, is a personal agent that handles meeting prep, scheduling, and routine task execution within the Microsoft 365 ecosystem. It runs on top of the Work IQ context layer, meaning it has access to organizational knowledge, email context, and calendar data. Scout is positioned as a direct alternative to OpenAI's operator-class agents but within a managed enterprise compliance envelope.",
+          "source": "Microsoft Blog",
+          "url": "https://blogs.microsoft.com/blog/2026/06/02/microsoft-build-2026-be-yourself-at-work/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "microsoft",
+            "agents",
+            "m365",
+            "build-2026",
+            "productivity"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agent-mythos-glasswing",
+          "title": "Claude Mythos powers Project Glasswing: the model too capable to sell",
+          "summary": "Anthropic's Claude Mythos Preview (93.9% SWE-bench, 97.6% USAMO 2026) will not be released as a general API product due to its autonomous cybersecurity capabilities, including the ability to discover zero-day exploits. Instead, it powers Project Glasswing — a coalition of 12 major tech and finance firms including Apple, Google, Microsoft, and Amazon — for controlled, high-stakes agentic deployments. This is the first case of a frontier AI model being intentionally kept off the public market due to capability concerns rather than unreadiness.",
+          "source": "NxCode / BenchLM",
+          "url": "https://www.nxcode.io/resources/news/claude-mythos-preview-anthropic-most-powerful-model-2026",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "anthropic",
+            "safety",
+            "agent",
+            "glasswing",
+            "frontier"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agent-surface-rtx-spark",
+          "title": "Microsoft Surface RTX Spark Dev Box: 1 petaflop of AI compute on a desktop",
+          "summary": "Microsoft announced the Surface RTX Spark Dev Box at Build 2026 — a workstation packing up to 1 petaflop of AI compute and 128 GB of unified memory. It is the first Microsoft-branded PC targeting AI model inference and local agent execution as its primary use case. The device is designed to run MAI-Code-1-Flash, local Copilot agents, and upcoming Windows AI APIs without cloud round-trips, directly addressing developer demand for low-latency agentic workflows.",
+          "source": "Microsoft Blog",
+          "url": "https://blogs.microsoft.com/blog/2026/06/02/microsoft-build-2026-be-yourself-at-work/",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "microsoft",
+            "hardware",
+            "local-ai",
+            "build-2026",
+            "developer"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "llm",
+      "label": "LLMs & Reasoning",
+      "icon": "🧠",
+      "stories": [
+        {
+          "id": "llm-minimax-m3",
+          "title": "MiniMax M3: 1M-context multimodal frontier model — 59% SWE-Bench Pro, weights coming",
+          "summary": "MiniMax officially launched M3 on June 1, 2026, with API availability from May 31. M3 is a natively multimodal model supporting image and video input and computer use, with a 1-million-token context window using its new MSA (MiniMax Sparse Attention) architecture — 15× faster decoding and 9× faster prefill vs the prior generation at 1M tokens. On SWE-Bench Pro, M3 scores 59.0%, surpassing GPT-5.5 and Gemini 3.1 Pro and approaching Opus 4.7. Model weights and the technical report will be published on HuggingFace within 10 days (targeting June 11).",
+          "source": "MiniMax / VentureBeat",
+          "url": "https://www.minimax.io/blog/minimax-m3",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "minimax",
+            "open-weight",
+            "multimodal",
+            "1M-context",
+            "coding"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-mai-thinking1",
+          "title": "MAI-Thinking-1: Microsoft's first in-house reasoning model, trained without OpenAI data",
+          "summary": "Microsoft launched MAI-Thinking-1 at Build 2026 — a 35B active-parameter reasoning model with 256K context, trained from scratch on commercially licensed data with zero distillation from OpenAI or Anthropic models. In blind evaluations, independent raters prefer it over Claude Sonnet 4.6, and it matches Claude Opus 4.6 on SWE Bench Pro. Available in private preview on Microsoft Foundry. It signals Microsoft's strategic intent to reduce its OpenAI dependency for core reasoning capabilities.",
+          "source": "Microsoft / TechTimes",
+          "url": "http://www.techtimes.com/articles/317631/20260602/microsoft-build-2026-mai-thinking-1-first-house-reasoning-model-trained-without-openai-data.htm",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "microsoft",
+            "reasoning",
+            "mai",
+            "build-2026",
+            "open-weight"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-mai-code1",
+          "title": "MAI-Code-1-Flash: 5B-parameter coding model now in GitHub Copilot and VS Code",
+          "summary": "MAI-Code-1-Flash, a 5-billion-parameter inference-efficient coding model, was also shipped at Microsoft Build 2026. Unlike MAI-Thinking-1 (preview-only), MAI-Code-1-Flash is already deployed in Visual Studio Code and GitHub Copilot as of June 2. The model is tuned specifically for GitHub task formats and is available on Fireworks AI, Baseten, and OpenRouter. It represents Microsoft's first self-sufficient production coding model replacing OpenAI completions in its own developer tools.",
+          "source": "Microsoft / WindowsReport",
+          "url": "https://windowsreport.com/microsoft-expands-mai-ai-models-with-new-reasoning-and-coding-systems-at-build-2026/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "microsoft",
+            "coding",
+            "github",
+            "mai",
+            "vscode"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-qwen37-climb",
+          "title": "Qwen3.7 Max climbs to AA score 57 (#7) with 169 tokens/s — fastest frontier model",
+          "summary": "The latest Artificial Analysis snapshot shows Qwen3.7 Max (Alibaba) has improved its intelligence score from 55 to 57, now ranking #7 globally — tied with Gemini 3.1 Pro Preview and GPT-5.5 Medium. At 169 tokens/second and $1.43/M, it offers the best price-to-intelligence-to-speed ratio of any frontier model. The upgrade makes it a strong default for throughput-sensitive applications like real-time design generation and batch document processing.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "qwen",
+            "alibaba",
+            "leaderboard",
+            "speed",
+            "frontier"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "image-gen",
+      "label": "Image Generation & Processing",
+      "icon": "🎨",
+      "stories": [
+        {
+          "id": "img-pid-nvidia",
+          "title": "NVIDIA PiD: open-source 4K decoder that makes consumer-GPU 4K generation practical",
+          "summary": "NVIDIA Research's PiD (Pixel Diffusion Decoder) replaces the VAE decoder in any FLUX.1, FLUX.2, SD3, or Z-Image pipeline with a learned pixel-space diffusion step. PiD runs 5.9× faster than SeedVR2 at equivalent 2K quality (211ms vs 1,237ms) and enables true 4K decoding — not bicubic upscaling — on a single RTX 5000 Ada. Code and model weights are on GitHub (nv-tlabs/PiD) and HuggingFace. The ComfyUI PR (#14103) adds native nodes, making it immediately usable without custom scripting.",
+          "source": "NVIDIA Research / GIGAZINE",
+          "url": "https://github.com/nv-tlabs/PiD",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "nvidia",
+            "open-source",
+            "4K",
+            "image-gen",
+            "decoder"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-cosmos3-open",
+          "title": "NVIDIA Cosmos 3: best open-source T2I and I2V model, also top robot policy",
+          "summary": "Cosmos 3 is NVIDIA's omnimodal world model unifying language, image, video, audio, and action sequences in a single mixture-of-transformers architecture. On Artificial Analysis rankings, it holds the top spot for both open-source text-to-image and image-to-video generation. It also tops RoboArena's robot policy model rankings. Available under OpenMDW-1.1 license on HuggingFace (nvidia/cosmos3) and GitHub, with 8,680 stars on debut day — the largest single-day HuggingFace paper engagement this year.",
+          "source": "NVIDIA / HuggingFace",
+          "url": "https://research.nvidia.com/labs/cosmos-lab/cosmos3/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "nvidia",
+            "open-source",
+            "world-model",
+            "image-gen",
+            "video-gen"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-reve2-arena",
+          "title": "Reve 2.0 surges to #2 on Image Arena (Elo 1280), beating Gemini and MAI",
+          "summary": "Reve 2.0, from a relatively low-profile image generation lab, has climbed to #2 on Arena.ai's blind-comparison image leaderboard with an Elo of 1280 — behind only GPT Image 2 medium (1384). It surpasses Gemini 3.1 Flash Image Preview (#3, 1269), MAI-Image-2.5 (#4, 1254), Gemini 3 Pro Image (#5, 1245), and GPT Image 1.5 (#6, 1242). The model's style and prompt adherence appear to be strengths in blind user tests.",
+          "source": "Arena.ai",
+          "url": "https://arena.ai/leaderboard/text-to-image",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "reve",
+            "arena",
+            "image-gen",
+            "leaderboard"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-firefly-models",
+          "title": "Adobe Firefly expands to 30+ AI models including Kling 3.0 Omni, Veo 3.1, and Runway Gen-4.5",
+          "summary": "Adobe Firefly's model roster now includes Kling 3.0 and Kling 3.0 Omni (video), Google's Nano Banana 2 and Veo 3.1, Runway's Gen-4.5, and ElevenLabs Multilingual v2 for voice — more than 30 models total. Adobe simultaneously removed monthly credit limits, allowing unlimited AI image and video generation for all paid Creative Cloud subscribers. Firefly Video Editor also received studio-quality sound, advanced color adjustments, and Adobe Stock integration.",
+          "source": "Adobe / The Shortcut",
+          "url": "https://helpx.adobe.com/firefly/web/whats-new/new-features/whats-new.html",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "adobe",
+            "firefly",
+            "creative-cloud",
+            "video-gen",
+            "unlimited"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-zimage-turbo",
+          "title": "Z-Image Turbo: Qwen3-4B-based open-source fast image generator for ComfyUI",
+          "summary": "Z-Image Turbo (Comfy-Org/z_image_turbo) is an open-source fast image generator using a Qwen3 4B text encoder. It generates at 512px latent resolution in seconds and is designed to be paired with PiD for 4K output — creating an all-open-source T2I pipeline that rivals closed models. Both models are available on HuggingFace and work natively in ComfyUI. The pairing was demonstrated in the theAIsearch June 2 video as the recommended workflow for local high-resolution generation.",
+          "source": "Comfy-Org / theAIsearch",
+          "url": "https://huggingface.co/Comfy-Org/z_image_turbo",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "z-image",
+            "open-source",
+            "comfyui",
+            "qwen",
+            "fast"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "design-ai",
+      "label": "Design & Creative AI",
+      "icon": "✏️",
+      "stories": [
+        {
+          "id": "design-firefly-assistant",
+          "title": "Adobe Firefly AI Assistant (public beta): orchestrates multi-step workflows across all CC apps",
+          "summary": "Adobe's Firefly AI Assistant entered public beta on April 27 and is now broadly available. Creators describe their desired outcome in plain language, and the assistant orchestrates and executes complex multi-step workflows across Firefly, Photoshop, Premiere, Lightroom, Illustrator, and Express. It uses Precision Flow for image editing (AI-guided adjustment paths) and AI Markup for annotating edits with intent. This is Adobe's first AI product that works across the entire Creative Cloud rather than within a single app.",
+          "source": "Adobe Blog / The Shortcut",
+          "url": "https://blog.adobe.com/en/publish/2026/04/15/introducing-firefly-ai-assistant-new-way-create-with-our-creative-agent",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "adobe",
+            "firefly",
+            "codesign",
+            "workflow",
+            "creative-cloud"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-msft-copilot-app",
+          "title": "Microsoft GitHub Copilot agent-native desktop app: full-stack creative dev workflows",
+          "summary": "Microsoft Build 2026 included the launch of a new agent-native GitHub Copilot desktop app, enabling multi-step workflow execution directly in the development environment. For designers who code, the combination of MAI-Code-1-Flash (in Copilot) and MAI-Image-2.5 (in the generation API) creates a unified AI design-to-code pipeline. The app also supports Frontier Tuning — reinforcement learning customization within compliance boundaries — allowing teams to fine-tune Copilot for brand-specific output.",
+          "source": "Microsoft Blog",
+          "url": "https://blogs.microsoft.com/blog/2026/06/02/microsoft-build-2026-be-yourself-at-work/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "microsoft",
+            "github",
+            "copilot",
+            "design-to-code",
+            "agent"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-ai-summit-2026",
+          "title": "Design + AI Summit 2026: June 9–10 online conference on real-world AI in design workflows",
+          "summary": "CreativePro's Design + AI Summit 2026 runs June 9–10 as a live virtual conference, focusing on practical case studies from UX teams navigating AI in design and production — not theory. Sessions cover AI-assisted moodboarding, generative UI systems, AI co-pilot tooling in Figma and Illustrator, and the ethics of AI in brand identity. Registration is open. The summit reflects a broader shift: 2026 designers are using double the number of AI tools vs 2025, and building custom AI workflows tailored to their practice.",
+          "source": "CreativePro",
+          "url": "https://creativepro.com/event/design-ai-summit-2026/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "design",
+            "conference",
+            "ai-tools",
+            "workflow",
+            "codesign"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-msft-mai-image",
+          "title": "MAI-Image-2.5: Microsoft's T2I + I2I model now at #4 on Arena, live in Bing and Designer",
+          "summary": "MAI-Image-2.5 was announced as part of the Microsoft Build 2026 MAI family. It handles both text-to-image and image-to-image tasks and is now integrated into Microsoft Designer and Bing Image Creator. On Arena.ai's blind-comparison leaderboard, it sits at #4 overall (Elo 1254), ahead of all Gemini 3 Pro variants and GPT Image 1.5. For design teams using Microsoft's ecosystem, it offers an enterprise-licensed generation pipeline with Azure data residency.",
+          "source": "Microsoft / Arena.ai",
+          "url": "https://windowsreport.com/microsoft-expands-mai-ai-models-with-new-reasoning-and-coding-systems-at-build-2026/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "microsoft",
+            "image-gen",
+            "design",
+            "enterprise",
+            "mai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-state-of-ai-report",
+          "title": "State of AI in Design 2026 report: designers now use 2× as many AI tools as in 2025",
+          "summary": "The AI in Design Report 2026 (stateofaidesign.com) finds that designers are using double the number of off-the-shelf AI tools compared to 2025, and a growing fraction are building custom AI workflows tailored to how they work. The shift is from AI as a novelty to AI as infrastructure: moodboarding, layout iteration, UI component generation, and brand consistency checks are now the primary AI-assisted tasks. Co-design (human-AI collaborative workflows) is called out as the fastest-growing practice area.",
+          "source": "State of AI Design",
+          "url": "https://stateofaidesign.com/",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "codesign",
+            "design",
+            "report",
+            "workflow",
+            "industry"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "typography",
+      "label": "Typography & Text Rendering",
+      "icon": "🔤",
+      "stories": [
+        {
+          "id": "typo-monotype-myfonts-chatgpt",
+          "title": "Monotype MyFonts ChatGPT App beta launches June 1 — @MyFonts covers 250K fonts in 300 languages",
+          "summary": "Monotype Labs launched the MyFonts ChatGPT app in beta on June 1, 2026. Designers can type @MyFonts within any ChatGPT conversation to get font recommendations matched to creative intent — covering Monotype's library of over 250,000 fonts across more than 300 languages. The integration means font discovery is now a natural-language conversational act within the world's most-used AI assistant. The app builds on Monotype's February AI Search launch, extending it into the ChatGPT plugin ecosystem.",
+          "source": "Monotype / Transform Magazine",
+          "url": "https://www.prnewswire.com/news-releases/monotype-launches-ai-search-transforming-font-search-and-discovery-with-natural-language-and-conversational-ai-302698367.html",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "monotype",
+            "typography",
+            "font-discovery",
+            "chatgpt",
+            "nlp"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-monotype-ai-search",
+          "title": "Monotype AI Search: describe a mood, get a font — now live in 5 languages",
+          "summary": "Monotype's AI Search (launched Feb 25, 2026) enables designers to find fonts by describing brand traits, moods, or use cases in natural language: \"warm but authoritative,\" \"playful without being childish.\" It is available on MyFonts (US, UK) and on the Monotype Fonts platform in English, French, German, Spanish, and Portuguese. Creative Bloq describes it as solving what designers called 'a creativity killer' — hours of manual browsing to find the right typeface. The tool represents a model shift from keyword-based to intent-based font discovery.",
+          "source": "Monotype / Creative Bloq",
+          "url": "https://www.monotype.com/company/press-release/monotype-launches-ai-search-transforming-font-search-and-discovery-conversational-ai",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "monotype",
+            "typography",
+            "font-discovery",
+            "nlp",
+            "workflow"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-pid-text-rendering",
+          "title": "NVIDIA PiD improves AI text rendering: sharper glyphs at 4K where VAE smears details",
+          "summary": "A key use case for NVIDIA's PiD decoder identified in the theAIsearch demo is text rendering in generated images. Standard VAE decoders smear fine glyph details at 512px latent, producing blurry or incorrectly reconstructed letters. PiD's pixel-space diffusion step recovers sharp glyph edges and serifs at 4K output, making it significantly more useful for packaging, poster, and editorial design workflows where legible AI-generated type is required.",
+          "source": "theAIsearch / NVIDIA Research",
+          "url": "https://research.nvidia.com/labs/sil/projects/pid/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "typography",
+            "text-rendering",
+            "pid",
+            "nvidia",
+            "image-gen"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-ilt-fonts-ai",
+          "title": "I Love Typography Trust: \"Fonts and AI\" — positioning piece on the future of type in the AI era",
+          "summary": "The ILT Trust (I Love Typography's nonprofit arm) published a substantive piece titled \"Fonts and AI\" examining where the typography community stands in the generative AI era. The piece covers AI's growing role in font discovery, variable font generation, and cross-lingual type design — while raising concerns about the erasure of type designers' livelihoods and the cultural homogenization that comes from training on dominant scripts. It positions AI as a tool that must be steered by typographers, not one that replaces them.",
+          "source": "I Love Typography Trust",
+          "url": "https://trust.ilovetypography.com/fonts-and-ai/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "typography",
+            "ilt",
+            "ethics",
+            "font-design",
+            "ai-culture"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "robotics",
+      "label": "Robotics & Embodied AI",
+      "icon": "🦾",
+      "stories": [
+        {
+          "id": "rob-nvidia-unitree",
+          "title": "NVIDIA picks Unitree for first public humanoid research platform — Unitree seeks $620M IPO",
+          "summary": "NVIDIA selected Chinese humanoid maker Unitree Robotics to power the first commercially available humanoid robot research system the chip company will sell to academic and industrial researchers. The partnership makes NVIDIA's Isaac GR00T N1 universal robot brain available on Unitree hardware out of the box. Simultaneously, Unitree is preparing to raise 4.2 billion yuan (~$620M) through a listing on Shanghai's STAR board, making it one of the first humanoid robot companies to go public.",
+          "source": "CNBC",
+          "url": "https://www.cnbc.com/2026/06/01/nvidia-unitree-humanoid-robotics-system-researchers.html",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "nvidia",
+            "unitree",
+            "humanoid",
+            "ipo",
+            "research-platform"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-nvidia-icra",
+          "title": "NVIDIA presents 8 research papers at ICRA 2026 — sim-to-real transfer is the central challenge",
+          "summary": "At ICRA 2026 (Vienna, June 1–5), NVIDIA presented 8 research papers tackling the key barrier in humanoid deployment: ensuring skills learned in simulation work in the unpredictable real world. Isaac GR00T N1 is positioned as a universal brain that handles household and industrial tasks without per-robot custom solutions. The papers cover perception, policy learning, and physical interaction — showing NVIDIA's ambition to provide the full software stack for the robotics industry, not just the GPU hardware.",
+          "source": "NVIDIA Blog / RoboticsTomorrow",
+          "url": "https://blogs.nvidia.com/blog/national-robotics-week-2026/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "nvidia",
+            "icra",
+            "research",
+            "sim-to-real",
+            "humanoid"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-cosmos3-physical-ai",
+          "title": "NVIDIA Cosmos 3: top-ranked robot policy model (RoboArena) and open Physical AI backbone",
+          "summary": "Beyond T2I and I2V, NVIDIA Cosmos 3 is ranked #1 on RoboArena's robot policy model benchmark. Its omnimodal architecture — processing language, images, video, audio, and action sequences in a single model — makes it uniquely suited as a unified perception-and-planning backbone for embodied agents. NVIDIA is promoting Cosmos 3 as the open-source alternative to proprietary robot foundation models, available under OpenMDW-1.1 for commercial deployment.",
+          "source": "NVIDIA / HuggingFace",
+          "url": "https://huggingface.co/papers/2606.02800",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "nvidia",
+            "cosmos",
+            "physical-ai",
+            "robotics",
+            "open-source"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-vindynamics-dyno",
+          "title": "VinDynamics Dyno: Vingroup's first humanoid robot debuts at ICRA and Computex",
+          "summary": "VinDynamics (a Vingroup subsidiary) officially unveiled Dyno, its first humanoid robot, simultaneously at ICRA 2026 (Vienna, June 1–5) and Computex Taipei 2026 (June 2–5). Dyno is a general-purpose humanoid targeting caregiving, industrial automation, and education environments. The dual simultaneous debut at two of the world's major tech events positions VinDynamics as an emerging player alongside Boston Dynamics, Unitree, and 1X Technologies.",
+          "source": "Slovenia Times",
+          "url": "https://sloveniatimes.com/47795/vindynamics-debuts-its-first-humanoid-robot-at-two-of-the-worlds-leading-technology-events",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "vindynamics",
+            "humanoid",
+            "icra",
+            "computex",
+            "vingroup"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-grail-paper",
+          "title": "GRAIL: generating humanoid loco-manipulation from 3D assets and video priors",
+          "summary": "The GRAIL paper (HuggingFace: 2606.05160) proposes a method for synthesizing humanoid locomotion and manipulation behaviors directly from 3D object assets and video demonstrations, without requiring large motion-capture datasets. The approach combines video priors (learned from internet video) with physics-based simulation to produce generalizable loco-manipulation policies. Published by researchers at UC Berkeley and aligned institutions, it addresses a key bottleneck in getting humanoids to work with novel objects.",
+          "source": "HuggingFace Papers / GRAIL",
+          "url": "https://huggingface.co/papers/2606.05160",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "manipulation",
+            "video-priors",
+            "research",
+            "loco"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "label": "Research & Papers",
+      "icon": "📄",
+      "stories": [
+        {
+          "id": "res-cosmos3",
+          "title": "Cosmos 3: NVIDIA's omnimodal world model — 8,680 HuggingFace stars on launch day",
+          "summary": "NVIDIA's Cosmos 3 paper (arXiv 2606.02800) introduces a unified mixture-of-transformers model processing language, images, video, audio, and action sequences. A single model replaces the pipeline of vision-language models, video generators, world simulators, and action policy models previously needed for physical AI. Cosmos 3 ranked #1 on Artificial Analysis for open-source T2I and I2V, and #1 on RoboArena for robot policy. Available under OpenMDW-1.1 with 8,680 HuggingFace paper upvotes — the largest single-day score this year.",
+          "source": "NVIDIA / HuggingFace",
+          "url": "https://huggingface.co/papers/2606.02800",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "nvidia",
+            "world-model",
+            "multimodal",
+            "open-source",
+            "physical-ai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-echo-infinity",
+          "title": "Echo-Infinity: real-time infinite video generation via evolving memory",
+          "summary": "Echo-Infinity (arXiv 2606.04527) proposes a learning framework for real-time infinite video generation using an evolving memory mechanism — the model maintains a compressed memory of past frames rather than regenerating everything from a fixed context window. This allows indefinite temporal extension of generated video without quality degradation or context overflow. Key applications include interactive simulation, game environments, and endless procedural video backgrounds for design work.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.04527",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "video-gen",
+            "research",
+            "infinite",
+            "memory",
+            "real-time"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-deep-research-errors",
+          "title": "Where do deep-research agents go wrong? Span-level error localization in agent trajectories",
+          "summary": "This paper (arXiv 2606.02060) provides the first systematic analysis of failure modes in deep-research AI agents — the kind that autonomously browse, read, and synthesize information across multiple sources. The authors identify a taxonomy of error types (factual confabulation, source misattribution, reasoning chain breaks) and introduce a span-level annotation method to localize where in a long trajectory an agent first goes wrong. Directly useful for improving agentic coding and research workflows.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.02060",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "agents",
+            "research",
+            "error-analysis",
+            "reliability",
+            "rag"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-qwen-image-flash",
+          "title": "Qwen-Image-Flash: Alibaba's efficient image understanding model beyond standard objectives",
+          "summary": "Alibaba's Qwen-Image-Flash paper (arXiv 2606.03746) introduces design choices that go beyond standard image-language pretraining objectives. The paper reports strong performance on visual reasoning, OCR, and document understanding benchmarks while being optimized for inference efficiency — making it suitable for production deployment in cost-sensitive scenarios. Given Qwen's track record of rapid open-weight releases, model weights may follow the paper within days.",
+          "source": "HuggingFace Papers / Alibaba",
+          "url": "https://huggingface.co/papers/2606.03746",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "qwen",
+            "alibaba",
+            "image-understanding",
+            "ocr",
+            "efficient"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-benchevolver",
+          "title": "BenchEvolver: AI that writes its own frontier benchmarks via solution-centric evolution",
+          "summary": "BenchEvolver (arXiv 2606.01286) addresses the problem of benchmark saturation — when current models score near-ceiling on existing tests. The paper proposes a method where a \"teacher\" model generates novel task instances that expose weaknesses in a \"student\" model, evolving the benchmark to always remain at the frontier of what current systems can barely solve. This has major implications for how we evaluate and push the capabilities of future models, particularly in coding and reasoning.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.01286",
+          "significance": 3,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "benchmark",
+            "research",
+            "evaluation",
+            "reasoning",
+            "saturation"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-msft-discovery",
+          "title": "Microsoft Discovery: enterprise agentic AI platform for scientific workflows",
+          "summary": "Microsoft announced Discovery at Build 2026, described as an enterprise-grade agentic AI platform for scientific research workflows. The system orchestrates multi-step hypothesis generation, literature synthesis, and experimental design across internal databases and external sources. It builds on the same Foundry Agent Service infrastructure as other Microsoft agents but is vertically specialized for research and development teams in pharma, materials science, and engineering — directly competing with Google's Co-scientist (published in Nature, May 2026).",
+          "source": "Microsoft Blog",
+          "url": "https://blogs.microsoft.com/blog/2026/06/02/microsoft-build-2026-be-yourself-at-work/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "microsoft",
+            "science",
+            "agents",
+            "research",
+            "enterprise"
+          ],
+          "image_url": null
+        }
+      ]
+    }
+  ],
+  "visualizations": {
+    "category_counts": {
+      "leaderboard": 6,
+      "aisearch": 11,
+      "agentic-ai": 5,
+      "llm": 4,
+      "image-gen": 5,
+      "design-ai": 5,
+      "typography": 4,
+      "robotics": 5,
+      "research": 6
+    },
+    "significance_distribution": {
+      "5": 16,
+      "4": 28,
+      "3": 7,
+      "2": 1,
+      "1": 0
+    },
+    "top_tags": [
+      {
+        "tag": "nvidia",
+        "count": 9
+      },
+      {
+        "tag": "open-source",
+        "count": 8
+      },
+      {
+        "tag": "microsoft",
+        "count": 8
+      },
+      {
+        "tag": "pid",
+        "count": 7
+      },
+      {
+        "tag": "anthropic",
+        "count": 6
+      },
+      {
+        "tag": "leaderboard",
+        "count": 6
+      },
+      {
+        "tag": "image-gen",
+        "count": 6
+      },
+      {
+        "tag": "comfyui",
+        "count": 5
+      },
+      {
+        "tag": "build-2026",
+        "count": 5
+      },
+      {
+        "tag": "typography",
+        "count": 5
+      }
+    ],
+    "top_stories": [
+      {
+        "id": "res-cosmos3",
+        "title": "Cosmos 3: NVIDIA's omnimodal world model — 8,680 HuggingFace stars on launch day",
+        "category": "research",
+        "significance": 5
+      },
+      {
+        "id": "agent-anthropic-ipo",
+        "title": "Anthropic confidentially files S-1 with SEC — potential trillion-dollar IPO",
+        "category": "agentic-ai",
+        "significance": 5
+      },
+      {
+        "id": "img-pid-nvidia",
+        "title": "NVIDIA PiD: open-source 4K decoder that makes consumer-GPU 4K generation practical",
+        "category": "image-gen",
+        "significance": 5
+      },
+      {
+        "id": "lb-mythos-sweb",
+        "title": "Claude Mythos Preview: 93.9% SWE-bench Verified — 13 points above any public model",
+        "category": "leaderboard",
+        "significance": 5
+      },
+      {
+        "id": "llm-minimax-m3",
+        "title": "MiniMax M3: 1M-context multimodal frontier model — 59% SWE-Bench Pro, weights coming",
+        "category": "llm",
+        "significance": 5
+      }
+    ]
+  }
+}

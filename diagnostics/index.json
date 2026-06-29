@@ -1,0 +1,41 @@
+{
+  "schema": "direct_pipeline_py.diagnostics_index/v1",
+  "updated_at": "2026-06-29T05:14:29Z",
+  "latest": "20260629120000",
+  "runs": [
+    {
+      "prefix": "20260629120000",
+      "date": "2026-06-29",
+      "display_date": "Jun 29, 2026",
+      "started_at": "2026-06-29T03:34:34Z",
+      "finished_at": "2026-06-29T03:45:50Z",
+      "total_duration_ms": 676422.9,
+      "total_duration_label": "11.3m",
+      "total_tokens": 194835,
+      "llm_call_count": 15,
+      "llm_duration_ms": 666108.9,
+      "llm_share_pct": 98.5,
+      "model": "qwen3.6:35b",
+      "poc_id": "direct_pipeline_py",
+      "intensity": 0.6571056092639974
+    }
+  ],
+  "by_date": [
+    {
+      "prefix": "20260629120000",
+      "date": "2026-06-29",
+      "display_date": "Jun 29, 2026",
+      "started_at": "2026-06-29T03:34:34Z",
+      "finished_at": "2026-06-29T03:45:50Z",
+      "total_duration_ms": 676422.9,
+      "total_duration_label": "11.3m",
+      "total_tokens": 194835,
+      "llm_call_count": 15,
+      "llm_duration_ms": 666108.9,
+      "llm_share_pct": 98.5,
+      "model": "qwen3.6:35b",
+      "poc_id": "direct_pipeline_py",
+      "intensity": 0.6571056092639974
+    }
+  ]
+}

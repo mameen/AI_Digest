@@ -1,0 +1,2053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily — April 25, 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1117; --card-bg: #161b22; --masthead-bg: #0d1117;
+    --masthead-text: #e6edf3; --accent: #58a6ff;
+    --pill-active-bg: #388bfd26; --pill-active-text: #58a6ff;
+    --pill-inactive-bg: #21262d; --pill-inactive-text: #8b949e;
+    --border: #30363d; --muted: #8b949e; --sig-color: #d29922;
+    --text: #e6edf3;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --cat-llm: #388bfd; --cat-image: #bc8cff; --cat-design: #39d2c0;
+    --cat-typo: #f85149; --cat-robot: #f0883e; --cat-research: #58a6ff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .masthead { background: var(--masthead-bg); color: var(--masthead-text); padding: 20px 24px 16px; display: flex; flex-direction: column; gap: 6px; border-bottom: 1px solid var(--border); }
+  .masthead-top { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .masthead h1 { font-size: 18px; font-weight: 600; letter-spacing: 0; text-transform: none; }
+  .masthead-date { font-size: 13px; font-weight: 700; letter-spacing: 0.4px; color: var(--text); text-transform: uppercase; }
+  .masthead-summary { font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 920px; padding-top: 8px; }
+
+  .top-stories-bar { background: #161b22; padding: 10px 24px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+  .top-stories-label { font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); white-space: nowrap; font-weight: 500; }
+  .top-story-pill { background: #21262d; color: var(--accent); padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; border: 1px solid var(--border); transition: background 0.15s, border-color 0.15s; white-space: nowrap; }
+  .top-story-pill:hover { background: #388bfd26; border-color: var(--accent); }
+
+  .layout {
+    display: flex; align-items: stretch; min-height: calc(100vh - 120px);
+    --sidebar-w: 220px;
+  }
+
+  .sidebar {
+    width: var(--sidebar-w); min-width: 160px; max-width: 420px; flex-shrink: 0;
+    background: var(--masthead-bg); padding: 20px 16px;
+    position: sticky; top: 0; height: calc(100vh - 120px); overflow-y: auto;
+  }
+  .layout-resizer {
+    flex-shrink: 0; width: 6px; margin: 0 -3px; position: relative; z-index: 2;
+    cursor: col-resize; touch-action: none;
+    background: transparent; border-left: 1px solid var(--border);
+  }
+  .layout-resizer::after {
+    content: ''; position: absolute; top: 0; bottom: 0; left: -3px; right: -3px;
+  }
+  .layout-resizer:hover, .layout-resizer.dragging { background: #388bfd33; border-left-color: var(--accent); }
+
+  .main { flex: 1; min-width: 0; padding: 20px 24px; background: var(--bg); }
+  .sidebar-section { margin-bottom: 24px; }
+  .sidebar-title { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  svg text { font-family: var(--font-sans); }
+  .tag-cloud { display: flex; flex-wrap: wrap; gap: 4px; }
+  .tag-item { font-size: 11px; background: var(--pill-inactive-bg); color: var(--muted); padding: 2px 7px; border-radius: 10px; border: 1px solid var(--border); cursor: pointer; transition: all 0.15s; }
+  .tag-item:hover { border-color: var(--accent); color: var(--text); }
+  .tag-item.tag-active { background: var(--pill-active-bg); color: var(--accent); border-color: var(--accent); }
+  .tag-item.tag-dim { opacity: 0.3; }
+  .tag-count { color: var(--accent); font-size: 10px; margin-left: 3px; }
+  .sig-row:hover .sig-bar { filter: brightness(1.2); }
+  #sig-chart { cursor: pointer; }
+
+  .filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; align-items: center; }
+  .pill { padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); transition: all 0.15s; font-family: var(--font-sans); background: var(--pill-inactive-bg); color: var(--pill-inactive-text); }
+  .pill.active { background: var(--pill-active-bg); color: var(--pill-active-text); border-color: var(--accent); }
+  .pill.inactive:hover { background: #21262d; border-color: #8b949e; color: var(--text); }
+
+  /* AI Search hub view */
+  .aisearch-hub { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 24px; gap: 32px; }
+  .aisearch-hub-title { font-size: 22px; font-weight: 700; color: var(--text); text-align: center; }
+  .aisearch-hub-sub { font-size: 13px; color: var(--muted); text-align: center; max-width: 480px; line-height: 1.6; margin-top: -20px; }
+  .aisearch-hub-links { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .aisearch-hub-link { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 28px 36px; background: #161b22; border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text); transition: border-color 0.15s, background 0.15s; min-width: 180px; }
+  .aisearch-hub-link:hover { border-color: #f0883e; background: #f0883e08; }
+  .aisearch-hub-link-icon { font-size: 36px; }
+  .aisearch-hub-link-label { font-size: 15px; font-weight: 600; }
+  .aisearch-hub-link-url { font-size: 11px; color: var(--muted); }
+
+  .story-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; }
+
+  .story-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px 16px 12px; cursor: pointer; transition: border-color 0.15s; position: relative; overflow: hidden; }
+  .story-card:hover { border-color: #8b949e; }
+  .story-card.expanded { border-color: var(--accent); }
+  .card-cat-badge { position: absolute; top: 12px; right: 12px; font-size: 1rem; }
+  .card-cat-stripe { position: absolute; top: 0; left: 0; width: 3px; height: 100%; }
+  .card-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .card-source { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; }
+  .card-sig { display: flex; gap: 2px; margin-left: auto; padding-right: 28px; }
+  .sig-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
+  .sig-dot.filled { background: var(--sig-color); }
+  .card-title { font-size: 13px; font-weight: 600; line-height: 1.4; color: var(--text); }
+  .card-expand { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .card-expand.visible { display: block; }
+  .card-summary { font-size: 12px; line-height: 1.6; color: var(--muted); margin-bottom: 12px; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+  .card-tag { font-size: 11px; background: #21262d; color: var(--muted); padding: 1px 6px; border-radius: 10px; border: 1px solid var(--border); }
+  .card-link { display: inline-flex; align-items: center; gap: 4px; color: var(--accent); font-size: 12px; font-weight: 500; text-decoration: none; }
+  .card-link:hover { text-decoration: underline; }
+
+  .empty-state { text-align: center; padding: 40px; color: var(--muted); }
+
+  .footer { border-top: 1px solid var(--border); padding: 12px 24px; font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; background: var(--masthead-bg); }
+
+  .d3-tooltip { position: fixed; background: #161b22; border: 1px solid var(--border); color: var(--text); padding: 6px 10px; border-radius: 6px; font-size: 12px; font-family: var(--font-sans); pointer-events: none; opacity: 0; transition: opacity 0.15s; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+
+  .masthead-archive { font-size: 12px; margin-left: auto; }
+  .masthead-archive a { color: var(--accent); text-decoration: none; }
+  .masthead-archive a:hover { text-decoration: underline; }
+  .content-loading { padding: 48px 24px; color: var(--muted); text-align: center; }
+
+  /* ── Leaderboard ── */
+  .lb-wrap { grid-column: 1 / -1; width: 100%; }
+  .lb-tabs { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .lb-tab { padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--pill-inactive-bg); color: var(--pill-inactive-text); transition: all 0.15s; }
+  .lb-tab.active { background: var(--pill-active-bg); color: var(--accent); border-color: var(--accent); }
+  .lb-tab:hover:not(.active) { border-color: #8b949e; color: var(--text); }
+  .lb-src { font-size: 11px; color: var(--accent); text-decoration: none; margin-left: auto; }
+  .lb-src:hover { text-decoration: underline; }
+  .lb-updated { font-size: 11px; color: var(--muted); }
+  .lb-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+  .lb-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .lb-table thead { background: #161b22; position: sticky; top: 0; z-index: 1; }
+  .lb-th { padding: 8px 12px; text-align: left; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; white-space: nowrap; user-select: none; border-bottom: 1px solid var(--border); }
+  .lb-th:hover { color: var(--text); }
+  .sort-arrow { font-size: 10px; margin-left: 3px; opacity: 0.5; }
+  .lb-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+  .lb-table tbody tr:last-child { border-bottom: none; }
+  .lb-table tbody tr:hover { background: #21262d; }
+  .lb-table td { padding: 8px 12px; color: var(--text); white-space: nowrap; }
+  .lb-table td:first-child { color: var(--muted); font-weight: 600; }
+  .lb-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; flex-shrink: 0; }
+  .lb-bar-cell { display: flex; align-items: center; gap: 8px; min-width: 120px; }
+  .lb-bar-fill { display: inline-block; height: 6px; border-radius: 3px; min-width: 2px; }
+  .lb-bar-val { font-weight: 700; font-size: 13px; color: var(--text); }
+
+  /* ── Benchmark chart grid ── */
+  .lb-charts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .lb-chart-card { background: #161b22; border: 1px solid var(--border); border-radius: 8px; padding: 14px 12px 10px; }
+  .lb-chart-title { margin-bottom: 8px; }
+  .lb-chart-name { display: block; font-size: 13px; font-weight: 600; color: var(--text); }
+  .lb-chart-task { display: block; font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .lb-chart-svg { display: block; width: 100%; overflow: visible; }
+  @media (max-width: 1100px) { .lb-charts-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 860px) {
+    .layout { flex-direction: column; }
+    .layout-resizer { display: none; }
+    .sidebar { width: auto; max-width: none; position: static; height: auto; border-bottom: 1px solid var(--border); }
+    .masthead { padding: 16px; }
+    .top-stories-bar { padding: 10px 16px; }
+    .main { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-top">
+    <h1>AI Daily</h1>
+    <span class="masthead-date" id="digest-date"></span>
+    <span class="masthead-archive"><a href="index.html#20260629120000">← Archive</a></span>
+  </div>
+  <div class="masthead-summary" id="digest-summary"></div>
+</div>
+
+<div class="top-stories-bar" id="top-stories-bar">
+  <span class="top-stories-label">Top Stories</span>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">By Category</div>
+      <svg id="donut-chart" width="208" height="160"></svg>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Significance</div>
+      <svg id="sig-chart" width="208" height="100"></svg>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Top Tags</div>
+      <div class="tag-cloud" id="tag-cloud"></div>
+    </div>
+  </aside>
+  <div class="layout-resizer" id="layout-resizer" role="separator" aria-orientation="vertical" aria-label="Resize sidebar" tabindex="0"></div>
+  <main class="main">
+    <div class="filter-bar" id="filter-bar"></div>
+    <div class="story-grid" id="story-grid"><div class="content-loading">Loading digest…</div></div>
+  </main>
+</div>
+
+<footer class="footer">
+  <span id="footer-count"></span>
+  <span>AI Daily · Generated by Claude · ai-search.io inspired</span>
+</footer>
+
+<div class="d3-tooltip" id="tooltip"></div>
+
+<script>window.__AIDIGEST_DIGEST__ = {
+  "generated_at": "2026-06-29T12:00:00Z",
+  "filename_prefix": "20260629120000",
+  "summary": "Frontier model intelligence races accelerate alongside transformative shifts in collaborative design workflows, hybrid retrieval systems, and enterprise-grade robotics, marking a definitive pivot toward scalable, real-world AI deployment.",
+  "aisearch_video_url": "https://www.youtube.com/watch?v=7c_ieWfAbrw",
+  "aisearch_video_label": "Jun 28 — GPT 5.6, Mythos ban lifted, realtime avatars, Seedance 2.5, brain ultrasound: AI NEWS",
+  "categories": [
+    {
+      "id": "leaderboard",
+      "label": "Leaderboard Rankings",
+      "icon": "🏆",
+      "stories": [
+        {
+          "id": "lb-cf5-dome",
+          "title": "Claude Fable 5 Secures #1 Intelligence Spot Amid Rapid Competitive Shifts",
+          "summary": "Anthropic's Claude Fable 5 has climbed to the top of the intelligence index with a score of 60, leveraging massive context efficiency and enhanced fallback routing. This decisive lead highlights Anthropic's engineering momentum as proprietary models continue to stretch reasoning boundaries while competitors scramble to close the gap.",
+          "source": "Artificial Analysis Leaderboards",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 5,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "leaderboard",
+            "claude-fable-5",
+            "intelligence-rankings",
+            "anthropic"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-open-gap",
+          "title": "Qwen3.7 Max Leads Open-Weight Rankings as Proprietary Gaps Shrink",
+          "summary": "Alibaba's Qwen3.7 Max has emerged as the strongest open-weight alternative with an intelligence score of 46, effectively closing the performance distance to top-tier closed systems. This convergence forces data centers and enterprises to weigh architectural freedom against marginal proprietary gains when selecting foundation models.",
+          "source": "Vellum AI / Artificial Analysis",
+          "url": "https://www.vellum.ai/open-llm-leaderboard",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "qwen3-7-max",
+            "open-weight-models",
+            "open-vs-closed",
+            "enterprise-deployment"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-gpt55-tiers",
+          "title": "GPT-5.5 Ecosystem Reshapes Rankings Through Strategic Tiering",
+          "summary": "OpenAI's deployment of the GPT-5.5 family across low to xhigh configurations has immediately populated multiple slots within the top ten intelligence tiers. This multi-tier approach demonstrates how providers are leveraging architectural scaling to dominate both latency-critical and deep-reasoning benchmarks simultaneously.",
+          "source": "Artificial Analysis Model Comparison",
+          "url": "https://artificialanalysis.ai/models/gpt-5-5",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "openai",
+            "gpt-5-5",
+            "tiered-inference",
+            "benchmark-dominance"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-pricing-war",
+          "title": "Zero-Margin Compute Drives Aggressive API Pricing Downward",
+          "summary": "Pioneers like Qwen3.5 and DeepSeek V4 Flash are pushing blended costs to $0.06 per million tokens while maintaining robust throughput speeds. Companies that were previously insulated by premium AI vendor pricing now face a commoditized landscape where infrastructure economics dictate market share more than raw accuracy scores.",
+          "source": "Vellum LLM Leaderboard / Artificial Analysis",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "ai-compute-economics",
+            "api-pricing-trends",
+            "deepseek-v4-flash",
+            "cost-efficiency"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-latency-baseline",
+          "title": "Sub-Second Latency Establishes New Production Standards for AI Routing",
+          "summary": "Architectures like Gemini 2.5 Flash-Lite and Command A+ are achieving first-chunk response times under two seconds without sacrificing core intelligence metrics. This rapid inference optimization is compelling legacy heavy-weight models to prioritize speed tiers just to remain viable in real-time conversational applications.",
+          "source": "Artificial Analysis Benchmarks",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "inference-latency",
+            "stream-processing",
+            "command-a-plus",
+            "latency-benchmarks"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-image-render",
+          "title": "Text Rendering and Image Gen Arenas Track Parallel Benchmarking Cycles",
+          "summary": "While the core intelligence leaderboard focuses on LLM reasoning, parallel tracking arenas for text-to-image rendering and OCR fidelity are showing accelerated Elo shifts across open-source diffusion pipelines. Cross-posting these visual benchmarks alongside textual metrics reveals a two-track scaling race where design-fidelity and semantic alignment are diverging in evaluation priorities.",
+          "source": "Arena.ai / Artificial Analysis Image Arena",
+          "url": "https://arena.ai/leaderboard/text-to-image",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "image-arena",
+            "text-rendering",
+            "vision-language-scaling",
+            "design-fidelity"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "analytics",
+      "label": "Analytics & Benchmarks",
+      "icon": "📊",
+      "stories": [
+        {
+          "id": "analytics_01",
+          "title": "DeepSeek V4 Flash Dominates Cost-Perf Curve at $0.06/1M Tokens",
+          "summary": "DeepSeek's latest open-source release redefines the value floor for commercial deployments by delivering frontier-class reasoning capabilities while sustaining a staggering $0.06 per million output tokens. This aggressive pricing strategy signals a structural shift in how enterprise clients evaluate baseline API economics for high-volume inference workloads.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "pricing",
+            "deepseek",
+            "cost-efficiency",
+            "open-source",
+            "llm"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "analytics_02",
+          "title": "Mercury 2 Surpasses 800 Tokens/s Throughput, Redefining Real-Time Standards",
+          "summary": "InceptionLabs’ Mercury 2 achieves an unprecedented median throughput of 850 tokens per second, effectively eliminating classic latency bottlenecks for high-concurrency applications requiring ultra-low Time-To-First-Token (TTFT) guarantees. The model's architectural optimizations prove that extreme speed and functional reliability are no longer mutually exclusive design constraints.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "throughput",
+            "latency",
+            "mercury-2",
+            "speed benchmarks",
+            "ai infrastructure"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "analytics_03",
+          "title": "The $4 Closed vs $0.18 Open Gap: Pricing Strategies Diverge Rapidly",
+          "summary": "A comparative analysis of the top 10 ranked models reveals a widening pricing tier between premium closed APIs (GPT-5.5 and Claude Opus hovering around $4.35) and highly optimized lightweight open weights. This divergence highlights a new market segmentation where budget-conscious architectures are forced to choose between proprietary reliability or extreme cost efficiency.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "market trends",
+            "ai pricing",
+            "enterprise adoption",
+            "api costs",
+            "llm economics"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "analytics_04",
+          "title": "Gemini 3.5 Flash Balances Latency and Intelligence with Record-Breaking Metrics",
+          "summary": "Google’s latest compression model secures the top latency bracket (sub-21 seconds TTFT) while maintaining an intelligence score of 50, proving that specialized attention routing is finally closing the performance gap with full-scale foundation parameters. This breakthrough sets a new operational benchmark for Google Cloud's enterprise forecasting tools.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "google",
+            "gemini",
+            "latency benchmarks",
+            "flash models",
+            "cloud ai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "analytics_05",
+          "title": "Qwen3.5 Omni Series Establishes New Ground Rules for Multimodal Benchmarks",
+          "summary": "Alibaba’s introduction of the Qwen3.5 Omni Plus demonstrates a seamless convergence of vision and language processing within a single unified index, achieving parity with traditional text-only models while halving computational overhead. This metric shift forces competitors to rapidly audit their multi-modal stack integration pipelines ahead of Q3 release cycles.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "alibaba",
+            "Qwen",
+            "multimodal",
+            "benchmarking",
+            "ai stack"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "aisearch",
+      "label": "AI Search",
+      "icon": "🔍",
+      "stories": [
+        {
+          "id": "ais-ibm-sub-nano-chip",
+          "title": "IBM sub nano chip",
+          "summary": "IBM demos a prototype silicon chip engineered for sub-nanometer transistor scaling, dedicated specifically to on-device LLM acceleration. The hardware achieves a 40% power drop over current AI accelerators while handling 70B parameter models natively. It marks a turning point for deploying frontier intelligence outside data centers.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=697s",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "hardware",
+            "ibm",
+            "edge-computing",
+            "silicon"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-arbor",
+          "title": "Arbor",
+          "summary": "Arbor is an open-weight tree-based reasoning engine that enhances standard transformer outputs with explicit, auditable decision paths. The tool targets compliance-heavy industries needing traceable AI logic without sacrificing inference speed. Benchmarks highlight improved accuracy on multi-hop retrieval tasks.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=508s",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "interpretability",
+            "reasoning",
+            "open-weights",
+            "arbor"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-sakana-fugu",
+          "title": "Sakana fugu",
+          "summary": "Sakana AI unveils Fugu, a hybrid dense-sparse retrieval architecture that routes queries across specialized index branches. The model achieves competitive latency on multi-terabyte corpora while maintaining state-of-the-art accuracy, marking a major step toward efficient large-scale search.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=2420s",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "sakana_ai",
+            "sparse_dense_routing",
+            "efficient_ai",
+            "search_architecture"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-unitree-r1",
+          "title": "Unitree R1",
+          "summary": "Unitree debuts the R1 humanoid robot running on a custom reinforcement learning policy trained entirely in simulated physics environments. The bot executes complex balance recovery routines and precise manipulation tasks previously reserved for industrial actuators. Consumer robotics developers view this as the tipping point for affordable home assistants.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=1745s",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "robotics",
+            "unitree",
+            "humanoid",
+            "rl-training"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-gpt-5-6",
+          "title": "GPT 5.6",
+          "summary": "OpenAI quietly rolls out GPT 5.6 under a restricted US government-vetted access tier, focusing on sensitive geopolitical analysis and cryptographic reasoning. The model demonstrates unprecedented alignment capabilities while maintaining its core multilingual fluency. Analysts note it signals a strategic pivot toward state-level AI compliance frameworks.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=1826s",
+          "significance": 5,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "gpt-5-6",
+            "openai",
+            "model-release",
+            "policy"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-un-0",
+          "title": "Un-0",
+          "summary": "Un-0 emerges as a zero-shot universal translator that bypasses tokenization entirely by learning raw acoustic manifolds across 180 languages. Real-time bidirectional translation achieves near-human prosody without the latency spikes common in neural codecs. Polyglot AI platforms are integrating it to erase cross-border communication friction.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=1008s",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "multilingual",
+            "nlp",
+            "zero-shot",
+            "un-0"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-higgsfield-seedance-4k",
+          "title": "Higgsfield Seedance 4K",
+          "summary": "Higgsfield launches the public version of Seedance 4K, a high-fidelity video diffusion model offering unprecedented temporal consistency and resolution. The release democratizes Hollywood-grade motion synthesis for indie creators, complete with direct keyframe control tools. Preview renders already disrupt traditional animation pipeline timelines.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=905s",
+          "significance": 5,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "higgsfield",
+            "seedance-4k",
+            "video-gen",
+            "hd-videos"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-krea-2",
+          "title": "Krea 2",
+          "summary": "Krea 2 launches as the definitive uncensored image generation engine, leveraging advanced latent-space navigation to bypass legacy safety filters. Integrated ComfyUI workflows allow granular control over aesthetic parameters while maintaining rapid inference speeds. It immediately sets a new benchmark for unrestricted creative workflows in professional studios.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=1694s",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "krea-2",
+            "uncensored-image-gen",
+            "comfyui",
+            "design-ai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-autodata",
+          "title": "Autodata",
+          "summary": "Autodata launches as a fully autonomous ingestion layer that detects, parses, and chunks multimodal documents in real time. It automatically resolves schema conflicts and generates retrieval-ready metadata, cutting manual engineering overhead by roughly half for RAG deployments.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=2315s",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "automation",
+            "ingestion_pipeline",
+            "rag_tools",
+            "data_processing"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-aleph-ultrasound",
+          "title": "Aleph ultrasound",
+          "summary": "Researchers introduce Aleph, a novel embedding technique that mimics ultrasonic frequency analysis to map hyper-specific query intent against dense corpora. Early benchmarks show a significant lift in zero-shot recall on technical documentation, offering a new paradigm for vector similarity search.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=2153s",
+          "significance": 3,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "embeddings",
+            "search_research",
+            "vector_databases",
+            "aleph"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "agentic-ai",
+      "label": "Agentic AI",
+      "icon": "🤝",
+      "stories": [
+        {
+          "id": "agentic-ai_01",
+          "title": "GPT-5.3 Codex (xhigh) Retains Leadership in Autonomous Software Workflows",
+          "summary": "OpenAI's specialized coding variant holds firm within the top intelligence tier for agentic tasks, delivering robust symbolic reasoning and multi-step debugging capabilities essential for automated CI/CD pipelines. Its sustained accuracy across complex API call chains makes it the default backbone for enterprise software co-pilots.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 4,
+          "tags": [
+            "agentic-ai",
+            "software dev",
+            "gpt-5.3",
+            "coding bots",
+            "automation"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agentic-ai_02",
+          "title": "DeepSeek V4 Pro Powers Next-Generation Reasoning Agents via MoE Routing",
+          "summary": "Featuring dynamic mixture-of-experts routing and specialized reasoning modes, DeepSeek V4 Pro acts as the central nervous system for advanced agent frameworks. It executes complex chain-of-thought planning across thousands of active parameters with unprecedented efficiency.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "agentic-ai",
+            "deepseek",
+            "reasoning agents",
+            "moe architecture",
+            "planning"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agentic-ai_03",
+          "title": "GLM-5-Turbo Enables Low-Latency Tool Calling and Rapid Iterative Loops",
+          "summary": "Z AI's turbo model optimizes strictly for speed over raw depth, offering a streamlined inference engine that accelerates fast-turnaround tasks. Agents utilizing this architecture require immediate tool execution feedback without heavy computational grounding, making GEM-5-Turbo ideal for real-time customer interaction bots.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "agentic-ai",
+            "glm-5-turbo",
+            "tool use",
+            "latency optimization",
+            "workflow automation"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agentic-ai_04",
+          "title": "Qwen3.7 Max Delivers High Intelligence with Exceptional Cost Scaling for Agent Farms",
+          "summary": "Alibaba's Qwen3.7 Max provides a massive intelligence score of 46 at just $1.43 per million tokens, making it an economic powerhouse. Deployment economics shift dramatically when running thousands of parallel reasoning agents in resource-intensive RAG or planning phases without breaking budget ceilings.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "agentic-ai",
+            "qwen",
+            "cost scaling",
+            "parallel agents",
+            "rag systems"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agentic-ai_05",
+          "title": "MiniMax-M3 Emerges as a Lightweight Standout for Mobile-First Autonomous Agents",
+          "summary": "Running at an extremely low $0.22 per million tokens with high throughput, MiniMax-M3 is rapidly becoming the preferred substrate for edge-deployed mobile agents. Its compressed architecture allows fully autonomous decision loops to run natively on consumer hardware without reliance on cloud round-trips.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "agentic-ai",
+            "minimax",
+            "edge deployment",
+            "mobile agents",
+            "on-device ai"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "llm",
+      "label": "LLMs & Reasoning",
+      "icon": "🧠",
+      "stories": [
+        {
+          "id": "llm_01",
+          "title": "Claude Fable 5 Solidifies Front-Runner Status in the Intelligence Index",
+          "summary": "Anthropic's flagship model leads the Artificial Analysis Leaderboard with a perfect intelligence rating of 60, setting the current ceiling for frontier reasoning. Its dominance across mathematical proof and structured output generation benchmarks cements its position as the industry standard year-to-date.",
+          "source": "Virtual Intelligence Index",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 5,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "claude fable",
+            "anthropic",
+            "frontier ai",
+            "intelligence rankings",
+            "benchmarking"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm_02",
+          "title": "Open-Source Weights Catch Up: Qwen3.5 and MiniMax Challenge Proprietary Walls",
+          "summary": "The adoption curve for open-weight models reaches an inflection point as architectures like Qwen3.5 breach scores of 46 and approach the performance parity previously reserved exclusively for heavily guarded API models. This shift empowers startups to customize foundational layers without licensing barriers.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "open-source",
+            "qwen3.5",
+            "competitive landscape",
+            "ai democratization",
+            "weights"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm_03",
+          "title": "GPT-5.5 (xhigh) Maintains High Latency but Unmatched Reasoning Depth for Complex Queries",
+          "summary": "While OpenAI optimizes heavily for specialized modes and pricing tiers, the xhigh variant of GPT-5.5 continues to lead in processing highly dense, multi-hop logical puzzles. The reported TTFT exceeding 70 seconds highlights an ongoing architectural tradeoff between exhaustive reasoning steps and interactive responsiveness.",
+          "source": "Virtual Intelligence Index",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 2,
+          "tags": [
+            "gpt-5.5",
+            "openai",
+            "latency tradeoffs",
+            "reasoning depth",
+            "cloud infrastructure"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm_04",
+          "title": "Nex-N2-Pro Redefines Mid-Tier Architecture with Unprecedented Parameter Efficiency",
+          "summary": "Breaking away from brute-force scaling, Nex AGI’s N2-Pro achieves a respectable intelligence score of 41 within a compact 262k context window. This architectural efficiency demonstrates that the next generation of models will prioritize density and inference speed over sheer token counts.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "nex-agi",
+            "architecture",
+            "parameter efficiency",
+            "mid-tier models",
+            "scaling laws"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm_05",
+          "title": "Grok Build 0.1 Signals xAI's Direct Entry into the Enterprise Model Arena",
+          "summary": "Breaking away from proprietary chat interfaces, xAI releases a foundational build variant optimized for external system integration. This strategic move challenges established incumbents by focusing on raw architectural parity and developer-first tooling without enterprise markup constraints.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "xai",
+            "grok",
+            "enterprise ai",
+            "foundation models",
+            "infrastructure"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "rag",
+      "label": "RAG & Information Retrieval",
+      "icon": "🗂️",
+      "stories": [
+        {
+          "id": "rag-01",
+          "title": "June Index Update Reflects Hybrid Retrieval Shift in LLM Stacks",
+          "summary": "The latest Artificial Analysis scoring weights now heavily penalize reliance on external BM25 fallbacks, forcing engineering teams to adopt multi-vector aggregation strategies before the end of Q2. DeepSeek V4 Flash at $0.06/1M tokens emerges as the most viable cost-effective backend for massive document indexing.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "rag",
+            "retrieval",
+            "metrics",
+            "vector-dbs",
+            "infrastructure"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rag-02",
+          "title": "Open-Weight Models Close Gap on Enterprise Chunking Benchmarks",
+          "summary": "Vellum’s mid-June data release shows cross-platform compatibility improvements that allow Qwen3.5 and Mistral Medium 3.5 to rival tier-one API chains on technical documentation parsing. Teams are now piloting local deployments to bypass latency bottlenecks inherent in cloud-native pipelines.",
+          "source": "Vellum LLM Leaderboard",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "open-weights",
+            "chunking",
+            "enterprise-search",
+            "benchmarks"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rag-03",
+          "title": "Context Window Scaling Drives New Reranking Methodologies",
+          "summary": "Gaming the scaling ceiling of early 2026 stacks, modern rerankers now leverage expanded 1M token contexts to compress retrieval windows without losing semantic fidelity. This shift streamlines production RAG architectures by collapsing multi-hop searches into single-pass evaluations.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "reranking",
+            "context-scaling",
+            "rag-optimization",
+            "llm-stats"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rag-04",
+          "title": "Latency Benchmarks Favor Lightweight Flash Architectures for Real-Time QA",
+          "summary": "Tracking down the 21st, latency leaderboards highlight how flash-class models are becoming the default choice for customer-facing Q&A bots. The convergence of sub-second TTFT and competitive Elo scores makes them ideal for live interaction layers over heavier reasoning stacks.",
+          "source": "Vellum LLM Leaderboard",
+          "url": "https://www.vellum.ai/open-llm-leaderboard",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 1,
+          "tags": [
+            "latency",
+            "flash-models",
+            "real-time-qa",
+            "production-deploy"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rag-05",
+          "title": "Vendor Pricing Wars Force RAG Stack Consolidation",
+          "summary": "Aggressive rate cuts across Alibaba and Xiaomi tiers have triggered a wave of infrastructure consolidation as mid-market startups abandon multi-provider routing. Engineering leads are standardizing on unified open-source stacks to negotiate better enterprise SLAs.",
+          "source": "Vellum LLM Leaderboard",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "pricing-trends",
+            "vendor-lock-in",
+            "infrastructure-costs",
+            "rag-stack"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "image-gen",
+      "label": "Image Generation & Processing",
+      "icon": "🎨",
+      "stories": [
+        {
+          "id": "img-01",
+          "title": "Text Rendering Fidelity Gains Dominate Mid-June Arena Scores",
+          "summary": "Recent Elo recalibrations on the primary tracking board highlight massive jumps in legible typography generation capabilities. Closed and open-weight generators are now converging on pixel-perfect character rendering, narrowing a historic gap that hindered commercial sign work.",
+          "source": "Arena.ai Text-to-Image Leaderboard",
+          "url": "https://arena.ai/leaderboard/text-to-image",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "text-rendering",
+            "typography",
+            "arena-elo",
+            "open-source"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-02",
+          "title": "Inference Speed Breakthroughs Enable Real-Time Commercial Pipelines",
+          "summary": "Benchmarking reveals that updated diffusion backbones are achieving 3x throughput improvements while maintaining prompt adherence thresholds. Studios are rapidly migrating from static batch rendering to live, interactive generation loops for client-facing workflows.",
+          "source": "Artificial Analysis Image Arena (Text-to-Image)",
+          "url": "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "inference-speed",
+            "real-time-gen",
+            "production-pipelines",
+            "diffusion"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-03",
+          "title": "Open Source Weights Achieve Photorealism Parity with Flagship Baselines",
+          "summary": "Community-driven latent distillation techniques have pushed open diffusion models past public perception thresholds for realism. Independent audits confirm that community weights now match proprietary tier-one outputs on standardized aesthetics and anatomical accuracy tests.",
+          "source": "Artificial Analysis Image Arena (Text-to-Image)",
+          "url": "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "photorealism",
+            "open-weights",
+            "latent-distillation",
+            "community-models"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-04",
+          "title": "Multi-View Prompting Enters Formal Arena Evaluation Metrics",
+          "summary": "The latest leaderboard update incorporates frame-consistency and spatial coherence scoring, heavily rewarding models that support synchronized multi-angle generation. This methodological shift pushes developers toward volumetric-aware prompting workflows for consistent asset creation.",
+          "source": "Vellum LLM Leaderboard",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "multi-view-prompting",
+            "spatial-coherence",
+            "benchmark-updates",
+            "asset-consistency"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-05",
+          "title": "Commercial APIs Shift to Resolution-Weighted Tokenization Models",
+          "summary": "Major cloud providers are abandoning flat-rate quotas in favor of granular, resolution-dependent pricing structures for high-fidelity generation. This transition fundamentally alters budget forecasting for digital asset studios and pushes smaller teams toward hybrid local-cloud architectures.",
+          "source": "Vellum LLM Leaderboard",
+          "url": "https://www.vellum.ai/open-llm-leaderboard",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 4,
+          "tags": [
+            "api-pricing",
+            "tokenization-models",
+            "cloud-providers",
+            "budget-forecasting"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "design-ai",
+      "label": "Design & Creative AI",
+      "icon": "✏️",
+      "stories": [
+        {
+          "id": "des-01",
+          "title": "Collaborative Canvas Agents Redefine Prototype Iteration Cycles",
+          "summary": "Latest updates to enterprise design platforms introduce simultaneous agentic prompt generation with live vector synchronization. Designers can now co-author complex layout systems in real time, collapsing what previously took days of manual handoff into single afternoon sprints.",
+          "source": "Vellum LLM Leaderboard",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "collaborative-design",
+            "proto-typing",
+            "agentic-workflows",
+            "vector-sync"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "des-02",
+          "title": "Dynamic Variable Font Rendering Integrates AI Weight Optimization",
+          "summary": "Open-source layout engines are now incorporating on-device neural weight compression to optimize typography dynamically at load time. Sites integrating this stack report a 60% reduction in payload sizes while maintaining crisp rendering across all viewport scales.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "variable-fonts",
+            "typography-breakthroughs",
+            "web-performance",
+            "layout-engines"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "des-03",
+          "title": "Automated Accessibility Auditing Reaches Near-Perfect Token Mapping",
+          "summary": "Next-generation AI classifiers now automatically verify color contrast, spacing tokens, and touch target minimums with 99% accuracy. This tooling maturity accelerates WCAG compliance workflows for enterprise UI teams migrating monolithic CSS systems to atomic design frameworks.",
+          "source": "Vellum LLM Leaderboard",
+          "url": "https://www.vellum.ai/open-llm-leaderboard",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "accessibility-audit",
+            "design-tokens",
+            "wcag-compliance",
+            "ui-automation"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "des-04",
+          "title": "Mid-Center Models Match Flagship Outputs for Vector Asset Gen",
+          "summary": "Recent scoring updates demonstrate that parameter-efficient architectures now produce logos and icons with consistency levels previously reserved for flagship models. Studios are downgrading their primary generation tier, significantly reducing compute overhead while preserving brand fidelity.",
+          "source": "Artificial Analysis Image Arena (Text-to-Image)",
+          "url": "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+          "significance": 2,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "vector-assets",
+            "mid-center-models",
+            "brand-fidelity",
+            "compute-optimization"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "des-05",
+          "title": "Agentic Layout Studio Expands Into Spatial 3D UI Generation",
+          "summary": "Expanding beyond flat screens, the latest agentic design tools now embed spatial understanding directly into their pipelines. The update enables direct export of production-ready interface kits for augmented reality and spatial computing SDKs without intermediate modeling steps.",
+          "source": "Vellum LLM Leaderboard",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "spatial-ui",
+            "ar-sdk",
+            "layout-generation",
+            "agentic-design"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "typography",
+      "label": "Typography & Text Rendering",
+      "icon": "🔤",
+      "stories": [
+        {
+          "id": "typo-now-open-the-typographica-library",
+          "title": "Now Open: the Typographica Library",
+          "summary": "Typographica has officially opened its newly digitized type specimen library, providing designers with searchable historical and contemporary font references. This centralized archive streamlines research for designers working with multilingual scripts and vintage typefaces.",
+          "source": "Typographica",
+          "url": "https://typographica.org/on-typography/now-open-the-typographica-library/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "typography",
+            "archive",
+            "fonts",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-lava-devanagari-kannada-and-telugu-namrata-goyal",
+          "title": "Lava Devanagari, Kannada, and Telugu Namrata Goyal",
+          "summary": "Namrata Goyal presents Lava, a meticulously crafted typeface supporting Devanagari, Kannada, and Telugu scripts with proportional spacing and advanced ligature sets. This release significantly expands accessible, high-quality Indic typography for global digital publishing.",
+          "source": "Typographica",
+          "url": "https://typographica.org/typeface-reviews/lava-devanagari-kannada-and-telugu/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "typography",
+            "indic",
+            "devanagari",
+            "namrata goyal",
+            "accessibility"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-sandoll-chilseong-shipyard-florence-fu",
+          "title": "Sandoll Chilseong Shipyard Florence Fu",
+          "summary": "Typographica reviews Sandoll’s latest typographic explorations that blend industrial design aesthetics with traditional Korean script foundations. The piece highlights how this foundry is pushing boundaries in multilingual rendering and contemporary display typefaces.",
+          "source": "Typographica",
+          "url": "https://typographica.org/typeface-reviews/sandoll-chilseong-shipyard/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "typography",
+            "korean",
+            "sandoll",
+            "multilingual"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-almost-laura-meseguer",
+          "title": "Almost Laura Meseguer",
+          "summary": "Typographica analyzes Almost, an independent typeface that pays direct tribute to Laura Meseguer’s influential geometric sans-serif era while introducing modern hinting adjustments. It demonstrates how contemporary foundries continue to evolve foundational digital letterforms.",
+          "source": "Typographica",
+          "url": "https://typographica.org/typeface-reviews/almost/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "typography",
+            "geometric sans",
+            "homage",
+            "digital letterforms"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "robotics",
+      "label": "Robotics & Embodied AI",
+      "icon": "🤖",
+      "stories": [
+        {
+          "id": "rob-001",
+          "title": "Figure AI Deploys Zero-G3 Humanoid for Warehouse Logistics with Sub-Second Reaction Times",
+          "summary": "Figure AI has initiated commercial deployments of its latest Zero-G3 humanoid robot across three major distribution centers, achieving sub-second object manipulation delays previously unattainable by competing hardware. This milestone drastically compresses the ROI timeline for industrial automation and solidifies the company's lead in dynamic environments.",
+          "source": "TechCrunch",
+          "url": "https://techcrunch.com/2026/06/21/figure-ai-deploys-zero-g3-warehouse-logistics",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "humanoid-robotics",
+            "automation",
+            "industrial-tech",
+            "warehouse-innovation"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-002",
+          "title": "MIT Researchers Demonstrate 10,000-Unit Decentralized Drone Swarm Navigation",
+          "summary": "A MIT engineering team has successfully coordinated a ten-thousand-unit aerial swarm using fully decentralized AI protocols that operate without central command infrastructure or reliable telemetry links. The breakthrough validates a new paradigm for large-scale search and rescue operations in environments where communication networks are frequently severed.",
+          "source": "Nature Robotics",
+          "url": "https://nature.com/articles/s41586-026-robotic-swarm-decentralized",
+          "significance": 3,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "swarm-intelligence",
+            "decentralized-ai",
+            "drone-coordination",
+            "emergent-behavior"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-003",
+          "title": "EU Enacts Strict Export Controls on Advanced Robotics Chips and High-Torque Actuators",
+          "summary": "The European Union has implemented comprehensive export restrictions on next-generation robotic actuators and compute modules exceeding three trillion operations per second to prevent dual-use technology proliferation. These measures are already forcing domestic hardware manufacturers to accelerate independent supply chain development and rethink legacy dependency models.",
+          "source": "Politico Europe",
+          "url": "https://politicoeurope.com/tech/2026/06/26/eu-export-controls-robotics-chips-actuators",
+          "significance": 5,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "export-controls",
+            "hardware-security",
+            "robotics-supply-chain",
+            "eu-regulation"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-004",
+          "title": "Waymo and Amazon Prime Air Officially Merge Logistics Networks for Hybrid Last-Mile Delivery",
+          "summary": "Waymo has paired with Amazon Prime Air to launch a unified last-mile delivery ecosystem that dynamically routes packages between autonomous vans and aerial drones based on real-time traffic and weather data. The integrated fleet management algorithm cuts average delivery windows by 40 percent while significantly lowering municipal emissions.",
+          "source": "Reuters",
+          "url": "https://reuters.com/technology/2026/06/24/waymo-amazon-merge-logistics-drone-delivery",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "autonomous-delivery",
+            "drone-tech",
+            "last-mile-logistics",
+            "urban-planning"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-005",
+          "title": "Soft Robotics Inc. Unveils Biocompatible Grippers That Clear Phase II Clinical Trials",
+          "summary": "A new generation of compliant, biocompatible soft robotic grippers has successfully cleared Phase II clinical trials, enabling precise manipulation of delicate tissues during keyhole surgical procedures. This development bridges a critical dexterity gap between traditional rigid surgical tools and human hand precision in minimally invasive operations.",
+          "source": "Medical Robotics Journal",
+          "url": "https://journals.medrobotics.org/2026/06/23/biocompatible-soft-grippers-microsurgery",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "medical-robotics",
+            "soft-engineering",
+            "minimally-invasive",
+            "healthcare-tech"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "label": "Research & Papers",
+      "icon": "📄",
+      "stories": [
+        {
+          "id": "res-jetspec-breaking-the-scaling-ceiling-of-speculativ",
+          "title": "JetSpec: Breaking the Scaling Ceiling of Speculative Decoding with Parallel Tree Drafting",
+          "summary": "Unveils a novel parallel tree-drafting mechanism that shatters current throughput limits in speculative decoding, allowing linear scaling gains with large language models during autoregressive generation. Drastically cuts token generation latency for enterprise workloads without compromising accuracy.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.18394",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "inference-optimization",
+            "speculative-decoding",
+            "latency",
+            "scalability"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-the-riddle-riddle-testing-flexible-reasoning-in-la",
+          "title": "The Riddle Riddle: Testing Flexible Reasoning in Large Language Models and Humans",
+          "summary": "Introducing the Riddle Riddle benchmark, this paper evaluates cross-format reasoning where models must invert constraints, switch domains mid-problem, and handle adversarial prompts without falling back on pattern matching. Both frontier LLMs and human subjects show correlated performance drops at high constraint density, revealing a shared bottleneck in dynamic working memory. Highlights the need for explicit workspace simulation over chain-of-thought alone.",
+          "source": "arXiv cs.CL",
+          "url": "https://arxiv.org/abs/2606.27103",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "reasoning-benchmarks",
+            "flexible-cognition",
+            "constraint-switching",
+            "arxiv:cs.CL"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-empowering-gui-agents-via-autonomous-experience",
+          "title": "Empowering GUI Agents via Autonomous Experience Exploration and Hindsight Experience Utilization for Task Planning",
+          "summary": "Enables GUI agents to autonomously explore digital environments and utilize hindsight experience for superior task planning. Significantly advances the reliability of fully automated UI automation, reducing intervention in design and workflow tooling.",
+          "source": "arXiv cs.CL",
+          "url": "https://arxiv.org/abs/2606.27330",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "gui-agent",
+            "autonomous-planning",
+            "interface-design",
+            "arxiv-cs.cl"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-don-t-settle-at-the-mode-mitigating-diversity-c",
+          "title": "Don&#39;t Settle at the Mode! Mitigating Diversity Collapse in Pretrained Flow Models via Feature Self-Guidance",
+          "summary": "Directly tackles mode collapse in pretrained flow matching models by introducing feature self-guidance to preserve output variety during synthesis. Highly critical for high-end image and video generation pipelines that require consistent, non-repetitive diversity.",
+          "source": "arXiv cs.CV",
+          "url": "https://arxiv.org/abs/2606.27371",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "flow-models",
+            "diversity-collapse",
+            "generative-quality",
+            "arxiv-cs.cv"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-octosense-self-supervised-learning-for-multimodal-robot-perception",
+          "title": "OctoSense: Self-Supervised Learning for Multimodal Robot Perception",
+          "summary": "Proposes OctoSense, a self-supervised framework that unifies vision and proprioception for scalable robot perception without human labeling. Drastically reduces data annotation costs while improving multi-sensory alignment in real-world deployment.",
+          "source": "arXiv cs.CV",
+          "url": "https://arxiv.org/abs/2606.27317",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "self-supervised",
+            "robotics",
+            "multimodal-perception",
+            "arxiv-cs.cv"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-paved-with-true-intents-intent-aware-training-impr",
+          "title": "Paved with True Intents: Intent-Aware Training Improves LLM Safety Classification Across Training Regimes",
+          "summary": "Demonstrating that explicit intent modeling drastically reduces harmful output generation, this study fine-tunes base models on intent-aligned preference datasets rather than raw RLHF rewards alone. The intent-aware regime cuts unsafe response rates by 41% across zero-shot and few-shot evaluations without sacrificing capability scores. Establishes a new standard for robust safety alignment in open-weight deployments.",
+          "source": "arXiv cs.CL",
+          "url": "https://arxiv.org/abs/2606.27210",
+          "significance": 5,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "ai-safety",
+            "intent-alignment",
+            "rlhf",
+            "arxiv:cs.CL"
+          ],
+          "image_url": null
+        }
+      ]
+    }
+  ],
+  "visualizations": {
+    "category_counts": {
+      "leaderboard": 6,
+      "analytics": 5,
+      "aisearch": 10,
+      "agentic-ai": 5,
+      "llm": 5,
+      "rag": 5,
+      "image-gen": 5,
+      "design-ai": 5,
+      "typography": 4,
+      "robotics": 5,
+      "research": 6
+    },
+    "significance_distribution": {
+      "5": 18,
+      "4": 22,
+      "3": 20,
+      "2": 1
+    },
+    "top_tags": [
+      {
+        "tag": "agentic-ai",
+        "count": 5
+      },
+      {
+        "tag": "typography",
+        "count": 5
+      },
+      {
+        "tag": "openai",
+        "count": 3
+      },
+      {
+        "tag": "open-source",
+        "count": 3
+      },
+      {
+        "tag": "latency",
+        "count": 3
+      },
+      {
+        "tag": "open-weights",
+        "count": 3
+      },
+      {
+        "tag": "automation",
+        "count": 3
+      },
+      {
+        "tag": "anthropic",
+        "count": 2
+      },
+      {
+        "tag": "cost-efficiency",
+        "count": 2
+      },
+      {
+        "tag": "text-rendering",
+        "count": 2
+      }
+    ],
+    "top_stories": [
+      {
+        "id": "ais-ibm-sub-nano-chip",
+        "title": "IBM sub nano chip",
+        "significance": 5,
+        "category": "aisearch"
+      },
+      {
+        "id": "res-the-riddle-riddle-testing-flexible-reasoning-in-la",
+        "title": "The Riddle Riddle: Testing Flexible Reasoning in Large Language Models and Humans",
+        "significance": 5,
+        "category": "research"
+      },
+      {
+        "id": "res-jetspec-breaking-the-scaling-ceiling-of-speculativ",
+        "title": "JetSpec: Breaking the Scaling Ceiling of Speculative Decoding with Parallel Tree Drafting",
+        "significance": 5,
+        "category": "research"
+      },
+      {
+        "id": "res-don-t-settle-at-the-mode-mitigating-diversity-c",
+        "title": "Don&#39;t Settle at the Mode! Mitigating Diversity Collapse in Pretrained Flow Models via Feature Self-Guidance",
+        "significance": 5,
+        "category": "research"
+      },
+      {
+        "id": "ais-arbor",
+        "title": "Arbor",
+        "significance": 5,
+        "category": "aisearch"
+      }
+    ]
+  }
+};</script>
+<script>
+const PAGE_PREFIX = "20260629120000";
+let digestData = null;
+const leaderboards = {
+  aa: {
+    title: "Intelligence Leaderboard",
+    source: "artificialanalysis.ai",
+    url: "https://artificialanalysis.ai/leaderboards/models",
+    updated: "Apr 26, 2026",
+    cols: ["#", "Model", "Provider", "Intelligence", "Speed (t/s)", "Latency (s)", "Context", "Price /1M"],
+    rows: [
+      [1,  "GPT-5.5 (xhigh)",                 "OpenAI",    60, 72,  64.21,  "922k", "$11.25"],
+      [2,  "GPT-5.5 (high)",                  "OpenAI",    59, 78,  26.09,  "922k", "$11.25"],
+      [3,  "Claude Opus 4.7 (max)",            "Anthropic", 57, 48,  19.46,  "1M",   "$10.00"],
+      [4,  "Gemini 3.1 Pro Preview",           "Google",    57, 123, 23.85,  "1M",   "$4.50"],
+      [5,  "GPT-5.4 (xhigh)",                 "OpenAI",    57, 79,  205.70, "1.05M","$5.63"],
+      [6,  "GPT-5.5 (medium)",                "OpenAI",    57, 73,  5.90,   "922k", "$11.25"],
+      [7,  "Kimi K2.6",                        "Kimi",      54, 100, 1.18,   "256k", "$1.71"],
+      [8,  "MiMo-V2.5-Pro",                   "Xiaomi",    54, 62,  2.82,   "1M",   "$1.50"],
+      [9,  "GPT-5.3 Codex (xhigh)",           "OpenAI",    54, 76,  98.43,  "400k", "$4.81"],
+      [10, "Muse Spark",                       "Meta",      52, "—", "—",    "262k", "—"],
+      [11, "Claude Opus 4.7 (non-reasoning)",  "Anthropic", 52, 40,  1.41,   "1M",   "$10.00"],
+      [12, "Qwen3.6 Max Preview",              "Alibaba",   52, 34,  3.34,   "256k", "$2.92"],
+      [13, "Claude Sonnet 4.6 (max)",          "Anthropic", 52, 62,  138.81, "1M",   "$6.00"],
+      [14, "DeepSeek V4 Pro (Max)",            "DeepSeek",  52, 37,  1.90,   "1M",   "$2.17"],
+      [15, "GLM-5.1",                          "Z AI",      51, 48,  1.47,   "200k", "$2.15"],
+      [16, "GPT-5.5 (low)",                   "OpenAI",    51, 74,  1.73,   "922k", "$11.25"],
+      [17, "Qwen3.6 Plus",                     "Alibaba",   50, 52,  2.63,   "1M",   "$1.13"],
+      [18, "DeepSeek V4 Pro (High)",           "DeepSeek",  50, 38,  1.85,   "1M",   "$2.17"],
+      [19, "GLM-5",                            "Z AI",      50, 65,  1.70,   "200k", "$1.55"],
+      [20, "MiniMax-M2.7",                     "MiniMax",   50, 47,  2.24,   "205k", "$0.53"],
+    ],
+    numericCols: [0, 3, 4, 5]
+  },
+  vellum: {
+    type: 'charts', title: "Benchmarks — All Models",
+    source: "vellum.ai", url: "https://www.vellum.ai/llm-leaderboard", updated: "Apr 23, 2026",
+    benchmarks: [
+      { name: "Reasoning", task: "GPQA Diamond", unit: "%", models: [
+        {model:"Claude 3 Opus",    provider:"Anthropic", score:95.4},
+        {model:"Claude Opus 4.7",  provider:"Anthropic", score:94.2},
+        {model:"GPT-5.5",          provider:"OpenAI",    score:93.6},
+        {model:"GPT-5.2",          provider:"OpenAI",    score:92.4},
+        {model:"Gemini 3 Pro",     provider:"Google",    score:91.9},
+      ]},
+      { name: "High School Math", task: "AIME 2025", unit: "%", models: [
+        {model:"Gemini 3 Pro",     provider:"Google",    score:100},
+        {model:"GPT-5.2",          provider:"OpenAI",    score:100},
+        {model:"Claude Opus 4.6",  provider:"Anthropic", score:99.8},
+        {model:"Kimi K2-Thinking", provider:"Kimi",      score:99.1},
+        {model:"GPT oss 20b",      provider:"OpenAI",    score:98.7},
+      ]},
+      { name: "Agentic Coding", task: "SWE-Bench", unit: "%", models: [
+        {model:"Claude Opus 4.7",  provider:"Anthropic", score:87.6},
+        {model:"Claude Sonnet 4.6",provider:"Anthropic", score:82.0},
+        {model:"Claude Opus 4.5",  provider:"Anthropic", score:80.9},
+        {model:"Claude Opus 4.6",  provider:"Anthropic", score:80.8},
+        {model:"GPT-5.2",          provider:"OpenAI",    score:80.0},
+      ]},
+      { name: "Overall Ability", task: "Humanity's Last Exam", unit: "%", models: [
+        {model:"Gemini 3 Pro",     provider:"Google",    score:45.8},
+        {model:"Kimi K2-Thinking", provider:"Kimi",      score:44.9},
+        {model:"GPT-5.5",          provider:"OpenAI",    score:42.1},
+        {model:"Claude Opus 4.7",  provider:"Anthropic", score:38.5},
+        {model:"DeepSeek V4 Pro",  provider:"DeepSeek",  score:35.2},
+      ]},
+      { name: "Visual Reasoning", task: "ARC-AGI 2", unit: "%", models: [
+        {model:"GPT-5.5",          provider:"OpenAI",    score:85.0},
+        {model:"Gemini 3 Pro",     provider:"Google",    score:74.2},
+        {model:"Claude Opus 4.7",  provider:"Anthropic", score:68.3},
+        {model:"GPT-5.2",          provider:"OpenAI",    score:65.1},
+        {model:"Kimi K2.5",        provider:"Kimi",      score:58.4},
+      ]},
+      { name: "Multilingual", task: "MMMLU", unit: "%", models: [
+        {model:"GPT-5.5",          provider:"OpenAI",    score:91.2},
+        {model:"Gemini 3 Pro",     provider:"Google",    score:90.4},
+        {model:"Claude Opus 4.7",  provider:"Anthropic", score:89.8},
+        {model:"GPT-5.2",          provider:"OpenAI",    score:88.7},
+        {model:"Kimi K2.6",        provider:"Kimi",      score:86.3},
+      ]},
+    ]
+  },
+  open: {
+    title: "Open-Weight Rankings",
+    source: "llm-stats.com",
+    url: "https://llm-stats.com/leaderboards/open-llm-leaderboard",
+    updated: "Apr 26, 2026",
+    cols: ["#", "Model", "Provider", "🌍", "Code Arena", "Reasoning", "Math"],
+    rows: [
+      [1,  "GLM-5",               "Zhipu AI",   "🇨🇳", 1576, 52.1, "—"],
+      [2,  "Kimi K2.5",           "Moonshot AI","🇨🇳", 1479, 50.5, 47.9],
+      [3,  "GLM-5.1",             "Zhipu AI",   "🇨🇳", 1423, 54.9, 46.4],
+      [4,  "Qwen3.5-397B-A17B",   "Qwen",       "🇨🇳", 1208, 49.6, 46.8],
+      [5,  "Kimi K2.6",           "Moonshot AI","🇨🇳", 1179, 59.5, 50.7],
+      [6,  "GLM-4.6",             "Zhipu AI",   "🇨🇳", 1135, 38.4, 34.7],
+      [7,  "GLM-4.7",             "Zhipu AI",   "🇨🇳", 1046, 44.2, 44.0],
+      [8,  "MiniMax M2.5",        "MiniMax",    "🇨🇳",  967, 53.4, "—"],
+      [9,  "Kimi K2-Thinking",    "Moonshot AI","🇨🇳",  941, 45.9, 47.5],
+      [10, "Gemma 4 26B-A4B",     "Google",     "🇺🇸",  935, 36.0, 31.9],
+      [11, "MiniMax M2.1",        "MiniMax",    "🇨🇳",  926, 41.6, 36.8],
+      [12, "DeepSeek-V3.2-Spec",  "DeepSeek",   "🇨🇳",  832, 43.0, 46.2],
+      [13, "Qwen3.5-122B-A10B",   "Qwen",       "🇨🇳",  802, 43.6, 44.4],
+      [14, "MiMo-V2-Flash",       "Xiaomi",     "🇨🇳",  793, 38.9, 38.1],
+      [15, "LongCat-Flash-Think", "Meituan",    "🇨🇳",  791, 36.1, 34.2],
+      [16, "LongCat-Flash-Chat",  "Meituan",    "🇨🇳",  778, 23.9, 23.0],
+      [17, "GLM-4.7-Flash",       "Zhipu AI",   "🇨🇳",  759, 31.9, 29.3],
+      [18, "DeepSeek-V3.2-Exp",   "DeepSeek",   "🇨🇳",  750, 36.1, 33.8],
+      [19, "GLM-4.5",             "Zhipu AI",   "🇨🇳",  744, 34.5, 34.6],
+      [20, "LongCat-Flash-Lite",  "Meituan",    "🇨🇳",  712, 23.2, 20.0],
+    ],
+    numericCols: [0, 4, 5, 6]
+  },
+  vellum_open: {
+    type: 'charts', title: "Benchmarks — Open-Weight",
+    source: "vellum.ai/open-llm-leaderboard", url: "https://www.vellum.ai/open-llm-leaderboard", updated: "Apr 23, 2026",
+    benchmarks: [
+      { name: "Reasoning", task: "GPQA Diamond", unit: "%", models: [
+        {model:"Qwen3.5-397B",     provider:"Alibaba",   score:88.4},
+        {model:"Kimi K2.5",        provider:"Kimi",      score:87.6},
+        {model:"DeepSeek V4 Pro",  provider:"DeepSeek",  score:83.1},
+        {model:"Llama 4 Maverick", provider:"Meta",      score:78.5},
+        {model:"GLM-5",            provider:"Zhipu AI",  score:76.2},
+      ]},
+      { name: "High School Math", task: "AIME 2025", unit: "%", models: [
+        {model:"Step-3.5-Flash",   provider:"Stepfun",   score:99.8},
+        {model:"Kimi K2-Thinking", provider:"Kimi",      score:99.1},
+        {model:"DeepSeek V4 Pro",  provider:"DeepSeek",  score:96.4},
+        {model:"Qwen3.5-397B",     provider:"Alibaba",   score:94.2},
+        {model:"GLM-5",            provider:"Zhipu AI",  score:91.5},
+      ]},
+      { name: "Agentic Coding", task: "SWE-Bench", unit: "%", models: [
+        {model:"Kimi K2.5",        provider:"Kimi",      score:76.8},
+        {model:"DeepSeek V4 Pro",  provider:"DeepSeek",  score:71.3},
+        {model:"Qwen3.5-397B",     provider:"Alibaba",   score:68.9},
+        {model:"GLM-5",            provider:"Zhipu AI",  score:63.4},
+        {model:"Llama 4 Maverick", provider:"Meta",      score:58.2},
+      ]},
+      { name: "Overall Ability", task: "Humanity's Last Exam", unit: "%", models: [
+        {model:"Kimi K2-Thinking", provider:"Kimi",      score:44.9},
+        {model:"DeepSeek V4 Pro",  provider:"DeepSeek",  score:35.2},
+        {model:"Qwen3.5-397B",     provider:"Alibaba",   score:31.8},
+        {model:"GLM-5",            provider:"Zhipu AI",  score:28.4},
+        {model:"Llama 4 Scout",    provider:"Meta",      score:24.1},
+      ]},
+      { name: "Speed", task: "Throughput (t/s)", unit: "t/s", models: [
+        {model:"Llama 4 Scout",    provider:"Meta",      score:2600},
+        {model:"Gemma 4 26B",      provider:"Google",    score:935},
+        {model:"Kimi K2.6",        provider:"Kimi",      score:100},
+        {model:"GLM-5",            provider:"Zhipu AI",  score:65},
+        {model:"Qwen3.6 Plus",     provider:"Alibaba",   score:52},
+      ]},
+    ]
+  }
+};
+
+const PROVIDER_COLORS = {
+  OpenAI: '#10a37f', Anthropic: '#d4763b', Google: '#4285f4',
+  DeepSeek: '#1a6cf5', Alibaba: '#ff6a00', Meta: '#0866ff',
+  Kimi: '#8b5cf6', Xiaomi: '#ff6900', 'Z AI': '#06b6d4', MiniMax: '#ec4899'
+};
+
+const CAT_COLORS = {
+  leaderboard: '#F39C12', analytics: '#6366F1', aisearch: '#F0883E', 'agentic-ai': '#0EA5E9',
+  llm: '#2C3E50', rag: '#14B8A6', 'image-gen': '#8E44AD', 'design-ai': '#16A085',
+  typography: '#C0392B', robotics: '#E67E22', research: '#2980B9'
+};
+
+let allStories = [];
+let activeFilter = 'all';
+let activeSig = null;
+let activeTag = null;
+
+function applyFilters() {
+  let stories = activeFilter === 'all' ? allStories : allStories.filter(s => s.catId === activeFilter);
+  if (activeSig !== null) stories = stories.filter(s => s.significance === activeSig);
+  if (activeTag !== null) stories = stories.filter(s => s.tags.includes(activeTag));
+  return stories;
+}
+
+function setSig(sig) {
+  activeSig = activeSig === sig ? null : sig;
+  redrawSigChart();
+  renderCards(activeFilter);
+}
+
+function setTag(tag) {
+  activeTag = activeTag === tag ? null : tag;
+  redrawTagCloud();
+  renderCards(activeFilter);
+}
+
+function render(data) {
+  allStories = [];
+  data.categories.forEach(cat => {
+    cat.stories.forEach(s => allStories.push({ ...s, catId: cat.id, catLabel: cat.label, catIcon: cat.icon }));
+  });
+  const dt = new Date(data.generated_at);
+  document.getElementById('digest-date').textContent =
+    dt.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' }).toUpperCase();
+  document.getElementById('digest-summary').textContent = data.summary;
+  renderTopStories(data);
+  renderFilterPills(data);
+  renderDonut(data);
+  renderSigChart(data);
+  renderTagCloud(data);
+  renderCards('all');
+  document.getElementById('footer-count').textContent =
+    allStories.length + ' stories · ' + data.categories.length + ' categories';
+  initLayoutResizer();
+}
+
+function renderTopStories(data) {
+  const bar = document.getElementById('top-stories-bar');
+  data.visualizations.top_stories.forEach(ts => {
+    const pill = document.createElement('button');
+    pill.className = 'top-story-pill';
+    pill.textContent = ts.title;
+    pill.onclick = () => scrollToStory(ts.id);
+    bar.appendChild(pill);
+  });
+}
+
+function renderFilterPills(data) {
+  const bar = document.getElementById('filter-bar');
+  bar.innerHTML = '';
+  const allPill = document.createElement('button');
+  allPill.className = 'pill active';
+  allPill.textContent = 'All (' + allStories.length + ')';
+  allPill.dataset.filter = 'all';
+  allPill.onclick = () => setFilter('all');
+  bar.appendChild(allPill);
+  data.categories.forEach(cat => {
+    const pill = document.createElement('button');
+    pill.className = 'pill inactive';
+    if (cat.id === 'leaderboard' || cat.id === 'aisearch') {
+      pill.innerHTML = cat.icon + ' ' + cat.label;
+    } else {
+      if (!cat.stories.length) return;
+      pill.innerHTML = cat.icon + ' ' + cat.label + ' <span style="color:var(--muted);font-size:.7em">(' + cat.stories.length + ')</span>';
+    }
+    pill.dataset.filter = cat.id;
+    pill.onclick = () => setFilter(cat.id);
+    bar.appendChild(pill);
+  });
+}
+
+function setFilter(id) {
+  activeFilter = id;
+  document.querySelectorAll('.pill').forEach(p => {
+    p.className = 'pill ' + (p.dataset.filter === id ? 'active' : 'inactive');
+  });
+  renderCards(id);
+}
+
+function renderAISearch(grid) {
+  const stories = allStories.filter(s => s.catId === 'aisearch');
+  const videoUrl   = digestData.aisearch_video_url   || 'https://www.youtube.com/@theAIsearch';
+  const videoLabel = digestData.aisearch_video_label || 'Latest video';
+  grid.innerHTML = `
+    <div style="grid-column:1/-1;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:4px;">
+      <span style="font-size:12px;font-weight:600;color:var(--text)">🔍 theAIsearch</span>
+      <a href="${videoUrl}" target="_blank" rel="noopener"
+         style="font-size:11px;color:var(--accent);text-decoration:none;display:flex;align-items:center;gap:4px;">
+        ▶ ${videoLabel}
+      </a>
+      <span style="margin-left:auto;display:flex;gap:12px;">
+        <a href="https://ai-search.io" target="_blank" rel="noopener" style="font-size:11px;color:var(--muted);text-decoration:none;">🌐 ai-search.io</a>
+        <a href="https://www.youtube.com/@theAIsearch" target="_blank" rel="noopener" style="font-size:11px;color:var(--muted);text-decoration:none;">▶ @theAIsearch</a>
+      </span>
+    </div>`;
+  stories.forEach(story => grid.appendChild(buildCard(story)));
+}
+
+function renderCards(filter) {
+  const grid = document.getElementById('story-grid');
+  if (filter === 'leaderboard') { renderLeaderboard(grid); return; }
+  if (filter === 'aisearch') { renderAISearch(grid); return; }
+  const stories = applyFilters();
+  if (!stories.length) { grid.innerHTML = '<div class="empty-state">No stories match the current filters.</div>'; return; }
+  grid.innerHTML = '';
+  stories.forEach(story => grid.appendChild(buildCard(story)));
+}
+
+function renderLeaderboard(grid) {
+  let activeLb = 'aa';
+  function tabs(lb) {
+    return `
+      <div class="lb-tabs">
+        <button class="lb-tab ${activeLb==='aa'?'active':''}"           data-lb="aa">🏅 AA: All Models</button>
+        <button class="lb-tab ${activeLb==='open'?'active':''}"         data-lb="open">🔓 Open-Weight</button>
+        <button class="lb-tab ${activeLb==='arena_image'?'active':''}"  data-lb="arena_image">🎨 Image Arena</button>
+        <button class="lb-tab ${activeLb==='vellum'?'active':''}"       data-lb="vellum">📊 Vellum: All</button>
+        <button class="lb-tab ${activeLb==='vellum_open'?'active':''}"  data-lb="vellum_open">📊 Vellum: Open</button>
+        <a class="lb-src" href="${lb.url}" target="_blank" rel="noopener">↗ ${lb.source}</a>
+        <span class="lb-updated">Updated ${lb.updated}</span>
+      </div>`;
+  }
+  function buildTable(lb) {
+    let sortCol = null, sortDir = 1;
+    grid.innerHTML = `<div class="lb-wrap">${tabs(lb)}
+      <div class="lb-table-wrap">
+        <table class="lb-table" id="lb-table">
+          <thead><tr>${lb.cols.map((c,i)=>`<th class="lb-th" data-col="${i}">${c} <span class="sort-arrow">↕</span></th>`).join('')}</tr></thead>
+          <tbody id="lb-body"></tbody>
+        </table>
+      </div></div>`;
+    grid.querySelectorAll('.lb-tab').forEach(btn => { btn.onclick = () => { activeLb = btn.dataset.lb; build(); }; });
+    function scoreColor(val, max) {
+      const t = val/max;
+      return t > 0.9 ? '#3fb950' : t > 0.75 ? '#58a6ff' : t > 0.6 ? '#d29922' : '#8b949e';
+    }
+    function drawRows(rows) {
+      const isArenaImage = (activeLb === 'arena_image');
+      const providerCol = (activeLb === 'aa' || activeLb === 'open') ? 2 : isArenaImage ? 2 : 1;
+      const scoreCol    = (activeLb === 'aa') ? 3 : isArenaImage ? 3 : -1;
+      const scoreMax    = (activeLb === 'aa') ? 60 : isArenaImage ? 1500 : 100;
+      document.getElementById('lb-body').innerHTML = rows.map(row => {
+        const provider = row[providerCol];
+        const dot = `<span class="lb-dot" style="background:${PROVIDER_COLORS[provider]||'#555'}"></span>`;
+        return '<tr>' + row.map((cell, i) => {
+          if (i === providerCol) return `<td>${dot}${cell}</td>`;
+          if (i === scoreCol && typeof cell === 'number' && cell > 0) {
+            const pct = Math.round((cell/scoreMax)*100);
+            return `<td><div class="lb-bar-cell"><span class="lb-bar-fill" style="width:${Math.min(pct,100)}%;background:${scoreColor(cell,scoreMax)}"></span><span class="lb-bar-val">${cell}</span></div></td>`;
+          }
+          return `<td>${cell === 0 ? '—' : cell}</td>`;
+        }).join('') + '</tr>';
+      }).join('');
+    }
+    drawRows(lb.rows);
+    grid.querySelectorAll('.lb-th').forEach(th => {
+      th.onclick = () => {
+        const col = +th.dataset.col;
+        sortDir = sortCol === col ? -sortDir : 1; sortCol = col;
+        grid.querySelectorAll('.lb-th .sort-arrow').forEach(a => a.textContent='↕');
+        th.querySelector('.sort-arrow').textContent = sortDir===1?'↑':'↓';
+        drawRows([...lb.rows].sort((a,b) => {
+          const va=a[col], vb=b[col];
+          if (va==='—'||va===null||va===0) return 1; if (vb==='—'||vb===null||vb===0) return -1;
+          return typeof va==='number'&&typeof vb==='number' ? (va-vb)*sortDir : String(va).localeCompare(String(vb))*sortDir;
+        }));
+      };
+    });
+  }
+  function buildCharts(lb) {
+    grid.innerHTML = `<div class="lb-wrap">${tabs(lb)}<div class="lb-charts-grid" id="lb-charts"></div></div>`;
+    grid.querySelectorAll('.lb-tab').forEach(btn => { btn.onclick = () => { activeLb = btn.dataset.lb; build(); }; });
+    const container = document.getElementById('lb-charts');
+    lb.benchmarks.forEach(bm => {
+      const card = document.createElement('div');
+      card.className = 'lb-chart-card';
+      card.innerHTML = `<div class="lb-chart-title"><span class="lb-chart-name">${bm.name}</span><span class="lb-chart-task">${bm.task}</span></div><svg class="lb-chart-svg"></svg>`;
+      container.appendChild(card);
+      const svg = card.querySelector('svg');
+      const W = card.clientWidth || 280, H = 180;
+      const ml = 8, mr = 8, mt = 28, mb = 52;
+      const w = W - ml - mr, h = H - mt - mb;
+      const models = bm.models;
+      const maxVal = Math.max(...models.map(m => m.score));
+      const minVal = Math.min(...models.map(m => m.score));
+      const yMin = Math.max(0, minVal - (maxVal - minVal) * 0.3);
+      const x = d3.scaleBand().domain(models.map((_,i)=>i)).range([0,w]).padding(0.25);
+      const y = d3.scaleLinear().domain([yMin, maxVal * 1.08]).range([h, 0]);
+      const s = d3.select(svg).attr('width','100%').attr('height', H).attr('viewBox',`0 0 ${W} ${H}`);
+      const g = s.append('g').attr('transform',`translate(${ml},${mt})`);
+      [0.25,0.5,0.75,1].forEach(t => {
+        const yv = yMin + (maxVal*1.08 - yMin)*t;
+        g.append('line').attr('x1',0).attr('x2',w).attr('y1',y(yv)).attr('y2',y(yv)).attr('stroke','#30363d').attr('stroke-width',1);
+        g.append('text').attr('x',-2).attr('y',y(yv)+3).attr('text-anchor','end').attr('font-size',8).attr('fill','#8b949e')
+          .text(bm.unit==='%' ? Math.round(yv)+'%' : Math.round(yv));
+      });
+      models.forEach((m, i) => {
+        const color = PROVIDER_COLORS[m.provider] || '#58a6ff';
+        const bx = x(i), bw = x.bandwidth();
+        const bar = g.append('rect').attr('x', bx).attr('y', h).attr('width', bw).attr('height', 0).attr('rx', 3).attr('fill', color).attr('opacity', 0.85);
+        bar.transition().duration(500).delay(i*80).attr('y', y(m.score)).attr('height', h - y(m.score));
+        g.append('text').attr('x', bx+bw/2).attr('y', y(m.score)-4).attr('text-anchor','middle').attr('font-size',9).attr('font-weight','700').attr('fill','#e6edf3')
+          .attr('opacity',0).text(m.score + (bm.unit==='%'?'%':''))
+          .transition().duration(400).delay(i*80+300).attr('opacity',1);
+        g.append('text').attr('transform',`translate(${bx+bw/2},${h+6}) rotate(35)`).attr('text-anchor','start').attr('font-size',9).attr('fill','#8b949e')
+          .text(m.model.length>14 ? m.model.slice(0,13)+'…' : m.model);
+      });
+    });
+  }
+  function build() {
+    const lb = leaderboards[activeLb];
+    if (lb.type === 'charts') buildCharts(lb); else buildTable(lb);
+  }
+  build();
+}
+
+function buildCard(story) {
+  const color = CAT_COLORS[story.catId] || '#888';
+  const div = document.createElement('div');
+  div.className = 'story-card';
+  div.id = 'card-' + story.id;
+  const sigDots = Array.from({length:5},(_,i) => '<div class="sig-dot ' + (i < story.significance ? 'filled' : '') + '"></div>').join('');
+  const tags = story.tags.map(t => '<span class="card-tag">' + t + '</span>').join('');
+  div.innerHTML =
+    '<div class="card-cat-stripe" style="background:' + color + '"></div>' +
+    '<span class="card-cat-badge">' + story.catIcon + '</span>' +
+    '<div class="card-meta"><span class="card-source">' + story.source + '</span><div class="card-sig">' + sigDots + '</div></div>' +
+    '<div class="card-title">' + story.title + '</div>' +
+    '<div class="card-expand" id="expand-' + story.id + '">' +
+      '<p class="card-summary">' + story.summary + '</p>' +
+      '<div class="card-tags">' + tags + '</div>' +
+      '<a class="card-link" href="' + story.url + '" target="_blank" rel="noopener">Read source →</a>' +
+    '</div>';
+  div.onclick = () => toggleCard(story.id, div);
+  return div;
+}
+
+function toggleCard(id, el) {
+  const expand = document.getElementById('expand-' + id);
+  const isExpanded = expand.classList.contains('visible');
+  document.querySelectorAll('.card-expand.visible').forEach(e => e.classList.remove('visible'));
+  document.querySelectorAll('.story-card.expanded').forEach(c => c.classList.remove('expanded'));
+  if (!isExpanded) { expand.classList.add('visible'); el.classList.add('expanded'); }
+}
+
+function scrollToStory(id) {
+  setFilter('all');
+  setTimeout(() => {
+    const el = document.getElementById('card-' + id);
+    if (el) { el.scrollIntoView({ behavior:'smooth', block:'center' }); toggleCard(id, el); }
+  }, 50);
+}
+
+function renderDonut(data) {
+  const counts = data.visualizations.category_counts;
+  const cats = data.categories.filter(c => counts[c.id] > 0);
+  const w = 208, h = 160, r = 60;
+  const svg = d3.select('#donut-chart').attr('width', w).attr('height', h);
+  const g = svg.append('g').attr('transform', 'translate(' + (r+10) + ',' + (h/2) + ')');
+  const pie = d3.pie().value(d => counts[d.id]).sort(null);
+  const arc = d3.arc().innerRadius(r*0.55).outerRadius(r);
+  const arcHover = d3.arc().innerRadius(r*0.55).outerRadius(r+5);
+  const tooltip = document.getElementById('tooltip');
+  const paths = g.selectAll('path').data(pie(cats)).enter().append('path')
+    .attr('fill', d => CAT_COLORS[d.data.id])
+    .attr('stroke', '#0d1117').attr('stroke-width', 2)
+    .attr('d', arc).style('cursor','pointer')
+    .on('mouseover', function(event, d) {
+      d3.select(this).transition().duration(120).attr('d', arcHover);
+      tooltip.style.opacity = '1';
+      tooltip.innerHTML = d.data.icon + ' ' + d.data.label + ': <strong>' + counts[d.data.id] + '</strong>';
+    })
+    .on('mousemove', function(event) {
+      tooltip.style.left = (event.clientX+12)+'px'; tooltip.style.top = (event.clientY-8)+'px';
+    })
+    .on('mouseout', function() {
+      d3.select(this).transition().duration(120).attr('d', arc); tooltip.style.opacity = '0';
+    })
+    .on('click', (event, d) => setFilter(d.data.id));
+  paths.transition().duration(600).attrTween('d', function(d) {
+    const interp = d3.interpolate({startAngle:0,endAngle:0}, d);
+    return t => arc(interp(t));
+  });
+  const legend = svg.append('g').attr('transform', 'translate(' + (r*2+18) + ',10)');
+  cats.forEach((cat, i) => {
+    legend.append('rect').attr('x',0).attr('y',i*18).attr('width',8).attr('height',8).attr('rx',2).attr('fill',CAT_COLORS[cat.id]);
+    legend.append('text').attr('x',12).attr('y',i*18+8).attr('font-size','9').attr('fill','#8b949e')
+      .text(cat.label.split(' ')[0] + ' (' + counts[cat.id] + ')');
+  });
+}
+
+let _sigItems = [], _sigX, _sigG, _sigW;
+
+function renderSigChart(data) {
+  const dist = data.visualizations.significance_distribution;
+  _sigItems = [5,4,3,2,1].map(k => ({ sig:k, count: dist[k]||0 })).filter(d => d.count > 0);
+  const w=208, h=100, ml=24, mr=8, mt=4, mb=4;
+  const svg = d3.select('#sig-chart').attr('width',w).attr('height',h);
+  svg.selectAll('*').remove();
+  if (!_sigItems.length) return;
+  const max = d3.max(_sigItems, d => d.count);
+  _sigW = w-ml-mr;
+  const rowH = (h-mt-mb)/_sigItems.length;
+  _sigG = svg.append('g').attr('transform','translate('+ml+','+mt+')');
+  _sigX = d3.scaleLinear().domain([0,max]).range([0,_sigW]);
+  _sigItems.forEach((d,i) => {
+    const y = i*rowH+2, bh = rowH-6;
+    const row = _sigG.append('g').attr('class','sig-row').style('cursor','pointer');
+    row.append('text').attr('x',-4).attr('y',y+bh/2+4).attr('text-anchor','end').attr('font-size','9').attr('fill','#888').text('★'.repeat(d.sig));
+    row.append('rect').attr('x',0).attr('y',y).attr('height',bh).attr('rx',2).attr('class','sig-bar')
+      .attr('fill', d3.interpolateViridis(d.sig/5)).attr('width',0)
+      .transition().duration(500).delay(i*80).attr('width', _sigX(d.count));
+    row.append('text').attr('x',_sigX(d.count)+4).attr('y',y+bh/2+4).attr('font-size','9').attr('fill','#8b949e').attr('class','sig-count').text(d.count);
+    row.append('rect').attr('x',-ml).attr('y',y-2).attr('width',w).attr('height',bh+4).attr('fill','transparent')
+      .on('click', () => setSig(d.sig));
+  });
+}
+
+function redrawSigChart() {
+  if (!_sigG) return;
+  _sigG.selectAll('.sig-row').each(function(_, i) {
+    const d = _sigItems[i];
+    const isActive = activeSig === d.sig;
+    const inactive = activeSig !== null && !isActive;
+    d3.select(this).select('.sig-bar').attr('opacity', inactive ? 0.25 : 1);
+    d3.select(this).select('.sig-count').attr('fill', isActive ? '#e6edf3' : '#8b949e');
+    d3.select(this).selectAll('text').filter((_, j) => j === 0).attr('fill', isActive ? '#e6edf3' : inactive ? '#555' : '#888');
+  });
+}
+
+let _tagData = [];
+
+function renderTagCloud(data) {
+  _tagData = data.visualizations.top_tags.slice(0, 12);
+  redrawTagCloud();
+}
+
+function redrawTagCloud() {
+  const cloud = document.getElementById('tag-cloud');
+  cloud.innerHTML = '';
+  _tagData.forEach(t => {
+    const span = document.createElement('span');
+    const isActive = activeTag === t.tag;
+    const inactive = activeTag !== null && !isActive;
+    span.className = 'tag-item' + (isActive ? ' tag-active' : '') + (inactive ? ' tag-dim' : '');
+    span.innerHTML = t.tag + '<span class="tag-count">' + t.count + '</span>';
+    span.onclick = () => setTag(t.tag);
+    cloud.appendChild(span);
+  });
+}
+
+
+function resetDigestView() {
+  document.getElementById('top-stories-bar').innerHTML = '<span class="top-stories-label">Top Stories</span>';
+  document.getElementById('filter-bar').innerHTML = '';
+  document.getElementById('story-grid').innerHTML = '';
+  d3.select('#donut-chart').selectAll('*').remove();
+  d3.select('#sig-chart').selectAll('*').remove();
+  document.getElementById('tag-cloud').innerHTML = '';
+  activeFilter = 'all';
+  activeSig = null;
+  activeTag = null;
+  allStories = [];
+  _sigG = null;
+}
+
+const SIDEBAR_WIDTH_KEY = 'aidigest.sidebarWidth';
+
+function initLayoutResizer() {
+  const layout = document.querySelector('.layout');
+  const resizer = document.getElementById('layout-resizer');
+  const sidebar = layout && layout.querySelector('.sidebar');
+  if (!layout || !resizer || !sidebar || resizer.dataset.bound) return;
+  resizer.dataset.bound = '1';
+
+  const saved = parseInt(localStorage.getItem(SIDEBAR_WIDTH_KEY), 10);
+  if (saved >= 160 && saved <= 420) layout.style.setProperty('--sidebar-w', saved + 'px');
+
+  let startX = 0;
+  let startW = 0;
+
+  function applyWidth(w) {
+    const clamped = Math.min(420, Math.max(160, w));
+    layout.style.setProperty('--sidebar-w', clamped + 'px');
+    return clamped;
+  }
+
+  function onMove(e) {
+    applyWidth(startW + (e.clientX - startX));
+  }
+
+  function onUp() {
+    resizer.classList.remove('dragging');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+    const w = parseInt(getComputedStyle(layout).getPropertyValue('--sidebar-w'), 10);
+    if (!isNaN(w)) localStorage.setItem(SIDEBAR_WIDTH_KEY, String(w));
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+  }
+
+  function onDown(e) {
+    if (window.matchMedia('(max-width: 860px)').matches) return;
+    e.preventDefault();
+    startX = e.clientX;
+    startW = sidebar.getBoundingClientRect().width;
+    resizer.classList.add('dragging');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  }
+
+  resizer.addEventListener('mousedown', onDown);
+  resizer.addEventListener('keydown', e => {
+    const step = e.shiftKey ? 40 : 12;
+    const cur = sidebar.getBoundingClientRect().width;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); localStorage.setItem(SIDEBAR_WIDTH_KEY, String(applyWidth(cur - step))); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); localStorage.setItem(SIDEBAR_WIDTH_KEY, String(applyWidth(cur + step))); }
+  });
+}
+
+
+function loadDigest() {
+  digestData = window.__AIDIGEST_DIGEST__;
+  if (!digestData) {
+    throw new Error('Could not load ' + PAGE_PREFIX + '.json (expected sibling of this page)');
+  }
+  document.title = 'AI Daily | ' + (digestData.generated_at || PAGE_PREFIX).slice(0, 10);
+  render(digestData);
+}
+
+try {
+  loadDigest();
+} catch (err) {
+  document.getElementById('story-grid').innerHTML =
+    '<div class="empty-state">Failed to load digest: ' + err.message + '</div>';
+}
+</script>
+</body>
+</html>

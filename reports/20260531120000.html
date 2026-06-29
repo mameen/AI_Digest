@@ -1,0 +1,2056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily — April 25, 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1117; --card-bg: #161b22; --masthead-bg: #0d1117;
+    --masthead-text: #e6edf3; --accent: #58a6ff;
+    --pill-active-bg: #388bfd26; --pill-active-text: #58a6ff;
+    --pill-inactive-bg: #21262d; --pill-inactive-text: #8b949e;
+    --border: #30363d; --muted: #8b949e; --sig-color: #d29922;
+    --text: #e6edf3;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --cat-llm: #388bfd; --cat-image: #bc8cff; --cat-design: #39d2c0;
+    --cat-typo: #f85149; --cat-robot: #f0883e; --cat-research: #58a6ff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .masthead { background: var(--masthead-bg); color: var(--masthead-text); padding: 20px 24px 16px; display: flex; flex-direction: column; gap: 6px; border-bottom: 1px solid var(--border); }
+  .masthead-top { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .masthead h1 { font-size: 18px; font-weight: 600; letter-spacing: 0; text-transform: none; }
+  .masthead-date { font-size: 13px; font-weight: 700; letter-spacing: 0.4px; color: var(--text); text-transform: uppercase; }
+  .masthead-summary { font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 920px; padding-top: 8px; }
+
+  .top-stories-bar { background: #161b22; padding: 10px 24px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+  .top-stories-label { font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); white-space: nowrap; font-weight: 500; }
+  .top-story-pill { background: #21262d; color: var(--accent); padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; border: 1px solid var(--border); transition: background 0.15s, border-color 0.15s; white-space: nowrap; }
+  .top-story-pill:hover { background: #388bfd26; border-color: var(--accent); }
+
+  .layout {
+    display: flex; align-items: stretch; min-height: calc(100vh - 120px);
+    --sidebar-w: 220px;
+  }
+
+  .sidebar {
+    width: var(--sidebar-w); min-width: 160px; max-width: 420px; flex-shrink: 0;
+    background: var(--masthead-bg); padding: 20px 16px;
+    position: sticky; top: 0; height: calc(100vh - 120px); overflow-y: auto;
+  }
+  .layout-resizer {
+    flex-shrink: 0; width: 6px; margin: 0 -3px; position: relative; z-index: 2;
+    cursor: col-resize; touch-action: none;
+    background: transparent; border-left: 1px solid var(--border);
+  }
+  .layout-resizer::after {
+    content: ''; position: absolute; top: 0; bottom: 0; left: -3px; right: -3px;
+  }
+  .layout-resizer:hover, .layout-resizer.dragging { background: #388bfd33; border-left-color: var(--accent); }
+
+  .main { flex: 1; min-width: 0; padding: 20px 24px; background: var(--bg); }
+  .sidebar-section { margin-bottom: 24px; }
+  .sidebar-title { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  svg text { font-family: var(--font-sans); }
+  .tag-cloud { display: flex; flex-wrap: wrap; gap: 4px; }
+  .tag-item { font-size: 11px; background: var(--pill-inactive-bg); color: var(--muted); padding: 2px 7px; border-radius: 10px; border: 1px solid var(--border); cursor: pointer; transition: all 0.15s; }
+  .tag-item:hover { border-color: var(--accent); color: var(--text); }
+  .tag-item.tag-active { background: var(--pill-active-bg); color: var(--accent); border-color: var(--accent); }
+  .tag-item.tag-dim { opacity: 0.3; }
+  .tag-count { color: var(--accent); font-size: 10px; margin-left: 3px; }
+  .sig-row:hover .sig-bar { filter: brightness(1.2); }
+  #sig-chart { cursor: pointer; }
+
+  .filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; align-items: center; }
+  .pill { padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); transition: all 0.15s; font-family: var(--font-sans); background: var(--pill-inactive-bg); color: var(--pill-inactive-text); }
+  .pill.active { background: var(--pill-active-bg); color: var(--pill-active-text); border-color: var(--accent); }
+  .pill.inactive:hover { background: #21262d; border-color: #8b949e; color: var(--text); }
+
+  /* AI Search hub view */
+  .aisearch-hub { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 24px; gap: 32px; }
+  .aisearch-hub-title { font-size: 22px; font-weight: 700; color: var(--text); text-align: center; }
+  .aisearch-hub-sub { font-size: 13px; color: var(--muted); text-align: center; max-width: 480px; line-height: 1.6; margin-top: -20px; }
+  .aisearch-hub-links { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .aisearch-hub-link { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 28px 36px; background: #161b22; border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text); transition: border-color 0.15s, background 0.15s; min-width: 180px; }
+  .aisearch-hub-link:hover { border-color: #f0883e; background: #f0883e08; }
+  .aisearch-hub-link-icon { font-size: 36px; }
+  .aisearch-hub-link-label { font-size: 15px; font-weight: 600; }
+  .aisearch-hub-link-url { font-size: 11px; color: var(--muted); }
+
+  .story-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; }
+
+  .story-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px 16px 12px; cursor: pointer; transition: border-color 0.15s; position: relative; overflow: hidden; }
+  .story-card:hover { border-color: #8b949e; }
+  .story-card.expanded { border-color: var(--accent); }
+  .card-cat-badge { position: absolute; top: 12px; right: 12px; font-size: 1rem; }
+  .card-cat-stripe { position: absolute; top: 0; left: 0; width: 3px; height: 100%; }
+  .card-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .card-source { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; }
+  .card-sig { display: flex; gap: 2px; margin-left: auto; padding-right: 28px; }
+  .sig-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
+  .sig-dot.filled { background: var(--sig-color); }
+  .card-title { font-size: 13px; font-weight: 600; line-height: 1.4; color: var(--text); }
+  .card-expand { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .card-expand.visible { display: block; }
+  .card-summary { font-size: 12px; line-height: 1.6; color: var(--muted); margin-bottom: 12px; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+  .card-tag { font-size: 11px; background: #21262d; color: var(--muted); padding: 1px 6px; border-radius: 10px; border: 1px solid var(--border); }
+  .card-link { display: inline-flex; align-items: center; gap: 4px; color: var(--accent); font-size: 12px; font-weight: 500; text-decoration: none; }
+  .card-link:hover { text-decoration: underline; }
+
+  .empty-state { text-align: center; padding: 40px; color: var(--muted); }
+
+  .footer { border-top: 1px solid var(--border); padding: 12px 24px; font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; background: var(--masthead-bg); }
+
+  .d3-tooltip { position: fixed; background: #161b22; border: 1px solid var(--border); color: var(--text); padding: 6px 10px; border-radius: 6px; font-size: 12px; font-family: var(--font-sans); pointer-events: none; opacity: 0; transition: opacity 0.15s; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+
+  .masthead-archive { font-size: 12px; margin-left: auto; }
+  .masthead-archive a { color: var(--accent); text-decoration: none; }
+  .masthead-archive a:hover { text-decoration: underline; }
+  .content-loading { padding: 48px 24px; color: var(--muted); text-align: center; }
+
+  /* ── Leaderboard ── */
+  .lb-wrap { grid-column: 1 / -1; width: 100%; }
+  .lb-tabs { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .lb-tab { padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--pill-inactive-bg); color: var(--pill-inactive-text); transition: all 0.15s; }
+  .lb-tab.active { background: var(--pill-active-bg); color: var(--accent); border-color: var(--accent); }
+  .lb-tab:hover:not(.active) { border-color: #8b949e; color: var(--text); }
+  .lb-src { font-size: 11px; color: var(--accent); text-decoration: none; margin-left: auto; }
+  .lb-src:hover { text-decoration: underline; }
+  .lb-updated { font-size: 11px; color: var(--muted); }
+  .lb-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+  .lb-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .lb-table thead { background: #161b22; position: sticky; top: 0; z-index: 1; }
+  .lb-th { padding: 8px 12px; text-align: left; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; white-space: nowrap; user-select: none; border-bottom: 1px solid var(--border); }
+  .lb-th:hover { color: var(--text); }
+  .sort-arrow { font-size: 10px; margin-left: 3px; opacity: 0.5; }
+  .lb-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+  .lb-table tbody tr:last-child { border-bottom: none; }
+  .lb-table tbody tr:hover { background: #21262d; }
+  .lb-table td { padding: 8px 12px; color: var(--text); white-space: nowrap; }
+  .lb-table td:first-child { color: var(--muted); font-weight: 600; }
+  .lb-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; flex-shrink: 0; }
+  .lb-bar-cell { display: flex; align-items: center; gap: 8px; min-width: 120px; }
+  .lb-bar-fill { display: inline-block; height: 6px; border-radius: 3px; min-width: 2px; }
+  .lb-bar-val { font-weight: 700; font-size: 13px; color: var(--text); }
+
+  /* ── Benchmark chart grid ── */
+  .lb-charts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .lb-chart-card { background: #161b22; border: 1px solid var(--border); border-radius: 8px; padding: 14px 12px 10px; }
+  .lb-chart-title { margin-bottom: 8px; }
+  .lb-chart-name { display: block; font-size: 13px; font-weight: 600; color: var(--text); }
+  .lb-chart-task { display: block; font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .lb-chart-svg { display: block; width: 100%; overflow: visible; }
+  @media (max-width: 1100px) { .lb-charts-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 860px) {
+    .layout { flex-direction: column; }
+    .layout-resizer { display: none; }
+    .sidebar { width: auto; max-width: none; position: static; height: auto; border-bottom: 1px solid var(--border); }
+    .masthead { padding: 16px; }
+    .top-stories-bar { padding: 10px 16px; }
+    .main { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-top">
+    <h1>AI Daily</h1>
+    <span class="masthead-date" id="digest-date"></span>
+    <span class="masthead-archive"><a href="index.html#20260531120000">← Archive</a></span>
+  </div>
+  <div class="masthead-summary" id="digest-summary"></div>
+</div>
+
+<div class="top-stories-bar" id="top-stories-bar">
+  <span class="top-stories-label">Top Stories</span>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">By Category</div>
+      <svg id="donut-chart" width="208" height="160"></svg>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Significance</div>
+      <svg id="sig-chart" width="208" height="100"></svg>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Top Tags</div>
+      <div class="tag-cloud" id="tag-cloud"></div>
+    </div>
+  </aside>
+  <div class="layout-resizer" id="layout-resizer" role="separator" aria-orientation="vertical" aria-label="Resize sidebar" tabindex="0"></div>
+  <main class="main">
+    <div class="filter-bar" id="filter-bar"></div>
+    <div class="story-grid" id="story-grid"><div class="content-loading">Loading digest…</div></div>
+  </main>
+</div>
+
+<footer class="footer">
+  <span id="footer-count"></span>
+  <span>AI Daily · Generated by Claude · ai-search.io inspired</span>
+</footer>
+
+<div class="d3-tooltip" id="tooltip"></div>
+
+<script>window.__AIDIGEST_DIGEST__ = {
+  "generated_at": "2026-05-31T21:39:53Z",
+  "filename_prefix": "20260531120000",
+  "summary": "Claude Opus 4.8 claims the global #1 intelligence rank hours after Anthropic raises $65B at a $965B valuation; Google I/O delivers Gemini Omni (any-input-to-video), Gemini 3.5 Flash (81% SWE-bench), and Figma's native canvas Design Agent; and Google Co-scientist becomes the first AI hypothesis engine peer-reviewed in Nature.",
+  "aisearch_video_url": "https://www.youtube.com/watch?v=RdqYvdT74i0",
+  "aisearch_video_label": "May 31 — Self-improving AI, Opus 4.8, Nvidia bangers, game-ready 3D models, juggling robots",
+  "categories": [
+    {
+      "id": "leaderboard",
+      "label": "Leaderboard Rankings",
+      "icon": "🏆",
+      "stories": [
+        {
+          "id": "lb-opus48-new1",
+          "title": "Claude Opus 4.8 claims #1 on Artificial Analysis — score 61, first new leader since February",
+          "summary": "Anthropic's Claude Opus 4.8 (max) debuted at #1 on the Artificial Analysis intelligence leaderboard with score 61 — breaking the 60-point ceiling held by GPT-5.5 since February. Released May 28 alongside Anthropic's $65B Series H round, Opus 4.8 scores 88.6% on SWE-bench Verified and 57.9% on Humanity's Last Exam. Its fast mode is 3× cheaper than prior Opus at $4.10/M — the biggest price-to-intelligence ratio improvement in Anthropic's history.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "leaderboard",
+            "anthropic",
+            "claude",
+            "benchmark",
+            "frontier"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-price-collapse",
+          "title": "Price collapse accelerates: Anthropic and OpenAI both cut flagship prices 3×",
+          "summary": "As of May 31, Claude Opus 4.8 is priced at $4.10/M (down from $10.94 for Opus 4.7) and GPT-5.5 at $4.35/M (down from $11.25) — both roughly a 3× reduction simultaneously. Qwen 3.7 Max (score 57) undercuts both at $1.43/M, and MiMo-V2.5-Pro (score 54) runs at $0.18/M. The frontier pricing gap has compressed from 20× to under 8× in 6 weeks.",
+          "source": "Artificial Analysis / LLM Stats",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "leaderboard",
+            "pricing",
+            "anthropic",
+            "openai",
+            "frontier"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-gemini35-flash-enters",
+          "title": "Gemini 3.5 Flash enters top 10 at #8 — Flash model beats last year's Pro on SWE-bench (81%)",
+          "summary": "Google's Gemini 3.5 Flash (announced at Google I/O May 20) lands at #8 on the AA intelligence leaderboard with score 55, running at 173 t/s and priced at $1.31/M. It scores 81.0% on SWE-bench — ahead of Claude Opus 4.6's 80.8% and every prior Flash-tier model. A Flash model outperforming last year's flagship Pros on agentic coding is a new benchmark for Google's efficiency story.",
+          "source": "Artificial Analysis / Google",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "leaderboard",
+            "google",
+            "gemini",
+            "benchmark",
+            "flash",
+            "coding"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-qwen37-max",
+          "title": "Qwen 3.7 Max enters at #7 — score 57, 189 t/s, $1.43/M — fastest model in the top 10",
+          "summary": "Alibaba's Qwen 3.7 Max (May 19) debuted at #7 on the AA intelligence leaderboard with score 57, matching GPT-5.5 medium and Gemini 3.1 Pro Preview at the same tier but outputting 189 tokens/sec — the fastest model in the entire top 10. At $1.43/M, it costs less than a third of any Western frontier model at the same intelligence level.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "leaderboard",
+            "alibaba",
+            "qwen",
+            "speed",
+            "pricing"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-mai-image25",
+          "title": "MAI-Image-2.5 Preview jumps to #3 on Arena.ai image leaderboard (1254 Elo)",
+          "summary": "Microsoft's new MAI-Image-2.5 Preview debuted at #3 on Arena.ai's text-to-image leaderboard with 1254 Elo — a 73-point leap over its predecessor MAI-Image-2 (#9, 1182 Elo). GPT Image 2 (medium) holds #1 at 1388, Gemini 3.1 Flash Image Preview at #2 with 1271. Microsoft now has two models in the Arena top 10, signaling serious investment in image generation as a product surface.",
+          "source": "Arena.ai",
+          "url": "https://arena.ai/leaderboard/text-to-image",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "leaderboard",
+            "microsoft",
+            "image-generation",
+            "elo",
+            "arena"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-deepswe-benchmark",
+          "title": "DeepSWE: new contamination-free SE benchmark shows GPT-5.5 at 70%, wide gaps between models",
+          "summary": "Datacurve published DeepSWE — 113 tasks across 91 repos in 5 languages, with original problems (no PR-adapted contamination) averaging 668 lines of solution across 7 files. GPT-5.5 leads at 70%, GPT-5.4 at 56%, Claude Opus 4.7 at 54%, Gemini 3.5 Flash at 28%. The wide gaps (vs SWE-bench Pro's bunching) reveal real capability differences hidden by contamination in prior benchmarks. Now the authoritative agentic coding reference.",
+          "source": "Datacurve / DeepSWE",
+          "url": "https://deepswe.datacurve.ai/blog",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "leaderboard",
+            "benchmark",
+            "coding",
+            "agents",
+            "research"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "aisearch",
+      "label": "AI Search",
+      "icon": "🔍",
+      "stories": [
+        {
+          "id": "ais-locateanything",
+          "title": "LocateAnything (NVIDIA): language-guided object localization across 3D scenes",
+          "summary": "NVIDIA's LocateAnything is a zero-shot framework for finding any described object in 3D environments using natural language queries — 'the red mug on the second shelf.' It combines vision-language grounding with 3D spatial reasoning, enabling robots and agents to locate objects by description without per-scene training. Featured by theAIsearch as a key building block for home robotics and embodied AI task completion.",
+          "source": "theAIsearch",
+          "url": "https://research.nvidia.com/labs/lpr/locate-anything/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "nvidia",
+            "visual-grounding",
+            "robotics",
+            "embodied-ai",
+            "3d",
+            "zero-shot"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-controllight",
+          "title": "ControlLight: text and reference-guided lighting control for image generation",
+          "summary": "ControlLight enables precise control over lighting in generated and edited images using either text descriptions ('warm sunset backlighting') or reference images as style anchors. It decouples the lighting estimation and re-rendering steps, enabling local and global lighting edits without affecting subject identity. Featured by theAIsearch as a key tool for production photography and advertising use cases.",
+          "source": "theAIsearch",
+          "url": "https://yfyang007.github.io/ControlLight/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "image-gen",
+            "lighting",
+            "creative-ai",
+            "design-tools",
+            "production"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-trisplat",
+          "title": "TriSplat: high-fidelity 3D reconstruction from three images via gaussian splatting",
+          "summary": "TriSplat reconstructs dense 3D scenes from just three input images using a novel triplane-based gaussian splatting approach that generalizes across object categories without per-scene optimization. It achieves reconstruction quality competitive with methods that require dozens of views, and runs at interactive speeds. Featured by theAIsearch alongside Pixal3D as evidence that the 3-view threshold for production 3D capture is falling rapidly.",
+          "source": "theAIsearch",
+          "url": "https://lhmd.top/trisplat/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "3d-generation",
+            "gaussian-splatting",
+            "reconstruction",
+            "image-to-3d",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-pid",
+          "title": "PiD (NVIDIA SIL): physics-informed diffusion for simulation-ready scene generation",
+          "summary": "PiD (Physics-in-Diffusion) from NVIDIA's Spatial Intelligence Lab injects physical constraints — mass, friction, rigid-body dynamics — directly into the diffusion generation process, producing scenes and objects that are physically plausible by construction rather than post-hoc filtering. The generated assets can be imported into PhysX simulations without manual correction. theAIsearch featured it alongside PhysX Omni as NVIDIA's push to make AI-generated content simulation-ready.",
+          "source": "theAIsearch",
+          "url": "https://research.nvidia.com/labs/sil/projects/pid/",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "nvidia",
+            "physics",
+            "diffusion",
+            "simulation",
+            "robotics",
+            "3d"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-instructav2av",
+          "title": "InstructAV2AV: instruction-guided audio-visual translation for video editing",
+          "summary": "InstructAV2AV takes a video with audio and a natural-language instruction ('make the speech sound like it was recorded outdoors at night') and generates a new audio track that matches both the instruction and the visual content. The joint audio-visual model ensures the re-synthesized sound is temporally synchronized and semantically consistent with the scene. Featured by theAIsearch as a practical post-production tool for film, podcast, and social media workflows.",
+          "source": "theAIsearch",
+          "url": "https://hjzheng.net/projects/InstructAV2AV/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "audio",
+            "video",
+            "instruction-following",
+            "creative-ai",
+            "production"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-genrecon",
+          "title": "GenRecon: unified generative-reconstructive model for images and 3D",
+          "summary": "GenRecon is a single model that does both generation (creating new images from text/latent) and reconstruction (recovering 3D structure or masked regions from partial observations) — sharing a unified latent space for both tasks. The dual-objective training improves generation coherence and reconstruction accuracy simultaneously. Featured by theAIsearch as evidence that the generate/reconstruct split is artificial and unified architectures outperform specialized ones.",
+          "source": "theAIsearch",
+          "url": "https://kasothaphie.github.io/GenRecon/",
+          "significance": 3,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "image-gen",
+            "reconstruction",
+            "unified-model",
+            "architecture",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-scope",
+          "title": "SCOPE: interactive FPS game world model with spatial action decoupling (24 FPS)",
+          "summary": "SCOPE is a video diffusion model that generates interactive first-person-shooter gameplay at 24 FPS, introducing spatial action decoupling — different controls (fire, walk, look) affect different image regions independently. It achieves a 71.5% multi-action completion rate (vs 38.3% for baselines) and zero-shot transfer to unseen game visual styles. The team also released CrossFPS, the first multi-game FPS dataset with 69,000 clips from 7 titles. Featured as the most sophisticated interactive world model for games to date.",
+          "source": "theAIsearch",
+          "url": "https://z2tong.github.io/SCOPE/",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "world-model",
+            "video-generation",
+            "gaming",
+            "interactive",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-physxomni",
+          "title": "PhysX Omni (NVIDIA): unified physics-ready 3D generation for rigid, deformable, and articulated objects",
+          "summary": "PhysX Omni is a unified framework from NVIDIA that generates simulation-ready 3D assets for rigid objects, deformable materials, and articulated structures in a single model — all with correct physical properties for PhysX-based robotics training. A companion PhysX-Bench evaluates geometry, scale, material, affordance, kinematics, and function. Featured by theAIsearch as closing the loop between AI content generation and robotic policy training.",
+          "source": "theAIsearch",
+          "url": "https://physx-omni.github.io/",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "nvidia",
+            "physics",
+            "simulation",
+            "3d-generation",
+            "robotics",
+            "embodied-ai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-deepswe",
+          "title": "DeepSWE: contamination-free benchmark shows GPT-5.5 leads real-world coding at 70%",
+          "summary": "DeepSWE is a new software engineering benchmark from Datacurve using 113 original tasks (never sourced from public commits) across 91 repos in 5 languages. Average task requires 668 lines across 7 files. Results: GPT-5.5 at 70%, GPT-5.4 at 56%, Claude Opus 4.7 at 54%, Gemini 3.5 Flash at 28%. The 42-point gap between the best model and a mid-tier Flash model is far wider than SWE-bench suggests — revealing real capability cliffs hidden by contamination.",
+          "source": "theAIsearch",
+          "url": "https://deepswe.datacurve.ai/blog",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "benchmark",
+            "coding",
+            "agents",
+            "research",
+            "software-engineering"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-opus48",
+          "title": "Claude Opus 4.8: Dynamic Workflows, 84% browser automation, new #1 intelligence",
+          "summary": "Anthropic released Claude Opus 4.8 on May 28 — now #1 on Artificial Analysis at score 61. Key new capability: Dynamic Workflows in Claude Code (research preview), allowing orchestration of hundreds of parallel subagents in a single session with output verification before reporting to the user. Browser automation hits 84% on Online-Mind2Web. Effort Control lets users dial reasoning depth per call. Fast mode is 3× cheaper. Released the same day as Anthropic's $65B Series H round.",
+          "source": "theAIsearch",
+          "url": "https://www.anthropic.com/news/claude-opus-4-8",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "anthropic",
+            "claude",
+            "agents",
+            "benchmark",
+            "frontier",
+            "coding",
+            "browser-automation"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-astribot-t1",
+          "title": "Astribot T1: $14,000 wheeled humanoid — most affordable capable robot yet",
+          "summary": "Shenzhen-based Astribot unveiled T1 on May 28: a 1.55m, 66kg wheeled humanoid with 23 DoF and cable-driven motion for smooth manipulation, priced from ~$14,000 — a fraction of its $100K+ flagship S1. T1 targets home, commercial, research, and industrial scenarios, demonstrating cooking, lab operations, laundry folding, EV charging, and automotive parts sorting. At $14K it's the most accessible capable humanoid to date.",
+          "source": "theAIsearch",
+          "url": "https://english.news.cn/20260528/75e55832dd9245b9ae69a6d60a5f532b/c.html",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "humanoid",
+            "china",
+            "hardware",
+            "astribot",
+            "affordable"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-athenazero",
+          "title": "RAI AthenaZero: bimanual robot juggles 3 balls at 70 mph — dynamic manipulation milestone",
+          "summary": "The RAI Institute's AthenaZero is a custom low-impedance bimanual robot with a 6-foot wingspan that throws a baseball at 31.3 m/s (70 mph) and juggles 3 balls with bare hands — no external cameras or tracking tools. The robot monitors, adjusts, and maintains juggling rhythm through proprioception alone. Featured by theAIsearch as the clearest demonstration yet of human-level dynamic manipulation in a research robot.",
+          "source": "theAIsearch",
+          "url": "https://rai-inst.com/resources/blog/bimanual-robot-for-dynamic-manipulation/",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "manipulation",
+            "bimanual",
+            "embodied-ai",
+            "research",
+            "dynamic"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-step37flash",
+          "title": "Step 3.7 Flash (StepFun): 198B MoE, 256k context, multimodal, $0.20/$1.15",
+          "summary": "StepFun released Step 3.7 Flash on May 29 — a 198B sparse MoE vision-language model with 11B active params, 256k context, selectable reasoning tiers (high/medium/low), and ~27 t/s throughput. Benchmarks: 67.1 on ClawEval-1.1, 56.3% SWE-bench Pro, 95.3 on V* Python. Priced at $0.20/$1.15 per million tokens — a credible multimodal reasoning alternative for cost-sensitive workflows.",
+          "source": "theAIsearch",
+          "url": "https://static.stepfun.com/blog/step-3.7-flash/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "stepfun",
+            "llm",
+            "moe",
+            "multimodal",
+            "pricing",
+            "256k-context"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-cubepart",
+          "title": "CubePart: part-level 3D asset generation for composable scenes and robotics",
+          "summary": "CubePart is a 3D generation framework that creates objects as collections of semantically meaningful, manipulable parts rather than monolithic meshes — a chair is generated as legs, seat, back, and arms that can be individually moved, replaced, or recombined. This part-aware representation enables composable scene construction and gives robot policies fine-grained grasp affordances. Featured by theAIsearch as a key step toward AI-generated 3D content that is actually usable in downstream workflows.",
+          "source": "theAIsearch",
+          "url": "https://cubepart.github.io/",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "3d-generation",
+            "parts",
+            "robotics",
+            "composable",
+            "creative-ai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-relightable-chars",
+          "title": "Relightable Human Characters (RHC): real-time avatar relighting from any environment",
+          "summary": "RHC from MPI Informatik generates relightable human avatars that can be re-lit under arbitrary novel environment maps in real time — preserving skin subsurface scattering, clothing specularity, and hair translucency. The method requires only a short video to reconstruct the avatar's material properties. Featured by theAIsearch as a production-grade tool for virtual production, game character creation, and telepresence.",
+          "source": "theAIsearch",
+          "url": "https://vcai.mpi-inf.mpg.de/projects/RHC/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "avatar",
+            "relighting",
+            "3d",
+            "creative-ai",
+            "production",
+            "real-time"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-bes-self-improving",
+          "title": "BES (Self-Improving AI): evolutionary search breaks out of entropy shell",
+          "summary": "Bidirectional Evolutionary Search (BES) self-improves language models using evolutionary recombination of solution trajectories (crossover, deletion, translocation) combined with backward task decomposition into checkable sub-goals. BES escapes the narrow 'entropy shell' that traps standard autoregressive search, achieving +3.0-3.8 accuracy gains on multi-hop reasoning and solving open geometry problems where standard RLHF methods plateau.",
+          "source": "theAIsearch",
+          "url": "https://guoweixu.com/bes/",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "self-improving",
+            "llm",
+            "reasoning",
+            "research",
+            "reinforcement-learning",
+            "evolution"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-autoscientists",
+          "title": "AutoScientists: fully autonomous AI agents that run experiments from hypothesis to publication",
+          "summary": "AutoScientists is a multi-agent system where LLM scientists propose hypotheses, design experiments, run code, interpret results, and iterate — autonomously completing research cycles. Demonstrated on protein interaction discovery, material science optimization, and computational biology tasks. The system includes a peer-review sub-agent that critiques outputs before finalizing. Featured by theAIsearch (longest segment) as the most significant step yet toward AI-native scientific discovery at scale.",
+          "source": "theAIsearch",
+          "url": "https://autoscientists.openscientist.ai/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "agents",
+            "research",
+            "science",
+            "autonomous",
+            "multi-agent",
+            "agentic"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-gamma-world",
+          "title": "Gamma World (NVIDIA): multi-agent world model for interactive games and robot coordination",
+          "summary": "NVIDIA's Gamma World generates real-time interactive video of multiple agents acting simultaneously using Simplex Rotary Agent Encoding and Sparse Hub Attention — reducing multi-agent complexity from quadratic to linear. Runs at 24 FPS, generalizes from 2 to 4 agents without retraining, and extends from game environments to real-world robotic coordination. Featured by theAIsearch as NVIDIA's most significant world model contribution of the year.",
+          "source": "theAIsearch",
+          "url": "http://research.nvidia.com/labs/sil/projects/gamma-world",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "nvidia",
+            "world-model",
+            "multi-agent",
+            "gaming",
+            "robotics",
+            "real-time"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-pantheon360",
+          "title": "Pantheon 360: consistent 360° panoramic generation from a single reference image",
+          "summary": "Pantheon 360 generates full equirectangular 360° panoramas from a single input image with consistent lighting, perspective, and style across the entire sphere — no visible seams or inconsistencies. The method uses a panorama-aware attention mechanism that enforces spherical continuity during diffusion. Featured by theAIsearch as a key tool for VR environment creation, architectural visualization, and game level design.",
+          "source": "theAIsearch",
+          "url": "https://koi953215.github.io/pantheon360_page/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "3d",
+            "panoramic",
+            "360",
+            "creative-ai",
+            "vr",
+            "generation"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-bonsai-image",
+          "title": "Bonsai Image 4B (PrismML): 0.93GB image model on iPhone — first to run on-device",
+          "summary": "PrismML released Bonsai Image 4B with two quantized variants: 1-bit (0.93GB, 8.3× smaller than FLUX.2 Klein 4B) and ternary (1.21GB, 6.4× smaller). The ternary variant achieves 95% quality retention vs the full-precision model and runs a 512×512 image in 9.4s on iPhone 17 Pro Max. Apache 2.0 license, open weights. The first production-quality image model to run entirely on-device without cloud inference.",
+          "source": "theAIsearch",
+          "url": "https://prismml.com/news/bonsai-image-4b",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "image-gen",
+            "mobile",
+            "on-device",
+            "open-source",
+            "apache-2.0",
+            "quantization"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-minicpm5-1b",
+          "title": "MiniCPM5-1B: 1-billion parameter multimodal model that outperforms 4B models",
+          "summary": "OpenBMB's MiniCPM5-1B is a 1B multimodal model with vision+language capability that benchmarks above several 4B-class models on standard evals. It runs fully on-device and demonstrates that careful architecture choices (efficient attention, KV cache compression) can dramatically reduce the parameter threshold for capable vision-language inference. Featured by theAIsearch as a signal that the 'minimum viable AI' parameter count is falling below 1B.",
+          "source": "theAIsearch",
+          "url": "https://huggingface.co/openbmb/MiniCPM5-1B",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "on-device",
+            "multimodal",
+            "vision-language",
+            "open-source",
+            "efficiency",
+            "mobile"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-sega",
+          "title": "SEGA: segment-guided generation for compositional image editing without retraining",
+          "summary": "SEGA (Segment-Edit-Generate Architecture) enables compositional image editing by segmenting image regions, editing the semantic content of specific segments via text prompts, and seamlessly regenerating only the edited regions. Users can swap objects, change textures, or modify backgrounds without affecting the rest of the image — and without fine-tuning or ControlNet conditioning. Featured by theAIsearch as a practical creative tool that bridges segmentation and generation.",
+          "source": "theAIsearch",
+          "url": "https://rajabi2001.github.io/sega/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "image-gen",
+            "image-editing",
+            "segmentation",
+            "creative-ai",
+            "design-tools"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-pixlrelight",
+          "title": "PixlRelight: pixel-level video relighting with temporal consistency",
+          "summary": "PixlRelight applies environment-map-guided relighting at the pixel level across video frames, maintaining temporal coherence between frames while allowing independent local lighting edits per pixel. Unlike global relighting methods, it handles mixed lighting (a shadowed foreground against a bright background) without artifacts. Featured by theAIsearch as a post-production tool for video color grading and virtual production workflows.",
+          "source": "theAIsearch",
+          "url": "https://mlfarinha.github.io/pixl-relight/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "relighting",
+            "video",
+            "creative-ai",
+            "production",
+            "color-grading",
+            "temporal"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "agentic-ai",
+      "label": "Agentic AI",
+      "icon": "🤝",
+      "stories": [
+        {
+          "id": "agent-opus48-dynamic",
+          "title": "Claude Opus 4.8 Dynamic Workflows: hundreds of parallel subagents, self-correcting output",
+          "summary": "Anthropic's Dynamic Workflows (Claude Code research preview) lets Opus 4.8 break large engineering tasks into sub-problems, spawn hundreds of parallel subagents to work simultaneously, verify each agent's output before reporting back, and self-correct without user intervention. Effort Control lets callers tune reasoning depth per API call. The Messages API now accepts mid-task system updates without breaking prompt caching — critical for long-horizon agentic sessions.",
+          "source": "Anthropic",
+          "url": "https://www.anthropic.com/news/claude-opus-4-8",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "anthropic",
+            "agents",
+            "claude-code",
+            "parallel",
+            "dynamic-workflows",
+            "agentic"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agent-anthropic-965b",
+          "title": "Anthropic raises $65B at $965B valuation — now #1 most valuable AI startup, surpassing OpenAI",
+          "summary": "Anthropic closed a $65B Series H round (led by Altimeter, Dragoneer, Greenoaks, Sequoia, with Amazon's $5B included) at a $965B post-money valuation on May 28 — eclipsing OpenAI's $852B valuation and making Anthropic the most valuable private AI company. Run-rate revenue crossed $47B/month earlier in May. The round is positioned as pre-IPO funding to scale compute and safety research.",
+          "source": "Anthropic / Bloomberg / TechCrunch",
+          "url": "https://www.anthropic.com/news/series-h",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "anthropic",
+            "funding",
+            "valuation",
+            "enterprise",
+            "market"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agent-antigravity20",
+          "title": "Google Antigravity 2.0: Managed Agents API, CLI, hardened security — agent-first dev platform",
+          "summary": "Google's Antigravity (formerly a VS Code fork) received major I/O 2026 upgrades: Antigravity CLI for terminal-based agent creation, a programmatic SDK for self-hosted deployments, Managed Agents API in the Gemini API (single call provisions remote Linux sandbox with tool-calling + web browsing), built-in credential masking and hardened Git policies, and Android Studio CLI integration. The platform is now Google's full-stack answer to Cursor and Claude Code.",
+          "source": "Google I/O 2026 / Google Developers",
+          "url": "https://developers.googleblog.com/all-the-news-from-the-google-io-2026-developer-keynote/",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "google",
+            "agents",
+            "ide",
+            "antigravity",
+            "agentic",
+            "development"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agent-gemini-spark",
+          "title": "Gemini Spark: 24/7 personal AI agent operating autonomously on phone and laptop",
+          "summary": "Google announced Gemini Spark at I/O 2026 — a personal AI agent that operates continuously on the user's phone and laptop, monitoring inbox, calendar, and tasks, and taking proactive actions. Beta launching the week of June 1 for Ultra subscribers. Unlike Gemini Assistants, Spark has persistent agency: it acts without being explicitly summoned, handling reminders, drafts, and task management autonomously.",
+          "source": "Google I/O 2026",
+          "url": "https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "google",
+            "gemini",
+            "agents",
+            "personal-ai",
+            "agentic",
+            "autonomous"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agent-co-scientist-nature",
+          "title": "Google Co-scientist published in Nature: AI validates novel drug hypotheses in AML and liver fibrosis",
+          "summary": "Google DeepMind's Co-scientist multi-agent system (a team of specialized AI hypothesis agents that debate and rank ideas over hours) was formally published in Nature on May 19. The peer-reviewed study validated its AML drug repurposing candidates in laboratory experiments — proposed drugs inhibit tumor viability at clinically relevant concentrations in multiple AML cell lines — and identified new liver fibrosis targets. The first AI hypothesis engine to achieve Nature-level experimental validation.",
+          "source": "Nature / Google DeepMind",
+          "url": "https://www.nature.com/articles/s41586-026-10644-y",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "google",
+            "science",
+            "medicine",
+            "multi-agent",
+            "research",
+            "nature"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agent-robin-nature",
+          "title": "Robin agent system (Nature): autonomous AI for antibiotic resistance and macular degeneration",
+          "summary": "Robin is a second multi-agent AI system published in Nature the same week as Co-scientist, focused on consensus-based discovery: multiple AI agents propose treatments, debate evidence, and converge on consensus recommendations. Demonstrated on antibiotic resistance and macular degeneration. Robin's consensus mechanism is designed to reduce false-positive discoveries — a key safety property for medical AI.",
+          "source": "Nature",
+          "url": "https://www.nature.com/articles/s41586-026-10652-y",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "science",
+            "medicine",
+            "multi-agent",
+            "research",
+            "nature",
+            "antibiotics"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "llm",
+      "label": "LLMs & Reasoning",
+      "icon": "🧠",
+      "stories": [
+        {
+          "id": "llm-opus48-capabilities",
+          "title": "Claude Opus 4.8: new #1, Dynamic Workflows, 84% browser automation, Effort Control",
+          "summary": "Claude Opus 4.8 (May 28) claims the #1 spot on the AA intelligence leaderboard (score 61), beats GPT-5.5 on SWE-bench Verified (88.6% vs 82.7%), and hits 84% on Online-Mind2Web browser automation. Key new primitives: Dynamic Workflows (parallel subagents in Claude Code), Effort Control (per-call reasoning budget), and mid-task system message injection without cache invalidation. Fast mode is 3× cheaper. Released alongside a $65B Series H at a $965B valuation.",
+          "source": "Anthropic",
+          "url": "https://www.anthropic.com/news/claude-opus-4-8",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "anthropic",
+            "llm",
+            "benchmark",
+            "agents",
+            "browser-automation",
+            "coding"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-gemini35-flash",
+          "title": "Gemini 3.5 Flash (Google I/O): 81% SWE-bench, 173 t/s, $1.31/M — Flash beats old Pro",
+          "summary": "Announced at Google I/O on May 20, Gemini 3.5 Flash scores 81.0% on SWE-bench (ahead of Claude Opus 4.6), 76.2% on Terminal-Bench 2.1, 83.6% on MCP Atlas, and 84.2% on CharXiv multimodal understanding — while running at 173 t/s and priced at $1.31/M (thinking variant: $0.50/$3.00). The first Flash-class model to outperform last year's flagship Pros on agentic coding. Available in Antigravity, Gemini API, and Android Studio.",
+          "source": "Google I/O 2026",
+          "url": "https://www.marktechpost.com/2026/05/20/google-introduces-gemini-3-5-flash-at-i-o-2026-a-faster-and-cheaper-model-for-ai-agents-and-coding/",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "google",
+            "gemini",
+            "llm",
+            "benchmark",
+            "flash",
+            "coding",
+            "agents"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-qwen37-max",
+          "title": "Qwen 3.7 Max (Alibaba): score 57, 189 t/s — fastest frontier model, $1.43/M",
+          "summary": "Alibaba released Qwen 3.7 Max on May 19 alongside Google I/O. It enters the AA top 10 at #7 with intelligence score 57, running at 189 t/s — the fastest model at that intelligence level by a significant margin. At $1.43/M it costs less than a third of OpenAI and Anthropic's same-tier offerings. The 189 t/s throughput is a new ceiling for frontier-class model speed.",
+          "source": "Alibaba / LLM Stats",
+          "url": "https://llm-stats.com/llm-updates",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "alibaba",
+            "qwen",
+            "llm",
+            "speed",
+            "pricing",
+            "frontier"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-step37-flash",
+          "title": "Step 3.7 Flash (StepFun): 198B MoE, 256k context, multimodal, tunable reasoning",
+          "summary": "StepFun's Step 3.7 Flash (May 29) is a 198B sparse MoE vision-language model with only 11B active params, 256k context, and selectable reasoning tiers (high/medium/low per API call). Benchmarks: 67.1 ClawEval-1.1, 56.3% SWE-bench Pro, 95.3 V*Python. Priced at $0.20/$1.15 per million tokens input/output — the most affordable 256k-context multimodal model available.",
+          "source": "StepFun / MarkTechPost",
+          "url": "https://static.stepfun.com/blog/step-3.7-flash/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "stepfun",
+            "llm",
+            "moe",
+            "multimodal",
+            "256k-context",
+            "pricing"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-gemini35-pro-coming",
+          "title": "Gemini 3.5 Pro coming next month — already in internal use, 'enhanced capabilities for complex tasks'",
+          "summary": "Google confirmed at I/O 2026 that Gemini 3.5 Pro is already in internal use and will roll out externally next month. It is expected to outperform Gemini 3.1 Pro on complex, multi-step tasks. Given that Gemini 3.5 Flash already reached score 55 on AA (up from 3.1 Flash), the Pro variant could break the 60-point barrier currently held by Claude Opus 4.8.",
+          "source": "Google I/O 2026",
+          "url": "https://blog.google/innovation-and-ai/sundar-pichai-io-2026/",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "google",
+            "gemini",
+            "llm",
+            "frontier",
+            "upcoming"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "image-gen",
+      "label": "Image Generation & Processing",
+      "icon": "🎨",
+      "stories": [
+        {
+          "id": "img-gemini-omni",
+          "title": "Gemini Omni Flash: any-input-to-video with physics understanding — Google I/O",
+          "summary": "Gemini Omni Flash (Google I/O, May 20) is a multimodal model that generates video from any combination of text, images, and audio inputs, with built-in understanding of physics (gravity, kinetics, fluid dynamics). It produces 10-second clips with consistent character identity and voice across scenes. Available in the Gemini app, YouTube Shorts, and Google Flow. All outputs carry SynthID watermarks. Google's answer to Sora and Seedance — native to the Google ecosystem.",
+          "source": "Google I/O 2026",
+          "url": "https://techcrunch.com/2026/05/19/googles-gemini-omni-turns-images-audio-and-text-into-video-and-thats-just-the-start/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "google",
+            "gemini",
+            "video-generation",
+            "physics",
+            "multimodal",
+            "image-gen"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-google-pics",
+          "title": "Google Pics: Nano Banana 2-powered object-level image editing coming to Workspace",
+          "summary": "Google Pics (Google I/O, May 20) is a new AI image creation and editing app powered by Nano Banana 2, treating every image element as an independent object for precise editing — move, resize, or transform individual objects without affecting the background. Integrates natively into Google Drive, Docs, and Slides. Limited Trusted Testers access now, global rollout to Pro/Ultra and Workspace business customers in summer 2026. Positions Google directly against Canva and Adobe Firefly.",
+          "source": "Google I/O 2026 / PetaPixel",
+          "url": "https://petapixel.com/2026/05/19/google-pics-makes-ai-image-generation-way-less-annoying/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "google",
+            "image-gen",
+            "editing",
+            "workspace",
+            "design-tools",
+            "nano-banana"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-mai-image25-microsoft",
+          "title": "MAI-Image-2.5 Preview: Microsoft's new image model hits #3 on Arena.ai with 1254 Elo",
+          "summary": "Microsoft's MAI-Image-2.5 Preview debuted at #3 on Arena.ai's image leaderboard (1254 Elo, 5,264 votes) — a major jump from MAI-Image-2 at #9 (1182 Elo). With two models in the Arena top 10, Microsoft is now a credible image generation player alongside OpenAI and Google. No public API or pricing announced yet — still preview access only.",
+          "source": "Arena.ai",
+          "url": "https://arena.ai/leaderboard/text-to-image",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "microsoft",
+            "image-gen",
+            "leaderboard",
+            "arena",
+            "mai-image"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-bonsai-iphone",
+          "title": "Bonsai Image 4B (PrismML): first production image model on iPhone, Apache 2.0",
+          "summary": "PrismML's Bonsai Image 4B ships in two quantized variants: 1-bit (0.93GB, 8.3× smaller than FLUX.2 Klein 4B) and ternary (1.21GB). The ternary variant retains 95% quality and generates a 512×512 image in 9.4 seconds on iPhone 17 Pro Max — the first image diffusion model to run fully on-device at production quality. Apache 2.0 license, open weights on HuggingFace, plus a Bonsai Studio iOS app.",
+          "source": "PrismML",
+          "url": "https://prismml.com/news/bonsai-image-4b",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "image-gen",
+            "mobile",
+            "on-device",
+            "open-source",
+            "apache-2.0",
+            "iphone"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-adobe-multi-model",
+          "title": "Adobe Firefly now offers Nano Banana, Runway, and FLUX as selectable models",
+          "summary": "Adobe added Nano Banana 2 (Google), Runway Gen-4, and FLUX.2 as first-class selectable models within Firefly — alongside its own Firefly Image 4 base. The multi-model approach lets designers pick the right model for the job: Nano Banana for Workspace integration, Runway for cinematic video, FLUX for typography. Adobe Firefly AI Assistant (beta) can now chain multi-step workflows across all models via natural language.",
+          "source": "Creative Bloq / Adobe",
+          "url": "https://www.creativebloq.com/tech/from-firefly-to-graph-how-adobe-thinks-creatives-will-use-ai-in-2026",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "adobe",
+            "firefly",
+            "image-gen",
+            "multi-model",
+            "design-tools",
+            "runway",
+            "flux"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "design-ai",
+      "label": "Design & Creative AI",
+      "icon": "✏️",
+      "stories": [
+        {
+          "id": "design-figma-agent",
+          "title": "Figma Design Agent (May 20): native canvas AI that respects your design system, free in beta",
+          "summary": "Figma launched its native AI Design Agent on May 20, 2026 — generated and edited designs via natural language directly on the Figma canvas, respecting existing design systems, components, and tokens. Multiple agents can run in parallel. Powered by both OpenAI and Anthropic (official partner integrations). Free during beta for Professional, Organization, and Enterprise plan users. Figma Q1 revenue: $333M (+46% YoY). The most significant design tool AI launch since Figma AI Features shipped in 2024.",
+          "source": "TechCrunch / Figma",
+          "url": "https://techcrunch.com/2026/05/20/figma-adds-an-ai-assistant-to-its-collaborative-canvas/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "figma",
+            "design-ai",
+            "co-design",
+            "agents",
+            "collaborative-design",
+            "canvas"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-google-pics-workspace",
+          "title": "Google Pics: object-level image editing native to Drive, Docs, Slides — Canva's biggest competitor yet",
+          "summary": "Google Pics (Google I/O) positions Google directly against Canva and Adobe Firefly in the office productivity design space. Its key differentiator: treating every image element as a distinct, editable object rather than a flat layer — enabling non-designers to resize a logo without distorting the background, move a product in an ad, or change a person's clothing in a portrait. Native to the 3B-user Google Workspace ecosystem.",
+          "source": "The Next Web / Google",
+          "url": "https://thenextweb.com/news/google-pics-workspace-ai-image-generator-nano-banana-2",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "google",
+            "design-ai",
+            "workspace",
+            "image-editing",
+            "co-design",
+            "canva-competitor"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-adobe-assistant-beta",
+          "title": "Adobe Firefly AI Assistant (beta): multi-step creative workflows via conversational AI",
+          "summary": "Adobe's Firefly AI Assistant (beta) uses natural language to plan and execute multi-step creative workflows across Firefly's model suite — 'generate a 3-panel product ad, restyle the background in Nano Banana, add motion in Runway, export as a 9:16 social video.' The assistant handles format selection, model routing, and output assembly. Available now in beta to Firefly enterprise plan users.",
+          "source": "Creative Bloq / Adobe",
+          "url": "https://www.creativebloq.com/tech/from-firefly-to-graph-how-adobe-thinks-creatives-will-use-ai-in-2026",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "adobe",
+            "firefly",
+            "design-ai",
+            "workflow",
+            "multi-step",
+            "co-design"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-google-flow-tools",
+          "title": "Google Flow Tools: natural language tool creation for video effects, animations, text layers",
+          "summary": "Google Flow now supports natural language tool creation — AI subscribers describe a workflow ('add a slow zoom-in whenever text appears on screen') and Flow generates a reusable tool that can be applied to any video. Batch processing and asset organization are built in. All users can access community-created tools; AI subscribers can create new ones. Available globally now.",
+          "source": "Google I/O 2026",
+          "url": "https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "google",
+            "video-generation",
+            "creative-ai",
+            "tools",
+            "workflow",
+            "design-ai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-khala-collab",
+          "title": "Khala 1.1: real-time collaborative AI canvas now supports shared agent history and team libraries",
+          "summary": "Khala, the real-time multi-user AI canvas where teams simultaneously sketch and generate, released v1.1 with shared agent history (all teammates see each other's generation commands), team style libraries (shared reference images that persist across sessions), and a new 'Co-Pilot Mode' where the AI suggests generations based on the evolving canvas state rather than waiting for prompts. The clearest CoDesign product on the market.",
+          "source": "theAIsearch / Khala",
+          "url": "https://www.youtube.com/watch?v=NnsQj2nDkKA&t=1402s",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "co-design",
+            "collaborative-design",
+            "canvas",
+            "creative-ai",
+            "teams",
+            "real-time"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "typography",
+      "label": "Typography & Text Rendering",
+      "icon": "🔤",
+      "stories": [
+        {
+          "id": "typo-monotype-myfonts-chatgpt",
+          "title": "Monotype launches MyFonts app for ChatGPT — type @MyFonts for licensed font discovery in any conversation",
+          "summary": "Monotype launched the MyFonts ChatGPT app on May 28, 2026: type '@MyFonts' in any English ChatGPT conversation to get real, licensable font recommendations matching your creative brief. Describe a design need — 'a serif for a luxury skincare brand website' — and receive recommendations from Monotype's 4,500+ foundry library with direct purchase links. The first font discovery tool embedded in a major AI assistant as a native capability.",
+          "source": "PR Newswire / Monotype",
+          "url": "https://www.prnewswire.com/news-releases/monotype-launches-myfonts-app-for-chatgpt-bringing-real-font-discovery-into-ai-creative-workflows-302784271.html",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "monotype",
+            "myfonts",
+            "chatgpt",
+            "font-discovery",
+            "typography",
+            "design-workflow"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-monotype-adobe-cc",
+          "title": "Monotype expands Adobe CC collaboration: 2,800+ fonts including Helvetica, Avenir, Gotham",
+          "summary": "Monotype expanded its Adobe Creative Cloud partnership, bringing 2,800+ high-quality fonts — including Helvetica, Avenir, Gotham, Benton Modern, and FF DIN — to Creative Cloud subscribers. The integration means designers don't need separate Monotype licensing for the most-used professional typefaces; fonts are available directly in Illustrator, Photoshop, InDesign, and the Adobe Fonts panel.",
+          "source": "PR Newswire / Monotype",
+          "url": "https://www.prnewswire.com/news-releases/monotype-expands-collaboration-with-adobe-to-bring-hundreds-of-worlds-most-renowned-fonts-to-creative-cloud-302423733.html",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "monotype",
+            "adobe",
+            "creative-cloud",
+            "fonts",
+            "typography",
+            "licensing"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-monotype-frontify",
+          "title": "Monotype + Frontify: brand typography compliance direct in brand management platform",
+          "summary": "Monotype announced a collaboration with Frontify, the brand management platform, allowing Frontify customers to access Monotype Fonts directly within their brand portals — ensuring brand typography compliance without switching tools. Designers can preview, license, and deploy brand fonts within Frontify's asset management workflow. Targets enterprise brand teams managing typography consistency across agencies and markets.",
+          "source": "PR Newswire / Monotype",
+          "url": "https://www.prnewswire.com/news-releases/monotype-and-frontify-streamline-workflows-with-font-integration-making-brand-typography-seamless-compliant-and-scalable-302718605.html",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "monotype",
+            "frontify",
+            "brand-management",
+            "typography",
+            "enterprise",
+            "design-workflow"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-ai-font-backlash",
+          "title": "Designers punishing AI-generated fonts — imperfection and hand-craft surge as authenticity signals",
+          "summary": "May 2026 design community analysis (WhatFontIs, Creative Bloq, Typographica) documents a clear backlash: typefaces that look algorithmically generated are being criticized in professional forums, while fonts with visible imperfections, irregular baselines, and idiosyncratic letterforms are being widely praised. As Monotype and others automate font generation, human-crafted imperfection is emerging as a premium authenticity signal — the same reaction that drove 'artisan' product markets after industrial manufacturing.",
+          "source": "WhatFontIs / Creative Bloq",
+          "url": "https://www.whatfontis.com/blog/monotype-ai-search-changes-how-designers-find-fonts-heres-what-you-need-to-know/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "typography",
+            "font-design",
+            "design-trends",
+            "authenticity",
+            "backlash",
+            "human-craft"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "robotics",
+      "label": "Robotics & Embodied AI",
+      "icon": "🤖",
+      "stories": [
+        {
+          "id": "rob-astribot-t1",
+          "title": "Astribot T1: $14,000 wheeled humanoid with fine manipulation — orders open",
+          "summary": "Astribot unveiled T1 on May 28 — 1.55m, 66kg, 23 DoF, cable-driven motion for natural articulation — priced from $14,000 with orders now open. Demonstrated tasks: cooking, laboratory pipette operations, laundry folding, EV charging port insertion, and automotive parts sorting. At $14K it undercuts every capable humanoid robot on the market by a factor of 4-7×. Astribot's S1 flagship costs ~$100K.",
+          "source": "Xinhua / Interesting Engineering",
+          "url": "https://english.news.cn/20260528/75e55832dd9245b9ae69a6d60a5f532b/c.html",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "humanoid",
+            "china",
+            "astribot",
+            "hardware",
+            "affordable",
+            "deployment"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-athenazero-juggling",
+          "title": "RAI AthenaZero juggles 3 balls, throws at 70 mph — human-level dynamic manipulation",
+          "summary": "The RAI Institute's AthenaZero (6-foot wingspan, two 7-DoF arms) demonstrated juggling three balls with bare hands and throwing a baseball at 31.3 m/s (70 mph) — both without external cameras or tracking tools, using only proprioception and low-impedance control. theAIsearch featured it as a milestone: a robot performing dynamic tasks at the edge of human athletic capability.",
+          "source": "TechEBlog / RAI Institute",
+          "url": "https://www.techeblog.com/rai-institute-athenazero-robot-juggling/",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "manipulation",
+            "bimanual",
+            "embodied-ai",
+            "dynamic",
+            "milestone"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-jal-unitree",
+          "title": "Japan Airlines deploys Unitree robots at Haneda Airport — baggage, transport, cabin cleaning",
+          "summary": "Japan Airlines (JAL) partnered with GMO AI & Robotics to deploy two Unitree-based humanoid robots (132 cm, 35 kg, 23-43 DoF, ~$15,400 each) at Haneda Airport in May 2026 for baggage loading, container transport, and aircraft cabin cleaning. The trial runs through 2028 with commercialization targeted within three years. One of the first airline industry deployments of general-purpose humanoid robots in daily operations.",
+          "source": "Memeburn / KraneShares",
+          "url": "https://memeburn.com/physical-ai-is-sending-humanoid-robots-to-real-factory-floors-in-2026/",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "deployment",
+            "humanoid",
+            "unitree",
+            "aviation",
+            "enterprise"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-bmw-humanoid",
+          "title": "BMW deploys first humanoid robot in Leipzig plant — physical AI enters European auto manufacturing",
+          "summary": "BMW Group installed its first humanoid robot in its Leipzig production facility, marking the entry of general-purpose humanoids into European premium automotive manufacturing. The deployment follows BMW's prior partnerships with Figure and Apptronik for robotics research. Physical AI is now moving from pilot to platform in automotive — the highest-volume, highest-precision manufacturing sector.",
+          "source": "BMW Group",
+          "url": "https://www.bmwgroup.com/en/news/general/2026/humanoid-robot-in-leipzig.html",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "bmw",
+            "manufacturing",
+            "humanoid",
+            "deployment",
+            "europe"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-nvidia-physxomni",
+          "title": "NVIDIA PhysX Omni: unified physics-ready 3D generation — rigid, deformable, articulated in one model",
+          "summary": "NVIDIA's PhysX Omni generates simulation-ready 3D assets (rigid objects, deformable materials, articulated structures) with correct physical properties in a single unified model, with a companion PhysX-Bench evaluating geometry, scale, material, affordance, kinematics, and function. Directly addresses the data bottleneck for robotic policy training: instead of hand-authoring simulation environments, robots can train on AI-generated physics-accurate scenes at scale.",
+          "source": "NVIDIA",
+          "url": "https://physx-omni.github.io/",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "nvidia",
+            "robotics",
+            "simulation",
+            "physics",
+            "3d-generation",
+            "embodied-ai"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "label": "Research & Papers",
+      "icon": "📄",
+      "stories": [
+        {
+          "id": "res-co-scientist-nature",
+          "title": "Google Co-scientist in Nature: peer-reviewed AI validates AML drug hypotheses in lab",
+          "summary": "Google DeepMind's Co-Scientist multi-agent AI (published in Nature May 19) uses specialized hypothesis-generating, debate, and ranking agents running over hours to produce medical hypotheses. The paper formally validates: AML drug repurposing candidates confirmed in multiple cell lines, liver fibrosis target discovery, antibiotic resistance leads. First AI hypothesis system to achieve Nature-level experimental validation. Now available to researchers via Gemini for Science.",
+          "source": "Nature / Google DeepMind",
+          "url": "https://www.nature.com/articles/s41586-026-10644-y",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "google",
+            "science",
+            "medicine",
+            "multi-agent",
+            "research",
+            "nature",
+            "peer-reviewed"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-agentdog15",
+          "title": "AgentDoG 1.5 (127 upvotes): lightweight, scalable AI agent safety and security alignment",
+          "summary": "Shanghai AI Lab's AgentDoG 1.5 is a lightweight safety alignment framework for AI agents that scales across agent architectures without requiring model retraining. It establishes formal safety and security contracts for tool use, memory access, and inter-agent communication. 127 upvotes on HuggingFace papers — the most upvoted AI safety paper this week.",
+          "source": "HuggingFace Papers / Shanghai AI Lab",
+          "url": "https://huggingface.co/papers/2605.13301",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "safety",
+            "agents",
+            "alignment",
+            "research",
+            "security",
+            "multi-agent"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-qwen-vla",
+          "title": "Qwen-VLA (107 upvotes): unified vision-language-action model across robots and environments",
+          "summary": "Alibaba's Qwen team released Qwen-VLA, a unified vision-language-action model that transfers across different tasks, robot embodiments, and environments without task-specific fine-tuning. 107 upvotes on HuggingFace papers. The model handles locomotion, manipulation, and navigation instructions through a shared action space, pointing toward general-purpose robot foundation models.",
+          "source": "HuggingFace Papers / Alibaba",
+          "url": "https://huggingface.co/papers/2605.14892",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "robotics",
+            "vision-language",
+            "action",
+            "alibaba",
+            "research",
+            "foundation-model"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-collection-lora",
+          "title": "CollectionLoRA (53 upvotes): 50 visual effects in a single LoRA via multi-teacher distillation",
+          "summary": "CollectionLoRA consolidates 50 different visual effects (styles, lighting, textures, artistic filters) into a single LoRA adapter using multi-teacher on-policy distillation — each 'teacher' is a specialized single-effect LoRA. The combined LoRA matches per-effect quality while being 50× more parameter-efficient. Direct impact for image generation workflows: one adapter handles an entire creative style library.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2605.14386",
+          "significance": 3,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "lora",
+            "image-gen",
+            "distillation",
+            "creative-ai",
+            "efficiency",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-minwm",
+          "title": "minWM (49 upvotes): open-source framework for real-time interactive video world models",
+          "summary": "minWM provides a full-stack open-source framework for building and deploying interactive video world models with real-time inference — lowering the barrier to build SORA/Gamma-World-style interactive environments without proprietary infrastructure. Covers training, inference optimization, streaming architecture, and evaluation. 49 upvotes on HuggingFace papers.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2605.15141",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "world-model",
+            "video-generation",
+            "open-source",
+            "interactive",
+            "research",
+            "framework"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-autoscientists-openscientist",
+          "title": "AutoScientists: multi-agent AI autonomously runs full research cycles from hypothesis to results",
+          "summary": "AutoScientists (autoscientists.openscientist.ai) is a multi-agent framework where LLM scientists propose, design, execute, interpret, and iterate experiments autonomously — completing full research cycles on protein interactions, material science optimization, and computational biology. A peer-review sub-agent critiques outputs before finalizing. Featured as theAIsearch's longest segment for May 31.",
+          "source": "OpenScientist / theAIsearch",
+          "url": "https://autoscientists.openscientist.ai/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "agents",
+            "science",
+            "autonomous",
+            "research",
+            "multi-agent",
+            "agentic"
+          ],
+          "image_url": null
+        }
+      ]
+    }
+  ],
+  "visualizations": {
+    "category_counts": {
+      "leaderboard": 6,
+      "aisearch": 23,
+      "agentic-ai": 6,
+      "llm": 5,
+      "image-gen": 5,
+      "design-ai": 5,
+      "typography": 4,
+      "robotics": 5,
+      "research": 6
+    },
+    "significance_distribution": {
+      "5": 16,
+      "4": 34,
+      "3": 15
+    },
+    "top_tags": [
+      {
+        "tag": "research",
+        "count": 16
+      },
+      {
+        "tag": "robotics",
+        "count": 13
+      },
+      {
+        "tag": "agents",
+        "count": 12
+      },
+      {
+        "tag": "google",
+        "count": 11
+      },
+      {
+        "tag": "image-gen",
+        "count": 10
+      },
+      {
+        "tag": "creative-ai",
+        "count": 10
+      },
+      {
+        "tag": "leaderboard",
+        "count": 7
+      },
+      {
+        "tag": "benchmark",
+        "count": 7
+      },
+      {
+        "tag": "llm",
+        "count": 7
+      },
+      {
+        "tag": "multi-agent",
+        "count": 7
+      }
+    ],
+    "top_stories": [
+      {
+        "id": "typo-monotype-myfonts-chatgpt",
+        "title": "Monotype launches MyFonts app for ChatGPT — type @MyFonts for licensed font disc",
+        "category": "typography",
+        "significance": 5
+      },
+      {
+        "id": "res-co-scientist-nature",
+        "title": "Google Co-scientist in Nature: peer-reviewed AI validates AML drug hypotheses in",
+        "category": "research",
+        "significance": 5
+      },
+      {
+        "id": "res-autoscientists-openscientist",
+        "title": "AutoScientists: multi-agent AI autonomously runs full research cycles from hypot",
+        "category": "research",
+        "significance": 5
+      },
+      {
+        "id": "llm-opus48-capabilities",
+        "title": "Claude Opus 4.8: new #1, Dynamic Workflows, 84% browser automation, Effort Contr",
+        "category": "llm",
+        "significance": 5
+      },
+      {
+        "id": "lb-opus48-new1",
+        "title": "Claude Opus 4.8 claims #1 on Artificial Analysis — score 61, first new leader si",
+        "category": "leaderboard",
+        "significance": 5
+      }
+    ]
+  }
+};</script>
+<script>
+const PAGE_PREFIX = "20260531120000";
+let digestData = null;
+const leaderboards = {"aa":{"title":"Intelligence Leaderboard","source":"artificialanalysis.ai","url":"https://artificialanalysis.ai/leaderboards/models","updated":"May 31, 2026","cols":["#","Model","Provider","Intelligence","Speed (t/s)","Context","Price /1M"],"rows":[[1,"Claude Opus 4.8 (max)","Anthropic",61,55,"1M","$4.10"],[2,"GPT-5.5 (xhigh)","OpenAI",60,67,"922k","$4.35"],[3,"GPT-5.5 (high)","OpenAI",59,64,"922k","$4.35"],[4,"Claude Opus 4.7 (max)","Anthropic",57,58,"1M","$4.10"],[5,"Gemini 3.1 Pro Preview","Google",57,132,"1M","$4.50"],[6,"GPT-5.5 (medium)","OpenAI",57,60,"922k","$4.35"],[7,"Qwen 3.7 Max","Alibaba",55,189,"256k","$1.85"],[8,"Gemini 3.5 Flash","Google",54,210,"1M","$0.15"],[9,"Kimi K2.6","Kimi",54,56,"256k","$1.71"],[10,"MiMo-V2.5-Pro","Xiaomi",54,54,"1M","$1.50"],[11,"GPT-5.3 Codex (xhigh)","OpenAI",54,79,"400k","$4.81"],[12,"Grok 4.3 (high)","xAI",53,79,"1M","$1.56"],[13,"Muse Spark","Meta",52,0,"262k","—"],[14,"Claude Opus 4.7 (non-reasoning)","Anthropic",52,52,"1M","$4.10"],[15,"Qwen3.6 Max Preview","Alibaba",52,34,"256k","$2.92"],[16,"Claude Sonnet 4.6 (max)","Anthropic",52,62,"1M","$6.00"],[17,"Step 3.7 Flash","Stepfun",51,245,"256k","$0.12"],[18,"DeepSeek V4 Pro (Max)","DeepSeek",52,37,"1M","$2.17"],[19,"GLM-5.1","Z AI",51,48,"200k","$2.15"],[20,"Qwen3.6 Plus","Alibaba",50,52,"1M","$1.13"]],"numericCols":[0,3,4]},"vellum":{"type":"charts","title":"Benchmarks — All Models","source":"vellum.ai","url":"https://www.vellum.ai/llm-leaderboard","updated":"May 31, 2026","benchmarks":[{"name":"Reasoning","task":"GPQA Diamond","unit":"%","models":[{"model":"Claude Opus 4.8","provider":"Anthropic","score":96.1},{"model":"Claude Opus 4.7","provider":"Anthropic","score":95.4},{"model":"GPT-5.5","provider":"OpenAI","score":94.2},{"model":"Gemini 3.5 Flash","provider":"Google","score":93.0},{"model":"Gemini 3.1 Pro","provider":"Google","score":91.9}]},{"name":"High School Math","task":"AIME 2025","unit":"%","models":[{"model":"Gemini 3.1 Pro","provider":"Google","score":100},{"model":"GPT-5.5","provider":"OpenAI","score":100},{"model":"Claude Opus 4.8","provider":"Anthropic","score":99.9},{"model":"Claude Opus 4.7","provider":"Anthropic","score":99.8},{"model":"Qwen 3.7 Max","provider":"Alibaba","score":99.1}]},{"name":"Agentic Coding","task":"SWE-Bench","unit":"%","models":[{"model":"Claude Opus 4.8","provider":"Anthropic","score":88.4},{"model":"Claude Opus 4.7","provider":"Anthropic","score":87.6},{"model":"Gemini 3.5 Flash","provider":"Google","score":81.0},{"model":"Claude Sonnet 4.6","provider":"Anthropic","score":82.0},{"model":"GPT-5.5","provider":"OpenAI","score":80.5}]},{"name":"Overall Ability","task":"Humanity's Last Exam","unit":"%","models":[{"model":"Claude Opus 4.8","provider":"Anthropic","score":48.2},{"model":"Gemini 3.1 Pro","provider":"Google","score":45.8},{"model":"Kimi K2-Thinking","provider":"Kimi","score":44.9},{"model":"GPT-5.5","provider":"OpenAI","score":42.1},{"model":"Claude Opus 4.7","provider":"Anthropic","score":38.5}]},{"name":"Visual Reasoning","task":"ARC-AGI 2","unit":"%","models":[{"model":"GPT-5.5","provider":"OpenAI","score":85.0},{"model":"Claude Opus 4.8","provider":"Anthropic","score":79.4},{"model":"Gemini 3.1 Pro","provider":"Google","score":74.2},{"model":"Claude Opus 4.7","provider":"Anthropic","score":68.3},{"model":"GPT-5.5 medium","provider":"OpenAI","score":65.1}]},{"name":"Agentic Coding","task":"DeepSWE","unit":"%","models":[{"model":"GPT-5.5","provider":"OpenAI","score":70.0},{"model":"Claude Opus 4.8","provider":"Anthropic","score":68.0},{"model":"Gemini 3.5 Flash","provider":"Google","score":62.0},{"model":"Qwen 3.7 Max","provider":"Alibaba","score":58.0},{"model":"Kimi K2.6","provider":"Kimi","score":52.0}]}]},"open":{"title":"Open-Weight Rankings","source":"llm-stats.com","url":"https://llm-stats.com/llm-updates","updated":"May 31, 2026","cols":["#","Model","Provider","🌍","Arena Elo","SWE-Bench %","GPQA %"],"rows":[[1,"Qwen 3.7 Max","Alibaba","🇨🇳",1621,63.4,89.2],[2,"GLM-5","Zhipu AI","🇨🇳",1576,52.1,76.2],[3,"Kimi K2.6","Moonshot AI","🇨🇳",1479,58.4,84.1],[4,"GLM-5.1","Zhipu AI","🇨🇳",1423,54.9,77.8],[5,"DeepSeek V4 Pro (Max)","DeepSeek","🇨🇳",1398,71.3,83.1],[6,"Qwen3.5-397B-A17B","Qwen","🇨🇳",1208,49.6,88.4],[7,"Step 3.7 Flash","Stepfun","🇨🇳",1189,44.2,81.5],[8,"Kimi K2-Thinking","Moonshot AI","🇨🇳",941,45.9,87.6],[9,"MiMo-V2.5-Pro","Xiaomi","🇨🇳",912,48.7,74.3],[10,"Gemma 4 26B-A4B","Google","🇺🇸",935,36.0,71.9],[11,"MiniMax M2.5","MiniMax","🇨🇳",967,53.4,73.2],[12,"DeepSeek-V3.2-Spec","DeepSeek","🇨🇳",832,43.0,71.4],[13,"Qwen3.5-122B-A10B","Qwen","🇨🇳",802,43.6,69.8],[14,"MiMo-V2-Flash","Xiaomi","🇨🇳",793,38.9,64.3],[15,"LongCat-Flash-Think","Meituan","🇨🇳",791,36.1,62.4]],"numericCols":[0,4,5,6]},"image":{"title":"Text-to-Image Leaderboard","source":"artificialanalysis.ai","url":"https://artificialanalysis.ai/image/leaderboard/text-to-image","updated":"May 31, 2026","cols":["#","Model","Provider","Quality Elo","Speed (s/img)","Price /img"],"rows":[[1,"FLUX.2 Ultra","Black Forest",1389,8.2,"$0.06"],[2,"Midjourney v7","Midjourney",1367,34.1,"$0.08"],[3,"MAI-Image-2.5","Microsoft",1341,5.1,"$0.04"],[4,"Ideogram v3.1","Ideogram",1318,6.7,"$0.05"],[5,"DALL-E 4 Ultra","OpenAI",1302,12.4,"$0.12"],[6,"Firefly Image 4","Adobe",1289,9.8,"$0.05"],[7,"FLUX.2 Standard","Black Forest",1274,6.4,"$0.03"],[8,"Bonsai Image 4B","Bonsai AI",1231,1.2,"$0.01"],[9,"Stable Diffusion 4.1","Stability AI",1198,3.9,"$0.02"],[10,"SDXL Turbo Pro","Stability AI",1156,1.8,"$0.01"]],"numericCols":[0,3,4]},"arena_image":{"title":"Image Arena — Text Rendering","source":"arena.ai","url":"https://arena.ai/leaderboard/text-to-image","updated":"May 31, 2026","cols":["#","Model","Provider","Overall Elo","Text Rendering Elo"],"rows":[[1,"MAI-Image-2.5","Microsoft",1498,1621],[2,"FLUX.2 Ultra","Black Forest",1489,1589],[3,"Ideogram v3.1","Ideogram",1423,1564],[4,"DALL-E 4 Ultra","OpenAI",1398,1531],[5,"Midjourney v7","Midjourney",1367,1487],[6,"Firefly Image 4","Adobe",1289,1421],[7,"Gemini Imagen 4","Google",1276,1398],[8,"Bonsai Image 4B","Bonsai AI",1231,1312],[9,"FLUX.2 Standard","Black Forest",1274,1289],[10,"Stable Diffusion 4.1","Stability AI",1198,1201]],"numericCols":[0,3,4]}};
+
+const PROVIDER_COLORS = {
+  OpenAI: '#10a37f', Anthropic: '#d4763b', Google: '#4285f4',
+  DeepSeek: '#1a6cf5', Alibaba: '#ff6a00', Meta: '#0866ff',
+  Kimi: '#8b5cf6', Xiaomi: '#ff6900', 'Z AI': '#06b6d4', MiniMax: '#ec4899'
+};
+
+const CAT_COLORS = {
+  leaderboard: '#F39C12', analytics: '#6366F1', aisearch: '#F0883E', 'agentic-ai': '#0EA5E9',
+  llm: '#2C3E50', rag: '#14B8A6', 'image-gen': '#8E44AD', 'design-ai': '#16A085',
+  typography: '#C0392B', robotics: '#E67E22', research: '#2980B9'
+};
+
+let allStories = [];
+let activeFilter = 'all';
+let activeSig = null;
+let activeTag = null;
+
+function applyFilters() {
+  let stories = activeFilter === 'all' ? allStories : allStories.filter(s => s.catId === activeFilter);
+  if (activeSig !== null) stories = stories.filter(s => s.significance === activeSig);
+  if (activeTag !== null) stories = stories.filter(s => s.tags.includes(activeTag));
+  return stories;
+}
+
+function setSig(sig) {
+  activeSig = activeSig === sig ? null : sig;
+  redrawSigChart();
+  renderCards(activeFilter);
+}
+
+function setTag(tag) {
+  activeTag = activeTag === tag ? null : tag;
+  redrawTagCloud();
+  renderCards(activeFilter);
+}
+
+function render(data) {
+  allStories = [];
+  data.categories.forEach(cat => {
+    cat.stories.forEach(s => allStories.push({ ...s, catId: cat.id, catLabel: cat.label, catIcon: cat.icon }));
+  });
+  const dt = new Date(data.generated_at);
+  document.getElementById('digest-date').textContent =
+    dt.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' }).toUpperCase();
+  document.getElementById('digest-summary').textContent = data.summary;
+  renderTopStories(data);
+  renderFilterPills(data);
+  renderDonut(data);
+  renderSigChart(data);
+  renderTagCloud(data);
+  renderCards('all');
+  document.getElementById('footer-count').textContent =
+    allStories.length + ' stories · ' + data.categories.length + ' categories';
+  initLayoutResizer();
+}
+
+function renderTopStories(data) {
+  const bar = document.getElementById('top-stories-bar');
+  data.visualizations.top_stories.forEach(ts => {
+    const pill = document.createElement('button');
+    pill.className = 'top-story-pill';
+    pill.textContent = ts.title;
+    pill.onclick = () => scrollToStory(ts.id);
+    bar.appendChild(pill);
+  });
+}
+
+function renderFilterPills(data) {
+  const bar = document.getElementById('filter-bar');
+  bar.innerHTML = '';
+  const allPill = document.createElement('button');
+  allPill.className = 'pill active';
+  allPill.textContent = 'All (' + allStories.length + ')';
+  allPill.dataset.filter = 'all';
+  allPill.onclick = () => setFilter('all');
+  bar.appendChild(allPill);
+  data.categories.forEach(cat => {
+    const pill = document.createElement('button');
+    pill.className = 'pill inactive';
+    if (cat.id === 'leaderboard' || cat.id === 'aisearch') {
+      pill.innerHTML = cat.icon + ' ' + cat.label;
+    } else {
+      if (!cat.stories.length) return;
+      pill.innerHTML = cat.icon + ' ' + cat.label + ' <span style="color:var(--muted);font-size:.7em">(' + cat.stories.length + ')</span>';
+    }
+    pill.dataset.filter = cat.id;
+    pill.onclick = () => setFilter(cat.id);
+    bar.appendChild(pill);
+  });
+}
+
+function setFilter(id) {
+  activeFilter = id;
+  document.querySelectorAll('.pill').forEach(p => {
+    p.className = 'pill ' + (p.dataset.filter === id ? 'active' : 'inactive');
+  });
+  renderCards(id);
+}
+
+function renderAISearch(grid) {
+  const stories = allStories.filter(s => s.catId === 'aisearch');
+  const videoUrl   = digestData.aisearch_video_url   || 'https://www.youtube.com/@theAIsearch';
+  const videoLabel = digestData.aisearch_video_label || 'Latest video';
+  grid.innerHTML = `
+    <div style="grid-column:1/-1;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:4px;">
+      <span style="font-size:12px;font-weight:600;color:var(--text)">🔍 theAIsearch</span>
+      <a href="${videoUrl}" target="_blank" rel="noopener"
+         style="font-size:11px;color:var(--accent);text-decoration:none;display:flex;align-items:center;gap:4px;">
+        ▶ ${videoLabel}
+      </a>
+      <span style="margin-left:auto;display:flex;gap:12px;">
+        <a href="https://ai-search.io" target="_blank" rel="noopener" style="font-size:11px;color:var(--muted);text-decoration:none;">🌐 ai-search.io</a>
+        <a href="https://www.youtube.com/@theAIsearch" target="_blank" rel="noopener" style="font-size:11px;color:var(--muted);text-decoration:none;">▶ @theAIsearch</a>
+      </span>
+    </div>`;
+  stories.forEach(story => grid.appendChild(buildCard(story)));
+}
+
+function renderCards(filter) {
+  const grid = document.getElementById('story-grid');
+  if (filter === 'leaderboard') { renderLeaderboard(grid); return; }
+  if (filter === 'aisearch') { renderAISearch(grid); return; }
+  const stories = applyFilters();
+  if (!stories.length) { grid.innerHTML = '<div class="empty-state">No stories match the current filters.</div>'; return; }
+  grid.innerHTML = '';
+  stories.forEach(story => grid.appendChild(buildCard(story)));
+}
+
+function renderLeaderboard(grid) {
+  let activeLb = 'aa';
+  function tabs(lb) {
+    return `
+      <div class="lb-tabs">
+        <button class="lb-tab ${activeLb==='aa'?'active':''}"           data-lb="aa">🏅 AA: All Models</button>
+        <button class="lb-tab ${activeLb==='open'?'active':''}"         data-lb="open">🔓 Open-Weight</button>
+        <button class="lb-tab ${activeLb==='arena_image'?'active':''}"  data-lb="arena_image">🎨 Image Arena</button>
+        <button class="lb-tab ${activeLb==='vellum'?'active':''}"       data-lb="vellum">📊 Vellum: All</button>
+        <button class="lb-tab ${activeLb==='vellum_open'?'active':''}"  data-lb="vellum_open">📊 Vellum: Open</button>
+        <a class="lb-src" href="${lb.url}" target="_blank" rel="noopener">↗ ${lb.source}</a>
+        <span class="lb-updated">Updated ${lb.updated}</span>
+      </div>`;
+  }
+  function buildTable(lb) {
+    let sortCol = null, sortDir = 1;
+    grid.innerHTML = `<div class="lb-wrap">${tabs(lb)}
+      <div class="lb-table-wrap">
+        <table class="lb-table" id="lb-table">
+          <thead><tr>${lb.cols.map((c,i)=>`<th class="lb-th" data-col="${i}">${c} <span class="sort-arrow">↕</span></th>`).join('')}</tr></thead>
+          <tbody id="lb-body"></tbody>
+        </table>
+      </div></div>`;
+    grid.querySelectorAll('.lb-tab').forEach(btn => { btn.onclick = () => { activeLb = btn.dataset.lb; build(); }; });
+    function scoreColor(val, max) {
+      const t = val/max;
+      return t > 0.9 ? '#3fb950' : t > 0.75 ? '#58a6ff' : t > 0.6 ? '#d29922' : '#8b949e';
+    }
+    function drawRows(rows) {
+      const isArenaImage = (activeLb === 'arena_image');
+      const providerCol = (activeLb === 'aa' || activeLb === 'open') ? 2 : isArenaImage ? 2 : 1;
+      const scoreCol    = (activeLb === 'aa') ? 3 : isArenaImage ? 3 : -1;
+      const scoreMax    = (activeLb === 'aa') ? 60 : isArenaImage ? 1500 : 100;
+      document.getElementById('lb-body').innerHTML = rows.map(row => {
+        const provider = row[providerCol];
+        const dot = `<span class="lb-dot" style="background:${PROVIDER_COLORS[provider]||'#555'}"></span>`;
+        return '<tr>' + row.map((cell, i) => {
+          if (i === providerCol) return `<td>${dot}${cell}</td>`;
+          if (i === scoreCol && typeof cell === 'number' && cell > 0) {
+            const pct = Math.round((cell/scoreMax)*100);
+            return `<td><div class="lb-bar-cell"><span class="lb-bar-fill" style="width:${Math.min(pct,100)}%;background:${scoreColor(cell,scoreMax)}"></span><span class="lb-bar-val">${cell}</span></div></td>`;
+          }
+          return `<td>${cell === 0 ? '—' : cell}</td>`;
+        }).join('') + '</tr>';
+      }).join('');
+    }
+    drawRows(lb.rows);
+    grid.querySelectorAll('.lb-th').forEach(th => {
+      th.onclick = () => {
+        const col = +th.dataset.col;
+        sortDir = sortCol === col ? -sortDir : 1; sortCol = col;
+        grid.querySelectorAll('.lb-th .sort-arrow').forEach(a => a.textContent='↕');
+        th.querySelector('.sort-arrow').textContent = sortDir===1?'↑':'↓';
+        drawRows([...lb.rows].sort((a,b) => {
+          const va=a[col], vb=b[col];
+          if (va==='—'||va===null||va===0) return 1; if (vb==='—'||vb===null||vb===0) return -1;
+          return typeof va==='number'&&typeof vb==='number' ? (va-vb)*sortDir : String(va).localeCompare(String(vb))*sortDir;
+        }));
+      };
+    });
+  }
+  function buildCharts(lb) {
+    grid.innerHTML = `<div class="lb-wrap">${tabs(lb)}<div class="lb-charts-grid" id="lb-charts"></div></div>`;
+    grid.querySelectorAll('.lb-tab').forEach(btn => { btn.onclick = () => { activeLb = btn.dataset.lb; build(); }; });
+    const container = document.getElementById('lb-charts');
+    lb.benchmarks.forEach(bm => {
+      const card = document.createElement('div');
+      card.className = 'lb-chart-card';
+      card.innerHTML = `<div class="lb-chart-title"><span class="lb-chart-name">${bm.name}</span><span class="lb-chart-task">${bm.task}</span></div><svg class="lb-chart-svg"></svg>`;
+      container.appendChild(card);
+      const svg = card.querySelector('svg');
+      const W = card.clientWidth || 280, H = 180;
+      const ml = 8, mr = 8, mt = 28, mb = 52;
+      const w = W - ml - mr, h = H - mt - mb;
+      const models = bm.models;
+      const maxVal = Math.max(...models.map(m => m.score));
+      const minVal = Math.min(...models.map(m => m.score));
+      const yMin = Math.max(0, minVal - (maxVal - minVal) * 0.3);
+      const x = d3.scaleBand().domain(models.map((_,i)=>i)).range([0,w]).padding(0.25);
+      const y = d3.scaleLinear().domain([yMin, maxVal * 1.08]).range([h, 0]);
+      const s = d3.select(svg).attr('width','100%').attr('height', H).attr('viewBox',`0 0 ${W} ${H}`);
+      const g = s.append('g').attr('transform',`translate(${ml},${mt})`);
+      [0.25,0.5,0.75,1].forEach(t => {
+        const yv = yMin + (maxVal*1.08 - yMin)*t;
+        g.append('line').attr('x1',0).attr('x2',w).attr('y1',y(yv)).attr('y2',y(yv)).attr('stroke','#30363d').attr('stroke-width',1);
+        g.append('text').attr('x',-2).attr('y',y(yv)+3).attr('text-anchor','end').attr('font-size',8).attr('fill','#8b949e')
+          .text(bm.unit==='%' ? Math.round(yv)+'%' : Math.round(yv));
+      });
+      models.forEach((m, i) => {
+        const color = PROVIDER_COLORS[m.provider] || '#58a6ff';
+        const bx = x(i), bw = x.bandwidth();
+        const bar = g.append('rect').attr('x', bx).attr('y', h).attr('width', bw).attr('height', 0).attr('rx', 3).attr('fill', color).attr('opacity', 0.85);
+        bar.transition().duration(500).delay(i*80).attr('y', y(m.score)).attr('height', h - y(m.score));
+        g.append('text').attr('x', bx+bw/2).attr('y', y(m.score)-4).attr('text-anchor','middle').attr('font-size',9).attr('font-weight','700').attr('fill','#e6edf3')
+          .attr('opacity',0).text(m.score + (bm.unit==='%'?'%':''))
+          .transition().duration(400).delay(i*80+300).attr('opacity',1);
+        g.append('text').attr('transform',`translate(${bx+bw/2},${h+6}) rotate(35)`).attr('text-anchor','start').attr('font-size',9).attr('fill','#8b949e')
+          .text(m.model.length>14 ? m.model.slice(0,13)+'…' : m.model);
+      });
+    });
+  }
+  function build() {
+    const lb = leaderboards[activeLb];
+    if (lb.type === 'charts') buildCharts(lb); else buildTable(lb);
+  }
+  build();
+}
+
+function buildCard(story) {
+  const color = CAT_COLORS[story.catId] || '#888';
+  const div = document.createElement('div');
+  div.className = 'story-card';
+  div.id = 'card-' + story.id;
+  const sigDots = Array.from({length:5},(_,i) => '<div class="sig-dot ' + (i < story.significance ? 'filled' : '') + '"></div>').join('');
+  const tags = story.tags.map(t => '<span class="card-tag">' + t + '</span>').join('');
+  div.innerHTML =
+    '<div class="card-cat-stripe" style="background:' + color + '"></div>' +
+    '<span class="card-cat-badge">' + story.catIcon + '</span>' +
+    '<div class="card-meta"><span class="card-source">' + story.source + '</span><div class="card-sig">' + sigDots + '</div></div>' +
+    '<div class="card-title">' + story.title + '</div>' +
+    '<div class="card-expand" id="expand-' + story.id + '">' +
+      '<p class="card-summary">' + story.summary + '</p>' +
+      '<div class="card-tags">' + tags + '</div>' +
+      '<a class="card-link" href="' + story.url + '" target="_blank" rel="noopener">Read source →</a>' +
+    '</div>';
+  div.onclick = () => toggleCard(story.id, div);
+  return div;
+}
+
+function toggleCard(id, el) {
+  const expand = document.getElementById('expand-' + id);
+  const isExpanded = expand.classList.contains('visible');
+  document.querySelectorAll('.card-expand.visible').forEach(e => e.classList.remove('visible'));
+  document.querySelectorAll('.story-card.expanded').forEach(c => c.classList.remove('expanded'));
+  if (!isExpanded) { expand.classList.add('visible'); el.classList.add('expanded'); }
+}
+
+function scrollToStory(id) {
+  setFilter('all');
+  setTimeout(() => {
+    const el = document.getElementById('card-' + id);
+    if (el) { el.scrollIntoView({ behavior:'smooth', block:'center' }); toggleCard(id, el); }
+  }, 50);
+}
+
+function renderDonut(data) {
+  const counts = data.visualizations.category_counts;
+  const cats = data.categories.filter(c => counts[c.id] > 0);
+  const w = 208, h = 160, r = 60;
+  const svg = d3.select('#donut-chart').attr('width', w).attr('height', h);
+  const g = svg.append('g').attr('transform', 'translate(' + (r+10) + ',' + (h/2) + ')');
+  const pie = d3.pie().value(d => counts[d.id]).sort(null);
+  const arc = d3.arc().innerRadius(r*0.55).outerRadius(r);
+  const arcHover = d3.arc().innerRadius(r*0.55).outerRadius(r+5);
+  const tooltip = document.getElementById('tooltip');
+  const paths = g.selectAll('path').data(pie(cats)).enter().append('path')
+    .attr('fill', d => CAT_COLORS[d.data.id])
+    .attr('stroke', '#0d1117').attr('stroke-width', 2)
+    .attr('d', arc).style('cursor','pointer')
+    .on('mouseover', function(event, d) {
+      d3.select(this).transition().duration(120).attr('d', arcHover);
+      tooltip.style.opacity = '1';
+      tooltip.innerHTML = d.data.icon + ' ' + d.data.label + ': <strong>' + counts[d.data.id] + '</strong>';
+    })
+    .on('mousemove', function(event) {
+      tooltip.style.left = (event.clientX+12)+'px'; tooltip.style.top = (event.clientY-8)+'px';
+    })
+    .on('mouseout', function() {
+      d3.select(this).transition().duration(120).attr('d', arc); tooltip.style.opacity = '0';
+    })
+    .on('click', (event, d) => setFilter(d.data.id));
+  paths.transition().duration(600).attrTween('d', function(d) {
+    const interp = d3.interpolate({startAngle:0,endAngle:0}, d);
+    return t => arc(interp(t));
+  });
+  const legend = svg.append('g').attr('transform', 'translate(' + (r*2+18) + ',10)');
+  cats.forEach((cat, i) => {
+    legend.append('rect').attr('x',0).attr('y',i*18).attr('width',8).attr('height',8).attr('rx',2).attr('fill',CAT_COLORS[cat.id]);
+    legend.append('text').attr('x',12).attr('y',i*18+8).attr('font-size','9').attr('fill','#8b949e')
+      .text(cat.label.split(' ')[0] + ' (' + counts[cat.id] + ')');
+  });
+}
+
+let _sigItems = [], _sigX, _sigG, _sigW;
+
+function renderSigChart(data) {
+  const dist = data.visualizations.significance_distribution;
+  _sigItems = [5,4,3,2,1].map(k => ({ sig:k, count: dist[k]||0 })).filter(d => d.count > 0);
+  const w=208, h=100, ml=24, mr=8, mt=4, mb=4;
+  const svg = d3.select('#sig-chart').attr('width',w).attr('height',h);
+  svg.selectAll('*').remove();
+  if (!_sigItems.length) return;
+  const max = d3.max(_sigItems, d => d.count);
+  _sigW = w-ml-mr;
+  const rowH = (h-mt-mb)/_sigItems.length;
+  _sigG = svg.append('g').attr('transform','translate('+ml+','+mt+')');
+  _sigX = d3.scaleLinear().domain([0,max]).range([0,_sigW]);
+  _sigItems.forEach((d,i) => {
+    const y = i*rowH+2, bh = rowH-6;
+    const row = _sigG.append('g').attr('class','sig-row').style('cursor','pointer');
+    row.append('text').attr('x',-4).attr('y',y+bh/2+4).attr('text-anchor','end').attr('font-size','9').attr('fill','#888').text('★'.repeat(d.sig));
+    row.append('rect').attr('x',0).attr('y',y).attr('height',bh).attr('rx',2).attr('class','sig-bar')
+      .attr('fill', d3.interpolateViridis(d.sig/5)).attr('width',0)
+      .transition().duration(500).delay(i*80).attr('width', _sigX(d.count));
+    row.append('text').attr('x',_sigX(d.count)+4).attr('y',y+bh/2+4).attr('font-size','9').attr('fill','#8b949e').attr('class','sig-count').text(d.count);
+    row.append('rect').attr('x',-ml).attr('y',y-2).attr('width',w).attr('height',bh+4).attr('fill','transparent')
+      .on('click', () => setSig(d.sig));
+  });
+}
+
+function redrawSigChart() {
+  if (!_sigG) return;
+  _sigG.selectAll('.sig-row').each(function(_, i) {
+    const d = _sigItems[i];
+    const isActive = activeSig === d.sig;
+    const inactive = activeSig !== null && !isActive;
+    d3.select(this).select('.sig-bar').attr('opacity', inactive ? 0.25 : 1);
+    d3.select(this).select('.sig-count').attr('fill', isActive ? '#e6edf3' : '#8b949e');
+    d3.select(this).selectAll('text').filter((_, j) => j === 0).attr('fill', isActive ? '#e6edf3' : inactive ? '#555' : '#888');
+  });
+}
+
+let _tagData = [];
+
+function renderTagCloud(data) {
+  _tagData = data.visualizations.top_tags.slice(0, 12);
+  redrawTagCloud();
+}
+
+function redrawTagCloud() {
+  const cloud = document.getElementById('tag-cloud');
+  cloud.innerHTML = '';
+  _tagData.forEach(t => {
+    const span = document.createElement('span');
+    const isActive = activeTag === t.tag;
+    const inactive = activeTag !== null && !isActive;
+    span.className = 'tag-item' + (isActive ? ' tag-active' : '') + (inactive ? ' tag-dim' : '');
+    span.innerHTML = t.tag + '<span class="tag-count">' + t.count + '</span>';
+    span.onclick = () => setTag(t.tag);
+    cloud.appendChild(span);
+  });
+}
+
+
+function resetDigestView() {
+  document.getElementById('top-stories-bar').innerHTML = '<span class="top-stories-label">Top Stories</span>';
+  document.getElementById('filter-bar').innerHTML = '';
+  document.getElementById('story-grid').innerHTML = '';
+  d3.select('#donut-chart').selectAll('*').remove();
+  d3.select('#sig-chart').selectAll('*').remove();
+  document.getElementById('tag-cloud').innerHTML = '';
+  activeFilter = 'all';
+  activeSig = null;
+  activeTag = null;
+  allStories = [];
+  _sigG = null;
+}
+
+const SIDEBAR_WIDTH_KEY = 'aidigest.sidebarWidth';
+
+function initLayoutResizer() {
+  const layout = document.querySelector('.layout');
+  const resizer = document.getElementById('layout-resizer');
+  const sidebar = layout && layout.querySelector('.sidebar');
+  if (!layout || !resizer || !sidebar || resizer.dataset.bound) return;
+  resizer.dataset.bound = '1';
+
+  const saved = parseInt(localStorage.getItem(SIDEBAR_WIDTH_KEY), 10);
+  if (saved >= 160 && saved <= 420) layout.style.setProperty('--sidebar-w', saved + 'px');
+
+  let startX = 0;
+  let startW = 0;
+
+  function applyWidth(w) {
+    const clamped = Math.min(420, Math.max(160, w));
+    layout.style.setProperty('--sidebar-w', clamped + 'px');
+    return clamped;
+  }
+
+  function onMove(e) {
+    applyWidth(startW + (e.clientX - startX));
+  }
+
+  function onUp() {
+    resizer.classList.remove('dragging');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+    const w = parseInt(getComputedStyle(layout).getPropertyValue('--sidebar-w'), 10);
+    if (!isNaN(w)) localStorage.setItem(SIDEBAR_WIDTH_KEY, String(w));
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+  }
+
+  function onDown(e) {
+    if (window.matchMedia('(max-width: 860px)').matches) return;
+    e.preventDefault();
+    startX = e.clientX;
+    startW = sidebar.getBoundingClientRect().width;
+    resizer.classList.add('dragging');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  }
+
+  resizer.addEventListener('mousedown', onDown);
+  resizer.addEventListener('keydown', e => {
+    const step = e.shiftKey ? 40 : 12;
+    const cur = sidebar.getBoundingClientRect().width;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); localStorage.setItem(SIDEBAR_WIDTH_KEY, String(applyWidth(cur - step))); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); localStorage.setItem(SIDEBAR_WIDTH_KEY, String(applyWidth(cur + step))); }
+  });
+}
+
+
+function loadDigest() {
+  digestData = window.__AIDIGEST_DIGEST__;
+  if (!digestData) {
+    throw new Error('Could not load ' + PAGE_PREFIX + '.json (expected sibling of this page)');
+  }
+  document.title = 'AI Daily | ' + (digestData.generated_at || PAGE_PREFIX).slice(0, 10);
+  render(digestData);
+}
+
+try {
+  loadDigest();
+} catch (err) {
+  document.getElementById('story-grid').innerHTML =
+    '<div class="empty-state">Failed to load digest: ' + err.message + '</div>';
+}
+</script>
+</body>
+</html>

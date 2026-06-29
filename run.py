@@ -1,0 +1,131 @@
+#!/usr/bin/env python3
+"""
+AI Digest: one-command daily pipeline (no UI).
+
+Usage:
+    python run.py                              # today, 10-day lookback
+    python run.py --start 2026-06-27           # digest date (default: today UTC)
+    python run.py --history 14                 # editorial lookback in days
+    python run.py --fetch-only                 # preflight + optional crawl4ai only
+    python run.py --skeleton-only              # skip LLM enrich
+    python run.py --dry-run                    # print paths only
+
+Outputs land under ``reports/``, ``diagnostics/``, and ``.cache/``.
+See README.md for setup (Ollama, Playwright, yt-dlp).
+"""
+
+from __future__ import annotations
+
+import argparse
+import sys
+import webbrowser
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from pipeline.config import load_config
+from pipeline.dates import build_run_window
+from pipeline.diagnostics import finish_collector, init_collector
+from pipeline.enrich import enrich_digest
+from pipeline.fetch import crawl_leaderboards, run_preflight
+from pipeline.history import load_prior_digests
+from pipeline.paths import cache_dir, diagnostics_dir, reports_dir
+from pipeline.render import render
+from pipeline.validate import apply_validation, validate_digest
+
+
+def main() -> None:
+    cfg = load_config()
+    default_history = int(cfg.get("run", {}).get("history_days", 10))
+
+    parser = argparse.ArgumentParser(description="AI Digest daily pipeline runner")
+    parser.add_argument("--start", metavar="DATE", help="Digest date YYYY-MM-DD or YYYYMMDD")
+    parser.add_argument(
+        "--history",
+        type=int,
+        metavar="N",
+        default=default_history,
+        help=f"Editorial lookback in days (default: {default_history})",
+    )
+    parser.add_argument("--fetch-only", action="store_true", help="Stop after ingestion")
+    parser.add_argument("--skeleton-only", action="store_true", help="Skip LLM enrich")
+    parser.add_argument("--dry-run", action="store_true", help="Show paths only")
+    args = parser.parse_args()
+
+    try:
+        window = build_run_window(args.start, args.history)
+    except ValueError as exc:
+        raise SystemExit(str(exc)) from exc
+
+    reports = reports_dir(cfg)
+    cache = cache_dir(cfg)
+    diag = diagnostics_dir(cfg)
+
+    print(f"Reports:     {reports}")
+    print(f"Cache:       {cache}")
+    if cfg.get("diagnostics", {}).get("enabled", True):
+        print(f"Diagnostics: {diag}")
+    print(f"Run window:  {window.label()}  prefix={window.prefix}")
+    if cfg.get("llm", {}).get("enabled") and not args.skeleton_only:
+        llm = cfg["llm"]
+        print(f"LLM:         local Ollama {llm.get('model')} @ {llm.get('base_url')}")
+
+    if args.dry_run:
+        return
+
+    if args.skeleton_only:
+        cfg = {**cfg, "llm": {**cfg.get("llm", {}), "enabled": False}}
+
+    collector = init_collector(window.prefix, cfg)
+
+    print("\n[1/4] Ingestion: preflight")
+    if not cfg.get("ingestion", {}).get("preflight", True):
+        raise SystemExit("preflight disabled in config")
+    with collector.stage("ingestion.preflight", "Preflight"):
+        prefix, preflight_path = run_preflight(cfg, window.prefix)
+    print(f"  prefix={prefix} preflight={preflight_path}")
+
+    crawl_files: list[Path] = []
+    if cfg.get("ingestion", {}).get("crawl4ai", {}).get("enabled"):
+        print("\n[1b] Ingestion: Crawl4AI")
+        with collector.stage("ingestion.crawl4ai", "Crawl4AI"):
+            crawl_files = crawl_leaderboards(cfg, prefix, preflight_path)
+
+    if args.fetch_only:
+        finish_collector(cfg)
+        print("\nDone (--fetch-only).")
+        return
+
+    prior = load_prior_digests(cfg, window)
+    if prior:
+        print(f"  prior digests in window: {len(prior)}")
+
+    print("\n[2/4] Enrich: multi-pass LLM")
+    with collector.stage("enrich", "LLM enrich"):
+        digest = enrich_digest(cfg, window, preflight_path, crawl_files, prior)
+
+    print("\n[3/4] Validate")
+    with collector.stage("validate", "Validate"):
+        errors = validate_digest(cfg, digest)
+        apply_validation(cfg, errors)
+
+    print("\n[4/4] Render: HTML + archive index")
+    with collector.stage("render", "Render"):
+        render(cfg, prefix, digest)
+
+    diag_path = finish_collector(cfg)
+
+    print("\nDone.")
+    print(f"  archive: {reports / 'index.html'}")
+    print(f"  digest:  {reports / f'{prefix}.html'}")
+    if diag_path:
+        print(f"  diagnostics archive: {diag_path.parent / 'index.html'}")
+        print(f"  diagnostics run:     {diag_path.with_suffix('.html')}")
+
+    if cfg.get("render", {}).get("open_browser"):
+        webbrowser.open((reports / f"{prefix}.html").as_uri())
+
+
+if __name__ == "__main__":
+    main()

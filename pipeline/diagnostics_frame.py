@@ -1,0 +1,402 @@
+"""Diagnostics archive: index.json + frame index.html (mirrors reports layout)."""
+
+from __future__ import annotations
+
+import json
+import math
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+
+def list_diagnostics_jsons(diag_dir: Path) -> list[Path]:
+    return sorted(diag_dir.glob("*.diagnostics.json"), key=lambda p: p.stem)
+
+
+def diagnostics_index_entry(data: dict[str, Any], stem: str) -> dict[str, Any]:
+    prefix = data.get("prefix") or stem.replace(".diagnostics", "")
+    date = f"{prefix[0:4]}-{prefix[4:6]}-{prefix[6:8]}"
+    try:
+        display_date = datetime.strptime(date, "%Y-%m-%d").strftime("%b %d, %Y")
+    except ValueError:
+        display_date = date
+    totals = data.get("totals") or {}
+    llm = data.get("llm") or {}
+    duration_ms = float(data.get("total_duration_ms") or 0)
+    tokens = int(totals.get("total_tokens") or 0)
+    return {
+        "prefix": prefix,
+        "date": date,
+        "display_date": display_date,
+        "started_at": data.get("started_at"),
+        "finished_at": data.get("finished_at"),
+        "total_duration_ms": duration_ms,
+        "total_duration_label": _ms_label(duration_ms),
+        "total_tokens": tokens,
+        "llm_call_count": totals.get("llm_call_count"),
+        "llm_duration_ms": totals.get("llm_duration_ms"),
+        "llm_share_pct": totals.get("llm_share_pct"),
+        "model": llm.get("model"),
+        "poc_id": data.get("poc_id"),
+        "intensity": _intensity_score(duration_ms, tokens),
+    }
+
+
+def build_diagnostics_index(diag_dir: Path) -> dict[str, Any]:
+    entries: list[dict[str, Any]] = []
+    by_date: dict[str, dict[str, Any]] = {}
+    for path in list_diagnostics_jsons(diag_dir):
+        data = json.loads(path.read_text(encoding="utf-8"))
+        entry = diagnostics_index_entry(data, path.stem)
+        entries.append(entry)
+        prev = by_date.get(entry["date"])
+        if not prev or entry["prefix"] > prev["prefix"]:
+            by_date[entry["date"]] = entry
+    entries.sort(key=lambda e: e["prefix"])
+    latest = entries[-1]["prefix"] if entries else None
+    return {
+        "schema": "direct_pipeline_py.diagnostics_index/v1",
+        "updated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "latest": latest,
+        "runs": entries,
+        "by_date": list(by_date.values()),
+    }
+
+
+def rebuild_diagnostics_archive(diag_dir: Path, cfg: dict[str, Any] | None = None) -> Path:
+    """Write index.json + index.html into the diagnostics output dir."""
+    from pipeline.config import load_config
+    from pipeline.frame_author import inject_author_card
+    from pipeline.frame_nav import inject_frame_nav
+    from pipeline.site_footer import inject_site_footer
+
+    if cfg is None:
+        cfg = load_config()
+
+    diag_dir.mkdir(parents=True, exist_ok=True)
+    index = build_diagnostics_index(diag_dir)
+    index_path = diag_dir / "index.json"
+    index_path.write_text(json.dumps(index, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    frame_path = diag_dir / "index.html"
+    frame_html = build_diagnostics_frame_html(index)
+    frame_html = inject_author_card(frame_html, cfg)
+    frame_html = inject_frame_nav(frame_html, "diagnostics")
+    frame_path.write_text(inject_site_footer(frame_html, cfg), encoding="utf-8")
+    print(f"  OK diagnostics archive {frame_path}")
+    return frame_path
+
+
+def _intensity_score(duration_ms: float, tokens: int) -> float:
+    """0–1 score for heatmap coloring (duration-weighted, token boost)."""
+    mins = max(duration_ms / 60_000, 0.1)
+    tok = max(tokens / 50_000, 0.1)
+    return min(1.0, math.log10(mins * tok) / 2.5)
+
+
+def _ms_label(ms: float) -> str:
+    if ms >= 60_000:
+        return f"{ms / 60_000:.1f}m"
+    if ms >= 1000:
+        return f"{ms / 1000:.1f}s"
+    return f"{ms:.0f}ms"
+
+
+def _heat_color(intensity: float) -> str:
+    if intensity >= 0.85:
+        return "#58a6ff"
+    if intensity >= 0.65:
+        return "#1a6fa0"
+    if intensity >= 0.45:
+        return "#1a4a7a"
+    if intensity >= 0.25:
+        return "#1a3a5c"
+    return "#21262d"
+
+
+def build_diagnostics_frame_html(index: dict[str, Any]) -> str:
+  index_json = json.dumps(index, ensure_ascii=False)
+  return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline Diagnostics</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<style>
+  :root {{
+    --bg: #0d1117; --border: #30363d; --muted: #8b949e; --text: #e6edf3;
+    --accent: #58a6ff; --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }}
+  *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{ font-family: var(--font-sans); background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }}
+  .archive-details {{ background: #0d1117; border-bottom: 1px solid var(--border); flex-shrink: 0; }}
+  .archive-summary {{ list-style: none; cursor: pointer; padding: 12px 24px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; user-select: none; }}
+  .archive-summary::-webkit-details-marker {{ display: none; }}
+  .archive-summary::before {{ content: '▸'; color: var(--muted); font-size: 11px; transition: transform 0.15s; }}
+  .archive-details[open] .archive-summary::before {{ transform: rotate(90deg); }}
+  .archive-title {{ font-size: 12px; font-weight: 600; }}
+  .archive-sub {{ font-size: 11px; color: var(--muted); }}
+  .archive-body {{ padding: 0 24px 16px; }}
+  .archive-header {{ display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }}
+  .archive-legend {{ display: flex; align-items: center; gap: 4px; margin-top: 8px; margin-bottom: 2px; }}
+  .hm-leg-label {{ font-size: 10px; color: var(--muted); }}
+  .hm-swatch {{ width: 13px; height: 13px; border-radius: 2px; }}
+  #heatmap-wrap svg {{ display: block; overflow: visible; }}
+  .year-pills {{ display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; margin-bottom: 2px; }}
+  .year-pill {{
+    font-size: 11px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--border);
+    background: #21262d; color: var(--muted); cursor: pointer;
+  }}
+  .year-pill.active {{ background: #388bfd26; color: var(--accent); border-color: #388bfd66; }}
+  .diag-panel {{ flex: 1; min-height: 0; border: none; width: 100%; background: #0f172a; }}
+  .panel-bar {{
+    display: flex; align-items: center; gap: 12px; padding: 8px 16px;
+    border-bottom: 1px solid var(--border); font-size: 11px; color: var(--muted); flex-shrink: 0;
+  }}
+  .panel-bar strong {{ color: var(--text); }}
+  .panel-bar a {{ color: var(--accent); text-decoration: none; }}
+  .frame-error {{ padding: 24px; color: #f85149; }}
+  .d3-tooltip {{
+    position: fixed; background: #161b22; border: 1px solid var(--border); color: var(--text);
+    padding: 6px 10px; border-radius: 6px; font-size: 12px; pointer-events: none; opacity: 0;
+    transition: opacity 0.15s; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  }}
+  svg text {{ font-family: var(--font-sans); }}
+</style>
+</head>
+<body>
+
+<details class="archive-details" id="archive-details" open>
+  <summary class="archive-summary">
+    <span class="archive-title">Diagnostics Archive</span>
+    <span class="archive-sub">Pipeline runs · click a day on the heatmap</span>
+  </summary>
+  <div class="archive-body">
+    <div class="archive-header">
+      <span class="archive-sub">Wall time intensity · hover for tokens &amp; LLM stats</span>
+    </div>
+    <div id="heatmap-wrap"></div>
+    <div class="archive-legend">
+      <span class="hm-leg-label">Faster</span>
+      <span class="hm-swatch" style="background:#21262d"></span>
+      <span class="hm-swatch" style="background:#1a3a5c"></span>
+      <span class="hm-swatch" style="background:#1a6fa0"></span>
+      <span class="hm-swatch" style="background:#58a6ff"></span>
+      <span class="hm-leg-label">Slower</span>
+    </div>
+    <div class="year-pills" id="year-pills"></div>
+    __AUTHOR_CARD__
+  </div>
+</details>
+
+<div class="panel-bar" id="panel-bar">
+  <span>Select a run above</span>
+</div>
+<iframe class="diag-panel" id="diag-panel" title="Pipeline diagnostics detail"></iframe>
+<div class="d3-tooltip" id="tooltip"></div>
+
+<script>window.__DIAG_INDEX__ = {index_json};</script>
+<script>
+const HEAT_COLORS = [[0,'#21262d'],[0.25,'#1a3a5c'],[0.45,'#1a4a7a'],[0.65,'#1a6fa0'],[0.85,'#58a6ff']];
+let currentPrefix = null;
+let heatmapCells = {{}};
+let heatmapYear = null;
+
+function heatmapEntries(index) {{
+  return index.by_date || index.runs || [];
+}}
+
+function yearsFromEntries(entries) {{
+  const years = new Set();
+  entries.forEach(e => {{ if (e.date) years.add(parseInt(e.date.slice(0, 4), 10)); }});
+  years.add(new Date().getFullYear());
+  return Array.from(years).sort((a, b) => a - b);
+}}
+
+function heatmapRange(viewYear, today) {{
+  const start = new Date(viewYear, 0, 1);
+  start.setDate(start.getDate() - start.getDay());
+  let end;
+  if (viewYear === today.getFullYear()) {{
+    end = new Date(today);
+    end.setDate(end.getDate() - end.getDay() + 6);
+  }} else {{
+    end = new Date(viewYear, 11, 31);
+    end.setDate(end.getDate() - end.getDay() + 6);
+  }}
+  return {{ start, end }};
+}}
+
+function renderYearPills(entries, onYear) {{
+  const bar = document.getElementById('year-pills');
+  if (!bar) return;
+  const years = yearsFromEntries(entries);
+  bar.innerHTML = '';
+  bar.style.display = 'flex';
+  years.forEach(y => {{
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'year-pill' + (y === heatmapYear ? ' active' : '');
+    btn.textContent = String(y);
+    btn.onclick = () => {{ heatmapYear = y; onYear(y); }};
+    bar.appendChild(btn);
+  }});
+}}
+
+function syncYearPills() {{
+  document.querySelectorAll('.year-pill').forEach(btn => {{
+    btn.classList.toggle('active', parseInt(btn.textContent, 10) === heatmapYear);
+  }});
+}}
+
+function ensureHeatmapYear(index, prefix) {{
+  const entries = heatmapEntries(index);
+  const years = yearsFromEntries(entries);
+  if (prefix) {{
+    const entry = entries.find(e => e.prefix === prefix);
+    if (entry) {{
+      heatmapYear = parseInt(entry.date.slice(0, 4), 10);
+      return;
+    }}
+  }}
+  if (!heatmapYear || !years.includes(heatmapYear)) {{
+    heatmapYear = years[years.length - 1] || new Date().getFullYear();
+  }}
+}}
+
+function heatColor(intensity) {{
+  let c = HEAT_COLORS[0][1];
+  for (const [t, col] of HEAT_COLORS) if (intensity >= t) c = col;
+  return c;
+}}
+
+function selectRun(prefix, opts) {{
+  opts = opts || {{}};
+  const entry = (window.__DIAG_INDEX__.runs || []).find(r => r.prefix === prefix);
+  if (!entry || prefix === currentPrefix) return;
+  currentPrefix = prefix;
+  const iframe = document.getElementById('diag-panel');
+  iframe.src = prefix + '.diagnostics.html';
+  const bar = document.getElementById('panel-bar');
+  bar.innerHTML = '<strong>' + entry.display_date + '</strong> · ' + entry.total_duration_label +
+    ' · ' + (entry.llm_call_count || 0) + ' LLM calls · ' +
+    ((entry.total_tokens || 0).toLocaleString()) + ' tokens · ' +
+    '<a href="' + prefix + '.diagnostics.json" target="_blank" rel="noopener">JSON</a>';
+  const index = window.__DIAG_INDEX__;
+  const entryYear = parseInt(entry.date.slice(0, 4), 10);
+  if (index && entryYear !== heatmapYear) {{
+    heatmapYear = entryYear;
+    renderHeatmap(index);
+    syncYearPills();
+  }}
+  highlightHeatmap(prefix);
+  document.title = 'Diagnostics | ' + entry.date;
+  if (opts.updateHash !== false && location.hash !== '#' + prefix) {{
+    history.replaceState(null, '', '#' + prefix);
+  }}
+}}
+
+function initialPrefix(index) {{
+  const hash = location.hash.replace(/^#/, '');
+  if (hash && (index.runs || []).some(r => r.prefix === hash)) return hash;
+  return index.latest || (index.runs || []).slice(-1)[0]?.prefix;
+}}
+
+function highlightHeatmap(prefix) {{
+  Object.entries(heatmapCells).forEach(([p, cell]) => {{
+    cell.attr('stroke', p === prefix ? '#58a6ff' : null).attr('stroke-width', p === prefix ? 2 : null);
+  }});
+}}
+
+function renderHeatmap(index) {{
+  const wrap = document.getElementById('heatmap-wrap');
+  wrap.innerHTML = '';
+  heatmapCells = {{}};
+  const byDate = {{}};
+  (index.by_date || index.runs || []).forEach(d => {{ byDate[d.date] = d; }});
+  const latest = (index.runs || []).slice(-1)[0];
+  const today = latest ? new Date(latest.date + 'T12:00:00') : new Date();
+  const viewYear = heatmapYear || today.getFullYear();
+  const CELL = 13, GAP = 3, STEP = CELL + GAP;
+  const DAY_LABELS = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
+  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const {{ start, end }} = heatmapRange(viewYear, today);
+  const weeks = [];
+  const cur = new Date(start);
+  while (cur <= end) {{
+    const week = [];
+    for (let d = 0; d < 7; d++) {{ week.push(new Date(cur)); cur.setDate(cur.getDate() + 1); }}
+    weeks.push(week);
+  }}
+  const W = weeks.length * STEP + 32, H = 7 * STEP + 24;
+  const tooltip = document.getElementById('tooltip');
+  const svg = d3.select(wrap).append('svg').attr('width', W).attr('height', H).style('overflow', 'visible');
+  DAY_LABELS.forEach((lbl, i) => {{
+    if (!lbl) return;
+    svg.append('text').attr('x', 26).attr('y', 18 + i * STEP + CELL * 0.75).attr('text-anchor', 'end').attr('font-size', 9).attr('fill', '#8b949e').text(lbl);
+  }});
+  let lastMonth = -1;
+  weeks.forEach((week, wi) => {{
+    const mo = week[0].getMonth();
+    if (mo !== lastMonth) {{
+      lastMonth = mo;
+      svg.append('text').attr('x', 30 + wi * STEP).attr('y', 10).attr('font-size', 9).attr('fill', '#8b949e').text(MONTHS[mo]);
+    }}
+  }});
+  weeks.forEach((week, wi) => {{
+    week.forEach((day, di) => {{
+      const dateStr = day.toISOString().slice(0, 10);
+      const entry = byDate[dateStr];
+      const isFuture = day > today;
+      let fill = '#21262d';
+      if (entry && !isFuture) fill = heatColor(entry.intensity || 0);
+      const x = 30 + wi * STEP, y = 18 + di * STEP;
+      const cell = svg.append('rect').attr('x', x).attr('y', y).attr('width', CELL).attr('height', CELL).attr('rx', 2).attr('fill', fill)
+        .style('cursor', entry ? 'pointer' : 'default');
+      if (entry) {{
+        heatmapCells[entry.prefix] = cell;
+        cell.on('mouseover', function() {{
+          if (entry.prefix !== currentPrefix) d3.select(this).attr('stroke', '#8b949e').attr('stroke-width', 1);
+          tooltip.style.opacity = '1';
+          tooltip.innerHTML = '<div style="font-weight:700;margin-bottom:4px">' + entry.display_date + '</div>' +
+            '<div style="font-size:10px;color:#8b949e">' + (entry.model || '') + '</div>' +
+            '<div style="font-size:10px;margin-top:4px">' + entry.total_duration_label + ' · ' +
+            (entry.llm_call_count || 0) + ' calls · ' + ((entry.total_tokens || 0).toLocaleString()) + ' tok</div>';
+        }})
+        .on('mousemove', function(event) {{ tooltip.style.left = (event.clientX + 14) + 'px'; tooltip.style.top = (event.clientY - 12) + 'px'; }})
+        .on('mouseout', function() {{
+          if (entry.prefix !== currentPrefix) d3.select(this).attr('stroke', null);
+          tooltip.style.opacity = '0';
+        }})
+        .on('click', () => selectRun(entry.prefix));
+      }}
+    }});
+  }});
+}}
+
+function init() {{
+  const index = window.__DIAG_INDEX__;
+  if (!index) throw new Error('Missing diagnostics index');
+  const prefix = initialPrefix(index);
+  ensureHeatmapYear(index, prefix);
+  renderYearPills(heatmapEntries(index), () => {{
+    renderHeatmap(index);
+    highlightHeatmap(currentPrefix);
+    syncYearPills();
+  }});
+  renderHeatmap(index);
+  if (prefix) selectRun(prefix);
+  window.addEventListener('hashchange', () => {{
+    const p = location.hash.replace(/^#/, '');
+    if (p && p !== currentPrefix && (index.runs || []).some(r => r.prefix === p)) {{
+      selectRun(p, {{ updateHash: false }});
+    }}
+  }});
+}}
+
+init().catch(err => {{
+  document.body.insertAdjacentHTML('beforeend', '<div class="frame-error">' + err.message + '</div>');
+}});
+</script>
+</body>
+</html>"""

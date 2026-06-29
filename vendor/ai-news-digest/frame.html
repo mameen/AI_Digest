@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1117; --card-bg: #161b22; --masthead-bg: #0d1117;
+    --masthead-text: #e6edf3; --accent: #58a6ff;
+    --pill-active-bg: #388bfd26; --pill-active-text: #58a6ff;
+    --pill-inactive-bg: #21262d; --pill-inactive-text: #8b949e;
+    --border: #30363d; --muted: #8b949e; --sig-color: #d29922;
+    --text: #e6edf3;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .heatmap-details { background: #0d1117; border-bottom: 1px solid var(--border); }
+  .heatmap-summary { list-style: none; cursor: pointer; padding: 12px 24px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; user-select: none; }
+  .heatmap-summary::-webkit-details-marker { display: none; }
+  .heatmap-summary::before { content: '▸'; color: var(--muted); font-size: 11px; transition: transform 0.15s; }
+  .heatmap-details[open] .heatmap-summary::before { transform: rotate(90deg); }
+  .heatmap-title { font-size: 12px; font-weight: 600; color: var(--text); }
+  .heatmap-sub { font-size: 11px; color: var(--muted); }
+  .heatmap-body { padding: 0 24px 16px; }
+  .heatmap-header { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+  .heatmap-legend { display: flex; align-items: center; gap: 4px; margin-top: 8px; margin-bottom: 2px; }
+  .hm-leg-label { font-size: 10px; color: var(--muted); }
+  .hm-swatch { width: 13px; height: 13px; border-radius: 2px; }
+  #heatmap-wrap svg { display: block; overflow: visible; }
+  .year-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; margin-bottom: 2px; }
+  .year-pill {
+    font-size: 11px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--border);
+    background: #21262d; color: var(--muted); cursor: pointer;
+  }
+  .year-pill.active { background: #388bfd26; color: var(--accent); border-color: #388bfd66; }
+
+  .frame-error { padding: 24px; color: #f85149; }
+  .d3-tooltip { position: fixed; background: #161b22; border: 1px solid var(--border); color: var(--text); padding: 6px 10px; border-radius: 6px; font-size: 12px; font-family: var(--font-sans); pointer-events: none; opacity: 0; transition: opacity 0.15s; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+  svg text { font-family: var(--font-sans); }
+
+  __CONTENT_STYLES__
+</style>
+</head>
+<body>
+
+<details class="heatmap-details" id="heatmap-details" open>
+  <summary class="heatmap-summary">
+    <span class="heatmap-title">Digest Archive</span>
+    <span class="heatmap-sub">GitHub-style navigator · click a day</span>
+  </summary>
+  <div class="heatmap-body">
+    <div class="heatmap-header">
+      <span class="heatmap-sub">Hover for summary · selected day loads below</span>
+    </div>
+    <div id="heatmap-wrap"></div>
+    <div class="heatmap-legend">
+      <span class="hm-leg-label">Less</span>
+      <span class="hm-swatch" style="background:#21262d"></span>
+      <span class="hm-swatch" style="background:#1a3a5c"></span>
+      <span class="hm-swatch" style="background:#1a6fa0"></span>
+      <span class="hm-swatch" style="background:#58a6ff"></span>
+      <span class="hm-leg-label">More</span>
+    </div>
+    <div class="year-pills" id="year-pills"></div>
+    __AUTHOR_CARD__
+  </div>
+</details>
+
+__CONTENT_PANEL__
+
+<div class="d3-tooltip" id="tooltip"></div>
+
+__INDEX_SCRIPT__
+__DIGESTS_SCRIPT__
+<script>
+let digestData = null;
+const leaderboards = __LEADERBOARDS__;
+let currentPrefix = null;
+let heatmapCells = {};
+let heatmapYear = null;
+
+function heatmapEntries(index) {
+  return index.by_date || index.digests || [];
+}
+
+function yearsFromEntries(entries) {
+  const years = new Set();
+  entries.forEach(e => { if (e.date) years.add(parseInt(e.date.slice(0, 4), 10)); });
+  years.add(new Date().getFullYear());
+  return Array.from(years).sort((a, b) => a - b);
+}
+
+function heatmapRange(viewYear, today) {
+  const start = new Date(viewYear, 0, 1);
+  start.setDate(start.getDate() - start.getDay());
+  let end;
+  if (viewYear === today.getFullYear()) {
+    end = new Date(today);
+    end.setDate(end.getDate() - end.getDay() + 6);
+  } else {
+    end = new Date(viewYear, 11, 31);
+    end.setDate(end.getDate() - end.getDay() + 6);
+  }
+  return { start, end };
+}
+
+function renderYearPills(entries, onYear) {
+  const bar = document.getElementById('year-pills');
+  if (!bar) return;
+  const years = yearsFromEntries(entries);
+  bar.innerHTML = '';
+  bar.style.display = 'flex';
+  years.forEach(y => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'year-pill' + (y === heatmapYear ? ' active' : '');
+    btn.textContent = String(y);
+    btn.onclick = () => { heatmapYear = y; onYear(y); };
+    bar.appendChild(btn);
+  });
+}
+
+function syncYearPills() {
+  document.querySelectorAll('.year-pill').forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.textContent, 10) === heatmapYear);
+  });
+}
+
+function ensureHeatmapYear(index, prefix) {
+  const entries = heatmapEntries(index);
+  const years = yearsFromEntries(entries);
+  if (prefix) {
+    const entry = entries.find(e => e.prefix === prefix);
+    if (entry) {
+      heatmapYear = parseInt(entry.date.slice(0, 4), 10);
+      return;
+    }
+  }
+  if (!heatmapYear || !years.includes(heatmapYear)) {
+    heatmapYear = years[years.length - 1] || new Date().getFullYear();
+  }
+}
+
+const HM_CAT_COLORS = {
+  leaderboard: '#F39C12', aisearch: '#F0883E', 'agentic-ai': '#0EA5E9', llm: '#2C3E50',
+  'image-gen': '#8E44AD', 'design-ai': '#16A085',
+  typography: '#C0392B', robotics: '#E67E22', research: '#2980B9'
+};
+
+__DIGEST_APP__
+
+function selectDigest(prefix, opts) {
+  opts = opts || {};
+  const data = window.__AIDIGEST_DIGESTS__ && window.__AIDIGEST_DIGESTS__[prefix];
+  if (!data || prefix === currentPrefix) return;
+  currentPrefix = prefix;
+  digestData = data;
+  resetDigestView();
+  render(data);
+  document.title = 'AI Daily | ' + (data.generated_at || prefix).slice(0, 10);
+  const index = window.__AIDIGEST_INDEX__;
+  const entryYear = parseInt((data.generated_at || prefix).slice(0, 4), 10);
+  if (index && entryYear !== heatmapYear) {
+    heatmapYear = entryYear;
+    renderHeatmap(index);
+    syncYearPills();
+  }
+  highlightHeatmap(prefix);
+  if (opts.updateHash !== false && location.hash !== '#' + prefix) {
+    history.replaceState(null, '', '#' + prefix);
+  }
+}
+
+function initialPrefix(index) {
+  const hash = location.hash.replace(/^#/, '');
+  if (hash && window.__AIDIGEST_DIGESTS__ && window.__AIDIGEST_DIGESTS__[hash]) return hash;
+  return index.latest || (index.digests || []).slice(-1)[0]?.prefix;
+}
+
+function highlightHeatmap(prefix) {
+  Object.entries(heatmapCells).forEach(([p, cell]) => {
+    cell.attr('stroke', p === prefix ? '#58a6ff' : null).attr('stroke-width', p === prefix ? 2 : null);
+  });
+}
+
+function renderHeatmap(index) {
+  const wrap = document.getElementById('heatmap-wrap');
+  wrap.innerHTML = '';
+  heatmapCells = {};
+  const byDate = {};
+  (index.by_date || index.digests || []).forEach(d => { byDate[d.date] = d; });
+  const entries = heatmapEntries(index);
+  const latest = (index.digests || []).slice(-1)[0];
+  const today = latest ? new Date(latest.date + 'T12:00:00') : new Date();
+  const viewYear = heatmapYear || today.getFullYear();
+  const CELL = 13, GAP = 3, STEP = CELL + GAP;
+  const DAY_LABELS = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
+  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const { start, end } = heatmapRange(viewYear, today);
+  const weeks = [];
+  const cur = new Date(start);
+  while (cur <= end) {
+    const week = [];
+    for (let d = 0; d < 7; d++) { week.push(new Date(cur)); cur.setDate(cur.getDate() + 1); }
+    weeks.push(week);
+  }
+  const W = weeks.length * STEP + 32, H = 7 * STEP + 24;
+  const tooltip = document.getElementById('tooltip');
+  const svg = d3.select(wrap).append('svg').attr('width', W).attr('height', H).style('overflow', 'visible');
+  DAY_LABELS.forEach((lbl, i) => {
+    if (!lbl) return;
+    svg.append('text').attr('x', 26).attr('y', 18 + i * STEP + CELL * 0.75).attr('text-anchor', 'end').attr('font-size', 9).attr('fill', '#8b949e').text(lbl);
+  });
+  let lastMonth = -1;
+  weeks.forEach((week, wi) => {
+    const mo = week[0].getMonth();
+    if (mo !== lastMonth) {
+      lastMonth = mo;
+      svg.append('text').attr('x', 30 + wi * STEP).attr('y', 10).attr('font-size', 9).attr('fill', '#8b949e').text(MONTHS[mo]);
+    }
+  });
+  weeks.forEach((week, wi) => {
+    week.forEach((day, di) => {
+      const dateStr = day.toISOString().slice(0, 10);
+      const entry = byDate[dateStr];
+      const isFuture = day > today;
+      let fill = '#21262d';
+      if (entry && !isFuture) {
+        const sig = entry.avg_significance;
+        fill = sig >= 4.5 ? '#58a6ff' : sig >= 3.5 ? '#1a6fa0' : sig >= 2.5 ? '#1a4a7a' : '#1a3a5c';
+      }
+      const x = 30 + wi * STEP, y = 18 + di * STEP;
+      const cell = svg.append('rect').attr('x', x).attr('y', y).attr('width', CELL).attr('height', CELL).attr('rx', 2).attr('fill', fill)
+        .style('cursor', entry ? 'pointer' : 'default');
+      if (entry) {
+        heatmapCells[entry.prefix] = cell;
+        const topCat = Object.entries(entry.categories || {}).sort((a,b)=>b[1]-a[1])[0]?.[0];
+        const dotColor = HM_CAT_COLORS[topCat] || '#888';
+        svg.append('circle').attr('cx', x + CELL - 3).attr('cy', y + 3).attr('r', 2).attr('fill', dotColor).style('pointer-events', 'none');
+        cell.on('mouseover', function() {
+          if (entry.prefix !== currentPrefix) d3.select(this).attr('stroke', '#8b949e').attr('stroke-width', 1);
+          tooltip.style.opacity = '1';
+          const cats = Object.entries(entry.categories || {}).sort((a,b)=>b[1]-a[1]).slice(0,3)
+            .map(([id,n])=>`<span style="color:${HM_CAT_COLORS[id]||'#888'}">●</span> ${id} (${n})`).join('  ');
+          tooltip.innerHTML = `<div style="font-weight:700;margin-bottom:4px">${entry.display_date || entry.date}</div>
+            <div style="color:#8b949e;font-size:10px;margin-bottom:6px;max-width:260px;line-height:1.4">${entry.summary || ''}</div>
+            <div style="font-size:10px">${cats}</div>
+            <div style="font-size:10px;color:#8b949e;margin-top:4px">${entry.story_count} stories · avg sig ${entry.avg_significance}</div>`;
+        })
+        .on('mousemove', function(event) { tooltip.style.left = (event.clientX + 14) + 'px'; tooltip.style.top = (event.clientY - 12) + 'px'; })
+        .on('mouseout', function() {
+          if (entry.prefix !== currentPrefix) d3.select(this).attr('stroke', null);
+          tooltip.style.opacity = '0';
+        })
+        .on('click', () => selectDigest(entry.prefix));
+      }
+    });
+  });
+}
+
+function init() {
+  const index = window.__AIDIGEST_INDEX__;
+  if (!index) throw new Error('Could not load index.json (expected sibling of index.html)');
+  if (!window.__AIDIGEST_DIGESTS__) throw new Error('Missing digest data');
+  const prefix = initialPrefix(index);
+  ensureHeatmapYear(index, prefix);
+  renderYearPills(heatmapEntries(index), () => {
+    renderHeatmap(index);
+    highlightHeatmap(currentPrefix);
+    syncYearPills();
+  });
+  renderHeatmap(index);
+  selectDigest(prefix);
+  window.addEventListener('hashchange', () => {
+    const prefix = location.hash.replace(/^#/, '');
+    if (prefix && prefix !== currentPrefix && window.__AIDIGEST_DIGESTS__[prefix]) {
+      selectDigest(prefix, { updateHash: false });
+    }
+  });
+}
+
+init().catch(err => {
+  document.body.insertAdjacentHTML('beforeend', '<div class="frame-error">' + err.message + '</div>');
+});
+</script>
+</body>
+</html>

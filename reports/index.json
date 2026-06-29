@@ -1,0 +1,452 @@
+{
+  "updated_at": "2026-06-29T05:16:49Z",
+  "latest": "20260629120000",
+  "digests": [
+    {
+      "prefix": "20260425143000",
+      "date": "2026-04-25",
+      "display_date": "SATURDAY, APRIL 25, 2026",
+      "summary": "DeepSeek V4 drops as the biggest open-source model ever, OpenAI's GPT Images 2.0 cracks multilingual typography, and April 2026 closes out the most packed month for LLM releases in AI history.",
+      "story_count": 18,
+      "avg_significance": 3.9,
+      "categories": {
+        "llm": 5,
+        "image-gen": 4,
+        "design-ai": 3,
+        "typography": 3,
+        "robotics": 1,
+        "research": 2
+      }
+    },
+    {
+      "prefix": "20260427143000",
+      "date": "2026-04-27",
+      "display_date": "MONDAY, APRIL 27, 2026",
+      "summary": "A humanoid robot outruns every human in history at the Beijing Half-Marathon, OpenAI kills Sora on April 26, GPT-5.5 launches with autonomous OS control, and Alibaba's Wan 2.7 challenges GPT Image 2 on typography with 50 million font training samples.",
+      "story_count": 34,
+      "avg_significance": 3.7,
+      "categories": {
+        "leaderboard": 4,
+        "aisearch": 6,
+        "llm": 5,
+        "image-gen": 4,
+        "design-ai": 4,
+        "typography": 3,
+        "robotics": 4,
+        "research": 4
+      }
+    },
+    {
+      "prefix": "20260429120000",
+      "date": "2026-04-29",
+      "display_date": "WEDNESDAY, APRIL 29, 2026",
+      "summary": "Claude Mythos stays locked — offensive cybersecurity capabilities deemed too dangerous; Grok 4.3's 4-agent council rewrites inference-time architecture; humanoid robots make Bloomberg's cover; NVIDIA ships Nemotron 3 Nano Omni open omni model at 9× efficiency.",
+      "story_count": 32,
+      "avg_significance": 3.5,
+      "categories": {
+        "leaderboard": 4,
+        "aisearch": 7,
+        "llm": 5,
+        "image-gen": 3,
+        "design-ai": 3,
+        "typography": 3,
+        "robotics": 3,
+        "research": 4
+      }
+    },
+    {
+      "prefix": "20260501120000",
+      "date": "2026-05-01",
+      "display_date": "FRIDAY, MAY 01, 2026",
+      "summary": "Anthropic launches Claude Design to rival Figma and Adobe; Meta acquires Assured Robot Intelligence for humanoid AI; OpenAI-Microsoft end Azure exclusivity; Grok 4.3 enters the AA Intelligence top 10.",
+      "story_count": 43,
+      "avg_significance": 3.8,
+      "categories": {
+        "leaderboard": 5,
+        "aisearch": 13,
+        "llm": 5,
+        "image-gen": 4,
+        "design-ai": 5,
+        "typography": 3,
+        "robotics": 4,
+        "research": 4
+      }
+    },
+    {
+      "prefix": "20260509120000",
+      "date": "2026-05-09",
+      "display_date": "SATURDAY, MAY 09, 2026",
+      "summary": "Claude Opus 4.7 sets a new SWE-bench record at 87.6% as Anthropic embeds AI natively into Adobe CC, Blender, and SketchUp via Claude Connectors — while Monotype's natural-language font search and Figma's MCP server signal a new era of AI-native design tooling.",
+      "story_count": 53,
+      "avg_significance": 3.3,
+      "categories": {
+        "leaderboard": 5,
+        "aisearch": 22,
+        "llm": 5,
+        "image-gen": 4,
+        "design-ai": 5,
+        "typography": 4,
+        "robotics": 4,
+        "research": 4
+      }
+    },
+    {
+      "prefix": "20260512120000",
+      "date": "2026-05-12",
+      "display_date": "TUESDAY, MAY 12, 2026",
+      "summary": "Self-evolving AI breaks into the mainstream: AlphaEvolve discovers better algorithms across DNA sequencing and quantum circuits, GPT-5.5 Instant cuts hallucinations 52% as ChatGPT's new default, Grok 4.3 enters the top-10 leaderboard, and Monotype AI Search transforms how designers find fonts.",
+      "story_count": 51,
+      "avg_significance": 3.5,
+      "categories": {
+        "leaderboard": 4,
+        "aisearch": 21,
+        "llm": 5,
+        "image-gen": 4,
+        "design-ai": 4,
+        "typography": 4,
+        "robotics": 4,
+        "research": 5
+      }
+    },
+    {
+      "prefix": "20260515120000",
+      "date": "2026-05-16",
+      "display_date": "SATURDAY, MAY 16, 2026",
+      "summary": "IBM's MAMMAL biology foundation model outperforms AlphaFold 3 on antibody design; SubQ launches the first subquadratic LLM with a 12M-token context; Mercury 2 hits 1,000 tokens/sec via diffusion; Claude Design + Canva AI 2.0 redraw the creative toolchain.",
+      "story_count": 62,
+      "avg_significance": 4.0,
+      "categories": {
+        "leaderboard": 6,
+        "aisearch": 18,
+        "llm": 6,
+        "image-gen": 5,
+        "design-ai": 5,
+        "typography": 5,
+        "robotics": 5,
+        "research": 6,
+        "agentic-ai": 6
+      }
+    },
+    {
+      "prefix": "20260517120000",
+      "date": "2026-05-17",
+      "display_date": "SUNDAY, MAY 17, 2026",
+      "summary": "Anthropic surpasses OpenAI in enterprise adoption for the first time; Google Antigravity IDE ships A2A + AgentKit 2.0; Unitree reveals a $650K rideable mecha; and ChatGPT gains bank-account-connected personal finance.",
+      "story_count": 66,
+      "avg_significance": 3.9,
+      "categories": {
+        "leaderboard": 6,
+        "aisearch": 24,
+        "agentic-ai": 6,
+        "llm": 5,
+        "image-gen": 5,
+        "design-ai": 5,
+        "typography": 5,
+        "robotics": 4,
+        "research": 6
+      }
+    },
+    {
+      "prefix": "20260531120000",
+      "date": "2026-05-31",
+      "display_date": "SUNDAY, MAY 31, 2026",
+      "summary": "Claude Opus 4.8 claims the global #1 intelligence rank hours after Anthropic raises $65B at a $965B valuation; Google I/O delivers Gemini Omni (any-input-to-video), Gemini 3.5 Flash (81% SWE-bench), and Figma's native canvas Design Agent; and Google Co-scientist becomes the first AI hypothesis engine peer-reviewed in Nature.",
+      "story_count": 65,
+      "avg_significance": 4.0,
+      "categories": {
+        "leaderboard": 6,
+        "aisearch": 23,
+        "agentic-ai": 6,
+        "llm": 5,
+        "image-gen": 5,
+        "design-ai": 5,
+        "typography": 4,
+        "robotics": 5,
+        "research": 6
+      }
+    },
+    {
+      "prefix": "20260603120000",
+      "date": "2026-06-03",
+      "display_date": "WEDNESDAY, JUNE 03, 2026",
+      "summary": "NVIDIA Cosmos 3 sweeps every open-source leaderboard (T2I, I2V, robot policy) with 8,680 HuggingFace stars on debut; Microsoft Build 2026 ships a family of 7 in-house MAI models plus a 1-petaflop dev box; Anthropic confidentially files S-1 for a potential trillion-dollar IPO; and MiniMax M3 lands with 1M-context native multimodality.",
+      "story_count": 51,
+      "avg_significance": 4.1,
+      "categories": {
+        "leaderboard": 6,
+        "aisearch": 11,
+        "agentic-ai": 5,
+        "llm": 4,
+        "image-gen": 5,
+        "design-ai": 5,
+        "typography": 4,
+        "robotics": 5,
+        "research": 6
+      }
+    },
+    {
+      "prefix": "20260627120000",
+      "date": "2026-06-27",
+      "display_date": "SATURDAY, JUNE 27, 2026",
+      "summary": "OpenAI previews GPT-5.6 Sol under a US government-vetted access lock while Anthropic's Claude Fable 5 remains suspended; Krea 2 ships as the most uncensored open-source image model with ComfyUI workflows; Figma Config 2026 and Adobe Firefly agentic studio redefine the design stack; and Figure AI hits one robot per hour at BotQ.",
+      "story_count": 51,
+      "avg_significance": 4.0,
+      "categories": {
+        "leaderboard": 6,
+        "aisearch": 10,
+        "agentic-ai": 5,
+        "llm": 5,
+        "image-gen": 5,
+        "design-ai": 5,
+        "typography": 4,
+        "robotics": 5,
+        "research": 6
+      }
+    },
+    {
+      "prefix": "20260629120000",
+      "date": "2026-06-29",
+      "display_date": "MONDAY, JUNE 29, 2026",
+      "summary": "Frontier model intelligence races accelerate alongside transformative shifts in collaborative design workflows, hybrid retrieval systems, and enterprise-grade robotics, marking a definitive pivot toward scalable, real-world AI deployment.",
+      "story_count": 61,
+      "avg_significance": 3.9,
+      "categories": {
+        "leaderboard": 6,
+        "analytics": 5,
+        "aisearch": 10,
+        "agentic-ai": 5,
+        "llm": 5,
+        "rag": 5,
+        "image-gen": 5,
+        "design-ai": 5,
+        "typography": 4,
+        "robotics": 5,
+        "research": 6
+      }
+    }
+  ],
+  "by_date": [
+    {
+      "prefix": "20260425143000",
+      "date": "2026-04-25",
+      "display_date": "SATURDAY, APRIL 25, 2026",
+      "summary": "DeepSeek V4 drops as the biggest open-source model ever, OpenAI's GPT Images 2.0 cracks multilingual typography, and April 2026 closes out the most packed month for LLM releases in AI history.",
+      "story_count": 18,
+      "avg_significance": 3.9,
+      "categories": {
+        "llm": 5,
+        "image-gen": 4,
+        "design-ai": 3,
+        "typography": 3,
+        "robotics": 1,
+        "research": 2
+      }
+    },
+    {
+      "prefix": "20260427143000",
+      "date": "2026-04-27",
+      "display_date": "MONDAY, APRIL 27, 2026",
+      "summary": "A humanoid robot outruns every human in history at the Beijing Half-Marathon, OpenAI kills Sora on April 26, GPT-5.5 launches with autonomous OS control, and Alibaba's Wan 2.7 challenges GPT Image 2 on typography with 50 million font training samples.",
+      "story_count": 34,
+      "avg_significance": 3.7,
+      "categories": {
+        "leaderboard": 4,
+        "aisearch": 6,
+        "llm": 5,
+        "image-gen": 4,
+        "design-ai": 4,
+        "typography": 3,
+        "robotics": 4,
+        "research": 4
+      }
+    },
+    {
+      "prefix": "20260429120000",
+      "date": "2026-04-29",
+      "display_date": "WEDNESDAY, APRIL 29, 2026",
+      "summary": "Claude Mythos stays locked — offensive cybersecurity capabilities deemed too dangerous; Grok 4.3's 4-agent council rewrites inference-time architecture; humanoid robots make Bloomberg's cover; NVIDIA ships Nemotron 3 Nano Omni open omni model at 9× efficiency.",
+      "story_count": 32,
+      "avg_significance": 3.5,
+      "categories": {
+        "leaderboard": 4,
+        "aisearch": 7,
+        "llm": 5,
+        "image-gen": 3,
+        "design-ai": 3,
+        "typography": 3,
+        "robotics": 3,
+        "research": 4
+      }
+    },
+    {
+      "prefix": "20260501120000",
+      "date": "2026-05-01",
+      "display_date": "FRIDAY, MAY 01, 2026",
+      "summary": "Anthropic launches Claude Design to rival Figma and Adobe; Meta acquires Assured Robot Intelligence for humanoid AI; OpenAI-Microsoft end Azure exclusivity; Grok 4.3 enters the AA Intelligence top 10.",
+      "story_count": 43,
+      "avg_significance": 3.8,
+      "categories": {
+        "leaderboard": 5,
+        "aisearch": 13,
+        "llm": 5,
+        "image-gen": 4,
+        "design-ai": 5,
+        "typography": 3,
+        "robotics": 4,
+        "research": 4
+      }
+    },
+    {
+      "prefix": "20260509120000",
+      "date": "2026-05-09",
+      "display_date": "SATURDAY, MAY 09, 2026",
+      "summary": "Claude Opus 4.7 sets a new SWE-bench record at 87.6% as Anthropic embeds AI natively into Adobe CC, Blender, and SketchUp via Claude Connectors — while Monotype's natural-language font search and Figma's MCP server signal a new era of AI-native design tooling.",
+      "story_count": 53,
+      "avg_significance": 3.3,
+      "categories": {
+        "leaderboard": 5,
+        "aisearch": 22,
+        "llm": 5,
+        "image-gen": 4,
+        "design-ai": 5,
+        "typography": 4,
+        "robotics": 4,
+        "research": 4
+      }
+    },
+    {
+      "prefix": "20260512120000",
+      "date": "2026-05-12",
+      "display_date": "TUESDAY, MAY 12, 2026",
+      "summary": "Self-evolving AI breaks into the mainstream: AlphaEvolve discovers better algorithms across DNA sequencing and quantum circuits, GPT-5.5 Instant cuts hallucinations 52% as ChatGPT's new default, Grok 4.3 enters the top-10 leaderboard, and Monotype AI Search transforms how designers find fonts.",
+      "story_count": 51,
+      "avg_significance": 3.5,
+      "categories": {
+        "leaderboard": 4,
+        "aisearch": 21,
+        "llm": 5,
+        "image-gen": 4,
+        "design-ai": 4,
+        "typography": 4,
+        "robotics": 4,
+        "research": 5
+      }
+    },
+    {
+      "prefix": "20260515120000",
+      "date": "2026-05-16",
+      "display_date": "SATURDAY, MAY 16, 2026",
+      "summary": "IBM's MAMMAL biology foundation model outperforms AlphaFold 3 on antibody design; SubQ launches the first subquadratic LLM with a 12M-token context; Mercury 2 hits 1,000 tokens/sec via diffusion; Claude Design + Canva AI 2.0 redraw the creative toolchain.",
+      "story_count": 62,
+      "avg_significance": 4.0,
+      "categories": {
+        "leaderboard": 6,
+        "aisearch": 18,
+        "llm": 6,
+        "image-gen": 5,
+        "design-ai": 5,
+        "typography": 5,
+        "robotics": 5,
+        "research": 6,
+        "agentic-ai": 6
+      }
+    },
+    {
+      "prefix": "20260517120000",
+      "date": "2026-05-17",
+      "display_date": "SUNDAY, MAY 17, 2026",
+      "summary": "Anthropic surpasses OpenAI in enterprise adoption for the first time; Google Antigravity IDE ships A2A + AgentKit 2.0; Unitree reveals a $650K rideable mecha; and ChatGPT gains bank-account-connected personal finance.",
+      "story_count": 66,
+      "avg_significance": 3.9,
+      "categories": {
+        "leaderboard": 6,
+        "aisearch": 24,
+        "agentic-ai": 6,
+        "llm": 5,
+        "image-gen": 5,
+        "design-ai": 5,
+        "typography": 5,
+        "robotics": 4,
+        "research": 6
+      }
+    },
+    {
+      "prefix": "20260531120000",
+      "date": "2026-05-31",
+      "display_date": "SUNDAY, MAY 31, 2026",
+      "summary": "Claude Opus 4.8 claims the global #1 intelligence rank hours after Anthropic raises $65B at a $965B valuation; Google I/O delivers Gemini Omni (any-input-to-video), Gemini 3.5 Flash (81% SWE-bench), and Figma's native canvas Design Agent; and Google Co-scientist becomes the first AI hypothesis engine peer-reviewed in Nature.",
+      "story_count": 65,
+      "avg_significance": 4.0,
+      "categories": {
+        "leaderboard": 6,
+        "aisearch": 23,
+        "agentic-ai": 6,
+        "llm": 5,
+        "image-gen": 5,
+        "design-ai": 5,
+        "typography": 4,
+        "robotics": 5,
+        "research": 6
+      }
+    },
+    {
+      "prefix": "20260603120000",
+      "date": "2026-06-03",
+      "display_date": "WEDNESDAY, JUNE 03, 2026",
+      "summary": "NVIDIA Cosmos 3 sweeps every open-source leaderboard (T2I, I2V, robot policy) with 8,680 HuggingFace stars on debut; Microsoft Build 2026 ships a family of 7 in-house MAI models plus a 1-petaflop dev box; Anthropic confidentially files S-1 for a potential trillion-dollar IPO; and MiniMax M3 lands with 1M-context native multimodality.",
+      "story_count": 51,
+      "avg_significance": 4.1,
+      "categories": {
+        "leaderboard": 6,
+        "aisearch": 11,
+        "agentic-ai": 5,
+        "llm": 4,
+        "image-gen": 5,
+        "design-ai": 5,
+        "typography": 4,
+        "robotics": 5,
+        "research": 6
+      }
+    },
+    {
+      "prefix": "20260627120000",
+      "date": "2026-06-27",
+      "display_date": "SATURDAY, JUNE 27, 2026",
+      "summary": "OpenAI previews GPT-5.6 Sol under a US government-vetted access lock while Anthropic's Claude Fable 5 remains suspended; Krea 2 ships as the most uncensored open-source image model with ComfyUI workflows; Figma Config 2026 and Adobe Firefly agentic studio redefine the design stack; and Figure AI hits one robot per hour at BotQ.",
+      "story_count": 51,
+      "avg_significance": 4.0,
+      "categories": {
+        "leaderboard": 6,
+        "aisearch": 10,
+        "agentic-ai": 5,
+        "llm": 5,
+        "image-gen": 5,
+        "design-ai": 5,
+        "typography": 4,
+        "robotics": 5,
+        "research": 6
+      }
+    },
+    {
+      "prefix": "20260629120000",
+      "date": "2026-06-29",
+      "display_date": "MONDAY, JUNE 29, 2026",
+      "summary": "Frontier model intelligence races accelerate alongside transformative shifts in collaborative design workflows, hybrid retrieval systems, and enterprise-grade robotics, marking a definitive pivot toward scalable, real-world AI deployment.",
+      "story_count": 61,
+      "avg_significance": 3.9,
+      "categories": {
+        "leaderboard": 6,
+        "analytics": 5,
+        "aisearch": 10,
+        "agentic-ai": 5,
+        "llm": 5,
+        "rag": 5,
+        "image-gen": 5,
+        "design-ai": 5,
+        "typography": 4,
+        "robotics": 5,
+        "research": 6
+      }
+    }
+  ]
+}
