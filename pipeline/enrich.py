@@ -23,7 +23,7 @@ from pipeline.editorial import (
     stories_for_prompt,
     strip_private_fields,
 )
-from pipeline.grounding import collect_roots, strip_ungrounded
+from pipeline.grounding import annotate_ungrounded, collect_ingestion_urls, collect_roots
 from pipeline.history import format_prior_context
 from pipeline.diagnostics import instrumented_llm_call
 from pipeline.schema import CategoryStories, DigestHeader, GapCategories
@@ -174,12 +174,18 @@ def _enrich_multipass(
         for cat in gap.categories:
             enriched[cat.id] = make_category(cat.id, [s.model_dump() for s in cat.stories])
 
-    # ── Guard: drop stories that cite a bare leaderboard/crawl root ───────────
+    # ── Reflection guard: keep the topic, demote any ungrounded link ──────────
+    # A gap story is grounded only if it cites a URL the model was actually shown
+    # (the ingestion context). Roots and bare domains stay ungrounded too. Rather
+    # than drop the topic, we clear the link and mark it source_pending.
     roots = collect_roots(skeleton.get("requires_web_fetch"))
-    cleaned, dropped = strip_ungrounded(list(enriched.values()), roots)
-    if dropped:
-        print(f"  [guard] dropped {len(dropped)} ungrounded stories (no real article url)")
-        for d in dropped:
+    ingestion_urls = collect_ingestion_urls(ingestion)
+    cleaned, demoted = annotate_ungrounded(
+        list(enriched.values()), roots, ingestion_urls=ingestion_urls
+    )
+    if demoted:
+        print(f"  [guard] demoted {len(demoted)} ungrounded links (topic kept, source pending)")
+        for d in demoted:
             print(f"          - {d['category']}: {d['source']!r} -> {d['url']}")
     enriched = {c["id"]: c for c in cleaned}
 

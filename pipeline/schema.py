@@ -12,12 +12,13 @@ class Story(BaseModel):
     title: str
     summary: str
     source: str
-    url: str
+    url: str | None = None
     significance: int = Field(ge=1, le=5)
     novelty: int = Field(ge=1, le=5)
     relevance_design: int = Field(ge=1, le=5)
     tags: list[str] = Field(default_factory=list)
     image_url: str | None = None
+    source_pending: bool = False
 
 
 class Category(BaseModel):
@@ -45,12 +46,13 @@ class StoryEnrich(BaseModel):
     title: str
     summary: str
     source: str
-    url: str
+    url: str | None = None
     significance: int = Field(ge=1, le=5)
     novelty: int = Field(ge=1, le=5)
     relevance_design: int = Field(ge=1, le=5)
     tags: list[str] = Field(default_factory=list)
     image_url: str | None = None
+    source_pending: bool = False
 
 
 class CategoryStories(BaseModel):

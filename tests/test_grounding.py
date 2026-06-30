@@ -12,6 +12,8 @@ import unittest
 from pathlib import Path
 
 from pipeline.grounding import (
+    annotate_ungrounded,
+    collect_ingestion_urls,
     collect_roots,
     find_ungrounded,
     is_ungrounded,
@@ -104,6 +106,71 @@ class Strip(unittest.TestCase):
         kept, _ = strip_ungrounded(self._categories(), ROOTS)
         robotics = next(c for c in kept if c["id"] == "robotics")
         self.assertEqual([s["title"] for s in robotics["stories"]], ["real"])
+
+
+class IngestionAllowSet(unittest.TestCase):
+    """In-context check: a URL the model was never shown is ungrounded."""
+
+    INGESTION = (
+        "## Crawl: figure.md\n"
+        "Figure announced production ramp — see https://www.figure.ai/news/project-go-big.\n"
+        "Also [BMW deal](https://figure.ai/news/f-03-at-bmw) and a trailing ref "
+        "(https://artificialanalysis.ai/models/mercury-2).\n"
+    )
+
+    def test_collect_extracts_and_normalizes(self) -> None:
+        urls = collect_ingestion_urls(self.INGESTION)
+        self.assertIn("figure.ai/news/project-go-big", urls)
+        self.assertIn("figure.ai/news/f-03-at-bmw", urls)  # markdown-link paren trimmed
+        self.assertIn("artificialanalysis.ai/models/mercury-2", urls)  # trailing ) trimmed
+
+    def test_fabricated_deep_path_is_ungrounded_in_context(self) -> None:
+        allow = collect_ingestion_urls(self.INGESTION)
+        # The 404 /blog/ path the root-only check can't catch:
+        self.assertFalse(is_ungrounded("https://www.figure.ai/blog/project-go-big", ROOTS))
+        self.assertTrue(
+            is_ungrounded("https://www.figure.ai/blog/project-go-big", ROOTS, allow_urls=allow)
+        )
+
+    def test_shown_url_is_grounded_in_context(self) -> None:
+        allow = collect_ingestion_urls(self.INGESTION)
+        self.assertFalse(
+            is_ungrounded("https://figure.ai/news/project-go-big", ROOTS, allow_urls=allow)
+        )
+
+
+class Annotate(unittest.TestCase):
+    """Keep-the-topic policy: demote the link, never drop the story."""
+
+    def _categories(self) -> list[dict]:
+        return [
+            {"id": "leaderboard", "stories": [{"title": "ok", "url": "https://arena.ai/leaderboard/text-to-image"}]},
+            {
+                "id": "robotics",
+                "stories": [
+                    {"title": "real", "source": "Figure AI", "url": "https://www.figure.ai/news/project-go-big"},
+                    {"title": "fab", "source": "Figure AI", "url": "https://www.figure.ai/blog/invented"},
+                ],
+            },
+        ]
+
+    def test_topic_kept_and_link_demoted(self) -> None:
+        allow = {"figure.ai/news/project-go-big"}
+        kept, demoted = annotate_ungrounded(self._categories(), ROOTS, ingestion_urls=allow)
+        robotics = next(c for c in kept if c["id"] == "robotics")
+        # Both stories survive — no topic lost.
+        self.assertEqual([s["title"] for s in robotics["stories"]], ["real", "fab"])
+        real, fab = robotics["stories"]
+        self.assertEqual(real["url"], "https://www.figure.ai/news/project-go-big")
+        self.assertFalse(real.get("source_pending"))
+        self.assertIsNone(fab["url"])
+        self.assertTrue(fab["source_pending"])
+        self.assertEqual([d["title"] for d in demoted], ["fab"])
+
+    def test_leaderboard_root_exempt(self) -> None:
+        kept, _ = annotate_ungrounded(self._categories(), ROOTS)
+        lb = next(c for c in kept if c["id"] == "leaderboard")
+        self.assertEqual(lb["stories"][0]["url"], "https://arena.ai/leaderboard/text-to-image")
 
 
 class PublishedDigestClean(unittest.TestCase):

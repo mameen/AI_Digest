@@ -295,6 +295,14 @@ function renderLeaderboard(grid) {
   build();
 }
 
+// Story link: real article -> "Read source"; ungrounded/demoted -> neutral
+// "Source pending" affordance (the topic is kept, we just have no verified URL).
+function sourceLinkHtml(url) {
+  return url
+    ? '<a class="card-link" href="' + url + '" target="_blank" rel="noopener">Read source →</a>'
+    : '<span class="card-link card-link-pending" title="No verified source link yet">Source pending</span>';
+}
+
 function buildCard(story) {
   const color = CAT_COLORS[story.catId] || '#888';
   const div = document.createElement('div');
@@ -310,7 +318,7 @@ function buildCard(story) {
     '<div class="card-expand" id="expand-' + story.id + '">' +
       '<p class="card-summary">' + story.summary + '</p>' +
       '<div class="card-tags">' + tags + '</div>' +
-      '<a class="card-link" href="' + story.url + '" target="_blank" rel="noopener">Read source →</a>' +
+      sourceLinkHtml(story.url) +
     '</div>';
   div.onclick = () => toggleCard(story.id, div);
   return div;
@@ -502,5 +510,5 @@ function initLayoutResizer() {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { PROVIDER_COLORS, CAT_COLORS, LB_GLOSSARY, lbTooltip, resolveLbColumns, renderLbLinks };
+  module.exports = { PROVIDER_COLORS, CAT_COLORS, LB_GLOSSARY, lbTooltip, resolveLbColumns, renderLbLinks, sourceLinkHtml };
 }
