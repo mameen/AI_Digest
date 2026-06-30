@@ -23,6 +23,7 @@ from pipeline.editorial import (
     stories_for_prompt,
     strip_private_fields,
 )
+from pipeline.grounding import collect_roots, strip_ungrounded
 from pipeline.history import format_prior_context
 from pipeline.diagnostics import instrumented_llm_call
 from pipeline.schema import CategoryStories, DigestHeader, GapCategories
@@ -172,6 +173,15 @@ def _enrich_multipass(
         )
         for cat in gap.categories:
             enriched[cat.id] = make_category(cat.id, [s.model_dump() for s in cat.stories])
+
+    # ── Guard: drop stories that cite a bare leaderboard/crawl root ───────────
+    roots = collect_roots(skeleton.get("requires_web_fetch"))
+    cleaned, dropped = strip_ungrounded(list(enriched.values()), roots)
+    if dropped:
+        print(f"  [guard] dropped {len(dropped)} ungrounded stories (no real article url)")
+        for d in dropped:
+            print(f"          - {d['category']}: {d['source']!r} -> {d['url']}")
+    enriched = {c["id"]: c for c in cleaned}
 
     # ── Pass 4: daily summary + video metadata ───────────────────────────────
     categories = order_categories(list(enriched.values()))
@@ -401,7 +411,13 @@ def _llm_gap_fill(
 ## Task
 Author editorial stories for categories: **{cats}**.
 Editorial window: {window.history_from.isoformat()} through {window.start.isoformat()}.
-Write exactly these counts: {counts}. Use real URLs from sources below.
+Target counts: {counts}.
+
+## Source grounding (STRICT)
+- Every story MUST cite a real, specific article/page `url` that appears verbatim in the Ingestion context below.
+- NEVER invent a `source` name. Use the actual publisher exactly (e.g. "Artificial Analysis", "Arena.ai", "Vellum").
+- Leaderboard *index/root* pages (e.g. `.../leaderboards/models`, `.../leaderboard/text-to-image`, `vellum.ai/*-leaderboard`) are NOT article links — never cite them here; those belong to the leaderboard category.
+- If you cannot ground a story in a real, specific URL from the context, write FEWER stories (even zero) for that category. Do not fabricate to hit the count.
 
 ## Already covered (do not duplicate)
 {enriched_so_far}

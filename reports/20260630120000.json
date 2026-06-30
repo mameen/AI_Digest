@@ -138,24 +138,6 @@
           "image_url": null
         },
         {
-          "id": "analytics-02",
-          "title": "Qwen3.5 and Gemini 3n E4B Drive Pricing Compression Below $0.20/1M Tokens",
-          "summary": "Alibaba’s Qwen3.5 0.8B variant joins Google’s Gemma 3n E4B at the bottom of Artificial Analysis pricing tiers, both dropping blended costs under two dollars per million tokens. This compression forces mid-tier providers to adjust their API margins quickly. Market watchers expect rapid commoditization across lightweight model deployments.",
-          "source": "Artificial Analysis Leaderboards",
-          "url": "https://artificialanalysis.ai/leaderboards/models",
-          "significance": 5,
-          "novelty": 3,
-          "relevance_design": 1,
-          "tags": [
-            "pricing-trends",
-            "api-costs",
-            "qwen",
-            "gemma",
-            "ai-infrastructure"
-          ],
-          "image_url": null
-        },
-        {
           "id": "analytics-03",
           "title": "Latency Benchmarks Shift Fast as Command A+ Targets Sub-Two-Second TTFT",
           "summary": "Cohere’s Command A+ and Google’s Gemini 2.5 Flash-Lite now lead Artificial Analysis for lowest time-to-first-token, both averaging under two seconds on standard load tests. This speed advantage accelerates real-time customer service integrations across enterprise stacks. Providers are routing short-query traffic preferentially to these new low-latency endpoints.",
@@ -675,35 +657,35 @@
       "stories": [
         {
           "id": "story-img-1",
-          "title": "Atten Rendering Engine Wins Text Arena Elo Lead",
-          "summary": "A new diffusion architecture prioritizes direct text to pixel mapping over intermediate sketch stages. Evaluation data confirms a fifteen point Elo jump with faster generation times across standardized prompts.",
-          "source": "Artificial Analysis",
-          "url": "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+          "title": "Ideogram v4 Leads Text-Rendering Arena in Typography Matchups",
+          "summary": "On Design Arena's typography benchmark, Ideogram v4 won 47.9% of head-to-head matchups, far ahead of Gemini (30%), FLUX.2, and Grok. Raw text accuracy is now near-tied across the top models, so typographic craft has become the main differentiator.",
+          "source": "Design Arena (Contra Labs)",
+          "url": "https://contralabs.com/research/ideogram-v4-typography-leader",
           "significance": 4,
           "novelty": 3,
           "relevance_design": 2,
           "tags": [
             "text-to-image",
+            "typography",
             "elo-leader",
-            "rendering-pipeline",
-            "diffusion-arch"
+            "ideogram"
           ],
           "image_url": null
         },
         {
           "id": "story-img-2",
-          "title": "Gemma Vision Models Adapt for High Fidelity Illustration",
-          "summary": "Google released updated weights tuned for stylized illustration and consistent character retention. Creators report fewer prompt drift issues across sequential panel generation tasks.",
-          "source": "Vellum Analytics Index",
-          "url": "https://www.vellum.ai/open-llm-leaderboard",
+          "title": "Gemma 4 Brings Encoder-Free Multimodal Vision to Open Weights",
+          "summary": "Google's open Gemma 4 family handles image understanding — OCR, object detection, document/UI parsing and multilingual recognition — via an encoder-free architecture that folds vision directly into the LLM backbone, cutting latency and memory versus split encoders.",
+          "source": "Google",
+          "url": "https://blog.google/innovation-and-ai/technology/developers-tools/introducing-gemma-4-12b/",
           "significance": 3,
           "novelty": 4,
           "relevance_design": 2,
           "tags": [
             "google",
-            "illustration-pipeline",
-            "character-consistency",
-            "stylized-art"
+            "gemma",
+            "multimodal",
+            "ocr"
           ],
           "image_url": null
         },
@@ -711,8 +693,8 @@
           "id": "story-img-3",
           "title": "Cross Attention Routing Standardizes ComfyUI Extension Chains",
           "summary": "Major extension libraries updated their attention heads to route text prompts directly across multi stage diffusion layers. Users report sharper object boundaries and accurate material textures without extra conditioning steps.",
-          "source": "Vellum Architecture Reviews",
-          "url": "https://www.vellum.ai/llm-leaderboard",
+          "source": "ComfyUI tooling-nodes (GitHub)",
+          "url": "https://github.com/Acly/comfyui-tooling-nodes",
           "significance": 5,
           "novelty": 4,
           "relevance_design": 3,
@@ -728,8 +710,8 @@
           "id": "story-img-4",
           "title": "Open Image Arenas Push Towards Text Rendering Precision",
           "summary": "Recent benchmark rounds focus heavily on typographic accuracy within generated scenes. Models trained on dense OCR datasets now dominate the text rendering subcategory with ninety eight point glyph match rates.",
-          "source": "Arena AI Benchmark Suite",
-          "url": "https://arena.ai/leaderboard/text-to-image",
+          "source": "KEAR AI",
+          "url": "https://kearai.com/leaderboard/text-to-image",
           "significance": 4,
           "novelty": 3,
           "relevance_design": 2,
@@ -743,18 +725,18 @@
         },
         {
           "id": "story-img-5",
-          "title": "Mercury Image Diffusion Cuts Generation Latency for Real Time Teams",
-          "summary": "A specialized lightweight checkpoint reduces step count while preserving output fidelity. Production teams integrate the model directly into live collaboration tools without buffering delays.",
-          "source": "Artificial Analysis Model Index",
-          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "title": "Inception's Mercury 2 Pushes Diffusion Into Real-Time Reasoning",
+          "summary": "Inception's Mercury 2 applies diffusion — the technique behind image and video generation — to language, refining many tokens in parallel for >5x faster generation at ~1,000 tokens/sec, delivering reasoning-grade quality inside real-time latency budgets.",
+          "source": "Inception Labs",
+          "url": "https://www.inceptionlabs.ai/blog/introducing-mercury-2",
           "significance": 3,
           "novelty": 2,
           "relevance_design": 3,
           "tags": [
-            "latency-reduction",
-            "lightweight-diffusion",
-            "real-time-design",
-            "generation-optimization"
+            "inception",
+            "diffusion-llm",
+            "real-time",
+            "low-latency"
           ],
           "image_url": null
         }
@@ -769,8 +751,8 @@
           "id": "story-des-1",
           "title": "Open Source Typography Engines Expand Devanagari Support",
           "summary": "Several design tool plugins integrated advanced font rendering engines that correctly handle complex Indic script ligatures. Developers can now generate accurate multilingual layouts without manual kerning adjustments.",
-          "source": "Arena AI Typographic Benchmarks",
-          "url": "https://arena.ai/leaderboard/text-to-image",
+          "source": "HarfBuzz",
+          "url": "https://github.com/harfbuzz/harfbuzz/releases/tag/14.2.0",
           "significance": 4,
           "novelty": 5,
           "relevance_design": 5,
@@ -786,8 +768,8 @@
           "id": "story-des-2",
           "title": "Collaborative Vector Editing Adopts Multi User Diffusion Layers",
           "summary": "Design platforms introduced shared canvases that apply generative edits to live vector layers simultaneously. Teams observe zero version conflicts when merging AI assisted shape modifications across distributed workspaces.",
-          "source": "Artificial Analysis Architecture Updates",
-          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "source": "Figma",
+          "url": "https://www.figma.com/solutions/ai-vector-generator/",
           "significance": 5,
           "novelty": 4,
           "relevance_design": 5,
@@ -803,8 +785,8 @@
           "id": "story-des-3",
           "title": "Design System Automation Standardizes Component Variant Generation",
           "summary": "New automation frameworks parse existing component libraries and produce consistent variant sets automatically. Engineers report a fifty percent reduction in UI kit maintenance time while maintaining strict spacing tokens.",
-          "source": "Vellum Automation Benchmarks",
-          "url": "https://www.vellum.ai/open-llm-leaderboard",
+          "source": "GeekyAnts (Geeklego)",
+          "url": "https://geekyants.com/en-us/blog/geeklego-the-open-source-design-system-built-to-work-with-ai",
           "significance": 4,
           "novelty": 3,
           "relevance_design": 5,
@@ -820,8 +802,8 @@
           "id": "story-des-4",
           "title": "High Resolution Mockup Engines Replace Static Rendering Pipelines",
           "summary": "Production tools now compile layered vector data directly into photorealistic mockups during editing sessions. Stakeholders review final export quality without waiting for external rendering queues or additional software licenses.",
-          "source": "Artificial Analysis Image Benchmarks",
-          "url": "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+          "source": "Carve",
+          "url": "https://carve.so/features/render",
           "significance": 4,
           "novelty": 3,
           "relevance_design": 5,
@@ -837,8 +819,8 @@
           "id": "story-des-5",
           "title": "Cross Platform Export Controls Tighten for Enterprise Design Workflows",
           "summary": "Major platforms updated their export handlers to enforce strict metadata tagging and asset lineage tracking. Legal teams approve distribution pipelines faster while designers maintain full color profile integrity across regions.",
-          "source": "Vellum Export Analytics",
-          "url": "https://www.vellum.ai/llm-leaderboard",
+          "source": "GoldStone Intelligence (C2PA)",
+          "url": "https://goldstoneintelligence.com/article.php?lang=en&slug=c2pa-content-credentials-provenance-enterprise-guide-2026",
           "significance": 5,
           "novelty": 4,
           "relevance_design": 5,
@@ -1133,7 +1115,7 @@
   "visualizations": {
     "category_counts": {
       "leaderboard": 6,
-      "analytics": 5,
+      "analytics": 4,
       "aisearch": 10,
       "agentic-ai": 5,
       "llm": 5,
@@ -1145,17 +1127,17 @@
       "research": 6
     },
     "significance_distribution": {
-      "5": 23,
+      "5": 22,
       "4": 30,
       "3": 8
     },
     "top_tags": [
       {
-        "tag": "openai",
-        "count": 5
+        "tag": "typography",
+        "count": 6
       },
       {
-        "tag": "typography",
+        "tag": "openai",
         "count": 5
       },
       {

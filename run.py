@@ -17,6 +17,7 @@ See README.md for setup (Ollama, Playwright, yt-dlp).
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 import webbrowser
 from pathlib import Path
@@ -29,6 +30,7 @@ from pipeline.dates import build_run_window
 from pipeline.diagnostics import finish_collector, init_collector
 from pipeline.enrich import enrich_digest
 from pipeline.fetch import crawl_leaderboards, fetch_structured_sources, run_preflight
+from pipeline.grounding import collect_roots
 from pipeline.history import load_prior_digests
 from pipeline.paths import cache_dir, diagnostics_dir, reports_dir
 from pipeline.render import render
@@ -112,7 +114,9 @@ def main() -> None:
 
     print("\n[3/4] Validate")
     with collector.stage("validate", "Validate"):
-        errors = validate_digest(cfg, digest)
+        skeleton = json.loads(preflight_path.read_text(encoding="utf-8"))
+        roots = collect_roots(skeleton.get("requires_web_fetch"))
+        errors = validate_digest(cfg, digest, roots=roots)
         apply_validation(cfg, errors)
 
     print("\n[4/4] Render: HTML + archive index")
