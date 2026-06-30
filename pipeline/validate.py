@@ -5,7 +5,11 @@ from __future__ import annotations
 from typing import Any
 
 
-def validate_digest(cfg: dict[str, Any], data: dict[str, Any]) -> list[str]:
+def validate_digest(
+    cfg: dict[str, Any], data: dict[str, Any], roots: set[str] | None = None
+) -> list[str]:
+    from pipeline.grounding import collect_roots, find_ungrounded
+
     vcfg = cfg.get("validation", {})
     errors: list[str] = []
 
@@ -35,6 +39,13 @@ def validate_digest(cfg: dict[str, Any], data: dict[str, Any]) -> list[str]:
         target = targets.get(cid)
         if target is not None and counts.get(cid, 0) > max(int(target), limit):
             errors.append(f"{cid} count {counts[cid]} looks uncured (target {target})")
+
+    # Source grounding: non-leaderboard stories must not cite a bare leaderboard/crawl root
+    check_roots = roots if roots is not None else collect_roots(None)
+    for off in find_ungrounded(categories, check_roots):
+        errors.append(
+            f"ungrounded story in {off['category']}: {off['source']!r} -> {off['url']}"
+        )
 
     return errors
 

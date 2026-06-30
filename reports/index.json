@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-30T11:15:55Z",
+  "updated_at": "2026-06-30T19:18:15Z",
   "latest": "20260630120000",
   "digests": [
     {
@@ -229,11 +229,11 @@
       "date": "2026-06-30",
       "display_date": "TUESDAY, JUNE 30, 2026",
       "summary": "Claude Fable 5 leads intelligence rankings and the Text Arena as Grok launches agentic testing, deep context windows mature, open-source typography gains traction, Figure AI scales robot production, and researchers shift from parameter scaling to architectural efficiency.",
-      "story_count": 61,
+      "story_count": 60,
       "avg_significance": 4.2,
       "categories": {
         "leaderboard": 6,
-        "analytics": 5,
+        "analytics": 4,
         "aisearch": 10,
         "agentic-ai": 5,
         "llm": 5,
@@ -474,11 +474,11 @@
       "date": "2026-06-30",
       "display_date": "TUESDAY, JUNE 30, 2026",
       "summary": "Claude Fable 5 leads intelligence rankings and the Text Arena as Grok launches agentic testing, deep context windows mature, open-source typography gains traction, Figure AI scales robot production, and researchers shift from parameter scaling to architectural efficiency.",
-      "story_count": 61,
+      "story_count": 60,
       "avg_significance": 4.2,
       "categories": {
         "leaderboard": 6,
-        "analytics": 5,
+        "analytics": 4,
         "aisearch": 10,
         "agentic-ai": 5,
         "llm": 5,
