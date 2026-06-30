@@ -23,7 +23,12 @@ from pipeline.editorial import (
     stories_for_prompt,
     strip_private_fields,
 )
-from pipeline.grounding import annotate_ungrounded, collect_ingestion_urls, collect_roots
+from pipeline.grounding import (
+    annotate_ungrounded,
+    collect_ingestion_urls,
+    collect_roots,
+    collect_skeleton_urls,
+)
 from pipeline.history import format_prior_context
 from pipeline.diagnostics import instrumented_llm_call
 from pipeline.schema import CategoryStories, DigestHeader, GapCategories
@@ -175,11 +180,13 @@ def _enrich_multipass(
             enriched[cat.id] = make_category(cat.id, [s.model_dump() for s in cat.stories])
 
     # ── Reflection guard: keep the topic, demote any ungrounded link ──────────
-    # A gap story is grounded only if it cites a URL the model was actually shown
-    # (the ingestion context). Roots and bare domains stay ungrounded too. Rather
-    # than drop the topic, we clear the link and mark it source_pending.
+    # A story is grounded only if it cites a URL the model was actually shown:
+    # the shared crawl ingestion context, OR (for curated categories enriched
+    # from their own per-category preflight feeds) a URL in the skeleton. Roots
+    # and bare domains stay ungrounded. Rather than drop the topic, we clear the
+    # link and mark it source_pending.
     roots = collect_roots(skeleton.get("requires_web_fetch"))
-    ingestion_urls = collect_ingestion_urls(ingestion)
+    ingestion_urls = collect_ingestion_urls(ingestion) | collect_skeleton_urls(skeleton)
     cleaned, demoted = annotate_ungrounded(
         list(enriched.values()), roots, ingestion_urls=ingestion_urls
     )

@@ -15,6 +15,7 @@ from pipeline.grounding import (
     annotate_ungrounded,
     collect_ingestion_urls,
     collect_roots,
+    collect_skeleton_urls,
     find_ungrounded,
     is_ungrounded,
     normalize_url,
@@ -139,6 +140,25 @@ class IngestionAllowSet(unittest.TestCase):
         )
 
 
+class SkeletonAllowSet(unittest.TestCase):
+    """Curated-feed URLs must count as grounded, even when absent from crawls."""
+
+    def test_real_preflight_feed_urls_collected(self) -> None:
+        urls = collect_skeleton_urls(_PREFLIGHT_DATA)
+        # Curated categories (aisearch/typography/research) carry these links in
+        # their per-category feeds, not the shared crawl ingestion string.
+        self.assertTrue(any(u.startswith("youtube.com/watch") for u in urls))
+        self.assertTrue(any("ilovetypography.com" in u for u in urls))
+        self.assertTrue(any("huggingface.co/papers" in u for u in urls))
+
+    def test_curated_link_grounded_via_skeleton_not_crawl(self) -> None:
+        crawl_only = collect_ingestion_urls("## Crawl: x\nNothing relevant here.\n")
+        allow = crawl_only | collect_skeleton_urls(_PREFLIGHT_DATA)
+        url = "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=2420s"
+        self.assertTrue(is_ungrounded(url, ROOTS, allow_urls=crawl_only))  # crawl alone misses it
+        self.assertFalse(is_ungrounded(url, ROOTS, allow_urls=allow))  # skeleton rescues it
+
+
 class Annotate(unittest.TestCase):
     """Keep-the-topic policy: demote the link, never drop the story."""
 
@@ -171,6 +191,23 @@ class Annotate(unittest.TestCase):
         kept, _ = annotate_ungrounded(self._categories(), ROOTS)
         lb = next(c for c in kept if c["id"] == "leaderboard")
         self.assertEqual(lb["stories"][0]["url"], "https://arena.ai/leaderboard/text-to-image")
+
+
+class FindUngrounded(unittest.TestCase):
+    def test_demoted_story_is_not_an_offender(self) -> None:
+        # A guard-demoted story (url cleared, source_pending) shows no link, so
+        # validation must not flag it; only a live ungrounded URL is an offender.
+        cats = [
+            {
+                "id": "robotics",
+                "stories": [
+                    {"title": "kept", "source": "Figure AI", "url": None, "source_pending": True},
+                    {"title": "bad", "source": "X", "url": "https://arena.ai/leaderboard/text-to-image"},
+                ],
+            }
+        ]
+        offenders = find_ungrounded(cats, ROOTS)
+        self.assertEqual([o["title"] for o in offenders], ["bad"])
 
 
 class PublishedDigestClean(unittest.TestCase):

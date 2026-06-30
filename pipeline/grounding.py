@@ -80,6 +80,25 @@ def collect_ingestion_urls(ingestion: str) -> set[str]:
     return urls
 
 
+def collect_skeleton_urls(skeleton: dict[str, Any] | None) -> set[str]:
+    """Normalized article URLs carried by the preflight skeleton's stories.
+
+    Curated categories (aisearch, typography, research) are enriched from their
+    own preflight feeds, which are passed to the model per-category rather than
+    via the shared crawl ingestion string. Their real links therefore never
+    appear in :func:`collect_ingestion_urls`; union this set into the allow-set
+    so the guard does not demote a legitimately-sourced curated link.
+    """
+    urls: set[str] = set()
+    for cat in (skeleton or {}).get("categories") or []:
+        for story in cat.get("stories") or []:
+            url = story.get("url") if isinstance(story, dict) else None
+            if url:
+                urls.add(normalize_url(str(url)))
+    urls.discard("")
+    return urls
+
+
 def is_ungrounded(url: str, roots: set[str], *, allow_urls: set[str] | None = None) -> bool:
     """True when ``url`` is unusable as an article link.
 
@@ -191,6 +210,11 @@ def find_ungrounded(
     *,
     exempt_ids: frozenset[str] = _EXEMPT_CATEGORY_IDS,
 ) -> list[dict[str, Any]]:
-    """Non-destructive view of offenders (used by validation)."""
+    """Non-destructive view of offenders (used by validation).
+
+    A story already demoted by the guard (``url`` cleared, ``source_pending``
+    set) shows no link to the reader, so it is not an offender — only a story
+    still presenting an ungrounded URL is reported.
+    """
     _, dropped = strip_ungrounded(categories, roots, exempt_ids=exempt_ids, drop_empty=False)
-    return dropped
+    return [d for d in dropped if (d.get("url") or "").strip()]
