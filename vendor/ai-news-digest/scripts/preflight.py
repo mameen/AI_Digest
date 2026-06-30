@@ -5,7 +5,7 @@ The output file is a near-complete digest skeleton: categories with story cards
 already populated for aisearch, typography, and research. Claude reads this file
 at Step 2 and only needs to:
 
-  1. web_fetch the 5 JS-rendered leaderboard pages (listed in requires_web_fetch)
+  1. web_fetch the 7 JS-rendered leaderboard pages (listed in requires_web_fetch)
   2. Write a 2–3 sentence summary for each story  (significance/novelty/relevance_design = 0 means "unscored")
   3. Assign significance / novelty / relevance_design scores (1–5)
   4. Add the leaderboard, llm, image-gen, design-ai, and robotics categories
@@ -23,6 +23,8 @@ Not fetched (JS-rendered SPAs — Claude's web_fetch handles these):
   ✗ Vellum LLM + Open Leaderboards
   ✗ AA Image Arena
   ✗ Arena.ai Text-to-Image Leaderboard
+  ✗ Arena.ai Text-to-Video Leaderboard
+  ✗ AA Text-to-Video Leaderboard
 
 Output:  .preflight/preflight_YYYYMMDDHHMMSS.json
 
@@ -93,6 +95,20 @@ REQUIRES_WEB_FETCH = [
         "category": "image-gen",
         "priority": "HIGH",
         "why":      "Text Rendering subcategory specifically — cross-post to typography",
+    },
+    {
+        "label":    "Arena.ai Text-to-Video Leaderboard",
+        "url":      "https://arena.ai/leaderboard/text-to-video",
+        "category": "image-gen",
+        "priority": "HIGH",
+        "why":      "Top text-to-video Elo scores (Sora, Veo, Kling, Seedance)",
+    },
+    {
+        "label":    "AA Text-to-Video Leaderboard",
+        "url":      "https://artificialanalysis.ai/video/leaderboard/text-to-video",
+        "category": "image-gen",
+        "priority": "HIGH",
+        "why":      "Artificial Analysis video-gen Elo index",
     },
 ]
 

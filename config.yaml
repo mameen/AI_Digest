@@ -23,6 +23,11 @@ ingestion:
     max_pages: 12
     timeout_seconds: 60
 
+  # Structured-API leaderboard sources (direct JSON, no scraping).
+  # See pipeline/structured_sources.py for the registry.
+  structured_sources:
+    enabled: true
+
 llm:
   enabled: true
   provider: ollama

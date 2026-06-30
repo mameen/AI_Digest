@@ -1,7 +1,7 @@
 {
   "schema": "direct_pipeline_py.diagnostics_index/v1",
-  "updated_at": "2026-06-29T06:45:08Z",
-  "latest": "20260629120000",
+  "updated_at": "2026-06-30T09:18:23Z",
+  "latest": "20260630120000",
   "runs": [
     {
       "prefix": "20260629120000",
@@ -18,6 +18,22 @@
       "model": "qwen3.6:35b",
       "poc_id": "direct_pipeline_py",
       "intensity": 0.6571056092639974
+    },
+    {
+      "prefix": "20260630120000",
+      "date": "2026-06-30",
+      "display_date": "Jun 30, 2026",
+      "started_at": "2026-06-30T09:06:37Z",
+      "finished_at": "2026-06-30T09:18:23Z",
+      "total_duration_ms": 705625.2,
+      "total_duration_label": "11.8m",
+      "total_tokens": 200701,
+      "llm_call_count": 16,
+      "llm_duration_ms": 690718.8,
+      "llm_share_pct": 97.9,
+      "model": "qwen3.6:35b",
+      "poc_id": "ai_digest",
+      "intensity": 0.6696009456100813
     }
   ],
   "by_date": [
@@ -36,6 +52,22 @@
       "model": "qwen3.6:35b",
       "poc_id": "direct_pipeline_py",
       "intensity": 0.6571056092639974
+    },
+    {
+      "prefix": "20260630120000",
+      "date": "2026-06-30",
+      "display_date": "Jun 30, 2026",
+      "started_at": "2026-06-30T09:06:37Z",
+      "finished_at": "2026-06-30T09:18:23Z",
+      "total_duration_ms": 705625.2,
+      "total_duration_label": "11.8m",
+      "total_tokens": 200701,
+      "llm_call_count": 16,
+      "llm_duration_ms": 690718.8,
+      "llm_share_pct": 97.9,
+      "model": "qwen3.6:35b",
+      "poc_id": "ai_digest",
+      "intensity": 0.6696009456100813
     }
   ]
 }
