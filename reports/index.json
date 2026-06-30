@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-06-29T06:45:08Z",
-  "latest": "20260629120000",
+  "updated_at": "2026-06-30T11:15:55Z",
+  "latest": "20260630120000",
   "digests": [
     {
       "prefix": "20260425143000",
@@ -210,6 +210,27 @@
       "summary": "Frontier model intelligence races accelerate alongside transformative shifts in collaborative design workflows, hybrid retrieval systems, and enterprise-grade robotics, marking a definitive pivot toward scalable, real-world AI deployment.",
       "story_count": 61,
       "avg_significance": 3.9,
+      "categories": {
+        "leaderboard": 6,
+        "analytics": 5,
+        "aisearch": 10,
+        "agentic-ai": 5,
+        "llm": 5,
+        "rag": 5,
+        "image-gen": 5,
+        "design-ai": 5,
+        "typography": 4,
+        "robotics": 5,
+        "research": 6
+      }
+    },
+    {
+      "prefix": "20260630120000",
+      "date": "2026-06-30",
+      "display_date": "TUESDAY, JUNE 30, 2026",
+      "summary": "Claude Fable 5 leads intelligence rankings and the Text Arena as Grok launches agentic testing, deep context windows mature, open-source typography gains traction, Figure AI scales robot production, and researchers shift from parameter scaling to architectural efficiency.",
+      "story_count": 61,
+      "avg_significance": 4.2,
       "categories": {
         "leaderboard": 6,
         "analytics": 5,
@@ -434,6 +455,27 @@
       "summary": "Frontier model intelligence races accelerate alongside transformative shifts in collaborative design workflows, hybrid retrieval systems, and enterprise-grade robotics, marking a definitive pivot toward scalable, real-world AI deployment.",
       "story_count": 61,
       "avg_significance": 3.9,
+      "categories": {
+        "leaderboard": 6,
+        "analytics": 5,
+        "aisearch": 10,
+        "agentic-ai": 5,
+        "llm": 5,
+        "rag": 5,
+        "image-gen": 5,
+        "design-ai": 5,
+        "typography": 4,
+        "robotics": 5,
+        "research": 6
+      }
+    },
+    {
+      "prefix": "20260630120000",
+      "date": "2026-06-30",
+      "display_date": "TUESDAY, JUNE 30, 2026",
+      "summary": "Claude Fable 5 leads intelligence rankings and the Text Arena as Grok launches agentic testing, deep context windows mature, open-source typography gains traction, Figure AI scales robot production, and researchers shift from parameter scaling to architectural efficiency.",
+      "story_count": 61,
+      "avg_significance": 4.2,
       "categories": {
         "leaderboard": 6,
         "analytics": 5,

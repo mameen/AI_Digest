@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Diagnostics | 20260630120000</title>
+  <style>
+    :root { font-family: system-ui, sans-serif; background: #0f172a; color: #e2e8f0; }
+    body { margin: 0; padding: 1.5rem 2rem 3rem; max-width: 1100px; }
+    h1 { font-size: 1.35rem; margin: 0 0 0.25rem; }
+    .meta { color: #94a3b8; font-size: 0.9rem; margin-bottom: 1.5rem; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; margin-bottom: 2rem; }
+    .card { background: #1e293b; border-radius: 8px; padding: 0.85rem 1rem; }
+    .card .v { font-size: 1.4rem; font-weight: 600; }
+    .card .k { font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.04em; }
+    h2 { font-size: 1rem; color: #cbd5e1; margin: 1.5rem 0 0.75rem; }
+    .waterfall { background: #1e293b; border-radius: 8px; padding: 1rem; }
+    .row { display: grid; grid-template-columns: 11rem 1fr 8rem; gap: 0.75rem; align-items: center; margin-bottom: 0.5rem; font-size: 0.82rem; }
+    .row.sub .label { padding-left: 0.75rem; color: #94a3b8; font-size: 0.78rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .track { position: relative; height: 1.25rem; background: #0f172a; border-radius: 4px; overflow: hidden; }
+    .bar { position: absolute; top: 0; height: 100%; border-radius: 4px; min-width: 2px; }
+    .bar.llm { background: #f472b6; opacity: 0.85; }
+    .bar.crawl { background: #38bdf8; opacity: 0.75; }
+    .time { text-align: right; color: #94a3b8; font-variant-numeric: tabular-nums; }
+    .axis { display: flex; justify-content: space-between; font-size: 0.7rem; color: #64748b; margin-top: 0.5rem; padding: 0 11rem 0 calc(11rem + 0.75rem); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    th, td { text-align: left; padding: 0.4rem 0.6rem; border-bottom: 1px solid #334155; }
+    th { color: #94a3b8; font-weight: 500; }
+    td.num { text-align: right; font-variant-numeric: tabular-nums; }
+    a { color: #60a5fa; }
+  
+  .site-footer {
+    flex-shrink: 0; padding: 10px 24px; font-size: 11px; color: #8b949e;
+    border-top: 1px solid #30363d; background: #0d1117; text-align: center;
+  }
+  .site-footer a { color: #58a6ff; text-decoration: none; }
+  .site-footer a:hover { text-decoration: underline; }
+  .site-footer-sep { margin: 0 6px; opacity: 0.5; }
+
+</style>
+</head>
+<body>
+  <h1>Pipeline diagnostics</h1>
+  <p class="meta">20260630120000 · 2026-06-30T09:06:37Z → 2026-06-30T09:18:23Z<br>
+  Model: qwen3.6:35b (ollama)</p>
+
+  <div class="cards">
+    <div class="card"><div class="v">11.8m</div><div class="k">Wall time</div></div>
+    <div class="card"><div class="v">3.8s</div><div class="k">CPU time</div></div>
+    <div class="card"><div class="v">16</div><div class="k">LLM calls</div></div>
+    <div class="card"><div class="v">11.5m</div><div class="k">LLM time (97.9%)</div></div>
+    <div class="card"><div class="v">200,701</div><div class="k">Total tokens</div></div>
+    <div class="card"><div class="v">167,754 / 32,947</div><div class="k">Prompt / completion</div></div>
+  </div>
+
+  <h2>Stage waterfall</h2>
+  <div class="waterfall">
+    <div class="row">
+  <span class="label">Preflight</span>
+  <div class="track"><div class="bar" style="left:0.00%;width:0.80%;background:#3b82f6"></div></div>
+  <span class="time">3.0s</span>
+</div><div class="row">
+  <span class="label">Crawl4AI</span>
+  <div class="track"><div class="bar" style="left:0.42%;width:1.45%;background:#8b5cf6"></div></div>
+  <span class="time">10.2s</span>
+</div><div class="row">
+  <span class="label">LLM enrich</span>
+  <div class="track"><div class="bar" style="left:1.87%;width:98.10%;background:#06b6d4"></div></div>
+  <span class="time">11.5m</span>
+</div><div class="row">
+  <span class="label">Validate</span>
+  <div class="track"><div class="bar" style="left:99.97%;width:0.80%;background:#10b981"></div></div>
+  <span class="time">0ms</span>
+</div><div class="row">
+  <span class="label">Render</span>
+  <div class="track"><div class="bar" style="left:99.97%;width:0.80%;background:#f59e0b"></div></div>
+  <span class="time">206ms</span>
+</div>
+    <div class="axis"><span>0</span><span>5.9m</span><span>11.8m</span></div>
+  </div>
+
+  <h2>Crawl4AI fetches</h2>
+  <div class="waterfall">
+    <div class="row sub">
+  <span class="label" title="https://artificialanalysis.ai/leaderboards/models">artificialanalysis.ai/leaderboards/model</span>
+  <div class="track"><div class="bar crawl" style="left:0.42%;width:0.35%"></div></div>
+  <span class="time">2.4s</span>
+</div><div class="row sub">
+  <span class="label" title="https://www.vellum.ai/llm-leaderboard">www.vellum.ai/llm-leaderboard</span>
+  <div class="track"><div class="bar crawl" style="left:0.77%;width:0.30%"></div></div>
+  <span class="time">587ms</span>
+</div><div class="row sub">
+  <span class="label" title="https://www.vellum.ai/open-llm-leaderboard">www.vellum.ai/open-llm-leaderboard</span>
+  <div class="track"><div class="bar crawl" style="left:0.85%;width:0.30%"></div></div>
+  <span class="time">488ms</span>
+</div><div class="row sub">
+  <span class="label" title="https://artificialanalysis.ai/image/leaderboard/text-to-image">artificialanalysis.ai/image/leaderboard/</span>
+  <div class="track"><div class="bar crawl" style="left:0.92%;width:0.30%"></div></div>
+  <span class="time">1.5s</span>
+</div><div class="row sub">
+  <span class="label" title="https://arena.ai/leaderboard/text-to-image">arena.ai/leaderboard/text-to-image</span>
+  <div class="track"><div class="bar crawl" style="left:1.14%;width:0.30%"></div></div>
+  <span class="time">2.0s</span>
+</div>
+  </div>
+
+  <h2>LLM calls</h2>
+  <div class="waterfall">
+    <div class="row sub">
+  <span class="label" title="enrich.aisearch.batch_1/2">enrich.aisearch.batch_1/2</span>
+  <div class="track"><div class="bar llm" style="left:1.90%;width:7.46%"></div></div>
+  <span class="time">52.6s · 11,071 tok</span>
+</div><div class="row sub">
+  <span class="label" title="enrich.aisearch.batch_2/2">enrich.aisearch.batch_2/2</span>
+  <div class="track"><div class="bar llm" style="left:9.35%;width:1.19%"></div></div>
+  <span class="time">8.4s · 3,013 tok</span>
+</div><div class="row sub">
+  <span class="label" title="curate.aisearch">curate.aisearch</span>
+  <div class="track"><div class="bar llm" style="left:10.54%;width:4.03%"></div></div>
+  <span class="time">28.4s · 8,885 tok</span>
+</div><div class="row sub">
+  <span class="label" title="enrich.typography.batch_1/2">enrich.typography.batch_1/2</span>
+  <div class="track"><div class="bar llm" style="left:14.57%;width:7.64%"></div></div>
+  <span class="time">53.9s · 11,335 tok</span>
+</div><div class="row sub">
+  <span class="label" title="enrich.typography.batch_2/2">enrich.typography.batch_2/2</span>
+  <div class="track"><div class="bar llm" style="left:22.21%;width:2.35%"></div></div>
+  <span class="time">16.6s · 3,842 tok</span>
+</div><div class="row sub">
+  <span class="label" title="curate.typography">curate.typography</span>
+  <div class="track"><div class="bar llm" style="left:24.56%;width:3.94%"></div></div>
+  <span class="time">27.8s · 8,473 tok</span>
+</div><div class="row sub">
+  <span class="label" title="enrich.research.batch_1/4">enrich.research.batch_1/4</span>
+  <div class="track"><div class="bar llm" style="left:28.49%;width:8.58%"></div></div>
+  <span class="time">1.0m · 15,041 tok</span>
+</div><div class="row sub">
+  <span class="label" title="enrich.research.batch_2/4">enrich.research.batch_2/4</span>
+  <div class="track"><div class="bar llm" style="left:37.07%;width:8.56%"></div></div>
+  <span class="time">1.0m · 14,680 tok</span>
+</div><div class="row sub">
+  <span class="label" title="enrich.research.batch_3/4">enrich.research.batch_3/4</span>
+  <div class="track"><div class="bar llm" style="left:45.63%;width:9.40%"></div></div>
+  <span class="time">1.1m · 15,394 tok</span>
+</div><div class="row sub">
+  <span class="label" title="enrich.research.batch_4/4">enrich.research.batch_4/4</span>
+  <div class="track"><div class="bar llm" style="left:55.03%;width:5.70%"></div></div>
+  <span class="time">40.2s · 10,961 tok</span>
+</div><div class="row sub">
+  <span class="label" title="curate.research">curate.research</span>
+  <div class="track"><div class="bar llm" style="left:60.73%;width:3.51%"></div></div>
+  <span class="time">24.8s · 17,336 tok</span>
+</div><div class="row sub">
+  <span class="label" title="enrich.leaderboard">enrich.leaderboard</span>
+  <div class="track"><div class="bar llm" style="left:64.24%;width:5.74%"></div></div>
+  <span class="time">40.5s · 15,650 tok</span>
+</div><div class="row sub">
+  <span class="label" title="enrich.gap.analytics,agentic-ai,llm">enrich.gap.analytics,agentic-ai,llm</span>
+  <div class="track"><div class="bar llm" style="left:69.99%;width:9.30%"></div></div>
+  <span class="time">1.1m · 20,689 tok</span>
+</div><div class="row sub">
+  <span class="label" title="enrich.gap.rag,image-gen,design-ai">enrich.gap.rag,image-gen,design-ai</span>
+  <div class="track"><div class="bar llm" style="left:79.29%;width:9.98%"></div></div>
+  <span class="time">1.2m · 21,244 tok</span>
+</div><div class="row sub">
+  <span class="label" title="enrich.gap.robotics">enrich.gap.robotics</span>
+  <div class="track"><div class="bar llm" style="left:89.27%;width:8.76%"></div></div>
+  <span class="time">1.0m · 20,170 tok</span>
+</div><div class="row sub">
+  <span class="label" title="enrich.summary">enrich.summary</span>
+  <div class="track"><div class="bar llm" style="left:98.03%;width:1.75%"></div></div>
+  <span class="time">12.4s · 2,917 tok</span>
+</div>
+  </div>
+
+  <h2>LLM call table</h2>
+  <table>
+    <thead><tr><th>Call</th><th>Duration</th><th class="num">Prompt tok</th><th class="num">Completion tok</th><th class="num">Total</th></tr></thead>
+    <tbody>
+      <tr><td>enrich.aisearch.batch_1/2</td><td>52.6s</td><td class='num'>8,016</td><td class='num'>3,055</td><td class='num'>11,071</td></tr><tr><td>enrich.aisearch.batch_2/2</td><td>8.4s</td><td class='num'>2,292</td><td class='num'>721</td><td class='num'>3,013</td></tr><tr><td>curate.aisearch</td><td>28.4s</td><td class='num'>7,147</td><td class='num'>1,738</td><td class='num'>8,885</td></tr><tr><td>enrich.typography.batch_1/2</td><td>53.9s</td><td class='num'>8,220</td><td class='num'>3,115</td><td class='num'>11,335</td></tr><tr><td>enrich.typography.batch_2/2</td><td>16.6s</td><td class='num'>3,431</td><td class='num'>411</td><td class='num'>3,842</td></tr><tr><td>curate.typography</td><td>27.8s</td><td class='num'>7,729</td><td class='num'>744</td><td class='num'>8,473</td></tr><tr><td>enrich.research.batch_1/4</td><td>1.0m</td><td class='num'>11,338</td><td class='num'>3,703</td><td class='num'>15,041</td></tr><tr><td>enrich.research.batch_2/4</td><td>1.0m</td><td class='num'>11,093</td><td class='num'>3,587</td><td class='num'>14,680</td></tr><tr><td>enrich.research.batch_3/4</td><td>1.1m</td><td class='num'>11,780</td><td class='num'>3,614</td><td class='num'>15,394</td></tr><tr><td>enrich.research.batch_4/4</td><td>40.2s</td><td class='num'>8,687</td><td class='num'>2,274</td><td class='num'>10,961</td></tr><tr><td>curate.research</td><td>24.8s</td><td class='num'>16,077</td><td class='num'>1,259</td><td class='num'>17,336</td></tr><tr><td>enrich.leaderboard</td><td>40.5s</td><td class='num'>14,362</td><td class='num'>1,288</td><td class='num'>15,650</td></tr><tr><td>enrich.gap.analytics,agentic-ai,llm</td><td>1.1m</td><td class='num'>17,256</td><td class='num'>3,433</td><td class='num'>20,689</td></tr><tr><td>enrich.gap.rag,image-gen,design-ai</td><td>1.2m</td><td class='num'>18,414</td><td class='num'>2,830</td><td class='num'>21,244</td></tr><tr><td>enrich.gap.robotics</td><td>1.0m</td><td class='num'>19,120</td><td class='num'>1,050</td><td class='num'>20,170</td></tr><tr><td>enrich.summary</td><td>12.4s</td><td class='num'>2,792</td><td class='num'>125</td><td class='num'>2,917</td></tr>
+    </tbody>
+  </table>
+
+  <p class="meta" style="margin-top:2rem">JSON: <a href="20260630120000.diagnostics.json">20260630120000.diagnostics.json</a></p>
+<footer class="site-footer">
+  <span>AI Digest pipeline</span>
+  <span class="site-footer-sep">·</span>
+  <span>ademiry</span>
+  <span class="site-footer-sep">·</span>
+  <a href="https://www.linkedin.com/in/ademiry/" target="_blank" rel="noopener">LinkedIn</a>
+  <span class="site-footer-sep">·</span>
+  <a href="https://demiry.net/" target="_blank" rel="noopener">Portfolio</a>
+  <span class="site-footer-sep">·</span>
+  <a href="https://github.com/mameen/AI_Digest" target="_blank" rel="noopener" title="Source on GitHub"><svg viewBox="0 0 16 16" width="11" height="11" fill="currentColor" aria-hidden="true" style="vertical-align:-1px;margin-right:2px"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+</footer>
+</body>
+</html>

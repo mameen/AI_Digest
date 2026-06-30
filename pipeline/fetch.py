@@ -92,3 +92,39 @@ def crawl_leaderboards(cfg: dict[str, Any], prefix: str, preflight_path: Path) -
         print(f"  WARN crawl4ai failed; continuing without crawls: {exc}")
         return written
     return written
+
+
+def fetch_structured_sources(cfg: dict[str, Any], prefix: str) -> list[Path]:
+    """Download structured-API leaderboard JSON (no scraping) into the run cache."""
+    import urllib.request
+
+    from pipeline.structured_sources import STRUCTURED_SOURCES
+
+    if not cfg.get("ingestion", {}).get("structured_sources", {}).get("enabled", True):
+        return []
+
+    out_dir = cache_dir(cfg) / prefix / "structured"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    headers = {"User-Agent": "AI-Digest/1.0", "Accept": "application/json,*/*"}
+    written: list[Path] = []
+    for src in STRUCTURED_SOURCES:
+        t0 = time.perf_counter()
+        ok, err, out_name = True, None, None
+        try:
+            req = urllib.request.Request(src["url"], headers=headers)
+            with urllib.request.urlopen(req, timeout=25) as resp:
+                raw = resp.read().decode("utf-8", "replace")
+            json.loads(raw)  # validate before persisting
+            out = out_dir / src["slug"]
+            out.write_text(raw, encoding="utf-8")
+            written.append(out)
+            out_name = out.name
+            print(f"  OK structured {src['label']} -> {out.name}")
+        except Exception as exc:
+            ok, err = False, str(exc)
+            print(f"  WARN structured {src['label']}: {exc}")
+        finally:
+            get_collector().record_crawl(
+                src["url"], (time.perf_counter() - t0) * 1000, ok=ok, output_file=out_name, error=err
+            )
+    return written

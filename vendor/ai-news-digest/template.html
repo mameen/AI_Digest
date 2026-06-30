@@ -145,6 +145,16 @@
   .lb-chart-name { display: block; font-size: 13px; font-weight: 600; color: var(--text); }
   .lb-chart-task { display: block; font-size: 11px; color: var(--muted); margin-top: 1px; }
   .lb-chart-svg { display: block; width: 100%; overflow: visible; }
+
+  /* ── More leaderboards (links) ── */
+  .lb-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+  .lb-links-group { background: #161b22; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+  .lb-links-head { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  .lb-link-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 6px 0; text-decoration: none; border-bottom: 1px solid transparent; }
+  .lb-link-row:hover { border-bottom-color: var(--border); }
+  .lb-link-name { font-size: 12px; color: var(--text); }
+  .lb-link-src { font-size: 11px; color: var(--accent); white-space: nowrap; flex-shrink: 0; }
+
   @media (max-width: 1100px) { .lb-charts-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 860px) {
     .layout { grid-template-columns: 1fr; }
@@ -262,6 +272,44 @@ const leaderboards = {
     ],
     numericCols: [0, 3, 4, 5]
   },
+  swe: {
+    title: "Agentic Coding — SWE-bench Verified",
+    source: "swebench.com",
+    url: "https://www.swebench.com",
+    updated: "Jun 30, 2026",
+    cols: ["#", "Model / Agent", "Resolved %", "Date"],
+    providerCol: -1, scoreCol: 2, scoreMax: 100,
+    rows: [
+      [1, "live-SWE-agent + Claude 4.5 Opus medium (20251101)", 79.2, "2025-12-15"],
+      [2, "Sonar Foundation Agent + Claude 4.5 Opus", 79.2, "2025-12-05"],
+      [3, "TRAE + Doubao-Seed-Code", 78.8, "2025-09-28"],
+      [4, "live-SWE-agent + Gemini 3 Pro Preview (2025-11-18)", 77.4, "2025-11-20"],
+      [5, "Atlassian Rovo Dev (2025-09-02)", 76.8, "2025-09-02"],
+      [6, "EPAM AI/Run Developer Agent v20250719 + Claude 4 Sonnet", 76.8, "2025-08-04"],
+      [7, "mini-SWE-agent + Claude 4.5 Opus (high reasoning)", 76.8, "2026-02-17"],
+      [8, "ACoder", 76.4, "2025-08-19"],
+    ],
+    numericCols: [0, 2]
+  },
+  coding: {
+    title: "Code Generation — EvalPlus (HumanEval+)",
+    source: "evalplus.github.io",
+    url: "https://evalplus.github.io/leaderboard.html",
+    updated: "Jun 30, 2026",
+    cols: ["#", "Model", "Params (B)", "HumanEval+", "MBPP+"],
+    providerCol: -1, scoreCol: 3, scoreMax: 100,
+    rows: [
+      [1, "O1 Preview (Sept 2024)",        "—", 89.0, 80.2],
+      [2, "O1 Mini (Sept 2024)",           "—", 89.0, 78.8],
+      [3, "Qwen2.5-Coder-32B-Instruct",     32, 87.2, 77.0],
+      [4, "GPT 4o (Aug 2024)",             "—", 87.2, 72.2],
+      [5, "DeepSeek-V3 (Nov 2024)",         37, 86.6, 73.0],
+      [6, "GPT-4-Turbo (April 2024)",      "—", 86.6, "—"],
+      [7, "DeepSeek-V2.5 (Nov 2024)",       21, 83.5, 74.1],
+      [8, "GPT 4o Mini (July 2024)",       "—", 83.5, 72.2],
+    ],
+    numericCols: [0, 2, 3, 4]
+  },
   vellum: {
     type: 'charts', title: "Benchmarks — All Models",
     source: "vellum.ai", url: "https://www.vellum.ai/llm-leaderboard", updated: "Apr 23, 2026",
@@ -340,6 +388,74 @@ const leaderboards = {
     ],
     numericCols: [0, 4, 5, 6]
   },
+  arena_image: {
+    title: "Text-to-Image Arena",
+    source: "arena.ai",
+    url: "https://arena.ai/leaderboard/text-to-image",
+    updated: "Jun 25, 2026",
+    cols: ["#", "Model", "Provider", "Score", "Votes"],
+    providerCol: 2, scoreCol: 3, scoreMax: 1500,
+    rows: [
+      [1,  "gpt-image-2 (medium)",          "OpenAI",             1386, "54,988"],
+      [2,  "reve-2.0",                       "Reve",               1275, "9,549"],
+      [3,  "gemini-3.1-flash-image",         "Google",             1269, "86,129"],
+      [4,  "mai-image-2.5",                  "Microsoft AI",       1256, "24,400"],
+      [5,  "gemini-3-pro-image-2k",          "Google",             1245, "124,142"],
+      [6,  "gpt-image-1.5-high-fidelity",    "OpenAI",             1241, "128,123"],
+      [7,  "gemini-3-pro-image-preview",     "Google",             1232, "82,569"],
+      [8,  "grok-imagine-image-quality",     "xAI",                1232, "33,849"],
+      [9,  "ideogram-4.0-quality",           "Ideogram",           1209, "13,070"],
+      [10, "qwen-image-2.0-pro",             "Alibaba",            1193, "3,794"],
+      [11, "uni-1.1-max",                    "Luma AI",            1188, "13,468"],
+      [12, "mai-image-2",                    "Microsoft AI",       1183, "49,034"],
+      [13, "uni-1.1",                        "Luma AI",            1176, "16,025"],
+      [14, "grok-imagine-image",             "xAI",                1174, "198,247"],
+      [15, "flux-2-max",                     "Black Forest Labs",  1162, "117,111"],
+    ],
+    numericCols: [0, 3]
+  },
+  arena_t2i: {
+    title: "Text-to-Image — Artificial Analysis",
+    source: "artificialanalysis.ai",
+    url: "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+    updated: "Jun 30, 2026",
+    cols: ["#", "Model", "Provider", "Elo"],
+    providerCol: 2, scoreCol: 3, scoreMax: 1400,
+    rows: [
+      [1, "GPT Image 2 (high)",          "OpenAI",       1340],
+      [2, "MAI-Image-2.5",               "Microsoft AI", 1274],
+      [3, "HiDream-O1-Image-1.5",        "HiDream",      1263],
+      [4, "GPT Image 1.5 (high)",        "OpenAI",       1262],
+      [5, "Nano Banana 2 (Gemini 3.1)",  "Google",       1255],
+    ],
+    numericCols: [0, 3]
+  },
+  arena_video: {
+    title: "Text-to-Video Arena",
+    source: "arena.ai",
+    url: "https://arena.ai/leaderboard/text-to-video",
+    updated: "Jun 30, 2026",
+    cols: ["#", "Model", "Provider", "Score", "Votes"],
+    providerCol: 2, scoreCol: 3, scoreMax: 1600,
+    rows: [
+      [1,  "gemini-omni-flash",          "Google",       1527, "2,649"],
+      [2,  "dreamina-seedance-2.0-720p", "Bytedance",    1466, "34,319"],
+      [3,  "happyhorse-1.0",             "Alibaba-ATH",  1437, "15,722"],
+      [4,  "veo-3.1-audio-1080p",        "Google",       1369, "18,829"],
+      [5,  "wan2.7-t2v",                 "Alibaba",      1368, "3,220"],
+      [6,  "veo-3.1-audio",              "Google",       1365, "13,690"],
+      [7,  "sora-2-pro",                 "OpenAI",       1365, "36,554"],
+      [8,  "veo-3.1-fast-audio",         "Google",       1364, "39,333"],
+      [9,  "grok-imagine-video-720p",    "xAI",          1358, "131,624"],
+      [10, "veo-3-fast-audio",           "Google",       1348, "25,154"],
+      [11, "wan2.6-t2v",                 "Alibaba",      1340, "29,742"],
+      [12, "sora-2",                     "OpenAI",       1338, "49,128"],
+      [13, "seedance-v1.5-pro",          "Bytedance",    1259, "66,450"],
+      [14, "kling-2.6-pro",              "KlingAI",      1218, "65,389"],
+      [15, "hailuo-2.3",                 "MiniMax",      1200, "55,930"],
+    ],
+    numericCols: [0, 3]
+  },
   vellum_open: {
     type: 'charts', title: "Benchmarks — Open-Weight",
     source: "vellum.ai/open-llm-leaderboard", url: "https://www.vellum.ai/open-llm-leaderboard", updated: "Apr 23, 2026",
@@ -380,13 +496,42 @@ const leaderboards = {
         {model:"Qwen3.6 Plus",     provider:"Alibaba",   score:52},
       ]},
     ]
+  },
+  links: {
+    type: 'links',
+    title: "More Leaderboards",
+    groups: [
+      { label: "Text-to-Image", items: [
+        { name: "Artificial Analysis — Text-to-Image", source: "artificialanalysis.ai", url: "https://artificialanalysis.ai/image/leaderboard/text-to-image" },
+        { name: "Artificial Analysis — Image Arena",    source: "artificialanalysis.ai", url: "https://artificialanalysis.ai/image/arena" },
+        { name: "Arena — Text-to-Image",                source: "arena.ai",              url: "https://arena.ai/leaderboard/text-to-image" },
+      ]},
+      { label: "Text-to-Video", items: [
+        { name: "Artificial Analysis — Text-to-Video", source: "artificialanalysis.ai", url: "https://artificialanalysis.ai/video/leaderboard/text-to-video" },
+        { name: "Artificial Analysis — Video Arena",   source: "artificialanalysis.ai", url: "https://artificialanalysis.ai/video/arena" },
+        { name: "Arena — Text-to-Video",               source: "arena.ai",              url: "https://arena.ai/leaderboard/text-to-video" },
+      ]},
+      { label: "Research Benchmarks", items: [
+        { name: "VBench (Video Generation)",           source: "vbench.github.io",   url: "https://vbench.github.io/" },
+        { name: "VBench-2.0",                          source: "vchitect.github.io", url: "https://vchitect.github.io/VBench-2.0-project/" },
+        { name: "EvalCrafter",                         source: "huggingface.co",     url: "https://huggingface.co/spaces/AILab-CVC/EvalCrafter" },
+        { name: "Papers With Code — Video Generation", source: "paperswithcode.com", url: "https://paperswithcode.com/task/video-generation" },
+      ]},
+    ]
   }
 };
 
 const PROVIDER_COLORS = {
   OpenAI: '#10a37f', Anthropic: '#d4763b', Google: '#4285f4',
   DeepSeek: '#1a6cf5', Alibaba: '#ff6a00', Meta: '#0866ff',
-  Kimi: '#8b5cf6', Xiaomi: '#ff6900', 'Z AI': '#06b6d4', MiniMax: '#ec4899'
+  Kimi: '#8b5cf6', Xiaomi: '#ff6900', 'Z AI': '#06b6d4', MiniMax: '#ec4899',
+  Reve: '#7c3aed', 'Microsoft AI': '#00a4ef', xAI: '#e0e0e0',
+  Ideogram: '#ff5c8a', 'Luma AI': '#14b8a6', 'Black Forest Labs': '#16a34a',
+  Bytedance: '#325ab4', 'Alibaba-ATH': '#ff8c42', KlingAI: '#00c2a8',
+  Runway: '#22c55e', Pixverse: '#a855f7', Pruna: '#f59e0b', Kandinsky: '#6366f1',
+  Tencent: '#1e90ff', Lightricks: '#ef4444', 'Genmo AI': '#0ea5e9',
+  HiDream: '#db2777', NVIDIA: '#76b900', Recraft: '#e11d48', Krea: '#fbbf24',
+  'Zhipu AI': '#38bdf8', 'Moonshot AI': '#a78bfa', Qwen: '#f97316', Meituan: '#ffb000'
 };
 
 const CAT_COLORS = {
@@ -517,11 +662,16 @@ function renderLeaderboard(grid) {
       <div class="lb-tabs">
         <button class="lb-tab ${activeLb==='aa'?'active':''}"           data-lb="aa">🏅 AA — All Models</button>
         <button class="lb-tab ${activeLb==='open'?'active':''}"         data-lb="open">🔓 Open-Weight</button>
+        <button class="lb-tab ${activeLb==='swe'?'active':''}"          data-lb="swe">🐛 SWE-bench</button>
+        <button class="lb-tab ${activeLb==='coding'?'active':''}"       data-lb="coding">⌨️ EvalPlus</button>
         <button class="lb-tab ${activeLb==='arena_image'?'active':''}"  data-lb="arena_image">🎨 Image Arena</button>
+        <button class="lb-tab ${activeLb==='arena_t2i'?'active':''}"    data-lb="arena_t2i">🖼️ T2I: AA</button>
+        <button class="lb-tab ${activeLb==='arena_video'?'active':''}"  data-lb="arena_video">🎬 T2V: Arena</button>
         <button class="lb-tab ${activeLb==='vellum'?'active':''}"       data-lb="vellum">📊 Vellum — All</button>
         <button class="lb-tab ${activeLb==='vellum_open'?'active':''}"  data-lb="vellum_open">📊 Vellum — Open</button>
-        <a class="lb-src" href="${lb.url}" target="_blank" rel="noopener">↗ ${lb.source}</a>
-        <span class="lb-updated">Updated ${lb.updated}</span>
+        <button class="lb-tab ${activeLb==='links'?'active':''}"        data-lb="links">🔗 More</button>
+        ${lb.url ? `<a class="lb-src" href="${lb.url}" target="_blank" rel="noopener">↗ ${lb.source}</a>` : ''}
+        ${lb.updated ? `<span class="lb-updated">Updated ${lb.updated}</span>` : ''}
       </div>`;
   }
   function buildTable(lb) {
@@ -539,10 +689,12 @@ function renderLeaderboard(grid) {
       return t > 0.9 ? '#3fb950' : t > 0.75 ? '#58a6ff' : t > 0.6 ? '#d29922' : '#8b949e';
     }
     function drawRows(rows) {
-      const isArenaImage = (activeLb === 'arena_image');
-      const providerCol = (activeLb === 'aa' || activeLb === 'open') ? 2 : isArenaImage ? 2 : 1;
-      const scoreCol    = (activeLb === 'aa') ? 3 : isArenaImage ? 3 : -1;
-      const scoreMax    = (activeLb === 'aa') ? 60 : isArenaImage ? 1500 : 100;
+      const providerCol = lb.providerCol != null ? lb.providerCol
+                        : (activeLb === 'aa' || activeLb === 'open') ? 2 : 1;
+      const scoreCol    = lb.scoreCol != null ? lb.scoreCol
+                        : (activeLb === 'aa') ? 3 : -1;
+      const scoreMax    = lb.scoreMax != null ? lb.scoreMax
+                        : (activeLb === 'aa') ? 60 : 100;
       document.getElementById('lb-body').innerHTML = rows.map(row => {
         const provider = row[providerCol];
         const dot = `<span class="lb-dot" style="background:${PROVIDER_COLORS[provider]||'#555'}"></span>`;
@@ -611,9 +763,21 @@ function renderLeaderboard(grid) {
       });
     });
   }
+  function buildLinks(lb) {
+    grid.innerHTML = `<div class="lb-wrap">${tabs(lb)}<div class="lb-links">${
+      lb.groups.map(g => `
+        <div class="lb-links-group">
+          <div class="lb-links-head">${g.label}</div>
+          ${g.items.map(it => `<a class="lb-link-row" href="${it.url}" target="_blank" rel="noopener"><span class="lb-link-name">${it.name}</span><span class="lb-link-src">${it.source} ↗</span></a>`).join('')}
+        </div>`).join('')
+    }</div></div>`;
+    grid.querySelectorAll('.lb-tab').forEach(btn => { btn.onclick = () => { activeLb = btn.dataset.lb; build(); }; });
+  }
   function build() {
     const lb = leaderboards[activeLb];
-    if (lb.type === 'charts') buildCharts(lb); else buildTable(lb);
+    if (lb.type === 'links') buildLinks(lb);
+    else if (lb.type === 'charts') buildCharts(lb);
+    else buildTable(lb);
   }
   build();
 }

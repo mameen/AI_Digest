@@ -1,7 +1,14 @@
 const PROVIDER_COLORS = {
   OpenAI: '#10a37f', Anthropic: '#d4763b', Google: '#4285f4',
   DeepSeek: '#1a6cf5', Alibaba: '#ff6a00', Meta: '#0866ff',
-  Kimi: '#8b5cf6', Xiaomi: '#ff6900', 'Z AI': '#06b6d4', MiniMax: '#ec4899'
+  Kimi: '#8b5cf6', Xiaomi: '#ff6900', 'Z AI': '#06b6d4', MiniMax: '#ec4899',
+  Reve: '#7c3aed', 'Microsoft AI': '#00a4ef', xAI: '#e0e0e0',
+  Ideogram: '#ff5c8a', 'Luma AI': '#14b8a6', 'Black Forest Labs': '#16a34a',
+  Bytedance: '#325ab4', 'Alibaba-ATH': '#ff8c42', KlingAI: '#00c2a8',
+  Runway: '#22c55e', Pixverse: '#a855f7', Pruna: '#f59e0b', Kandinsky: '#6366f1',
+  Tencent: '#1e90ff', Lightricks: '#ef4444', 'Genmo AI': '#0ea5e9',
+  HiDream: '#db2777', NVIDIA: '#76b900', Recraft: '#e11d48', Krea: '#fbbf24',
+  'Zhipu AI': '#38bdf8', 'Moonshot AI': '#a78bfa', Qwen: '#f97316', Meituan: '#ffb000'
 };
 
 const CAT_COLORS = {
@@ -9,6 +16,52 @@ const CAT_COLORS = {
   llm: '#2C3E50', rag: '#14B8A6', 'image-gen': '#8E44AD', 'design-ai': '#16A085',
   typography: '#C0392B', robotics: '#E67E22', research: '#2980B9'
 };
+
+// Plain-language explanations for leaderboard column headers, shown on hover.
+// Keyed by the exact label text used in each tab's `cols` array.
+const LB_GLOSSARY = {
+  '#': 'Rank by the leaderboard\u2019s primary metric.',
+  'Model': 'Model being evaluated.',
+  'Model / Agent': 'Model (with its agent/scaffold) being evaluated.',
+  'Provider': 'Organization that develops the model.',
+  'Intelligence': 'Artificial Analysis Intelligence Index \u2014 a composite across reasoning, knowledge, coding and math benchmarks; higher is better.',
+  'Speed (t/s)': 'Output speed in tokens generated per second; higher is faster.',
+  'Latency (s)': 'Time to first token, in seconds; lower is more responsive.',
+  'Context': 'Maximum context window (input + output tokens) the model accepts.',
+  'Price /1M': 'Blended cost per 1 million tokens, in USD.',
+  'Resolved %': 'Share of SWE-bench Verified GitHub issues the agent fully resolved; higher is better.',
+  'Date': 'Date the result was submitted to the leaderboard.',
+  'Params (B)': 'Model size in billions of parameters (\u2014 if undisclosed).',
+  'HumanEval+': 'EvalPlus HumanEval+ pass@1 \u2014 % of Python problems solved against the harder, augmented test suite.',
+  'MBPP+': 'EvalPlus MBPP+ pass@1 \u2014 % solved on the augmented MBPP Python benchmark.',
+  '\uD83C\uDF0D': 'Country/region where the model originates.',
+  'Code Arena': 'Code-focused arena Elo from head-to-head human preference votes.',
+  'Reasoning': 'Reasoning benchmark score; higher is better.',
+  'Math': 'Math benchmark score; higher is better.',
+  'Elo': 'Elo rating from pairwise human preference votes \u2014 users pick the better of two outputs; higher means it wins more head-to-head matchups.',
+  'Score': 'Arena score (Elo-style) from head-to-head human preference votes; higher is better.',
+  'Votes': 'Number of human preference votes collected in the arena for this model.'
+};
+
+function lbTooltip(label) {
+  return LB_GLOSSARY[label] || '';
+}
+
+function resolveLbColumns(lb, activeLb) {
+  return {
+    providerCol: lb.providerCol != null ? lb.providerCol : (activeLb === 'aa' || activeLb === 'open') ? 2 : 1,
+    scoreCol:    lb.scoreCol    != null ? lb.scoreCol    : (activeLb === 'aa') ? 3 : -1,
+    scoreMax:    lb.scoreMax    != null ? lb.scoreMax    : (activeLb === 'aa') ? 60 : 100
+  };
+}
+
+function renderLbLinks(lb) {
+  return lb.groups.map(g => `
+        <div class="lb-links-group">
+          <div class="lb-links-head">${g.label}</div>
+          ${g.items.map(it => `<a class="lb-link-row" href="${it.url}" target="_blank" rel="noopener"><span class="lb-link-name">${it.name}</span><span class="lb-link-src">${it.source} ↗</span></a>`).join('')}
+        </div>`).join('');
+}
 
 let allStories = [];
 let activeFilter = 'all';
@@ -133,11 +186,16 @@ function renderLeaderboard(grid) {
       <div class="lb-tabs">
         <button class="lb-tab ${activeLb==='aa'?'active':''}"           data-lb="aa">🏅 AA: All Models</button>
         <button class="lb-tab ${activeLb==='open'?'active':''}"         data-lb="open">🔓 Open-Weight</button>
+        <button class="lb-tab ${activeLb==='swe'?'active':''}"          data-lb="swe">🐛 SWE-bench</button>
+        <button class="lb-tab ${activeLb==='coding'?'active':''}"       data-lb="coding">⌨️ EvalPlus</button>
         <button class="lb-tab ${activeLb==='arena_image'?'active':''}"  data-lb="arena_image">🎨 Image Arena</button>
+        <button class="lb-tab ${activeLb==='arena_t2i'?'active':''}"    data-lb="arena_t2i">🖼️ T2I: AA</button>
+        <button class="lb-tab ${activeLb==='arena_video'?'active':''}"  data-lb="arena_video">🎬 T2V: Arena</button>
         <button class="lb-tab ${activeLb==='vellum'?'active':''}"       data-lb="vellum">📊 Vellum: All</button>
         <button class="lb-tab ${activeLb==='vellum_open'?'active':''}"  data-lb="vellum_open">📊 Vellum: Open</button>
-        <a class="lb-src" href="${lb.url}" target="_blank" rel="noopener">↗ ${lb.source}</a>
-        <span class="lb-updated">Updated ${lb.updated}</span>
+        <button class="lb-tab ${activeLb==='links'?'active':''}"        data-lb="links">🔗 More</button>
+        ${lb.url ? `<a class="lb-src" href="${lb.url}" target="_blank" rel="noopener">↗ ${lb.source}</a>` : ''}
+        ${lb.updated ? `<span class="lb-updated">Updated ${lb.updated}</span>` : ''}
       </div>`;
   }
   function buildTable(lb) {
@@ -145,7 +203,7 @@ function renderLeaderboard(grid) {
     grid.innerHTML = `<div class="lb-wrap">${tabs(lb)}
       <div class="lb-table-wrap">
         <table class="lb-table" id="lb-table">
-          <thead><tr>${lb.cols.map((c,i)=>`<th class="lb-th" data-col="${i}">${c} <span class="sort-arrow">↕</span></th>`).join('')}</tr></thead>
+          <thead><tr>${lb.cols.map((c,i)=>{const tip=lbTooltip(c);return `<th class="lb-th${tip?' lb-th-info':''}" data-col="${i}"${tip?` title="${tip.replace(/"/g,'&quot;')}"`:''}>${c} <span class="sort-arrow">↕</span></th>`;}).join('')}</tr></thead>
           <tbody id="lb-body"></tbody>
         </table>
       </div></div>`;
@@ -155,10 +213,7 @@ function renderLeaderboard(grid) {
       return t > 0.9 ? '#3fb950' : t > 0.75 ? '#58a6ff' : t > 0.6 ? '#d29922' : '#8b949e';
     }
     function drawRows(rows) {
-      const isArenaImage = (activeLb === 'arena_image');
-      const providerCol = (activeLb === 'aa' || activeLb === 'open') ? 2 : isArenaImage ? 2 : 1;
-      const scoreCol    = (activeLb === 'aa') ? 3 : isArenaImage ? 3 : -1;
-      const scoreMax    = (activeLb === 'aa') ? 60 : isArenaImage ? 1500 : 100;
+      const { providerCol, scoreCol, scoreMax } = resolveLbColumns(lb, activeLb);
       document.getElementById('lb-body').innerHTML = rows.map(row => {
         const provider = row[providerCol];
         const dot = `<span class="lb-dot" style="background:${PROVIDER_COLORS[provider]||'#555'}"></span>`;
@@ -227,9 +282,15 @@ function renderLeaderboard(grid) {
       });
     });
   }
+  function buildLinks(lb) {
+    grid.innerHTML = `<div class="lb-wrap">${tabs(lb)}<div class="lb-links">${renderLbLinks(lb)}</div></div>`;
+    grid.querySelectorAll('.lb-tab').forEach(btn => { btn.onclick = () => { activeLb = btn.dataset.lb; build(); }; });
+  }
   function build() {
     const lb = leaderboards[activeLb];
-    if (lb.type === 'charts') buildCharts(lb); else buildTable(lb);
+    if (lb.type === 'links') buildLinks(lb);
+    else if (lb.type === 'charts') buildCharts(lb);
+    else buildTable(lb);
   }
   build();
 }
@@ -438,4 +499,8 @@ function initLayoutResizer() {
     if (e.key === 'ArrowLeft') { e.preventDefault(); localStorage.setItem(SIDEBAR_WIDTH_KEY, String(applyWidth(cur - step))); }
     if (e.key === 'ArrowRight') { e.preventDefault(); localStorage.setItem(SIDEBAR_WIDTH_KEY, String(applyWidth(cur + step))); }
   });
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { PROVIDER_COLORS, CAT_COLORS, LB_GLOSSARY, lbTooltip, resolveLbColumns, renderLbLinks };
 }

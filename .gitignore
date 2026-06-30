@@ -19,3 +19,4 @@ Thumbs.db
 .playwright/
 
 # reports/, diagnostics/, and .preflight/ are tracked
+.preflight/

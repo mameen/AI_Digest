@@ -28,7 +28,7 @@ from pipeline.config import load_config
 from pipeline.dates import build_run_window
 from pipeline.diagnostics import finish_collector, init_collector
 from pipeline.enrich import enrich_digest
-from pipeline.fetch import crawl_leaderboards, run_preflight
+from pipeline.fetch import crawl_leaderboards, fetch_structured_sources, run_preflight
 from pipeline.history import load_prior_digests
 from pipeline.paths import cache_dir, diagnostics_dir, reports_dir
 from pipeline.render import render
@@ -91,6 +91,11 @@ def main() -> None:
         print("\n[1b] Ingestion: Crawl4AI")
         with collector.stage("ingestion.crawl4ai", "Crawl4AI"):
             crawl_files = crawl_leaderboards(cfg, prefix, preflight_path)
+
+    if cfg.get("ingestion", {}).get("structured_sources", {}).get("enabled", True):
+        print("\n[1c] Ingestion: structured APIs")
+        with collector.stage("ingestion.structured", "Structured APIs"):
+            fetch_structured_sources(cfg, prefix)
 
     if args.fetch_only:
         finish_collector(cfg)

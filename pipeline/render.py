@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from pipeline.paths import SKILL_DIR, SKILL_SCRIPTS, diagnostics_dir, reports_dir
+from pipeline.paths import SKILL_DIR, SKILL_SCRIPTS, cache_dir, diagnostics_dir, reports_dir
 from pipeline.frame_author import inject_author_card
 from pipeline.frame_nav import diagnostics_available as has_diagnostics
 from pipeline.frame_nav import inject_frame_nav
@@ -17,6 +17,23 @@ from pipeline.site_footer import inject_site_footer
 def _ensure_scripts_path() -> None:
     if str(SKILL_SCRIPTS) not in sys.path:
         sys.path.insert(0, str(SKILL_SCRIPTS))
+
+
+def _crawl_driven_leaderboards(cfg: dict[str, Any], prefix: str, block: str) -> str:
+    """Overwrite stale hand-coded rows with the run's live crawl + structured APIs."""
+    from datetime import datetime
+
+    from pipeline.leaderboards import apply_crawl_leaderboards
+    from pipeline.structured_sources import apply_structured_leaderboards
+
+    run_cache = cache_dir(cfg) / prefix
+    try:
+        updated = datetime.strptime(prefix[:8], "%Y%m%d").strftime("%b %d, %Y")
+    except ValueError:
+        updated = None
+    block = apply_crawl_leaderboards(block, run_cache / "crawl", updated_label=updated)
+    block = apply_structured_leaderboards(block, run_cache / "structured", updated_label=updated)
+    return block
 
 
 def build_content_html(prefix: str, leaderboards_json: str, reports_dir: Path) -> str:
@@ -52,6 +69,7 @@ def render(cfg: dict[str, Any], prefix: str, data: dict[str, Any]) -> Path:
     from rebuild_index import write_index  # type: ignore
 
     lb = leaderboards_for_prefix(prefix, reports)
+    lb = _crawl_driven_leaderboards(cfg, prefix, lb)
     html = build_content_html(prefix, lb, reports)
     html_path = reports / f"{prefix}.html"
     html_path.write_text(html, encoding="utf-8")
