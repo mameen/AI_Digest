@@ -30,7 +30,7 @@ from pipeline.grounding import (
     collect_skeleton_urls,
 )
 from pipeline.history import format_prior_context
-from pipeline.diagnostics import instrumented_llm_call
+from pipeline.diagnostics import get_collector, instrumented_llm_call
 from pipeline.schema import CategoryStories, DigestHeader, GapCategories
 from pipeline.visualize import compute_visualizations, fill_skeleton_stories
 
@@ -179,14 +179,36 @@ def _enrich_multipass(
         for cat in gap.categories:
             enriched[cat.id] = make_category(cat.id, [s.model_dump() for s in cat.stories])
 
+    roots = collect_roots(skeleton.get("requires_web_fetch"))
+    ingestion_urls = collect_ingestion_urls(ingestion) | collect_skeleton_urls(skeleton)
+
+    # ── Tool loop (optional): actively verify/repair gap-story links ──────────
+    # Default-off (enrich.tool_loop.enabled). When on, the model may call
+    # verify_url (and web_search) to confirm each gap link is live and swap dead
+    # ones for verified sources before the deterministic guard has its say.
+    tl_cfg = ecfg.get("tool_loop") or {}
+    if tl_cfg.get("enabled"):
+        gap_cats = [enriched[c] for c in CANONICAL_ORDER if c in GAP_CATEGORY_IDS and c in enriched]
+        repaired = _run_link_tool_loop(
+            cfg,
+            client,
+            model,
+            max_retries,
+            gap_categories=gap_cats,
+            allow_urls=ingestion_urls,
+            max_iterations=int(tl_cfg.get("max_iterations", 8)),
+            web_search=bool(tl_cfg.get("web_search")),
+        )
+        if repaired is not None:
+            for cat in repaired:
+                enriched[cat["id"]] = make_category(cat["id"], cat.get("stories") or [])
+
     # ── Reflection guard: keep the topic, demote any ungrounded link ──────────
     # A story is grounded only if it cites a URL the model was actually shown:
     # the shared crawl ingestion context, OR (for curated categories enriched
     # from their own per-category preflight feeds) a URL in the skeleton. Roots
     # and bare domains stay ungrounded. Rather than drop the topic, we clear the
     # link and mark it source_pending.
-    roots = collect_roots(skeleton.get("requires_web_fetch"))
-    ingestion_urls = collect_ingestion_urls(ingestion) | collect_skeleton_urls(skeleton)
     cleaned, demoted = annotate_ungrounded(
         list(enriched.values()), roots, ingestion_urls=ingestion_urls
     )
@@ -228,6 +250,137 @@ def _log_category_counts(categories: list[dict[str, Any]]) -> None:
     parts = [f"{c.get('id')}={len(c.get('stories') or [])}" for c in categories]
     total = sum(len(c.get("stories") or []) for c in categories)
     print(f"  [counts] total={total}  {'  '.join(parts)}")
+
+
+def _run_link_tool_loop(
+    cfg: dict[str, Any],
+    client: Any,
+    model: str,
+    max_retries: int,
+    *,
+    gap_categories: list[dict[str, Any]],
+    allow_urls: set[str],
+    max_iterations: int,
+    web_search: bool,
+) -> list[dict[str, Any]] | None:
+    """Verify/repair gap-story links via a bounded prompt-registered tool loop.
+
+    Returns repaired gap-category dicts, or ``None`` to keep the pre-loop
+    stories and defer to the deterministic guard (empty input, model bailout,
+    or unparseable finalize).
+    """
+    from pipeline.llm_client import make_raw_chat
+    from pipeline.tools import run_tool_loop, verify_url, web_search as web_search_tool
+
+    payload = [
+        {
+            "id": c["id"],
+            "label": c.get("label", c["id"]),
+            "icon": c.get("icon", ""),
+            "stories": c.get("stories") or [],
+        }
+        for c in gap_categories
+    ]
+    if not payload:
+        return None
+
+    tools = {"verify_url": verify_url}
+    if web_search:
+        tools["web_search"] = web_search_tool
+
+    chat, _ = make_raw_chat(cfg)
+    print(f"  [tool-loop] verifying gap links (max {max_iterations} steps, tools={sorted(tools)})")
+    final, calls = run_tool_loop(
+        chat,
+        system=_tool_loop_system(tools),
+        user=_tool_loop_user(payload, allow_urls),
+        tools=tools,
+        max_iterations=max_iterations,
+        nudge_before_finalize=True,
+    )
+
+    col = get_collector()
+    for c in calls:
+        res = c.get("result") or {}
+        col.record_tool_call(
+            c["tool"],
+            c.get("args") or {},
+            ok=bool(res.get("ok")) if "ok" in res else ("error" not in res),
+            duration_ms=float(c.get("duration_ms") or 0.0),
+            detail=res.get("error") or res.get("final_url") or res.get("note"),
+        )
+
+    if not final:
+        print("  [tool-loop] no finalize within budget; deferring to guard")
+        return None
+    coerced = _coerce_gap_categories(client, model, max_retries, final)
+    if coerced is None:
+        print("  [tool-loop] finalize unparseable; deferring to guard")
+        return None
+    print(f"  [tool-loop] {len(calls)} tool call(s); repaired {len(coerced.categories)} categories")
+    return [c.model_dump() for c in coerced.categories]
+
+
+def _coerce_gap_categories(
+    client: Any, model: str, max_retries: int, text: str
+) -> GapCategories | None:
+    """Coerce the loop's finalized text into ``GapCategories`` (parse, then reformat)."""
+    try:
+        return GapCategories.model_validate_json(text)
+    except Exception:
+        pass
+    try:
+        return GapCategories.model_validate(json.loads(text))
+    except Exception:
+        pass
+    try:
+        prompt = (
+            "Reformat the following into valid JSON of shape "
+            '{"categories":[{"id","label","icon","stories":[{"id","title","summary",'
+            '"source","url","significance","novelty","relevance_design","tags"}]}]}.\n\n'
+            + text[:16000]
+        )
+        return _llm_call(client, model, max_retries, prompt, GapCategories, call_name="tool_loop.reformat")
+    except Exception:
+        return None
+
+
+def _tool_loop_system(tools: dict[str, Any]) -> str:
+    lines = [
+        "You are a citation-verification agent for an AI news digest.",
+        "Goal: ensure every gap-category story cites a URL that is actually live.",
+        "",
+        "Emit EXACTLY ONE JSON object per turn and nothing else. Available actions:",
+        '  {"action": "verify_url", "args": {"url": "<http(s) url>"}}',
+    ]
+    if "web_search" in tools:
+        lines.append('  {"action": "web_search", "args": {"query": "<search text>"}}')
+    find_live = (
+        " (use web_search to find one, then verify_url it)," if "web_search" in tools else ","
+    )
+    lines += [
+        '  {"action": "finalize", "args": {"result": "<the corrected categories JSON as a string>"}}',
+        "",
+        "Rules:",
+        "- Call verify_url on each story url. A url is acceptable only if ok=true (HTTP 2xx/3xx).",
+        f"- If a url is dead/unreachable, replace it with a verified live url{find_live}"
+        " or drop that story.",
+        "- Never invent urls. Only keep urls that verify_url confirmed live.",
+        "- When every remaining story has a verified url, finalize with the full corrected JSON.",
+    ]
+    return "\n".join(lines)
+
+
+def _tool_loop_user(payload: list[dict[str, Any]], allow_urls: set[str]) -> str:
+    allow = "\n".join(sorted(allow_urls)[:120]) or "(none)"
+    return (
+        "## Gap categories to verify\n"
+        + json.dumps(payload, ensure_ascii=False)
+        + "\n\n## Known-good source urls (safe to reuse)\n"
+        + allow
+        + '\n\nVerify each story\'s url, repair or drop dead ones, then finalize with the '
+        'corrected JSON of the same shape: {"categories": [...]}.'
+    )
 
 
 def _skeleton_rules(cat_id: str, *, curate_after: bool = False) -> str:
