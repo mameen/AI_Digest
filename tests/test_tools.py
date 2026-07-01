@@ -14,6 +14,7 @@ from pathlib import Path
 from pipeline.tools import (
     ToolAction,
     format_tool_result,
+    looks_not_found,
     parse_ddg_results,
     parse_tool_action,
     run_tool_loop,
@@ -21,7 +22,10 @@ from pipeline.tools import (
     web_search,
 )
 
-_DDG_FIXTURE = Path(__file__).parent / "data" / "duckduckgo_html_results.html"
+_DATA = Path(__file__).parent / "data"
+_DDG_FIXTURE = _DATA / "duckduckgo_html_results.html"
+_NOT_FOUND_FIXTURE = _DATA / "figure_not_found.html"  # real figure.ai 404 (soft-404 body)
+_LIVE_FIXTURE = _DATA / "figure_live_article.html"  # real live figure.ai /news/ article
 
 
 class ScriptedChat:
@@ -36,9 +40,11 @@ class ScriptedChat:
         return self.replies[min(len(self.turns) - 1, len(self.replies) - 1)]
 
 
-def _fetch_from(status_map: dict[str, int]):
-    def fetch(url: str, timeout: int) -> tuple[int | None, str]:
-        return status_map.get(url), url
+def _fetch_from(status_map: dict[str, int], body_map: dict[str, str] | None = None):
+    body_map = body_map or {}
+
+    def fetch(url: str, timeout: int) -> tuple[int | None, str, str]:
+        return status_map.get(url), url, body_map.get(url, "")
 
     return fetch
 
@@ -88,6 +94,25 @@ class VerifyUrl(unittest.TestCase):
 
     def test_non_http_rejected(self) -> None:
         self.assertFalse(verify_url("ftp://x")["ok"])
+
+    def test_soft_404_content_is_not_ok(self) -> None:
+        # figure.ai serves a "not found" screen; even on a 200 it must not pass.
+        url = "https://www.figure.ai/blog/one-robot-per-hour-botq"
+        body = _NOT_FOUND_FIXTURE.read_text(encoding="utf-8")
+        r = verify_url(url, fetch=_fetch_from({url: 200}, {url: body}))
+        self.assertFalse(r["ok"])
+        self.assertIn("soft-404", r["error"])
+
+    def test_live_article_content_is_ok(self) -> None:
+        # A real live article (descriptive title, no not-found phrases) passes.
+        url = "https://www.figure.ai/news/ramping-figure-03-production"
+        body = _LIVE_FIXTURE.read_text(encoding="utf-8")
+        r = verify_url(url, fetch=_fetch_from({url: 200}, {url: body}))
+        self.assertTrue(r["ok"])
+
+    def test_looks_not_found_on_real_fixtures(self) -> None:
+        self.assertTrue(looks_not_found(_NOT_FOUND_FIXTURE.read_text(encoding="utf-8")))
+        self.assertFalse(looks_not_found(_LIVE_FIXTURE.read_text(encoding="utf-8")))
 
     def test_format_result_is_prefixed_json(self) -> None:
         msg = format_tool_result(ToolAction("verify_url", {"url": "u"}, ""), {"ok": True})
@@ -211,23 +236,27 @@ class WebSearch(unittest.TestCase):
 
 
 class RepairTranscript(unittest.TestCase):
-    """End-to-end loop: verify a dead link, search, verify the fix, finalize."""
+    """End-to-end loop: verify a soft-404 link, search, verify the fix, finalize."""
 
     def test_verify_dead_search_repair_finalize(self) -> None:
-        dead = "https://figure.ai/blog/made-up-slug"
+        # The dead link is a soft-404: HTTP 200 with a "not found" body (the real
+        # figure.ai failure mode). Status alone would pass it; content must not.
+        dead = "https://www.figure.ai/blog/one-robot-per-hour-botq"
         live = (
             "https://www.therobotreport.com/"
             "bmw-group-deploys-figure-03-humanoid-after-tests-previous-version/"
         )
         html_text = _DDG_FIXTURE.read_text(encoding="utf-8")
+        not_found_body = _NOT_FOUND_FIXTURE.read_text(encoding="utf-8")
         replies = [
             f'{{"action":"verify_url","args":{{"url":"{dead}"}}}}',
             '{"action":"web_search","args":{"query":"Figure 03 BMW humanoid deployment"}}',
             f'{{"action":"verify_url","args":{{"url":"{live}"}}}}',
             '{"action":"finalize","args":{"result":"{\\"categories\\":[{\\"id\\":\\"robotics\\"}]}"}}',
         ]
+        fetch = _fetch_from({dead: 200, live: 200}, {dead: not_found_body})
         tools = {
-            "verify_url": lambda url: verify_url(url, fetch=_fetch_from({dead: 404, live: 200})),
+            "verify_url": lambda url: verify_url(url, fetch=fetch),
             "web_search": lambda query: web_search(query, fetch_html=_serve(html_text)),
         }
         final, calls = run_tool_loop(
@@ -235,7 +264,8 @@ class RepairTranscript(unittest.TestCase):
         )
         self.assertEqual(final, '{"categories":[{"id":"robotics"}]}')
         self.assertEqual([c["tool"] for c in calls], ["verify_url", "web_search", "verify_url"])
-        self.assertFalse(calls[0]["result"]["ok"])  # dead link caught
+        self.assertFalse(calls[0]["result"]["ok"])  # soft-404 caught despite 200
+        self.assertIn("soft-404", calls[0]["result"]["error"])
         self.assertTrue(any(r["url"] == live for r in calls[1]["result"]["results"]))
         self.assertTrue(calls[2]["result"]["ok"])  # repaired link verified live
 

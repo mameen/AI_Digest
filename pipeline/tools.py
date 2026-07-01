@@ -27,7 +27,7 @@ from dataclasses import dataclass
 from typing import Any, Callable
 
 _UA = {"User-Agent": "AI-Digest/1.0 (+link-verify)"}
-FetchStatus = Callable[[str, int], "tuple[int | None, str]"]
+FetchStatus = Callable[[str, int], "tuple[int | None, str, str]"]
 FetchHtml = Callable[[str, int], str]
 Chat = Callable[[list[dict[str, str]]], str]
 Tool = Callable[..., dict[str, Any]]
@@ -96,36 +96,77 @@ def format_tool_result(action: ToolAction, result: Any) -> str:
     return f"OBSERVATION {action.name}: {payload}"
 
 
-def _http_status(url: str, timeout: int) -> tuple[int | None, str]:
-    """Return ``(status, final_url)`` via HEAD, falling back to GET on refusal."""
-    for method in ("HEAD", "GET"):
-        req = urllib.request.Request(url, headers=_UA, method=method)
-        try:
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
-                return int(getattr(resp, "status", 0) or resp.getcode()), resp.geturl()
-        except urllib.error.HTTPError as exc:
-            if method == "HEAD" and exc.code in (403, 405, 501):
-                continue  # server dislikes HEAD; retry with GET
-            return int(exc.code), url
-        except (urllib.error.URLError, TimeoutError, ValueError, OSError):
-            return None, url
-    return None, url
+_MAX_BODY_BYTES = 131072
+_TITLE_RE = re.compile(r"<title[^>]*>(.*?)</title>", re.IGNORECASE | re.DOTALL)
+_NOT_FOUND_TITLE_MARKERS = ("not found", "page not found", "404 not found", "error 404")
+_NOT_FOUND_BODY_MARKERS = (
+    "page not found",
+    "page could not be found",
+    "page doesn't exist",
+    "page you requested could not",
+    "looks like you're lost",
+)
+
+
+def _http_fetch(url: str, timeout: int) -> tuple[int | None, str, str]:
+    """GET the URL, returning ``(status, final_url, body)`` with the body capped.
+
+    A GET (rather than HEAD) is required so the caller can inspect content for a
+    soft 404 — an SPA that answers ``200`` with a client-rendered "not found"
+    screen. The body read is bounded to keep verification cheap.
+    """
+    req = urllib.request.Request(url, headers=_UA, method="GET")
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            status = int(getattr(resp, "status", 0) or resp.getcode())
+            body = resp.read(_MAX_BODY_BYTES).decode("utf-8", errors="replace")
+            return status, resp.geturl(), body
+    except urllib.error.HTTPError as exc:
+        return int(exc.code), url, ""
+    except (urllib.error.URLError, TimeoutError, ValueError, OSError):
+        return None, url, ""
+
+
+def looks_not_found(body: str) -> bool:
+    """Heuristically flag a soft 404: a page whose *content* says "not found".
+
+    Conservative to avoid false positives — trusts the ``<title>`` first, then a
+    short set of unambiguous phrases in the page's head region. A genuine
+    article (descriptive title, no such phrases) is never flagged.
+    """
+    if not body:
+        return False
+    match = _TITLE_RE.search(body)
+    if match:
+        title = _html.unescape(_TAG_RE.sub("", match.group(1))).strip().lower()
+        if any(mark in title for mark in _NOT_FOUND_TITLE_MARKERS):
+            return True
+    head = body[:8000].lower()
+    return any(mark in head for mark in _NOT_FOUND_BODY_MARKERS)
 
 
 def verify_url(url: str, *, fetch: FetchStatus | None = None, timeout: int = 8) -> dict[str, Any]:
-    """Liveness check for a single URL. ``ok`` iff a 2xx/3xx response returned.
+    """Content-aware liveness check for a single URL.
 
-    ``fetch`` is injectable ``(url, timeout) -> (status, final_url)`` so tests
-    exercise the shaping logic without touching the network.
+    ``ok`` requires *both* a 2xx/3xx response **and** that the returned page is
+    not a soft 404 (a ``200`` whose content is a "not found" screen — common for
+    SPAs like figure.ai). ``fetch`` is injectable
+    ``(url, timeout) -> (status, final_url, body)`` so tests exercise the shaping
+    logic against real fixture pages without touching the network.
     """
     u = (url or "").strip()
     if not u.lower().startswith(("http://", "https://")):
         return {"url": url, "ok": False, "status": None, "error": "not-an-http-url"}
-    status, final_url = (fetch or _http_status)(u, timeout)
-    ok = status is not None and 200 <= status < 400
+    status, final_url, body = (fetch or _http_fetch)(u, timeout)
+    live = status is not None and 200 <= status < 400
+    soft_404 = live and looks_not_found(body)
+    ok = live and not soft_404
     out: dict[str, Any] = {"url": u, "ok": ok, "status": status, "final_url": final_url}
-    if not ok and status is None:
-        out["error"] = "unreachable"
+    if not ok:
+        if status is None:
+            out["error"] = "unreachable"
+        elif soft_404:
+            out["error"] = "soft-404: page content is 'not found'"
     return out
 
 

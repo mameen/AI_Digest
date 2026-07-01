@@ -362,9 +362,10 @@ def _tool_loop_system(tools: dict[str, Any]) -> str:
         '  {"action": "finalize", "args": {"result": "<the corrected categories JSON as a string>"}}',
         "",
         "Rules:",
-        "- Call verify_url on each story url. A url is acceptable only if ok=true (HTTP 2xx/3xx).",
-        f"- If a url is dead/unreachable, replace it with a verified live url{find_live}"
-        " or drop that story.",
+        "- Call verify_url on each story url. A url is acceptable only if ok=true "
+        "(a live 2xx/3xx page whose content is NOT a 'not found' screen).",
+        f"- If a url is dead, unreachable, or a soft-404, replace it with a verified live url"
+        f"{find_live} or drop that story.",
         "- Never invent urls. Only keep urls that verify_url confirmed live.",
         "- When every remaining story has a verified url, finalize with the full corrected JSON.",
     ]
