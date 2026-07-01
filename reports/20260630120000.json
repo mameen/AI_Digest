@@ -1201,5 +1201,6 @@
         "category": "leaderboard"
       }
     ]
-  }
+  },
+  "generator_version": "0.4.1+20260630120000"
 }

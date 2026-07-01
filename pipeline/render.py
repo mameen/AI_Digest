@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from pipeline import generator_version
 from pipeline.paths import SKILL_DIR, SKILL_SCRIPTS, cache_dir, diagnostics_dir, reports_dir
 from pipeline.frame_author import inject_author_card
 from pipeline.frame_nav import diagnostics_available as has_diagnostics
@@ -57,6 +58,7 @@ def render(cfg: dict[str, Any], prefix: str, data: dict[str, Any]) -> Path:
     reports = reports_dir(cfg)
     reports.mkdir(parents=True, exist_ok=True)
 
+    data["generator_version"] = generator_version(prefix)
     json_path = reports / f"{prefix}.json"
     json_path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"  OK {json_path}")

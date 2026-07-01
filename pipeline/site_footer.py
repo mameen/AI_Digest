@@ -6,6 +6,7 @@ from typing import Any
 
 
 def site_footer_html(cfg: dict[str, Any]) -> str:
+    from pipeline import __version__
     from pipeline.frame_author import GITHUB_MARK
 
     site = cfg.get("site") or {}
@@ -17,6 +18,8 @@ def site_footer_html(cfg: dict[str, Any]) -> str:
     parts = [
         '<footer class="site-footer">',
         "  <span>AI Digest pipeline</span>",
+        '  <span class="site-footer-sep">·</span>',
+        f'  <span class="site-footer-version">v{__version__}</span>',
         '  <span class="site-footer-sep">·</span>',
         f"  <span>{name}</span>",
     ]
