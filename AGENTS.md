@@ -62,9 +62,44 @@ realistic fallback for when no fetch is available.
 > dead or fabricated (probe everything first). Only add a source after a live
 > request returns usable JSON.
 
+## Post-change workflow
+
+After any **major change** (pipeline logic, a parser, the widget, schema, or a
+source), run this loop in order — no shortcuts:
+
+1. **Regenerate** the latest report (`python run.py --start <date>`). Confirm it
+   is *not* degraded (story count and per-category coverage hold up); never
+   publish a degraded showcase report.
+2. **Lint + test** — `python run_tests.py` must be green (Python + Node).
+3. **Push to a relevant branch, never `main`.** Reuse an existing topic branch
+   where it fits, otherwise cut a fresh one (`chore/…`, `fix/…`, `feat/…`).
+4. **Ask permission before pushing.** State what will be pushed and wait for an
+   explicit yes; the maintainer may approve or decline.
+
+`main` is a protected, always-shippable branch — work happens on branches and
+merges via PR.
+
+## Versioning
+
+A single human-readable version, more traceable at a glance than a commit hash.
+
+- **Source of truth:** `__version__` in `pipeline/__init__.py`, semantic
+  `MAJOR.MINOR.PATCH` (major = breaking pipeline/schema change, minor = new
+  feature/source, patch = fix).
+- **Bump deliberately**, once per meaningful change — *not* automatically per
+  step (the run timestamp already moves every run, so auto-bumping adds churn
+  without meaning).
+- **Build metadata is the run prefix**, appended SemVer-style after `+`:
+  `0.4.1+20260630120000` reads as "code v0.4.1 produced the 20260630120000
+  report". Do not invent a second timestamp — reuse the run prefix.
+- **Surface it** in the report + diagnostics footer and the report JSON
+  (`generator_version`).
+- **Tag releases** `vMAJOR.MINOR.PATCH` so `git describe` gives readable names
+  and the version↔hash link is preserved.
+
 ## Commit / push
 
 - Commit locally with a descriptive message. **Do not push** unless explicitly
-  asked.
+  asked (see the post-change workflow above).
 - Never commit secrets. The `.cache/` prefetch is gitignored; `reports/`,
   `diagnostics/`, and `.preflight/` are tracked.
