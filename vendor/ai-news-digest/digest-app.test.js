@@ -5,7 +5,7 @@ const assert = require('node:assert');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const { PROVIDER_COLORS, resolveLbColumns, renderLbLinks, lbTooltip } = require('./digest-app.js');
+const { PROVIDER_COLORS, resolveLbColumns, renderLbLinks, lbTooltip, sourceLinkHtml } = require('./digest-app.js');
 
 // ── Extract the `const leaderboards = {…}` object literal from a template ──
 function extractLeaderboards(html) {
@@ -81,6 +81,22 @@ test('renderLbLinks renders one anchor per item with name/url/source', () => {
   assert.match(html, /a\.com \u2197/);
   assert.strictEqual((html.match(/<a /g) || []).length, 2);
   assert.ok(!html.includes('lb-tab'), 'links markup must not include tab buttons');
+});
+
+// ── sourceLinkHtml: real link vs. kept-topic "Source pending" ──
+test('sourceLinkHtml renders a Read source anchor for a real url', () => {
+  const html = sourceLinkHtml('https://www.figure.ai/news/project-go-big');
+  assert.match(html, /^<a /);
+  assert.match(html, /href="https:\/\/www\.figure\.ai\/news\/project-go-big"/);
+  assert.match(html, /Read source/);
+});
+test('sourceLinkHtml degrades to a non-link Source pending span when url is missing', () => {
+  for (const url of [null, undefined, '']) {
+    const html = sourceLinkHtml(url);
+    assert.ok(!html.includes('<a '), 'must not emit an anchor (no dead link)');
+    assert.match(html, /Source pending/);
+    assert.match(html, /card-link-pending/);
+  }
 });
 
 // ── Data-contract checks on the shipped leaderboards object ──

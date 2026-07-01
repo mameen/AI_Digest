@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import urllib.error
 import urllib.request
-from typing import Any, Tuple
+from typing import Any, Callable, Tuple
 
 
 def ensure_ollama_ready(cfg: dict[str, Any]) -> None:
@@ -69,3 +69,27 @@ def make_client(cfg: dict[str, Any]) -> Tuple[Any, str, int]:
         )
 
     return client, model, max_retries
+
+
+def make_raw_chat(cfg: dict[str, Any]) -> Tuple[Callable[[list[dict[str, str]]], str], str]:
+    """Return ``(chat, model)`` for free-form (non-Instructor) chat completions.
+
+    The tool-calling loop needs raw text replies (a single JSON action per turn),
+    which do not flow through ``instructor.Mode.JSON``. This builds a plain
+    OpenAI-compatible client against the same endpoint. ``chat(messages) -> str``.
+    """
+    from openai import OpenAI
+
+    llm = cfg["llm"]
+    provider = llm.get("provider", "ollama")
+    model = llm.get("model", "qwen3.6:35b")
+    if provider == "ollama":
+        client = OpenAI(base_url=llm.get("base_url", "http://localhost:11434/v1"), api_key="ollama")
+    else:
+        client = OpenAI()
+
+    def chat(messages: list[dict[str, str]]) -> str:
+        resp = client.chat.completions.create(model=model, messages=messages, temperature=0)
+        return resp.choices[0].message.content or ""
+
+    return chat, model

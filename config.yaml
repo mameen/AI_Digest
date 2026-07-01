@@ -40,6 +40,13 @@ llm:
 enrich:
   stories_per_batch: 18
   gap_categories_per_call: 3
+  # Agentic link-verification loop: after gap-fill, before the grounding guard,
+  # let the model call verify_url (and optionally web_search) to actively check
+  # and repair cited links. Default-off; the deterministic guard always runs.
+  tool_loop:
+    enabled: false
+    max_iterations: 8
+    web_search: false
   category_targets:
     leaderboard: 6
     analytics: 5

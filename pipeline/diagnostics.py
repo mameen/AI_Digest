@@ -125,6 +125,26 @@ class CrawlRecord:
         }
 
 
+@dataclass
+class ToolCallRecord:
+    """One tool invocation from the grounding tool-loop (verify_url/web_search)."""
+
+    tool: str
+    args: dict[str, Any]
+    ok: bool
+    duration_ms: float
+    detail: str | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "tool": self.tool,
+            "args": self.args,
+            "ok": self.ok,
+            "duration_ms": round(self.duration_ms, 1),
+            "detail": self.detail,
+        }
+
+
 class DiagnosticCollector:
     def __init__(self, prefix: str, cfg: dict[str, Any], *, enabled: bool = True) -> None:
         self.prefix = prefix
@@ -136,6 +156,7 @@ class DiagnosticCollector:
         self.stages: list[StageRecord] = []
         self.llm_calls: list[LlmCallRecord] = []
         self.crawls: list[CrawlRecord] = []
+        self.tool_calls: list[ToolCallRecord] = []
         self._stack: list[StageRecord] = []
 
     @contextmanager
@@ -182,6 +203,21 @@ class DiagnosticCollector:
             return
         self.llm_calls.append(record)
 
+    def record_tool_call(
+        self,
+        tool: str,
+        args: dict[str, Any],
+        *,
+        ok: bool,
+        duration_ms: float,
+        detail: str | None = None,
+    ) -> None:
+        if not self.enabled:
+            return
+        self.tool_calls.append(
+            ToolCallRecord(tool=tool, args=args, ok=ok, duration_ms=duration_ms, detail=detail)
+        )
+
     def build_report(self) -> dict[str, Any]:
         total_ms = (time.perf_counter() - self._run_t0) * 1000
         total_cpu_ms = (time.process_time() - self._run_cpu0) * 1000
@@ -208,6 +244,7 @@ class DiagnosticCollector:
             "stages": [s.to_dict() for s in self.stages],
             "llm_calls": [c.to_dict() for c in self.llm_calls],
             "crawls": [c.to_dict() for c in self.crawls],
+            "tool_calls": [t.to_dict() for t in self.tool_calls],
             "totals": {
                 "stage_count": len(self.stages),
                 "llm_call_count": len(self.llm_calls),
@@ -215,6 +252,8 @@ class DiagnosticCollector:
                 "llm_share_pct": round(100 * llm_ms / total_ms, 1) if total_ms else 0,
                 "crawl_count": len(self.crawls),
                 "crawl_duration_ms": round(sum(c.duration_ms for c in self.crawls), 1),
+                "tool_call_count": len(self.tool_calls),
+                "tool_calls_ok": sum(1 for t in self.tool_calls if t.ok),
                 "prompt_tokens": pt or None,
                 "completion_tokens": ct or None,
                 "total_tokens": tt or None,

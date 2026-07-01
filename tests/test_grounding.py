@@ -12,7 +12,10 @@ import unittest
 from pathlib import Path
 
 from pipeline.grounding import (
+    annotate_ungrounded,
+    collect_ingestion_urls,
     collect_roots,
+    collect_skeleton_urls,
     find_ungrounded,
     is_ungrounded,
     normalize_url,
@@ -104,6 +107,107 @@ class Strip(unittest.TestCase):
         kept, _ = strip_ungrounded(self._categories(), ROOTS)
         robotics = next(c for c in kept if c["id"] == "robotics")
         self.assertEqual([s["title"] for s in robotics["stories"]], ["real"])
+
+
+class IngestionAllowSet(unittest.TestCase):
+    """In-context check: a URL the model was never shown is ungrounded."""
+
+    INGESTION = (
+        "## Crawl: figure.md\n"
+        "Figure announced production ramp — see https://www.figure.ai/news/project-go-big.\n"
+        "Also [BMW deal](https://figure.ai/news/f-03-at-bmw) and a trailing ref "
+        "(https://artificialanalysis.ai/models/mercury-2).\n"
+    )
+
+    def test_collect_extracts_and_normalizes(self) -> None:
+        urls = collect_ingestion_urls(self.INGESTION)
+        self.assertIn("figure.ai/news/project-go-big", urls)
+        self.assertIn("figure.ai/news/f-03-at-bmw", urls)  # markdown-link paren trimmed
+        self.assertIn("artificialanalysis.ai/models/mercury-2", urls)  # trailing ) trimmed
+
+    def test_fabricated_deep_path_is_ungrounded_in_context(self) -> None:
+        allow = collect_ingestion_urls(self.INGESTION)
+        # The 404 /blog/ path the root-only check can't catch:
+        self.assertFalse(is_ungrounded("https://www.figure.ai/blog/project-go-big", ROOTS))
+        self.assertTrue(
+            is_ungrounded("https://www.figure.ai/blog/project-go-big", ROOTS, allow_urls=allow)
+        )
+
+    def test_shown_url_is_grounded_in_context(self) -> None:
+        allow = collect_ingestion_urls(self.INGESTION)
+        self.assertFalse(
+            is_ungrounded("https://figure.ai/news/project-go-big", ROOTS, allow_urls=allow)
+        )
+
+
+class SkeletonAllowSet(unittest.TestCase):
+    """Curated-feed URLs must count as grounded, even when absent from crawls."""
+
+    def test_real_preflight_feed_urls_collected(self) -> None:
+        urls = collect_skeleton_urls(_PREFLIGHT_DATA)
+        # Curated categories (aisearch/typography/research) carry these links in
+        # their per-category feeds, not the shared crawl ingestion string.
+        self.assertTrue(any(u.startswith("youtube.com/watch") for u in urls))
+        self.assertTrue(any("ilovetypography.com" in u for u in urls))
+        self.assertTrue(any("huggingface.co/papers" in u for u in urls))
+
+    def test_curated_link_grounded_via_skeleton_not_crawl(self) -> None:
+        crawl_only = collect_ingestion_urls("## Crawl: x\nNothing relevant here.\n")
+        allow = crawl_only | collect_skeleton_urls(_PREFLIGHT_DATA)
+        url = "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=2420s"
+        self.assertTrue(is_ungrounded(url, ROOTS, allow_urls=crawl_only))  # crawl alone misses it
+        self.assertFalse(is_ungrounded(url, ROOTS, allow_urls=allow))  # skeleton rescues it
+
+
+class Annotate(unittest.TestCase):
+    """Keep-the-topic policy: demote the link, never drop the story."""
+
+    def _categories(self) -> list[dict]:
+        return [
+            {"id": "leaderboard", "stories": [{"title": "ok", "url": "https://arena.ai/leaderboard/text-to-image"}]},
+            {
+                "id": "robotics",
+                "stories": [
+                    {"title": "real", "source": "Figure AI", "url": "https://www.figure.ai/news/project-go-big"},
+                    {"title": "fab", "source": "Figure AI", "url": "https://www.figure.ai/blog/invented"},
+                ],
+            },
+        ]
+
+    def test_topic_kept_and_link_demoted(self) -> None:
+        allow = {"figure.ai/news/project-go-big"}
+        kept, demoted = annotate_ungrounded(self._categories(), ROOTS, ingestion_urls=allow)
+        robotics = next(c for c in kept if c["id"] == "robotics")
+        # Both stories survive — no topic lost.
+        self.assertEqual([s["title"] for s in robotics["stories"]], ["real", "fab"])
+        real, fab = robotics["stories"]
+        self.assertEqual(real["url"], "https://www.figure.ai/news/project-go-big")
+        self.assertFalse(real.get("source_pending"))
+        self.assertIsNone(fab["url"])
+        self.assertTrue(fab["source_pending"])
+        self.assertEqual([d["title"] for d in demoted], ["fab"])
+
+    def test_leaderboard_root_exempt(self) -> None:
+        kept, _ = annotate_ungrounded(self._categories(), ROOTS)
+        lb = next(c for c in kept if c["id"] == "leaderboard")
+        self.assertEqual(lb["stories"][0]["url"], "https://arena.ai/leaderboard/text-to-image")
+
+
+class FindUngrounded(unittest.TestCase):
+    def test_demoted_story_is_not_an_offender(self) -> None:
+        # A guard-demoted story (url cleared, source_pending) shows no link, so
+        # validation must not flag it; only a live ungrounded URL is an offender.
+        cats = [
+            {
+                "id": "robotics",
+                "stories": [
+                    {"title": "kept", "source": "Figure AI", "url": None, "source_pending": True},
+                    {"title": "bad", "source": "X", "url": "https://arena.ai/leaderboard/text-to-image"},
+                ],
+            }
+        ]
+        offenders = find_ungrounded(cats, ROOTS)
+        self.assertEqual([o["title"] for o in offenders], ["bad"])
 
 
 class PublishedDigestClean(unittest.TestCase):
