@@ -20,3 +20,4 @@ Thumbs.db
 
 # reports/, diagnostics/, and .preflight/ are tracked
 .preflight/
+*.log
