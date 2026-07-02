@@ -2,13 +2,13 @@
 Pre-fetch all digest sources and write a partial digest JSON.
 
 The output file is a near-complete digest skeleton: categories with story cards
-already populated for aisearch, typography, and research. Claude reads this file
-at Step 2 and only needs to:
+already populated for aisearch, typography, research, and robotics. Claude reads
+this file at Step 2 and only needs to:
 
   1. web_fetch the 7 JS-rendered leaderboard pages (listed in requires_web_fetch)
   2. Write a 2–3 sentence summary for each story  (significance/novelty/relevance_design = 0 means "unscored")
   3. Assign significance / novelty / relevance_design scores (1–5)
-  4. Add the leaderboard, llm, image-gen, design-ai, and robotics categories
+  4. Add the leaderboard, llm, image-gen, and design-ai categories
   5. Compute visualizations block and top_stories
   6. Save as the final YYYYMMDDHHMMSS.json + .html
 
@@ -16,6 +16,7 @@ What this script fetches (all in parallel, ~15s):
   ✓ theAIsearch  — latest video via RSS + yt-dlp (every chapter → story card)
   ✓ Typography   — Monotype, I Love Typography, Adobe Fonts Blog, Typographica, MyFonts
   ✓ Research     — HuggingFace Papers (top 20) + arXiv cs.AI / cs.CV / cs.CL
+  ✓ Robotics     — The Robot Report, IEEE Spectrum Robotics, Robohub (RSS)
   ✓ LLM Stats    — llm-stats.com/llm-updates raw text (for Claude to parse)
 
 Not fetched (JS-rendered SPAs — Claude's web_fetch handles these):
@@ -48,6 +49,7 @@ sys.path.insert(0, str(SCRIPTS_DIR))
 
 from fetch_typography_news  import fetch_stories as fetch_typography_stories
 from fetch_research_papers  import fetch_stories as fetch_research_stories
+from fetch_robotics_news    import fetch_stories as fetch_robotics_stories
 from fetch_video_chapters   import (
     get_latest_video_url, fetch_video_info, to_story_cards as chapters_to_stories,
     make_category,
@@ -161,6 +163,7 @@ def run_preflight(prefix: str, force: bool = False) -> dict:
         "aisearch":   "fetch_youtube",
         "typography": "fetch_typography",
         "research":   "fetch_research",
+        "robotics":   "fetch_robotics",
         "llm_stats":  "fetch_llm_stats",
     }
 
@@ -168,6 +171,7 @@ def run_preflight(prefix: str, force: bool = False) -> dict:
         "aisearch":   _fetch_aisearch_category,
         "typography": fetch_typography_stories,
         "research":   fetch_research_stories,
+        "robotics":   fetch_robotics_stories,
         "llm_stats":  _fetch_llm_stats,
     }
 
@@ -212,7 +216,7 @@ def run_preflight(prefix: str, force: bool = False) -> dict:
 
     # Build canonical categories list (same order as the final digest)
     categories = []
-    for cat_id in ("aisearch", "typography", "research"):
+    for cat_id in ("aisearch", "typography", "research", "robotics"):
         sec = sections.get(cat_id, {})
         if "stories" in sec:
             categories.append(sec)
@@ -226,7 +230,7 @@ def run_preflight(prefix: str, force: bool = False) -> dict:
             "(1) web_fetch the URLs in requires_web_fetch to get leaderboard data, "
             "(2) write a 2–3 sentence summary for each story (summary is empty ''), "
             "(3) assign significance/novelty/relevance_design scores 1–5 (currently 0), "
-            "(4) add leaderboard / llm / image-gen / design-ai / robotics categories, "
+            "(4) add leaderboard / llm / image-gen / design-ai categories, "
             "(5) compute visualizations block."
         ),
         "categories":         categories,

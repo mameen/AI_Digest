@@ -28,7 +28,7 @@ CATEGORY_CATALOG: dict[str, dict[str, str]] = {
 }
 
 CANONICAL_ORDER: list[str] = list(CATEGORY_CATALOG.keys())
-SKELETON_CATEGORY_IDS = frozenset({"aisearch", "typography", "research"})
+SKELETON_CATEGORY_IDS = frozenset({"aisearch", "typography", "research", "robotics"})
 GAP_CATEGORY_IDS = frozenset({
     "analytics",
     "agentic-ai",
@@ -36,7 +36,6 @@ GAP_CATEGORY_IDS = frozenset({
     "rag",
     "image-gen",
     "design-ai",
-    "robotics",
 })
 # Preflight uses "category" on some sections; production JSON uses "id"
 _PREFLIGHT_META_KEYS = frozenset({"category", "video_url", "video_label"})
