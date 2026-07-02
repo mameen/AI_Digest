@@ -23,14 +23,25 @@ Requires: pip install yt-dlp
 import argparse
 import json
 import sys
+import time
 import xml.etree.ElementTree as ET
+import urllib.error
 import urllib.request
 
 sys.path.insert(0, str(__import__("pathlib").Path(__file__).parent))
 from _story_utils import make_story, make_category
 
 CHANNEL_RSS = "https://www.youtube.com/feeds/videos.xml?channel_id=UCIgnGlGkVRhd4qNFcEwLL4A"
+CHANNEL_VIDEOS = "https://www.youtube.com/channel/UCIgnGlGkVRhd4qNFcEwLL4A/videos"
 HEADERS = {"User-Agent": "Mozilla/5.0"}
+_ATOM_NS = {
+    "atom": "http://www.w3.org/2005/Atom",
+    "yt":   "http://www.youtube.com/xml/schemas/2015",
+}
+# YouTube's feed endpoint is intermittently throttled (spurious 404/500), so a
+# single blip must not drop the whole aisearch category — retry with backoff.
+RSS_RETRY_ATTEMPTS = 3
+RSS_RETRY_BACKOFF = 2.0
 
 # Chapters with these titles are navigation-only — skip them in story output
 SKIP_CHAPTER_TITLES = {"intro", "ai news intro", "introduction", "outro", "credits", "sponsor"}
@@ -38,22 +49,92 @@ SKIP_CHAPTER_TITLES = {"intro", "ai news intro", "introduction", "outro", "credi
 
 # ── RSS + yt-dlp ───────────────────────────────────────────────────────────────
 
-def get_latest_video_url() -> tuple[str, str]:
-    """Return (url, title) of the most recent theAIsearch upload via RSS."""
-    req = urllib.request.Request(CHANNEL_RSS, headers=HEADERS)
-    with urllib.request.urlopen(req, timeout=10) as resp:
-        tree = ET.parse(resp)
-    ns = {
-        "atom": "http://www.w3.org/2005/Atom",
-        "yt":   "http://www.youtube.com/xml/schemas/2015",
-    }
-    entries = tree.findall(".//atom:entry", ns)
+def _fetch_rss(url: str, timeout: int = 10) -> bytes:
+    """Fetch raw RSS bytes (isolated so it can be swapped for a fixture in tests)."""
+    req = urllib.request.Request(url, headers=HEADERS)
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        return resp.read()
+
+
+def _parse_latest(xml_bytes: bytes) -> tuple[str, str]:
+    """Return (url, title) of the newest entry in an Atom feed body."""
+    root = ET.fromstring(xml_bytes)
+    entries = root.findall(".//atom:entry", _ATOM_NS)
     if not entries:
         raise RuntimeError("No entries found in RSS feed")
     first = entries[0]
-    video_id = first.find("yt:videoId", ns).text
-    title    = first.find("atom:title",  ns).text
+    video_id = first.find("yt:videoId", _ATOM_NS).text
+    title    = first.find("atom:title",  _ATOM_NS).text
     return f"https://www.youtube.com/watch?v={video_id}", title
+
+
+def _parse_ytdlp_flat(info: dict) -> tuple[str, str]:
+    """Return (url, title) of the newest entry in a yt-dlp flat channel listing."""
+    entries = info.get("entries") or []
+    if not entries:
+        raise RuntimeError("yt-dlp channel listing returned no entries")
+    first = entries[0]
+    video_id = first.get("id")
+    url = first.get("url") or (f"https://www.youtube.com/watch?v={video_id}" if video_id else "")
+    if not url:
+        raise RuntimeError("yt-dlp entry missing both url and id")
+    return url, first.get("title") or ""
+
+
+def _latest_via_ytdlp() -> tuple[str, str]:
+    """Fallback: newest upload via yt-dlp's flat channel listing.
+
+    Uses YouTube's web/innertube API — a different endpoint than the /feeds RSS,
+    so it stays reachable when the RSS endpoint is IP-throttled (spurious
+    404/500). Isolated so tests can inject a fixture-backed parser instead.
+    """
+    import yt_dlp
+    opts = {
+        "quiet": True,
+        "no_warnings": True,
+        "extract_flat": "in_playlist",
+        "playlistend": 1,
+        "skip_download": True,
+    }
+    with yt_dlp.YoutubeDL(opts) as ydl:
+        info = ydl.extract_info(CHANNEL_VIDEOS, download=False)
+    return _parse_ytdlp_flat(info)
+
+
+def get_latest_video_url(
+    *,
+    fetch=_fetch_rss,
+    attempts: int = RSS_RETRY_ATTEMPTS,
+    backoff: float = RSS_RETRY_BACKOFF,
+    sleep=time.sleep,
+    fallback=_latest_via_ytdlp,
+) -> tuple[str, str]:
+    """Return (url, title) of the most recent theAIsearch upload.
+
+    Tries the RSS feed first, retrying transient failures (HTTP 404/500,
+    timeouts, malformed/empty bodies) with linear backoff. If RSS is exhausted —
+    typically a sustained /feeds throttle rather than a blip — it falls back to
+    ``fallback`` (yt-dlp on a different endpoint) so the aisearch category
+    survives. ``fetch``/``sleep``/``fallback`` are seams for fixture-backed tests.
+    """
+    last_exc: Exception | None = None
+    for attempt in range(1, attempts + 1):
+        try:
+            return _parse_latest(fetch(CHANNEL_RSS))
+        except (urllib.error.URLError, ET.ParseError, RuntimeError) as exc:
+            last_exc = exc
+            if attempt < attempts:
+                sleep(backoff * attempt)
+    if fallback is not None:
+        try:
+            url, title = fallback()
+            print("  aisearch: RSS throttled — recovered via yt-dlp fallback", file=sys.stderr)
+            return url, title
+        except Exception as exc:  # noqa: BLE001
+            last_exc = exc
+    raise RuntimeError(
+        f"theAIsearch RSS+fallback failed after {attempts} attempts: {last_exc}"
+    )
 
 
 def _fetch_via_python_module(url: str) -> dict:

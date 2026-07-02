@@ -83,19 +83,19 @@ merges via PR.
 
 A single human-readable version, more traceable at a glance than a commit hash.
 
-- **Source of truth:** `__version__` in `pipeline/__init__.py`, semantic
-  `MAJOR.MINOR.PATCH` (major = breaking pipeline/schema change, minor = new
-  feature/source, patch = fix).
+- **Source of truth:** `__version__` in `pipeline/__init__.py`, the release line
+  `MAJOR.MINOR` (major = breaking pipeline/schema change, minor = new
+  feature/source).
 - **Bump deliberately**, once per meaningful change — *not* automatically per
   step (the run timestamp already moves every run, so auto-bumping adds churn
   without meaning).
-- **Build metadata is the run prefix**, appended SemVer-style after `+`:
-  `0.4.1+20260630120000` reads as "code v0.4.1 produced the 20260630120000
+- **The run prefix is the third segment**, appended after the release line:
+  `0.4.20260630120000` reads as "code v0.4 produced the 20260630120000
   report". Do not invent a second timestamp — reuse the run prefix.
-- **Surface it** in the report + diagnostics footer and the report JSON
-  (`generator_version`).
-- **Tag releases** `vMAJOR.MINOR.PATCH` so `git describe` gives readable names
-  and the version↔hash link is preserved.
+- **Surface it** as `generator_version` in the report JSON (release line + run
+  prefix); the report + diagnostics footer shows the bare release line `v0.4`.
+- **Tag releases** `vMAJOR.MINOR` so `git describe` gives readable names and the
+  version↔hash link is preserved.
 
 ## Commit / push
 

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import html
 import json
 import time
 from contextlib import contextmanager
@@ -17,6 +18,16 @@ from pipeline.diagnostics_frame import rebuild_diagnostics_archive
 
 def _utc_now() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def _failed_stages(stages: list["StageRecord"]) -> list["StageRecord"]:
+    """Flatten the stage tree to the records that failed (ok is False)."""
+    out: list[StageRecord] = []
+    for st in stages:
+        if not st.ok:
+            out.append(st)
+        out.extend(_failed_stages(st.children))
+    return out
 
 
 # ── Active collector (set by run.py) ─────────────────────────────────────────
@@ -44,6 +55,15 @@ def finish_collector(cfg: dict[str, Any]) -> Path | None:
     return col.write(cfg)
 
 
+def log(message: str, *, level: str = "INFO") -> None:
+    """Route a milestone/warning through the active collector (buffer + console).
+
+    Falls back to a plain console print when no collector is active, so it is
+    always safe to call at any orchestration boundary.
+    """
+    get_collector().log(message, level=level)
+
+
 # ── Data model ─────────────────────────────────────────────────────────────────
 
 
@@ -55,6 +75,9 @@ class StageRecord:
     ended_at: str | None = None
     duration_ms: float = 0.0
     cpu_ms: float = 0.0
+    ok: bool = True
+    critical: bool = True
+    error: str | None = None
     meta: dict[str, Any] = field(default_factory=dict)
     children: list[StageRecord] = field(default_factory=list)
 
@@ -66,6 +89,9 @@ class StageRecord:
             "ended_at": self.ended_at,
             "duration_ms": round(self.duration_ms, 1),
             "cpu_ms": round(self.cpu_ms, 1),
+            "ok": self.ok,
+            "critical": self.critical,
+            "error": self.error,
             "meta": self.meta,
             "children": [c.to_dict() for c in self.children],
         }
@@ -145,6 +171,19 @@ class ToolCallRecord:
         }
 
 
+@dataclass
+class LogRecord:
+    """One structured log line: timestamp, level, owning stage, message."""
+
+    ts: str
+    level: str
+    stage: str | None
+    message: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"ts": self.ts, "level": self.level, "stage": self.stage, "message": self.message}
+
+
 class DiagnosticCollector:
     def __init__(self, prefix: str, cfg: dict[str, Any], *, enabled: bool = True) -> None:
         self.prefix = prefix
@@ -157,15 +196,50 @@ class DiagnosticCollector:
         self.llm_calls: list[LlmCallRecord] = []
         self.crawls: list[CrawlRecord] = []
         self.tool_calls: list[ToolCallRecord] = []
+        self.logs: list[LogRecord] = []
         self._stack: list[StageRecord] = []
 
+    def log(self, message: str, *, level: str = "INFO") -> None:
+        """Record a structured log line and echo it to the console.
+
+        Always prints (so runs stay observable even with diagnostics disabled);
+        the timestamped, stage-tagged record is buffered only when enabled and
+        is persisted into the diagnostics JSON, HTML and ``<prefix>.run.log``.
+        """
+        stage = self._stack[-1].id if self._stack else None
+        level = level.upper()
+        print(message if level == "INFO" else f"{level} {message}")
+        if self.enabled:
+            self.logs.append(
+                LogRecord(ts=_utc_now(), level=level, stage=stage, message=message.strip())
+            )
+
     @contextmanager
-    def stage(self, stage_id: str, label: str, **meta: Any) -> Iterator[StageRecord]:
+    def stage(
+        self, stage_id: str, label: str, *, critical: bool = True, **meta: Any
+    ) -> Iterator[StageRecord]:
+        """Time a pipeline stage and capture its outcome.
+
+        On exception the stage is recorded as failed. A ``critical`` stage
+        re-raises (aborting the run); a non-critical stage swallows the error
+        after recording it, so a single flaky source degrades the report rather
+        than sinking the whole run. The failure is surfaced in diagnostics.
+        """
+        rec = StageRecord(
+            id=stage_id, label=label, started_at=_utc_now(),
+            critical=critical, meta=dict(meta),
+        )
         if not self.enabled:
-            yield StageRecord(id=stage_id, label=label, started_at=_utc_now())
+            try:
+                yield rec
+            except Exception as exc:  # noqa: BLE001
+                rec.ok, rec.error = False, str(exc)
+                if critical:
+                    self.log(f"stage {stage_id} FAILED: {exc}", level="ERROR")
+                    raise
+                self.log(f"stage {stage_id} degraded (non-critical): {exc}", level="WARN")
             return
 
-        rec = StageRecord(id=stage_id, label=label, started_at=_utc_now(), meta=dict(meta))
         parent = self._stack[-1] if self._stack else None
         if parent is not None:
             parent.children.append(rec)
@@ -177,6 +251,12 @@ class DiagnosticCollector:
         c0 = time.process_time()
         try:
             yield rec
+        except Exception as exc:  # noqa: BLE001
+            rec.ok, rec.error = False, str(exc)
+            if critical:
+                self.log(f"stage {stage_id} FAILED: {exc}", level="ERROR")
+                raise
+            self.log(f"stage {stage_id} degraded (non-critical): {exc}", level="WARN")
         finally:
             rec.duration_ms = (time.perf_counter() - t0) * 1000
             rec.cpu_ms = (time.process_time() - c0) * 1000
@@ -227,11 +307,13 @@ class DiagnosticCollector:
         tt = sum(c.total_tokens or 0 for c in self.llm_calls)
         estimated = any(c.tokens_estimated for c in self.llm_calls)
 
+        failures = _failed_stages(self.stages)
         llm_cfg = self.cfg.get("llm") or {}
         return {
             "schema": "direct_pipeline_py.diagnostics/v1",
             "prefix": self.prefix,
             "poc_id": "ai_digest",
+            "status": "degraded" if failures else "ok",
             "started_at": self.run_started_at,
             "finished_at": _utc_now(),
             "total_duration_ms": round(total_ms, 1),
@@ -245,6 +327,7 @@ class DiagnosticCollector:
             "llm_calls": [c.to_dict() for c in self.llm_calls],
             "crawls": [c.to_dict() for c in self.crawls],
             "tool_calls": [t.to_dict() for t in self.tool_calls],
+            "log": [l.to_dict() for l in self.logs],
             "totals": {
                 "stage_count": len(self.stages),
                 "llm_call_count": len(self.llm_calls),
@@ -254,6 +337,8 @@ class DiagnosticCollector:
                 "crawl_duration_ms": round(sum(c.duration_ms for c in self.crawls), 1),
                 "tool_call_count": len(self.tool_calls),
                 "tool_calls_ok": sum(1 for t in self.tool_calls if t.ok),
+                "stage_failures": len(failures),
+                "failed_stages": [f.id for f in failures],
                 "prompt_tokens": pt or None,
                 "completion_tokens": ct or None,
                 "total_tokens": tt or None,
@@ -269,11 +354,14 @@ class DiagnosticCollector:
         report = self.build_report()
         json_path = out_dir / f"{self.prefix}.diagnostics.json"
         html_path = out_dir / f"{self.prefix}.diagnostics.html"
+        log_path = out_dir / f"{self.prefix}.run.log"
         json_path.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
         html_path.write_text(inject_site_footer(_render_waterfall_html(report), self.cfg), encoding="utf-8")
+        log_path.write_text(_render_run_log(report), encoding="utf-8")
 
         print(f"  OK diagnostics {json_path}")
         print(f"  OK diagnostics {html_path}")
+        print(f"  OK run log     {log_path}")
         rebuild_diagnostics_archive(out_dir, self.cfg)
         return json_path
 
@@ -521,12 +609,19 @@ def _render_waterfall_html(report: dict[str, Any]) -> str:
         dur = float(st.get("duration_ms") or 0)
         left = 100 * offset / total
         width = max(0.8, 100 * dur / total)
-        color = colors[i % len(colors)]
+        failed = not st.get("ok", True)
+        color = "#ef4444" if failed else colors[i % len(colors)]
+        if failed:
+            kind = "degraded" if not st.get("critical", True) else "FAILED"
+            status = f" · {kind}"
+            title = st.get("error") or kind
+        else:
+            status, title = "", st.get("label", st.get("id", ""))
         stage_rows.append(
             f"""<div class="row">
-  <span class="label">{st.get('label', st.get('id', ''))}</span>
+  <span class="label" title="{title}">{st.get('label', st.get('id', ''))}</span>
   <div class="track"><div class="bar" style="left:{left:.2f}%;width:{width:.2f}%;background:{color}"></div></div>
-  <span class="time">{_ms_to_label(dur)}</span>
+  <span class="time">{_ms_to_label(dur)}{status}</span>
 </div>"""
         )
         offset += dur
@@ -535,6 +630,21 @@ def _render_waterfall_html(report: dict[str, Any]) -> str:
     pt = totals.get("prompt_tokens")
     ct = totals.get("completion_tokens")
     tt = totals.get("total_tokens")
+
+    status = report.get("status", "ok")
+    failed = int(totals.get("stage_failures") or 0)
+    badge = (
+        f'<span class="badge ok">OK</span>' if status == "ok"
+        else f'<span class="badge bad">DEGRADED · {failed} stage(s)</span>'
+    )
+    log_rows = "".join(
+        f'<div class="logline {ln.get("level", "INFO").lower()}">'
+        f'<span class="lt">{ln.get("ts", "")[11:19]}</span>'
+        f'<span class="ll">{html.escape(ln.get("level", ""))}</span>'
+        f'<span class="ls">{html.escape(ln.get("stage") or "")}</span>'
+        f'<span class="lm">{html.escape(ln.get("message", ""))}</span></div>'
+        for ln in (report.get("log") or [])
+    )
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -565,10 +675,19 @@ def _render_waterfall_html(report: dict[str, Any]) -> str:
     th {{ color: #94a3b8; font-weight: 500; }}
     td.num {{ text-align: right; font-variant-numeric: tabular-nums; }}
     a {{ color: #60a5fa; }}
+    .badge {{ display: inline-block; padding: 0.1rem 0.5rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.03em; }}
+    .badge.ok {{ background: #064e3b; color: #6ee7b7; }}
+    .badge.bad {{ background: #7f1d1d; color: #fca5a5; }}
+    .runlog {{ background: #0b1220; border-radius: 8px; padding: 0.75rem 1rem; font-family: ui-monospace, monospace; font-size: 0.76rem; line-height: 1.5; max-height: 22rem; overflow: auto; }}
+    .logline {{ display: grid; grid-template-columns: 4.5rem 3.5rem 9rem 1fr; gap: 0.5rem; }}
+    .logline .lt, .logline .ls {{ color: #64748b; }}
+    .logline .ll {{ color: #94a3b8; }}
+    .logline.warn .ll, .logline.warn .lm {{ color: #fbbf24; }}
+    .logline.error .ll, .logline.error .lm {{ color: #f87171; }}
   </style>
 </head>
 <body>
-  <h1>Pipeline diagnostics</h1>
+  <h1>Pipeline diagnostics {badge}</h1>
   <p class="meta">{prefix} · {report.get('started_at', '')} → {report.get('finished_at', '')}<br>
   Model: {llm.get('model', '—')} ({llm.get('provider', '')})</p>
 
@@ -605,9 +724,30 @@ def _render_waterfall_html(report: dict[str, Any]) -> str:
     </tbody>
   </table>
 
-  <p class="meta" style="margin-top:2rem">JSON: <a href="{prefix}.diagnostics.json">{prefix}.diagnostics.json</a></p>
+  <h2>Run log</h2>
+  <div class="runlog">
+    {log_rows if log_rows else '<p class="meta">No log lines recorded.</p>'}
+  </div>
+
+  <p class="meta" style="margin-top:2rem">JSON: <a href="{prefix}.diagnostics.json">{prefix}.diagnostics.json</a> · Log: <a href="{prefix}.run.log">{prefix}.run.log</a></p>
 </body>
 </html>"""
+
+
+def _render_run_log(report: dict[str, Any]) -> str:
+    """Plain-text, greppable run log: a header line plus one line per event."""
+    head = (
+        f"# AI Digest run log  prefix={report.get('prefix', '')}  "
+        f"status={report.get('status', 'ok')}  "
+        f"started={report.get('started_at', '')}  finished={report.get('finished_at', '')}"
+    )
+    lines = [head]
+    for ln in report.get("log") or []:
+        stage = ln.get("stage") or "-"
+        lines.append(
+            f"{ln.get('ts', '')}  {ln.get('level', 'INFO'):<5}  [{stage}]  {ln.get('message', '')}"
+        )
+    return "\n".join(lines) + "\n"
 
 
 def _call_table_row(c: dict[str, Any]) -> str:
