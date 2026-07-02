@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-07-01T01:41:08Z",
-  "latest": "20260630120000",
+  "updated_at": "2026-07-02T14:34:30Z",
+  "latest": "20260701120000",
   "digests": [
     {
       "prefix": "20260425143000",
@@ -234,6 +234,27 @@
       "categories": {
         "leaderboard": 6,
         "analytics": 4,
+        "aisearch": 10,
+        "agentic-ai": 5,
+        "llm": 5,
+        "rag": 5,
+        "image-gen": 5,
+        "design-ai": 5,
+        "typography": 4,
+        "robotics": 5,
+        "research": 6
+      }
+    },
+    {
+      "prefix": "20260701120000",
+      "date": "2026-07-01",
+      "display_date": "WEDNESDAY, JULY 01, 2026",
+      "summary": "Model performance gaps close as pricing compresses and retrieval stacks mature, while agentic workflows, open-weight image generation, and humanoid testing push toward mainstream production deployment.",
+      "story_count": 61,
+      "avg_significance": 4.0,
+      "categories": {
+        "leaderboard": 6,
+        "analytics": 5,
         "aisearch": 10,
         "agentic-ai": 5,
         "llm": 5,
@@ -479,6 +500,27 @@
       "categories": {
         "leaderboard": 6,
         "analytics": 4,
+        "aisearch": 10,
+        "agentic-ai": 5,
+        "llm": 5,
+        "rag": 5,
+        "image-gen": 5,
+        "design-ai": 5,
+        "typography": 4,
+        "robotics": 5,
+        "research": 6
+      }
+    },
+    {
+      "prefix": "20260701120000",
+      "date": "2026-07-01",
+      "display_date": "WEDNESDAY, JULY 01, 2026",
+      "summary": "Model performance gaps close as pricing compresses and retrieval stacks mature, while agentic workflows, open-weight image generation, and humanoid testing push toward mainstream production deployment.",
+      "story_count": 61,
+      "avg_significance": 4.0,
+      "categories": {
+        "leaderboard": 6,
+        "analytics": 5,
         "aisearch": 10,
         "agentic-ai": 5,
         "llm": 5,

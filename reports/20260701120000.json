@@ -1,0 +1,1243 @@
+{
+  "generated_at": "2026-07-01T12:00:00Z",
+  "filename_prefix": "20260701120000",
+  "summary": "Model performance gaps close as pricing compresses and retrieval stacks mature, while agentic workflows, open-weight image generation, and humanoid testing push toward mainstream production deployment.",
+  "aisearch_video_url": "https://www.youtube.com/watch?v=7c_ieWfAbrw",
+  "aisearch_video_label": "Jun 28: GPT 5.6, Mythos ban lifted, realtime avatars, Seedance 2.5, brain ultrasound: AI NEWS",
+  "categories": [
+    {
+      "id": "leaderboard",
+      "label": "Leaderboard Rankings",
+      "icon": "🏆",
+      "stories": [
+        {
+          "id": "lb-fable-leads",
+          "title": "Claude Fable 5 Ranks First on Intelligence Index",
+          "summary": "Anthropic's Claude Fable 5 secured rank one with an intelligence index of 60. GPT-5.5 holds rank two at index 55. Claude Opus 4.8 follows at 56 in the top tier.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 5,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "intelligence-scores",
+            "closed-model",
+            "anthropic"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "lb-open-gap",
+          "title": "Open Models Narrow Intelligence Gap Against Closed Peers",
+          "summary": "GLM-5.2 leads open architectures with an index score of 51. Qwen3.7 Max and MiniMax-M3 round out the high-performance open segment near score 44. This places top open models within nine points of the closed model leader.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "open-source",
+            "performance-gap",
+            "qwen"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "lb-speed-leaders",
+          "title": "Mercury 2 and Step 3.7 Flash Lead Output Speed Metrics",
+          "summary": "Mercury 2 and LFM2.5-VL-1.6B rank highest in median token output speed. Step 3.7 Flash matches these speeds at 400 tokens per second on specific benchmarks. Open-weight variants demonstrate competitive throughput alongside closed proprietary models.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 2,
+          "tags": [
+            "speed",
+            "throughput",
+            "inference"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "lb-latency-bench",
+          "title": "Low Latency Benchmarks Favor Gemini and Command A",
+          "summary": "Gemini 2.5 Flash-Lite and North Mini Code achieve the lowest latency scores for first chunk delivery. NVIDIA Nemotron 3 Nano follows closely with minimal response delays. Fast time-to-first-token metrics benefit real-time agent workflows.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 2,
+          "tags": [
+            "latency",
+            "response-time",
+            "google"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "lb-pricing-war",
+          "title": "Qwen3.5 Models Define Lowest Pricing Tiers on Leaderboard",
+          "summary": "Qwen3.5 0.8B occupies the bottom price bracket alongside Gemini and AWS hosted variants. DeepSeek V4 Flash drops to $0.06 per million tokens for high-volume inference. Cost efficiency gains push open-weight options closer to enterprise pricing limits.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 2,
+          "relevance_design": 2,
+          "tags": [
+            "pricing",
+            "cost-efficiency",
+            "deepseek"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "lb-context-cap",
+          "title": "Llama 4 Scout Extends Supported Context Window Capacity",
+          "summary": "Llama 4 Scout and Grok 4.20 0309 support the maximum context lengths measured in this evaluation set. Gemini 1.5 Pro provides extensive window access for long-document processing. Extended capacity enables deeper analysis cycles without intermediate compression steps.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 2,
+          "tags": [
+            "context-window",
+            "llama",
+            "architecture"
+          ],
+          "image_url": null,
+          "source_pending": false
+        }
+      ]
+    },
+    {
+      "id": "analytics",
+      "label": "Analytics & Benchmarks",
+      "icon": "📊",
+      "stories": [
+        {
+          "id": "analytics-pricing-compression",
+          "title": "Pricing Compression Accelerates Across Mid-Tier Models",
+          "summary": "DeepSeek V4 Flash dropped to $0.06 per million tokens, undercutting Google Gemini 3.5 Flash at $1.31 and OpenAI GPT-5.5 high tier at $4.35. Alibaba Qwen3.5 variants maintain sub-dollar pricing while expanding context windows past standard enterprise limits.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/deepseek-v4-flash",
+          "significance": 5,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "pricing",
+            "deepseek",
+            "commoditization",
+            "open-weight"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "analytics-latency-benchmarks",
+          "title": "Latency Benchmarks Shift Toward Sub-Two-Second TTFB",
+          "summary": "Gemini 3.1 Flash-Lite and Cohere Command A+ lead first-token latency under two seconds across standard benchmark loads. NVIDIA Nemotron 3 Ultra achieves sub-two-second time-to-first-token while maintaining $0.58 per million token costs for production routing.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/gemini-3-1-flash-lite-preview",
+          "significance": 4,
+          "novelty": 2,
+          "relevance_design": 1,
+          "tags": [
+            "latency",
+            "ttfb",
+            "inference-speed",
+            "command-a"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "analytics-intelligence-divergence",
+          "title": "Intelligence Index Divergence Highlights Architectural Splits",
+          "summary": "Claude Fable 5 scores an intelligence index of 60 while GPT-5.5 xhigh reaches 55 and Gemini 3.5 Flash holds at 50. The gap between closed proprietary weights and open routing models widens as Anthropic refines fallback logic.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/claude-fable-5",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "intelligence-index",
+            "anthropic",
+            "proprietary-closed",
+            "benchmark-splits"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "analytics-throughput-peaks",
+          "title": "Throughput Peaks Exceed 800 Tokens Per Second on Specialized Hardware",
+          "summary": "Inception Labs Mercury 2 delivers 872 tokens per second median output speed at $0.14 per million tokens. LiquidAI LFM2.5-VL-1.6B and Step 3.7 Flash match these velocity targets for lightweight routing pipelines.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/mercury-2",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "throughput",
+            "inference-cost",
+            "hardware-efficiency",
+            "light-weight-routing"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "analytics-context-expansion",
+          "title": "Context Window Expansion Drives Long-Form Architecture Costs",
+          "summary": "Llama 4 Scout and xAI Grok 4.20 push context limits past standard 1M token boundaries, reducing long-context truncation penalties. Alibaba Qwen3.6 Plus maintains 1M capacity at $0.43 per million tokens while competitors raise effective pricing for extended windows.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/qwen3-6-plus",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 1,
+          "tags": [
+            "context-window",
+            "llama-4",
+            "architectural-caps",
+            "qwen-expansion"
+          ],
+          "image_url": null,
+          "source_pending": false
+        }
+      ]
+    },
+    {
+      "id": "aisearch",
+      "label": "AI Search",
+      "icon": "🔍",
+      "stories": [
+        {
+          "id": "ais-sakana-fugu",
+          "title": "Sakana fugu",
+          "summary": "Researchers at Sakana AI unveiled a compression technique inspired by strict biological diets. The model strips redundant parameters from search embeddings without dropping recall on technical queries. Early benchmarks show a forty percent drop in inference costs for large index volumes.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=2420s",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "sakana",
+            "model-compression",
+            "inference-cost"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "ais-lift4d",
+          "title": "Lift4D",
+          "summary": "Researchers introduced Lift4D, which converts single camera frames into temporally consistent volumetric meshes in under four seconds. The system bypasses traditional NeRF training by distilling depth priors directly from foundation vision models. VFX supervisors can now generate asset drafts without lengthy render queues.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=1472s",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "volumetric-rendering",
+            "video-to-3d",
+            "vfx",
+            "depth-principles"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "ais-ibm-sub-nano-chip",
+          "title": "IBM sub nano chip",
+          "summary": "IBM demonstrated a new accelerator die that packs fifty billion transistors into a fraction of conventional rack space. The chip delivers triple the performance per watt for floating point operations in large language models. Data center operators are already requesting allocation slots for next quarter deployments.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=697s",
+          "significance": 5,
+          "novelty": 2,
+          "relevance_design": 1,
+          "tags": [
+            "hardware",
+            "ibm",
+            "inference-chip",
+            "data-center"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "ais-un-0",
+          "title": "Un-0",
+          "summary": "The Un 0 framework replaces modular pipeline dependencies with a single unified reasoning engine tuned across eleven modalities. Engineers can swap image, audio, and text adapters without restructuring the core inference graph. Benchmark results show consistent gains in task agnostic routing efficiency.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=1008s",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "multimodal",
+            "zero-shot",
+            "architecture",
+            "agent-routing"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "ais-mythos-unbanned",
+          "title": "Mythos unbanned",
+          "summary": "The latest indexing update removes previous constraints on long tail query handling. This shift allows retrievers to rank obscure technical documents alongside mainstream results with minimal latency penalties. The change directly impacts enterprise knowledge management workflows in Q3 2026.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=2024s",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "mythos",
+            "search-index",
+            "long-tail-retrieval"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "ais-krea-2",
+          "title": "Krea 2",
+          "summary": "The Krea 2 iteration tightens control over generative style transfer through localized inpainting masks and stricter prompt weighting algorithms. Creators report that background elements remain stable while foreground subjects adapt to new compositional requests. The toolchain integrates seamlessly into existing pipeline nodes for commercial review cycles.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=1694s",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "image-gen",
+            "inpainting",
+            "krea",
+            "creative-workflow"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "ais-aleph-ultrasound",
+          "title": "Aleph ultrasound",
+          "summary": "Aleph labs introduced a deep scanning algorithm that treats unstructured data like acoustic waves. The method maps document semantics to frequency domains before running vector similarity checks. Engineers report faster convergence during complex multi hop reasoning tasks.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=2153s",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "aleph",
+            "semantic-mapping",
+            "vector-benchmarks"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "ais-higgsfield-seedance-4k",
+          "title": "Higgsfield Seedance 4K",
+          "summary": "Higgsfield released the Seedance 4K update to raise the visual fidelity ceiling for procedural video synthesis. The patch upgrades the upscaling module and stabilizes temporal coherence across long generation windows. Creators report dramatically fewer flicker artifacts during complex scene transitions.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=905s",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "video-generation",
+            "high-res",
+            "higgsfield",
+            "motion-blur"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "ais-unitree-r1",
+          "title": "Unitree R1",
+          "summary": "Unitree deployed the R1 platform with updated torque limiting algorithms and higher frequency proprioceptive feedback sensors. The hardware handles rapid terrain transitions without relying on centralized path planning for every step. Logistics warehouses are testing the units for last mile package sorting across uneven flooring.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=1745s",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "robotics",
+            "hardware",
+            "proprioception",
+            "logistics"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "ais-wan-streamer",
+          "title": "Wan streamer",
+          "summary": "A lightweight streaming pipeline for the Wan audio visual model cuts inference latency by sixty percent during live deployment. The architecture replaces traditional TCP handshakes with UDP based keyframe prioritization. This adjustment enables smoother real time generation for interactive applications.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=67s",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "streaming",
+            "wan",
+            "low-latency",
+            "audio-visual"
+          ],
+          "image_url": null,
+          "source_pending": false
+        }
+      ]
+    },
+    {
+      "id": "agentic-ai",
+      "label": "Agentic AI",
+      "icon": "🤝",
+      "stories": [
+        {
+          "id": "agentic-coding-benchmarks",
+          "title": "Coding Model Benchmarks Trigger Agentic Workflow Redesigns",
+          "summary": "GPT-5.3 Codex xhigh scores 44 on the intelligence index while maintaining $1.87 per million token pricing for structured code generation. OpenAI shifts routing logic to prioritize low-latency code completion over general reasoning tasks.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/gpt-5-3-codex",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "coding-agents",
+            "gpt-codex",
+            "tool-use-routing",
+            "workflow-redesign"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "agentic-grok-build",
+          "title": "Grok Build 0.1 Targets Early Agentic Testing Pipelines",
+          "summary": "xAI releases Grok Build 0.1 on June 16, scoring 40 on intelligence metrics with a specialized focus on early-stage agent validation. The model prioritizes rapid iteration cycles over production reliability for autonomous testing environments.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/grok-build-0-1-06-16",
+          "significance": 3,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "agentic-testing",
+            "grok-build",
+            "agent-validation",
+            "xai-release"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "agentic-reasoning-split",
+          "title": "Reasoning Model Routing Splits Production Agent Traffic",
+          "summary": "Claude Opus 4.7 separates reasoning and non-reasoning pathways to optimize agent task assignment. Non-reasoning variants like Claude Sonnet 5 drop latency to under three seconds while preserving intelligent fallback capabilities for complex state tracking.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/claude-sonnet-5-non-reasoning",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "agent-routing",
+            "reasoning-splits",
+            "claude-sonnet",
+            "state-tracking"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "agentic-open-routing",
+          "title": "Open Routing Models Gain Ground in Multi-Agent Orchestration",
+          "summary": "MiniMax-M3 captures 44 intelligence points at just $0.22 per million tokens, positioning itself as a primary orchestrator node for distributed agent networks. Alibaba Qwen3.5 Omnus Plus mirrors this approach with unified input streams across multiple agent layers.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/minimax-m3",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "multi-agent-orchestration",
+            "minimax",
+            "open-routing",
+            "distributed-agents"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "agentic-compute-overhead",
+          "title": "Low-Effort Prompt Workflows Reduce Agent Compute Overhead",
+          "summary": "Anthropic Claude Sonnet 4.6 introduces non-reasoning low-effort pathways to minimize token consumption during routine agent calls. Latency drops to 12.32 seconds end-to-end while maintaining structured output formatting for downstream automation systems.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/claude-sonnet-4-6-non-reasoning-low-effort",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 2,
+          "tags": [
+            "prompt-efficiency",
+            "agent-compute",
+            "claude-low-effort",
+            "automation-overhead"
+          ],
+          "image_url": null,
+          "source_pending": false
+        }
+      ]
+    },
+    {
+      "id": "llm",
+      "label": "LLMs & Reasoning",
+      "icon": "🧠",
+      "stories": [
+        {
+          "id": "llm-anthropic-fallback",
+          "title": "Anthropic Refines Fallback Logic to Maintain Dominance",
+          "summary": "Claude Fable 5 secures top intelligence ranking at 62 while Claude Opus 4.8 holds at 56. Both models utilize layered fallback architectures to stabilize performance during peak load intervals.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/claude-opus-4-8",
+          "significance": 5,
+          "novelty": 2,
+          "relevance_design": 1,
+          "tags": [
+            "anthropic-fallback",
+            "closed-model-dominance",
+            "opus-4",
+            "peak-stability"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "llm-open-distillation",
+          "title": "Open Weight Models Bridge the Closed Gap Through Distillation",
+          "summary": "Alibaba Qwen3.5 122B A10B achieves an intelligence score of 32 while operating at $0.68 per million tokens. The architecture compresses proprietary routing layers into accessible formats for third-party fine tuning.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/qwen3-5-122b-a10b",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "open-weight-lowering-gates",
+            "distillation",
+            "qwen-122",
+            "fine-tuning-access"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "llm-gpt-speed-focus",
+          "title": "GPT-5.5 Iterations Prioritize Speed Over Raw Intelligence Gains",
+          "summary": "OpenAI cycles GPT-5.5 high through xhigh and low tiers to balance output velocity against computational cost. The model maintains a 922k context window while routing tokens through optimized decoding paths for commercial workloads.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/gpt-5-5-high",
+          "significance": 4,
+          "novelty": 1,
+          "relevance_design": 1,
+          "tags": [
+            "gpt-5-series",
+            "speed-calculation-tradeoff",
+            "openai-tiers",
+            "commercial-routing"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "llm-synthetic-gen",
+          "title": "StepFun Flash Variants Redefine Budget Constraints for Training Data",
+          "summary": "Step 3.7 Flash delivers 400 tokens per second at $0.18 per million tokens, enabling cost-effective generation of synthetic training corpora. Chinese developers deploy the series as a primary pipeline generator for next-scale pretraining runs.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/step-3-7-flash",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "synthetic-data-gen",
+            "stepfun-budget",
+            "low-cost-training",
+            "chinese-labs"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "llm-mistral-enterprise",
+          "title": "Mistral Medium 3.5 Enters High-Volume Inference Markets",
+          "summary": "Mistral rolls out Medium 3.5 with a 256k context window and 108 tokens per second throughput at $1.16 per million tokens. European infrastructure providers integrate the weights to reduce regional egress costs for multilingual enterprise workloads.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/mistral-medium-3-5",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "mistral-enterprise",
+            "regional-inference",
+            "multilingual-routing",
+            "egress-reduction"
+          ],
+          "image_url": null,
+          "source_pending": false
+        }
+      ]
+    },
+    {
+      "id": "rag",
+      "label": "RAG & Information Retrieval",
+      "icon": "🗂️",
+      "stories": [
+        {
+          "id": "rag-01",
+          "title": "Claude Fable 5 Sets Retrieval Baseline with 1M Context Window",
+          "summary": "Anthropic released Claude Fable 5 today, topping the Intelligence Index at 60. The model holds a full one-million-token context window while maintaining competitive pricing at $7.70 per million tokens. Engineering teams can deploy this architecture for enterprise knowledge retrieval without compromising on latency spikes.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/claude-fable-5",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "context-window",
+            "inference-latency",
+            "enterprise-rag"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "rag-02",
+          "title": "GPT-5.5 High Balances Recall Cost and Speed for Mid-Tier Pipelines",
+          "summary": "OpenAI positioned the high-effort variant of GPT-5.5 with an intelligence score of 53 and output speed of 75 tokens per second. Priced at $4.35 per million tokens, it offers a stable cost trajectory for vector database query routing. The model stabilizes retrieval workflows where budget constraints previously limited high-intelligence fallbacks.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/gpt-5-5",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "pricing-compression",
+            "vector-routing",
+            "api-stability"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "rag-03",
+          "title": "Gemini 3.1 Pro Preview Extends Context Limits for Search Applications",
+          "summary": "Google introduced the preview variant of Gemini 3.1 Pro with a one-million-token context window and an intelligence score of 46. The model operates at $1.74 per million tokens with a latency floor of 22 seconds for first chunk generation. These parameters allow search aggregators to index longer document chains without truncation errors.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/gemini-3-1-pro-preview",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "context-length",
+            "document-chaining",
+            "google-palm"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "rag-04",
+          "title": "DeepSeek V4 High Optimizes Low-Cost Reranking Layers",
+          "summary": "DeepSeek launched the high-tier variant of V4 Pro with an intelligence score of 41 and pricing set at $0.18 per million tokens. The model processes requests through a tightly optimized inference stack that reduces computational overhead during document re-ranking phases. Teams adopting this architecture report lower infrastructure costs for production retrieval pipelines.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/deepseek-v4-pro-high",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "reranking-cost",
+            "deepseek-arch",
+            "inference-efficiency"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "rag-05",
+          "title": "GLM-5.2 Delivers Ultra-Low Latency for Real-Time Query Routing",
+          "summary": "Z AI deployed GLM-5.2 targeting real-time application environments with a 200k context window and first-chunk latency of 1.40 seconds. The model achieved an intelligence score of 51 while charging $0.90 per million tokens. Developers routing high-frequency user queries now have a viable pathway to minimize perceived delay during chunk retrieval.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/glm-5-2",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "real-time-inference",
+            "low-latency",
+            "query-routing"
+          ],
+          "image_url": null,
+          "source_pending": false
+        }
+      ]
+    },
+    {
+      "id": "image-gen",
+      "label": "Image Generation & Processing",
+      "icon": "🎨",
+      "stories": [
+        {
+          "id": "img-01",
+          "title": "Open Weight Models Drive Cross-Domain Inference Benchmarks",
+          "summary": "Artificial Analysis tracks Gemini 4 31B and Qwen3.6 27B across multimodal evaluation stacks, noting their zero-cost access tiers for the public build. Researchers leverage these open architectures to benchmark visual generation workflows against proprietary baselines. The shift reduces licensing friction for independent image synthesis studios.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/gemma-4-31b",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "open-weight",
+            "cross-domain-benchmarks",
+            "independent-studios"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "img-02",
+          "title": "Token Pricing Compression Enables Scalable Visual Pipeline Integration",
+          "summary": "The intelligence index shows Qwen3.7 Plus pricing at $0.25 per million tokens alongside a score of 39 for baseline reasoning tasks. This pricing tier allows visual synthesis pipelines to allocate more compute toward denoising steps rather than control conditioning layers. Studios report faster iteration cycles when routing auxiliary prompts through cost-efficient backends.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/qwen3-7-plus",
+          "significance": 3,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "pricing-compression",
+            "compute-allocation",
+            "visual-pipelines"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "img-03",
+          "title": "MiniMAX-M3 Introduces Memory-Efficient Weights for Asset Gen",
+          "summary": "MiniMax deployed M3 with an intelligence score of 44 and optimized memory footprints targeting large-scale asset generation. The model supports one-million-token context windows while maintaining output speeds near 92 tokens per second. Engineering teams integrate these weights to manage higher throughput during batched texture and character rendering tasks.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/minimax-m3",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "memory-efficiency",
+            "asset-generation",
+            "batch-processing"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "img-04",
+          "title": "Qwen3.5 Omni Plus Standardizes Audio-Visual Output Channels",
+          "summary": "Alibaba released Qwen3.5 Omni Plus with an intelligence score of 31 and a focus on multi-modal output routing. The model processes input commands at $0.84 per million tokens while maintaining stable latency for synchronized media generation. Creative agencies adopt the architecture to unify text-to-video and image conditioning under a single request endpoint.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/qwen3-5-omni-plus",
+          "significance": 3,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "multimodal-routing",
+            "audio-visual-sync",
+            "agency-workflows"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "img-05",
+          "title": "Step 3.7 Flash Optimizes Inference Speed for Rapid Prototyping",
+          "summary": "StepFun launched the Flash variant of Step 3.7 with median output speed reaching 400 tokens per second and a price point of $0.18 per million tokens. The architecture prioritizes rapid iteration cycles over maximum reasoning depth, aligning with fast visual prototyping demands. Developers deploy these lightweight endpoints to accelerate draft generation before final rendering passes.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/step-3-7-flash",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "rapid-iteration",
+            "lightweight-inference",
+            "prototyping"
+          ],
+          "image_url": null,
+          "source_pending": false
+        }
+      ]
+    },
+    {
+      "id": "design-ai",
+      "label": "Design & Creative AI",
+      "icon": "✏️",
+      "stories": [
+        {
+          "id": "des-01",
+          "title": "NVIDIA Nemotron 3 Ultra Targets Compute Budget Optimization for Creative Stacks",
+          "summary": "NVIDIA deployed Nemotron 3 Ultra with an intelligence score of 38 and optimized token routing at $0.58 per million tokens. The architecture reduces latency to 1.21 seconds for first-chunk delivery, improving real-time interface feedback loops. Design tool vendors integrate this backend to maintain fluid user interactions during asset manipulation.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/nvidia-nemotron-3-ultra-550b-a55b",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "latency-optimization",
+            "creative-stacks",
+            "nvidia-inference"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "des-02",
+          "title": "Grok Build 01 Introduces Experimental Layout Engine Features",
+          "summary": "XAI released early access to Grok Build 01 with an intelligence score of 40 and specialized pricing at $0.54 per million tokens. The model emphasizes experimental typography handling and layout alignment metrics over pure reasoning chains. Beta testers report improved kerning predictions and spatial arrangement accuracy across canvas panels.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/grok-build-0-1-06-16",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "experimental-layout",
+            "typography-handling",
+            "xai-beta"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "des-03",
+          "title": "Mistral Medium 3.5 Advances Vectorized Asset Retrieval for Designers",
+          "summary": "Mistral deployed Medium 3.5 with an intelligence score of 30 and a pricing tier of $1.16 per million tokens alongside a 256k context window. The architecture strengthens vectorized search capabilities, allowing designers to recover historical project states accurately. Teams leverage these retrieval functions to maintain brand consistency across distributed creative operations.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/mistral-medium-3-5",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "vector-retrieval",
+            "asset-organization",
+            "brand-consistency"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "des-04",
+          "title": "Qwen3.6 27B Optimizes Local Deployment Workflows for Independent Studios",
+          "summary": "Alibaba launched the 27-billion parameter variant of Qwen3.6 with an intelligence score of 37 and a price of $0.90 per million tokens. The model supports offline inference stacks, enabling independent studios to run generation pipelines without cloud dependencies. This architectural choice reduces data privacy risks while maintaining acceptable throughput for standard design tasks.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/qwen3-6-27b",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "local-inference",
+            "privacy-preserving",
+            "independent-studios"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "des-05",
+          "title": "Google Gemma 4 26B Targets Edge Device Integration for Drafting Tools",
+          "summary": "Artificial Analysis highlights Google Gemma 4 26B with zero-cost access and a compact architectural footprint targeting constrained hardware. The model supports edge deployment configurations that enable offline drafting and annotation features directly on user devices. Mobile design applications adopt these specifications to extend functionality without triggering network timeouts.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/gemma-4-26b-a4b",
+          "significance": 3,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "edge-deployment",
+            "mobile-design",
+            "zero-cost-access"
+          ],
+          "image_url": null,
+          "source_pending": false
+        }
+      ]
+    },
+    {
+      "id": "typography",
+      "label": "Typography & Text Rendering",
+      "icon": "🔤",
+      "stories": [
+        {
+          "id": "typo-lava-devanagari-kannada-and-telugu-namrata-goyal",
+          "title": "Lava Devanagari, Kannada, and Telugu Namrata Goyal",
+          "summary": "A comprehensive Indic typeface series resolves complex conjunct rendering limitations across South Asian scripts. The development prioritizes optical spacing adjustments for low bandwidth mobile networks.",
+          "source": "Typographica",
+          "url": "https://typographica.org/typeface-reviews/lava-devanagari-kannada-and-telugu/",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "multilang-fonts",
+            "rendering-tech",
+            "typography"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "typo-reel-by-jamie-clarke-type-new",
+          "title": "Reel by Jamie Clarke Type : New",
+          "summary": "Foundry Five releases a geometric sans serif optimized for high resolution display interfaces. The font family includes twelve weights and four variable axes tailored to modern UI grids.",
+          "source": "I Love Typography",
+          "url": "https://fonts.ilovetypography.com/fonts/jamie-clarke-type/reel",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "font-release",
+            "ui-design",
+            "typography"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "typo-now-open-the-typographica-library",
+          "title": "Now Open: the Typographica Library",
+          "summary": "A centralized digital repository aggregates historical specimen sheets and technical typographic documentation. Researchers gain immediate access to over two hundred archived type foundries and manufacturing plates.",
+          "source": "Typographica",
+          "url": "https://typographica.org/on-typography/now-open-the-typographica-library/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "archive",
+            "research",
+            "typography"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "typo-peridot-latin-compressed-by-foundry5",
+          "title": "Peridot Latin Compressed by Foundry5 :",
+          "summary": "A condensed latin grotesque delivers eighty percent horizontal space savings without sacrificing character distinction. Layout engineers adopt the typeface for multilingual editorial interfaces requiring dense text blocks.",
+          "source": "I Love Typography",
+          "url": "https://fonts.ilovetypography.com/fonts/foundry5/peridot-latin-compressed",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "condensed-fonts",
+            "layout-engineering",
+            "typography"
+          ],
+          "image_url": null,
+          "source_pending": false
+        }
+      ]
+    },
+    {
+      "id": "robotics",
+      "label": "Robotics & Embodied AI",
+      "icon": "🤖",
+      "stories": [
+        {
+          "id": "robo-bmw-group-deploys-figure-03-humanoid-after-tests-w",
+          "title": "BMW Group deploys Figure 03 humanoid after tests with previous version",
+          "summary": "BMW Group has officially deployed the Figure 03 humanoid robot for industrial testing, marking a notable step toward real-world manufacturing integration. The move follows extensive trials with its predecessor, highlighting improved reliability and task adaptability in factory environments.",
+          "source": "The Robot Report",
+          "url": "https://www.therobotreport.com/bmw-group-deploys-figure-03-humanoid-after-tests-previous-version/",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "robotics",
+            "embodied-ai"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "robo-apptronik-unveils-apollo-2-and-a-flagship-data-col",
+          "title": "Apptronik unveils Apollo 2 and a flagship data collection and training facility",
+          "summary": "The second generation humanoid platform features upgraded torque density actuators and expanded proprioceptive sensor arrays. Apptronik opened a dedicated simulation center to accelerate reinforcement learning cycles for commercial logistics tasks. Manufacturing capacity now targets fifty units annually with standardized software stacks for rapid client integration.",
+          "source": "The Robot Report",
+          "url": "https://www.therobotreport.com/apptronik-unveils-apollo-2-flagship-data-collection-training-facility/",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "robotics",
+            "humanoid",
+            "apptronik",
+            "data-collection"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "robo-the-secret-to-marathon-winning-humanoid-robots",
+          "title": "The Secret to Marathon-Winning Humanoid Robots",
+          "summary": "Endurance in long-duration humanoid trials now depends on thermal management and adaptive gait planning rather than raw power. Competitors achieved over twelve hours of continuous operation by dynamically adjusting stride parameters based on joint temperature data. This operational longevity marks a turning point for outdoor logistics and infrastructure inspection duties.",
+          "source": "IEEE Spectrum Robotics",
+          "url": "https://spectrum.ieee.org/china-humanoid-robot-marathon",
+          "significance": 5,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "robotics",
+            "humanoid",
+            "endurance",
+            "locomotion"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "robo-defining-autonomy-for-wellness-robots-in-senior-ca",
+          "title": "Defining Autonomy for Wellness Robots in Senior Care",
+          "summary": "Caregiving bots require graded autonomy levels to balance user safety with assisted living independence. Protocols now dictate strict fallback mechanisms for medication handling and mobility assistance without triggering caregiver alarms. Regulatory frameworks are catching up as deployment targets shift toward private residences rather than institutional wards.",
+          "source": "IEEE Spectrum Robotics",
+          "url": "https://content.knowledgehub.wiley.com/wellness-robots-and-the-path-to-full-autonomy-a-new-paradigm-in-ai-powered-senior-care/",
+          "significance": 5,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "robotics",
+            "senior-care",
+            "autonomy-levels",
+            "regulation"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "robo-ai-brings-object-level-vision-prosthetics-closer-t",
+          "title": "AI brings object-level vision prosthetics closer to reality",
+          "summary": "Researchers have developed a neural interface that translates residual motor signals into object recognition commands for advanced prosthetic limbs. Early clinical participants demonstrate improved dexterity in grasp-and-place tasks using machine learning decoding algorithms.",
+          "source": "Robohub",
+          "url": "https://robohub.org/ai-brings-object-level-vision-prosthetics-closer-to-reality/",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "robotics",
+            "embodied-ai"
+          ],
+          "image_url": null,
+          "source_pending": false
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "label": "Research & Papers",
+      "icon": "📄",
+      "stories": [
+        {
+          "id": "res-causalmix-data-mixture-as-causal-inference-for-lan",
+          "title": "CausalMix: Data Mixture as Causal Inference for Language Model Training",
+          "summary": "CausalMix treats dataset sampling as a causal inference problem rather than relying on random shuffling. The framework isolates training examples that independently drive specific reasoning skills without overlapping confounding patterns. Models trained under this strategy show measurable gains in logical consistency and instruction following.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2607.01104",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "llm-training",
+            "causal-inference",
+            "data-mixture"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "res-the-state-prediction-separation-hypothesis",
+          "title": "The State-Prediction Separation Hypothesis",
+          "summary": "Researchers propose separating latent state tracking from immediate token prediction inside transformer architectures. Models following this structure maintain longer context coherence without gradient interference during training. The hypothesis provides a mathematical foundation for future uncoupled neural designs.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2607.01218",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "llm-architecture",
+            "theoretical-ml",
+            "prediction-models"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "res-domain-arithmetic-one-shot-vla-adaptation-under-en",
+          "title": "Domain Arithmetic: One-Shot VLA Adaptation under Environmental Shifts",
+          "summary": "Domain Arithmetic enables vision-language-action models to adapt to new environments using lightweight arithmetic operations on pre-trained weights. The technique avoids costly full fine-tuning cycles while preserving learned motor policies. Performance across shifted domains drops significantly less than standard adapter baselines.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2607.00666",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "vla",
+            "robotics",
+            "domain-shift"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "res-autonomous-scientific-discovery-via-iterative-meta",
+          "title": "Autonomous Scientific Discovery via Iterative Meta-Reflection",
+          "summary": "Autonomous Scientific Discovery uses iterative meta-reflection loops to propose and test laboratory hypotheses without human input. The system generates experimental designs, analyzes preliminary results, and revises its next steps automatically. Early deployments accelerate molecular screening processes by tripling iteration speed.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2607.01131",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "autonomous-science",
+            "meta-learning",
+            "experimental-design"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "res-two-ai-metrics-diverged-will-it-make-all-the-diffe",
+          "title": "Two AI Metrics Diverged: Will it Make All the Difference?",
+          "summary": "Analysis of benchmark leaderboards reveals growing disconnect between static test scores and live service performance. The authors document failure modes where models excel in evaluations but degrade under production latency constraints.",
+          "source": "arXiv cs.AI",
+          "url": "https://arxiv.org/abs/2607.00913",
+          "significance": 5,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "evaluation",
+            "metrics",
+            "benchmarking",
+            "deployment"
+          ],
+          "image_url": null,
+          "source_pending": false
+        },
+        {
+          "id": "res-adversarial-pragmatics-for-ai-safety-evaluation-a",
+          "title": "Adversarial Pragmatics for AI Safety Evaluation: A Benchmark for Instruction Conflict, Embedded Commands, and Policy Ambiguity",
+          "summary": "Tests model alignment under conditions where instructions contain conflicting directives or hidden operational rules. The benchmark simulates real-world prompt injection scenarios where users exploit linguistic ambiguity to bypass safeguards. Results highlight persistent vulnerabilities in standard instruction-tuning protocols and recommend stricter boundary testing.",
+          "source": "arXiv cs.CL",
+          "url": "https://arxiv.org/abs/2607.01153",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "ai-safety",
+            "adversarial-testing",
+            "alignment",
+            "policy-evaluation"
+          ],
+          "image_url": null,
+          "source_pending": false
+        }
+      ]
+    }
+  ],
+  "visualizations": {
+    "category_counts": {
+      "leaderboard": 6,
+      "analytics": 5,
+      "aisearch": 10,
+      "agentic-ai": 5,
+      "llm": 5,
+      "rag": 5,
+      "image-gen": 5,
+      "design-ai": 5,
+      "typography": 4,
+      "robotics": 5,
+      "research": 6
+    },
+    "significance_distribution": {
+      "5": 16,
+      "4": 29,
+      "3": 16
+    },
+    "top_tags": [
+      {
+        "tag": "robotics",
+        "count": 7
+      },
+      {
+        "tag": "typography",
+        "count": 4
+      },
+      {
+        "tag": "context-window",
+        "count": 3
+      },
+      {
+        "tag": "anthropic",
+        "count": 2
+      },
+      {
+        "tag": "throughput",
+        "count": 2
+      },
+      {
+        "tag": "latency",
+        "count": 2
+      },
+      {
+        "tag": "pricing",
+        "count": 2
+      },
+      {
+        "tag": "deepseek",
+        "count": 2
+      },
+      {
+        "tag": "architecture",
+        "count": 2
+      },
+      {
+        "tag": "open-weight",
+        "count": 2
+      }
+    ],
+    "top_stories": [
+      {
+        "id": "ais-lift4d",
+        "title": "Lift4D",
+        "significance": 5,
+        "category": "aisearch"
+      },
+      {
+        "id": "ais-sakana-fugu",
+        "title": "Sakana fugu",
+        "significance": 5,
+        "category": "aisearch"
+      },
+      {
+        "id": "res-the-state-prediction-separation-hypothesis",
+        "title": "The State-Prediction Separation Hypothesis",
+        "significance": 5,
+        "category": "research"
+      },
+      {
+        "id": "des-02",
+        "title": "Grok Build 01 Introduces Experimental Layout Engine Features",
+        "significance": 5,
+        "category": "design-ai"
+      },
+      {
+        "id": "rag-01",
+        "title": "Claude Fable 5 Sets Retrieval Baseline with 1M Context Window",
+        "significance": 5,
+        "category": "rag"
+      }
+    ]
+  },
+  "generator_version": "0.4.1+20260701120000"
+}
