@@ -1,8 +1,8 @@
 """Version surfacing: no mocks.
 
-Asserts the SemVer core, the ``generator_version`` build-id helper, the footer
-version span, and that the published 6/30 report carries a well-formed
-``generator_version`` (SemVer core + 14-digit run prefix).
+Asserts the MAJOR.MINOR release line, the ``generator_version`` helper, the
+footer version span, and that the published 6/30 report carries a well-formed
+``generator_version`` (release line + 14-digit run prefix as third segment).
 """
 
 from __future__ import annotations
@@ -18,21 +18,21 @@ from pipeline.site_footer import site_footer_html
 ROOT = Path(__file__).resolve().parent.parent
 REPORT = ROOT / "reports" / "20260630120000.json"
 
-_SEMVER = re.compile(r"^\d+\.\d+\.\d+$")
-_BUILD_ID = re.compile(r"^\d+\.\d+\.\d+\+\d{14}$")
+_RELEASE_LINE = re.compile(r"^\d+\.\d+$")
+_BUILD_ID = re.compile(r"^\d+\.\d+\.\d{14}$")
 
 
 class Version(unittest.TestCase):
-    def test_version_is_semver_core(self) -> None:
-        self.assertRegex(__version__, _SEMVER)
+    def test_version_is_release_line(self) -> None:
+        self.assertRegex(__version__, _RELEASE_LINE)
 
-    def test_generator_version_appends_prefix_as_build_metadata(self) -> None:
+    def test_generator_version_appends_prefix_as_third_segment(self) -> None:
         self.assertEqual(
-            generator_version("20260630120000"), f"{__version__}+20260630120000"
+            generator_version("20260630120000"), f"{__version__}.20260630120000"
         )
         self.assertRegex(generator_version("20260630120000"), _BUILD_ID)
 
-    def test_generator_version_without_prefix_is_bare_semver(self) -> None:
+    def test_generator_version_without_prefix_is_bare_release_line(self) -> None:
         self.assertEqual(generator_version(""), __version__)
 
 
