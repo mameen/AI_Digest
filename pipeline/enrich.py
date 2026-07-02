@@ -30,7 +30,7 @@ from pipeline.grounding import (
     collect_skeleton_urls,
 )
 from pipeline.history import format_prior_context
-from pipeline.diagnostics import get_collector, instrumented_llm_call
+from pipeline.diagnostics import get_collector, instrumented_llm_call, log
 from pipeline.schema import CategoryStories, DigestHeader, GapCategories
 from pipeline.visualize import compute_visualizations, fill_skeleton_stories
 
@@ -179,6 +179,32 @@ def _enrich_multipass(
         for cat in gap.categories:
             enriched[cat.id] = make_category(cat.id, [s.model_dump() for s in cat.stories])
 
+    # Local models occasionally return a whole gap category empty inside a
+    # batched call. Re-ask for each empty gap category on its own — individual
+    # calls reliably fill what a batch collapsed — up to a small bounded number
+    # of attempts, so a single flaky category can no longer degrade the report.
+    gap_retries = int(ecfg.get("gap_fill_retries", 2))
+    for cid in gap_ids:
+        attempt = 0
+        while attempt < gap_retries and not (enriched.get(cid) or {}).get("stories"):
+            attempt += 1
+            print(f"  [enrich] gap refill (attempt {attempt}/{gap_retries}): {cid}")
+            refill = _llm_gap_fill(
+                client,
+                model,
+                max_retries,
+                brief=brief,
+                window=window,
+                category_ids=[cid],
+                ingestion=ingestion,
+                prior_context=prior_context,
+                enriched_so_far=_categories_summary(enriched),
+                stories_per_category={cid: targets.get(cid) or 5},
+            )
+            for cat in refill.categories:
+                if cat.id == cid and cat.stories:
+                    enriched[cid] = make_category(cid, [s.model_dump() for s in cat.stories])
+
     roots = collect_roots(skeleton.get("requires_web_fetch"))
     ingestion_urls = collect_ingestion_urls(ingestion) | collect_skeleton_urls(skeleton)
 
@@ -218,6 +244,18 @@ def _enrich_multipass(
             print(f"          - {d['category']}: {d['source']!r} -> {d['url']}")
     enriched = {c["id"]: c for c in cleaned}
 
+    # ── Carry-forward: last-resort fill for still-empty required categories ────
+    # After grounding, any required category still empty is seeded from the most
+    # recent in-window prior digest (already-verified, already-published links),
+    # so a thin news day can no longer zero a required category. Bounded to the
+    # category target; runs after the guard because carried links are trusted.
+    cf_cfg = ecfg.get("carry_forward") or {}
+    if cf_cfg.get("enabled", True):
+        required_ids = (cfg.get("validation") or {}).get("required_category_ids") or CANONICAL_ORDER
+        carried = _carry_forward_empty(enriched, prior_digests, list(required_ids), targets)
+        for cid, src_prefix, n in carried:
+            log(f"  [carry-forward] {cid}: seeded {n} stories from prior digest {src_prefix}")
+
     # ── Pass 4: daily summary + video metadata ───────────────────────────────
     categories = order_categories(list(enriched.values()))
     video_url, video_label = extract_aisearch_meta(skeleton.get("categories") or [])
@@ -250,6 +288,46 @@ def _log_category_counts(categories: list[dict[str, Any]]) -> None:
     parts = [f"{c.get('id')}={len(c.get('stories') or [])}" for c in categories]
     total = sum(len(c.get("stories") or []) for c in categories)
     print(f"  [counts] total={total}  {'  '.join(parts)}")
+
+
+def _prior_category_stories(digest: dict[str, Any], cat_id: str) -> list[dict[str, Any]]:
+    """Grounded (url-bearing) stories for ``cat_id`` from a prior digest dict."""
+    for cat in digest.get("categories") or []:
+        if cat.get("id") == cat_id:
+            return [dict(s) for s in (cat.get("stories") or []) if s.get("url")]
+    return []
+
+
+def _carry_forward_empty(
+    enriched: dict[str, dict[str, Any]],
+    prior_digests: list[dict[str, Any]],
+    required_ids: list[str],
+    targets: dict[str, int | None],
+) -> list[tuple[str, str, int]]:
+    """Seed still-empty required categories from the most recent prior digest.
+
+    Prior-digest stories were already grounded and published within the window,
+    so they are trusted (this runs after the grounding guard). Each carried story
+    is flagged ``carried_forward`` for transparency. Returns a list of
+    ``(category_id, source_prefix, count)`` for the categories that were seeded.
+    """
+    carried: list[tuple[str, str, int]] = []
+    if not prior_digests:
+        return carried
+    recent_first = list(reversed(prior_digests))  # load_prior_digests sorts ascending
+    for cid in required_ids:
+        if (enriched.get(cid) or {}).get("stories"):
+            continue
+        target = targets.get(cid) or 5
+        for digest in recent_first:
+            stories = _prior_category_stories(digest, cid)
+            if not stories:
+                continue
+            seeded = [dict(s, carried_forward=True) for s in stories[:target]]
+            enriched[cid] = make_category(cid, seeded)
+            carried.append((cid, str(digest.get("filename_prefix", "?")), len(seeded)))
+            break
+    return carried
 
 
 def _run_link_tool_loop(
@@ -399,6 +477,8 @@ def _skeleton_rules(cat_id: str, *, curate_after: bool = False) -> str:
         return "Score papers by significance to AI practitioners; tag with arxiv/topics."
     if cat_id == "typography":
         return "Prioritize text rendering, multilingual fonts, and design workflow impact."
+    if cat_id == "robotics":
+        return "Prioritize humanoid/embodied AI, real-world deployments, and learning-based control."
     return ""
 
 
