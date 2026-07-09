@@ -1,0 +1,8 @@
+# AI Digest — development / security scanners
+#
+#   pip install -r requirements-dev.txt
+#   python -m spacy download en_core_web_sm
+
+presidio-analyzer>=2.2.358,<3
+detect-secrets>=1.5.0,<2
+# Optional CLI (preferred for secrets): brew install betterleaks

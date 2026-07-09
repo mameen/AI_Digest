@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns:yt="http://www.youtube.com/xml/schemas/2015" xmlns:media="http://search.yahoo.com/mrss/" xmlns="http://www.w3.org/2005/Atom">
+ <link rel="self" href="https://www.youtube.com/feeds/videos.xml?channel_id=UCIgnGlGkVRhd4qNFcEwLL4A"/>
+ <id>yt:channel:UCIgnGlGkVRhd4qNFcEwLL4A</id>
+ <yt:channelId>UCIgnGlGkVRhd4qNFcEwLL4A</yt:channelId>
+ <title>theAIsearch</title>
+ <link rel="alternate" href="https://www.youtube.com/channel/UCIgnGlGkVRhd4qNFcEwLL4A"/>
+ <author>
+  <name>theAIsearch</name>
+  <uri>https://www.youtube.com/channel/UCIgnGlGkVRhd4qNFcEwLL4A</uri>
+ </author>
+ <published>2020-05-01T00:00:00+00:00</published>
+ <entry>
+  <id>yt:video:7c_ieWfAbrw</id>
+  <yt:videoId>7c_ieWfAbrw</yt:videoId>
+  <yt:channelId>UCIgnGlGkVRhd4qNFcEwLL4A</yt:channelId>
+  <title>This AI News Week: New Models, Agents, and Robotics Breakthroughs</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=7c_ieWfAbrw"/>
+  <author>
+   <name>theAIsearch</name>
+   <uri>https://www.youtube.com/channel/UCIgnGlGkVRhd4qNFcEwLL4A</uri>
+  </author>
+  <published>2026-06-30T15:00:04+00:00</published>
+  <updated>2026-07-01T09:12:00+00:00</updated>
+  <media:group>
+   <media:title>This AI News Week: New Models, Agents, and Robotics Breakthroughs</media:title>
+   <media:content url="https://www.youtube.com/v/7c_ieWfAbrw?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:aBcDeFgHiJk</id>
+  <yt:videoId>aBcDeFgHiJk</yt:videoId>
+  <yt:channelId>UCIgnGlGkVRhd4qNFcEwLL4A</yt:channelId>
+  <title>The Biggest AI Announcements You Missed</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=aBcDeFgHiJk"/>
+  <author>
+   <name>theAIsearch</name>
+   <uri>https://www.youtube.com/channel/UCIgnGlGkVRhd4qNFcEwLL4A</uri>
+  </author>
+  <published>2026-06-23T14:30:00+00:00</published>
+  <updated>2026-06-24T08:00:00+00:00</updated>
+  <media:group>
+   <media:title>The Biggest AI Announcements You Missed</media:title>
+   <media:content url="https://www.youtube.com/v/aBcDeFgHiJk?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+  </media:group>
+ </entry>
+</feed>

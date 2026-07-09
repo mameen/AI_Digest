@@ -1,0 +1,40 @@
+# Agentic block — merge into repo config.yaml (not ~/.hermes/)
+# Pipeline LLM defaults stay in admin/config/templates/config.yaml
+# ADR: agentic/hermes/docs/adr/001-local-ollama-with-per-role-model-routing.md
+
+agentic:
+  enabled: false
+
+  # Per-role model routing (all Ollama by default — no cloud keys required)
+  models:
+    default:
+      provider: ollama
+      model: llama3.1:latest
+      base_url: http://localhost:11434/v1
+
+    concierge:
+      provider: ollama
+      model: llama3.1:latest
+      requirements: [reasoning, intent_parsing]
+
+    researcher:
+      provider: ollama
+      model: llama3.1:latest
+      requirements: [speed, cost]
+
+    librarian:
+      provider: ollama
+      model: llama3.1:latest
+      requirements: [reasoning, taxonomy]
+
+    synthesizer:
+      provider: ollama
+      model: llama3.1:latest
+      requirements: [reasoning, prose, accuracy]
+
+    # Showcase upgrade: set all roles to qwen3.6:35b when VRAM allows
+
+  # Future: in-repo runner paths (not Hermes ~/.hermes/)
+  runtime_dir: agentic/hermes/.runtime
+  reports_dir: agentic/hermes/reports
+  diagnostics_dir: agentic/hermes/diagnostics

@@ -1,0 +1,14 @@
+{
+  "topic": "evaluation_test_topic",
+  "description": "Fixture-backed topic exercising all digest tools without live network.",
+  "fixtures": {
+    "preflight": "preflight_evaluation_test_topic.json",
+    "crawl": "artificialanalysis.ai_leaderboards_models.md",
+    "structured": [
+      "swebench_leaderboards.json",
+      "evalplus_results.json"
+    ],
+    "rss": "test_feed.xml",
+    "search_html": "duckduckgo_html_results.html"
+  }
+}

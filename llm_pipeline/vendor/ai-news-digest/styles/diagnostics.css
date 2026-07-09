@@ -1,0 +1,146 @@
+/* Per-run diagnostics waterfall page (embedded in iframe). */
+
+.diag-page {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  background: var(--bg, #0f172a);
+  color: var(--text, #e2e8f0);
+  margin: 0;
+  padding: 1.5rem 2rem 3rem;
+  max-width: 1100px;
+}
+
+.diag-page h1 { font-size: 1.35rem; margin: 0 0 0.25rem; }
+.diag-page h1.diag-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.diag-page .report-source-seal {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border, #334155);
+  background: var(--card-bg, #1e293b);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.14);
+  line-height: 0;
+  padding: 4px 8px;
+  cursor: help;
+}
+.diag-page .report-source-seal img {
+  display: block;
+  height: 40px;
+  width: auto;
+  max-width: 128px;
+  object-fit: contain;
+}
+.diag-page .meta { color: var(--muted, #94a3b8); font-size: 0.9rem; margin-bottom: 1.5rem; }
+.diag-page .env-block {
+  font-size: 0.82rem;
+  color: var(--muted, #94a3b8);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+.diag-page .cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+.diag-page .card {
+  background: var(--card-bg, #1e293b);
+  border: 1px solid var(--border, #334155);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+}
+.diag-page .card .v { font-size: 1.4rem; font-weight: 600; }
+.diag-page .card .k {
+  font-size: 0.75rem;
+  color: var(--muted, #94a3b8);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.diag-page .hw-cards .card .v {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.35;
+  word-break: break-word;
+}
+.diag-page h2 { font-size: 1rem; color: var(--text, #cbd5e1); margin: 1.5rem 0 0.75rem; }
+.diag-page .waterfall {
+  background: var(--card-bg, #1e293b);
+  border: 1px solid var(--border, #334155);
+  border-radius: 8px;
+  padding: 1rem;
+}
+.diag-page .row {
+  display: grid;
+  grid-template-columns: 11rem 1fr 8rem;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.82rem;
+}
+.diag-page .row.sub .label {
+  padding-left: 0.75rem;
+  color: var(--muted, #94a3b8);
+  font-size: 0.78rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.diag-page .track { position: relative; height: 1.1rem; background: var(--bg, #0f172a); border-radius: 4px; }
+.diag-page .bar { position: absolute; top: 0; height: 100%; border-radius: 4px; min-width: 2px; }
+.diag-page .bar.crawl { background: #14b8a6; opacity: 0.85; }
+.diag-page .bar.llm { background: #a78bfa; opacity: 0.9; }
+.diag-page .time { text-align: right; color: var(--muted, #94a3b8); font-variant-numeric: tabular-nums; }
+.diag-page .badge { font-size: 0.75rem; padding: 0.15rem 0.5rem; border-radius: 999px; margin-left: 0.5rem; }
+.diag-page .badge.ok { background: #14532d; color: #86efac; }
+.diag-page .badge.bad { background: #450a0a; color: #fca5a5; }
+.diag-page table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-top: 0.5rem; }
+.diag-page th, .diag-page td {
+  border-bottom: 1px solid var(--border, #334155);
+  padding: 0.4rem 0.5rem;
+  text-align: left;
+}
+.diag-page th { color: var(--muted, #94a3b8); font-weight: 600; }
+.diag-page .logbox {
+  background: var(--card-bg, #1e293b);
+  border: 1px solid var(--border, #334155);
+  border-radius: 8px;
+  padding: 0.75rem;
+  max-height: 280px;
+  overflow: auto;
+  font-family: ui-monospace, monospace;
+  font-size: 0.72rem;
+}
+.diag-page .logline { display: grid; grid-template-columns: 4.5rem 3rem 8rem 1fr; gap: 0.5rem; padding: 0.1rem 0; }
+.diag-page .logline.warn .ll { color: #fbbf24; }
+.diag-page .logline.error .ll { color: #f87171; }
+.diag-page .lt { color: var(--muted, #64748b); }
+.diag-page .ls { color: #64748b; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.diag-page .track { overflow: hidden; }
+.diag-page .axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--muted, #64748b);
+  margin-top: 0.5rem;
+  padding: 0 11rem 0 calc(11rem + 0.75rem);
+}
+.diag-page td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.diag-page a { color: var(--accent, #60a5fa); }
+.diag-page .runlog {
+  background: var(--bg, #0b1220);
+  border: 1px solid var(--border, #334155);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-family: ui-monospace, monospace;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  max-height: 22rem;
+  overflow: auto;
+}

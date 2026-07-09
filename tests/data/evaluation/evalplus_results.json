@@ -1,0 +1,146 @@
+{
+  "OpenCoder-8B-Instruct": {
+    "link": "https://huggingface.co/infly/OpenCoder-8B-Instruct",
+    "open-data": "NONE",
+    "pass@1": {
+      "humaneval": 81.7,
+      "humaneval+": 77.4,
+      "mbpp": 82.0,
+      "mbpp+": 71.4
+    },
+    "prompted": true,
+    "size": 8.0
+  },
+  "Artigenz-Coder-DS-6.7B": {
+    "link": "https://huggingface.co/Artigenz/Artigenz-Coder-DS-6.7B",
+    "open-data": "NONE",
+    "pass@1": {
+      "humaneval": 75.6,
+      "humaneval+": 72.6,
+      "mbpp": 80.7,
+      "mbpp+": 69.6
+    },
+    "prompted": true,
+    "size": 6.7
+  },
+  "Code-13B": {
+    "link": "https://huggingface.co/ajibawa-2023/Code-13B",
+    "open-data": "Partial",
+    "pass@1": {
+      "humaneval": 56.1,
+      "humaneval+": 52.4,
+      "mbpp": null,
+      "mbpp+": null
+    },
+    "prompted": true,
+    "size": 13.0
+  },
+  "Code-290k-6.7B-Instruct": {
+    "link": "https://huggingface.co/ajibawa-2023/Code-290k-6.7B-Instruct",
+    "open-data": "Partial",
+    "pass@1": {
+      "humaneval": 64.6,
+      "humaneval+": 59.7,
+      "mbpp": null,
+      "mbpp+": null
+    },
+    "prompted": true,
+    "size": 6.7
+  },
+  "Code-33B": {
+    "link": "https://huggingface.co/ajibawa-2023/Code-33B",
+    "open-data": "Partial",
+    "pass@1": {
+      "humaneval": 54.9,
+      "humaneval+": 49.4,
+      "mbpp": null,
+      "mbpp+": null
+    },
+    "prompted": true,
+    "size": 33.0
+  },
+  "CodeGen-16B": {
+    "link": "https://arxiv.org/abs/2203.13474",
+    "open-data": "Full",
+    "pass@1": {
+      "humaneval": 32.9,
+      "humaneval+": 28.0,
+      "mbpp": 54.2,
+      "mbpp+": 45.5
+    },
+    "prompted": false,
+    "size": 16.0
+  },
+  "CodeGen-2B": {
+    "link": "https://arxiv.org/abs/2203.13474",
+    "open-data": "Full",
+    "pass@1": {
+      "humaneval": 24.4,
+      "humaneval+": 22.6,
+      "mbpp": 46.3,
+      "mbpp+": 36.0
+    },
+    "prompted": false,
+    "size": 2.0
+  },
+  "CodeGen-6B": {
+    "link": "https://arxiv.org/abs/2203.13474",
+    "open-data": "Full",
+    "pass@1": {
+      "humaneval": 29.3,
+      "humaneval+": 25.6,
+      "mbpp": 50.8,
+      "mbpp+": 42.9
+    },
+    "prompted": false,
+    "size": 6.0
+  },
+  "CodeGen2-16B": {
+    "link": "https://arxiv.org/abs/2305.02309",
+    "open-data": "Full",
+    "pass@1": {
+      "humaneval": 19.5,
+      "humaneval+": 16.5,
+      "mbpp": null,
+      "mbpp+": null
+    },
+    "prompted": false,
+    "size": 16.0
+  },
+  "CodeGen2-1B": {
+    "link": "https://arxiv.org/abs/2305.02309",
+    "open-data": "Full",
+    "pass@1": {
+      "humaneval": 11.0,
+      "humaneval+": 9.1,
+      "mbpp": null,
+      "mbpp+": null
+    },
+    "prompted": false,
+    "size": 1.0
+  },
+  "CodeGen2-3B": {
+    "link": "https://arxiv.org/abs/2305.02309",
+    "open-data": "Full",
+    "pass@1": {
+      "humaneval": 15.9,
+      "humaneval+": 12.8,
+      "mbpp": null,
+      "mbpp+": null
+    },
+    "prompted": false,
+    "size": 3.0
+  },
+  "CodeGen2-7B": {
+    "link": "https://arxiv.org/abs/2305.02309",
+    "open-data": "Full",
+    "pass@1": {
+      "humaneval": 18.3,
+      "humaneval+": 17.7,
+      "mbpp": null,
+      "mbpp+": null
+    },
+    "prompted": false,
+    "size": 7.0
+  }
+}

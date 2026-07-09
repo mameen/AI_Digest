@@ -1,0 +1,190 @@
+{
+  "schema": "agentic_hermes.diagnostics/v1",
+  "title": "Hermes agent diagnostics",
+  "prefix": "20260707182407",
+  "poc_id": "agentic_hermes",
+  "status": "ok",
+  "started_at": "2026-07-07T18:25:00Z",
+  "finished_at": "2026-07-07T21:05:42Z",
+  "total_duration_ms": 983500.0,
+  "total_cpu_ms": 0.0,
+  "environment": {
+    "schema": "ai_digest.environment/v1",
+    "platform_kind": "mac",
+    "os": "Darwin",
+    "os_release": "25.5.0",
+    "machine": "arm64",
+    "cpu": "Apple M3 Max",
+    "cpu_count": 16,
+    "ram_gb": 48.0,
+    "gpu": {
+      "backend": "metal",
+      "name": "Apple M3 Max"
+    },
+    "python": "3.11.12",
+    "hostname": "Mohameds-MacBook-Pro.local"
+  },
+  "network": {},
+  "llm": {
+    "enabled": true,
+    "provider": "ollama",
+    "model": "llama3.1:latest"
+  },
+  "agents": {
+    "graph": "concierge → research × N → librarian → synthesizer → render",
+    "profiles": [
+      "concierge",
+      "researcher",
+      "librarian",
+      "synthesizer"
+    ],
+    "task_count": 3
+  },
+  "stages": [
+    {
+      "id": "go.setup",
+      "label": "Concierge · board setup",
+      "started_at": "2026-07-07T18:25:00Z",
+      "ended_at": "2026-07-07T18:25:00Z",
+      "duration_ms": 4500.0,
+      "cpu_ms": 0.0,
+      "ok": true,
+      "critical": true,
+      "error": null,
+      "meta": {},
+      "children": []
+    },
+    {
+      "id": "go.research",
+      "label": "Research workers",
+      "started_at": "2026-07-07T18:25:00Z",
+      "ended_at": "2026-07-07T18:26:30Z",
+      "duration_ms": 90000.0,
+      "cpu_ms": 0.0,
+      "ok": true,
+      "critical": true,
+      "error": null,
+      "meta": {},
+      "children": [
+        {
+          "id": "task.t_99ff1440",
+          "label": "Research: evaluation_test_topic · Researcher",
+          "started_at": "2026-07-07T18:25:00Z",
+          "ended_at": "2026-07-07T18:26:30Z",
+          "duration_ms": 90000.0,
+          "cpu_ms": 0.0,
+          "ok": true,
+          "critical": true,
+          "error": null,
+          "meta": {
+            "profile": "researcher",
+            "task_id": "t_99ff1440"
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "go.librarian",
+      "label": "Librarian · merge & classify",
+      "started_at": "2026-07-07T18:26:30Z",
+      "ended_at": "2026-07-07T18:28:30Z",
+      "duration_ms": 120000.0,
+      "cpu_ms": 0.0,
+      "ok": true,
+      "critical": true,
+      "error": null,
+      "meta": {},
+      "children": [
+        {
+          "id": "task.t_c7ba7757",
+          "label": "Librarian: merge & classify · Librarian",
+          "started_at": "2026-07-07T18:26:30Z",
+          "ended_at": "2026-07-07T18:28:30Z",
+          "duration_ms": 120000.0,
+          "cpu_ms": 0.0,
+          "ok": true,
+          "critical": true,
+          "error": null,
+          "meta": {
+            "profile": "librarian",
+            "task_id": "t_c7ba7757"
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "go.synthesizer",
+      "label": "Synthesizer · digest JSON",
+      "started_at": "2026-07-07T18:28:30Z",
+      "ended_at": "2026-07-07T18:38:19Z",
+      "duration_ms": 589000.0,
+      "cpu_ms": 0.0,
+      "ok": true,
+      "critical": true,
+      "error": null,
+      "meta": {},
+      "children": [
+        {
+          "id": "task.t_48c60dfc",
+          "label": "Synthesize digest · Synthesizer",
+          "started_at": "2026-07-07T18:28:30Z",
+          "ended_at": "2026-07-07T18:38:19Z",
+          "duration_ms": 589000.0,
+          "cpu_ms": 0.0,
+          "ok": true,
+          "critical": true,
+          "error": null,
+          "meta": {
+            "profile": "synthesizer",
+            "task_id": "t_48c60dfc"
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "go.render",
+      "label": "Render · validate & HTML",
+      "started_at": "2026-07-07T18:38:19Z",
+      "ended_at": "2026-07-07T18:41:19Z",
+      "duration_ms": 180000.0,
+      "cpu_ms": 0.0,
+      "ok": true,
+      "critical": true,
+      "error": null,
+      "meta": {},
+      "children": []
+    }
+  ],
+  "llm_calls": [],
+  "crawls": [],
+  "tool_calls": [],
+  "log": [
+    {
+      "ts": "2026-07-07T21:05:42Z",
+      "level": "INFO",
+      "stage": "rebuild",
+      "message": "Rebuilt from handover.json + artifact mtimes"
+    }
+  ],
+  "totals": {
+    "stage_count": 5,
+    "task_count": 3,
+    "llm_call_count": 0,
+    "llm_duration_ms": 0,
+    "llm_share_pct": 0.0,
+    "tool_call_count": 0,
+    "tool_calls_ok": 0,
+    "stage_failures": 0,
+    "failed_stages": [],
+    "prompt_tokens": null,
+    "completion_tokens": null,
+    "total_tokens": null,
+    "tokens_estimated": true
+  },
+  "report_source": "agentic-hermes",
+  "report_source_label": "Hermes Agent",
+  "report_source_badge": "../img/report-source/hermes-agent.png"
+}

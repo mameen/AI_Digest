@@ -1,0 +1,8 @@
+# Shared repository layout (loaded by lib.paths).
+# Track-specific runtime config lives in llm_pipeline/config.yaml and agentic/hermes/config/.
+
+paths:
+  llm_pipeline_root: llm_pipeline
+  web_root: app
+  agentic_root: agentic/hermes
+  lib: lib

@@ -1,0 +1,8 @@
+#!/bin/sh
+# Reject commits that still carry automation co-author trailers after prepare-commit-msg.
+. "$(dirname "$0")/agent-trailers.sh"
+if has_agent_trailers "$1"; then
+  echo "ERROR: Remove automation Co-authored-by trailers from the commit message." >&2
+  echo "  This repo attributes commits to the maintainer only." >&2
+  exit 1
+fi

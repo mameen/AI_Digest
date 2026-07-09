@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='utf-8'?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:ns0="http://www.w3.org/2005/Atom" xmlns:ns1="http://purl.org/rss/1.0/modules/syndication/" xmlns:ns3="http://purl.org/rss/1.0/modules/content/" version="2.0">
+
+<channel>
+	<title>Robohub</title>
+	<ns0:link href="https://robohub.org/feed/" rel="self" type="application/rss+xml" />
+	<link>https://robohub.org</link>
+	<description>Connecting the robotics community to the world</description>
+	<lastBuildDate>Wed, 24 Jun 2026 11:24:10 +0000</lastBuildDate>
+	<language>en-US</language>
+	<ns1:updatePeriod>
+	hourly	</ns1:updatePeriod>
+	<ns1:updateFrequency>
+	1	</ns1:updateFrequency>
+	<generator>https://wordpress.org/?v=7.0</generator>
+	<item>
+		<title>What’s coming up at #RoboCup2026?</title>
+		<link>https://robohub.org/whats-coming-up-at-robocup2026/</link>
+		
+		<dc:creator>Lucy Smith</dc:creator>
+		<pubDate>Mon, 29 Jun 2026 08:03:25 +0000</pubDate>
+				<category>News</category>
+		<guid isPermaLink="false">https://robohub.org/?p=220072</guid>
+
+					<description>This year, RoboCup will be held in Incheon, South Korea, from 2-6 July. The event will see teams take part in competitions, training sessions, and a symposium. It&amp;#8217;s an exciting time for RoboCup, as there have been some updates to the leagues and competition format. Most prominently, the soccer leagues will have a primary focus [&amp;#8230;]</description>
+										<ns3:encoded>&lt;img fetchpriority="high" decoding="async" src="https://aihub.org/wp-content/uploads/2026/05/Screenshot-2026-05-29-at-10.35.28.jpeg" alt="" width="1854" height="966" class="alignnone size-full wp-image-20407" /&gt;
+&lt;p&gt;This year, &lt;a href="https://2026.robocup.org" data-wpel-link="external" target="_blank" rel="follow external noopener noreferrer"&gt;RoboCup will be held in Incheon, South Korea&lt;/a&gt;, from 2-6 July. The event will see teams take part in competitions, training sessions, and a symposium. &lt;/p&gt;
+&lt;p&gt;It&amp;#8217;s an exciting time for RoboCup, as there have been some &lt;a href="https://www.robocup.org/news/181" data-wpel-link="external" target="_blank" rel="follow external noopener noreferrer"&gt;updates to the leagues and competition format&lt;/a&gt;. Most prominently, the soccer leagues will have a primary focus on humanoid robots.&lt;/p&gt;
+&lt;h3&gt;The leagues and their competitions&lt;/h3&gt;
+&lt;p&gt;You can find out more about the different leagues and the competition schedules and details at these links:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;RoboCupSoccer
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://hsl.robocup.org" data-wpel-link="external" target="_blank" rel="follow external noopener noreferrer"&gt;Humanoid&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://msl.robocup.org/" data-wpel-link="external" target="_blank" rel="follow external noopener noreferrer"&gt;Middle size&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://ssl.robocup.org/" data-wpel-link="external" target="_blank" rel="follow external noopener noreferrer"&gt;Small size&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://ssim.robocup.org/" data-wpel-link="external" target="_blank" rel="follow external noopener noreferrer"&gt;Simulation&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;RoboCupRescue
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://rrl.robocup.org/" data-wpel-link="external" target="_blank" rel="follow external noopener noreferrer"&gt;Robot&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://rescuesim.robocup.org/" data-wpel-link="external" target="_blank" rel="follow external noopener noreferrer"&gt;Simulation&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://athome.robocup.org/" data-wpel-link="external" target="_blank" rel="follow external noopener noreferrer"&gt;RoboCup@Home&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://robocup.org/leagues/36" data-wpel-link="external" target="_blank" rel="follow external noopener noreferrer"&gt;Industrial&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;RoboCupJunior
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://junior.robocup.org/soccer/" data-wpel-link="external" target="_blank" rel="follow external noopener noreferrer"&gt;Soccer&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://junior.robocup.org/onstage/" data-wpel-link="external" target="_blank" rel="follow external noopener noreferrer"&gt;Onstage&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://junior.robocup.org/rescue/" data-wpel-link="external" target="_blank" rel="follow external noopener noreferrer"&gt;Rescue&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;WEROB&lt;/h3&gt;
+&lt;p&gt;A workshop focused on sharing projects, experiences, and innovations in educational robotics. This session is geared towards students, mentors, and educators. Find out more &lt;a href="https://2026.robocup.org/werob/" data-wpel-link="external" target="_blank" rel="follow external noopener noreferrer"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Symposium&lt;/h3&gt;
+&lt;p&gt;The RoboCup symposium will take place on 6 July. More information can be found &lt;a href="https://2026.robocup.org/symposium/" data-wpel-link="external" target="_blank" rel="follow external noopener noreferrer"&gt;here&lt;/a&gt;. &lt;/p&gt;
+&lt;p&gt;There will be two keynote talks:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Hyun Myung&lt;/strong&gt;, Spatial Intelligence for Autonomous Robot Navigation in the Wild&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Gentiane Venture&lt;/strong&gt;, From function to meaning: Making robots that understand and belong&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Find out more at the &lt;a href="https://2026.robocup.org/symposium/" data-wpel-link="external" target="_blank" rel="follow external noopener noreferrer"&gt;event website&lt;/a&gt;.&lt;/p&gt;
+</ns3:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Robot Talk Episode 162 – The robot doctor will see you now</title>
+		<link>https://robohub.org/robot-talk-episode-162-the-robot-doctor-will-see-you-now/</link>
+		
+		<dc:creator>Robot Talk</dc:creator>
+		<pubDate>Fri, 26 Jun 2026 11:22:25 +0000</pubDate>
+				<category>News</category>
+		<guid isPermaLink="false">https://robohub.org/?p=220287</guid>
+
+					<description>Since the first robot-assisted surgery was performed, over 40 years ago, major advances in robotics, computer vision and artificial intelligence have fundamentally changed medicine and healthcare. Innovative new technologies are already aiding skilled medical professionals in diagnosis, surgery, rehabilitation and beyond. But many questions remain: What ethical issues arise as medical tools become increasingly autonomous? [&amp;#8230;]</description>
+										<ns3:encoded>&lt;img decoding="async" class="alignnone size-medium wp-image-220295" src="https://robohub.org/wp-content/uploads/2026/06/Group-Photo-425x361.png" alt="" width="425" height="361" srcset="https://robohub.org/wp-content/uploads/2026/06/Group-Photo-425x361.png 425w, https://robohub.org/wp-content/uploads/2026/06/Group-Photo-1024x869.png 1024w, https://robohub.org/wp-content/uploads/2026/06/Group-Photo-768x652.png 768w, https://robohub.org/wp-content/uploads/2026/06/Group-Photo-1536x1303.png 1536w, https://robohub.org/wp-content/uploads/2026/06/Group-Photo-2048x1738.png 2048w" sizes="(max-width: 425px) 100vw, 425px" /&gt;
+&lt;p&gt;Since the first robot-assisted surgery was performed, over 40 years ago, major advances in robotics, computer vision and artificial intelligence have fundamentally changed medicine and healthcare. Innovative new technologies are already aiding skilled medical professionals in diagnosis, surgery, rehabilitation and beyond. But many questions remain: What ethical issues arise as medical tools become increasingly autonomous? How do we regulate technologies that can learn and change over time? And how can we ensure that cutting-edge medical devices are accessible to all?&lt;/p&gt;
+&lt;p&gt;In this special live recording at the &lt;a href="https://www.greatexhibitionroadfestival.co.uk/" data-wpel-link="external" target="_blank" rel="follow external noopener noreferrer"&gt;Great Exhibition Road Festival&lt;/a&gt; in London, Claire chatted to George Mylonas (Imperial College London), Antonia Tzemanaki (University of Bristol) and Tom Vercauteren (King’s College London) about robotics and AI in medicine and healthcare.&lt;/p&gt;
+&lt;iframe src="https://play.libsyn.com/embed/episode/id/41791270/height/128/theme/modern/size/standard/thumbnail/yes/custom-color/ffffff/time-start/00:00:00/playlist-height/200/direction/backward/download/yes" height="128" width="100%"  style="border: none;"&gt;&lt;/iframe&gt;
+&lt;p&gt;&lt;a href="https://profiles.imperial.ac.uk/george.mylonas" target="_blank" rel="noreferrer noopener follow external" data-wpel-link="external"&gt;&lt;strong&gt;George Mylonas&lt;/strong&gt;&lt;/a&gt; is an Associate Professor in Robotics and Technology in Cancer at Imperial College London, and the director of the &lt;a href="https://www.imperial.ac.uk/hamlyn-centre/research/research-groups/human-centred-automation-robotics-and-monitoring/" target="_blank" rel="noreferrer noopener follow external" data-wpel-link="external"&gt;Human-centred Automation, Robotics and Monitoring in Surgery lab&lt;/a&gt; at The Hamlyn Centre, Institute of Global Health Innovation and the Department of Surgery &amp;amp; Cancer, Faculty of Medicine. He is leading research in the areas of surgical robotics, soft robotics, minimal access surgical technology, perceptual human-robot and human-computer interfaces, and smart data-driven operating theatres. He is a member of the European Association of Endoscopic Surgery Technology Committee.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://research-information.bris.ac.uk/en/persons/antonia-tzemanaki/" target="_blank" rel="noreferrer noopener follow external" data-wpel-link="external"&gt;&lt;strong&gt;Antonia Tzemanaki&lt;/strong&gt;&lt;/a&gt; is a Senior Lecturer in Robotics at the University of Bristol and a core member of the Bristol Robotics Laboratory. She leads the &lt;a href="https://www.dexterousrobotlab.com/" target="_blank" rel="noreferrer noopener follow external" data-wpel-link="external"&gt;Dexterous Manipulation and Wearable Robotics group&lt;/a&gt; which develops robotic simulators and interventions, including robotic needle steering, abdominal, urology, skull and hand models, for surgical and physical therapy treatments of disease including cancers, neurological, prostate and urinary disorders. The group provides wide expertise in precision manipulation, robot hands, hand exoskeletons, kinematics, haptics and wearable robotics, especially with applications in surgery, preventative medicine, rehabilitation, physiotherapy and dexterous tele-operation.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.kcl.ac.uk/people/tom-vercauteren" target="_blank" rel="noreferrer noopener follow external" data-wpel-link="external"&gt;&lt;strong&gt;Tom Vercauteren&lt;/strong&gt;&lt;/a&gt; is a Professor of Interventional Image Computing at King’s College London, where he leads the &lt;a href="https://cai4cai.ml/" target="_blank" rel="noreferrer noopener follow external" data-wpel-link="external"&gt;Contextual Artificial Intelligence for Computer Assisted Interventions research group&lt;/a&gt;. His research focuses on medical image computing, machine learning and imaging for surgery and interventional sciences. He is also co-founder and Chief Scientific Officer of Hypervision Surgical, a spin-out company developing safe, non-invasive optical imaging for use during surgery. His work is now used in hundreds of hospitals worldwide. Tom is also a supporter of open-source software and patient involvement.&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+</ns3:encoded>
+					
+		
+		
+			</item>
+		</channel>
+</rss>

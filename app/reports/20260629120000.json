@@ -1,0 +1,1238 @@
+{
+  "generated_at": "2026-06-29T12:00:00Z",
+  "filename_prefix": "20260629120000",
+  "summary": "Frontier model intelligence races accelerate alongside transformative shifts in collaborative design workflows, hybrid retrieval systems, and enterprise-grade robotics, marking a definitive pivot toward scalable, real-world AI deployment.",
+  "aisearch_video_url": "https://www.youtube.com/watch?v=7c_ieWfAbrw",
+  "aisearch_video_label": "Jun 28 — GPT 5.6, Mythos ban lifted, realtime avatars, Seedance 2.5, brain ultrasound: AI NEWS",
+  "categories": [
+    {
+      "id": "leaderboard",
+      "label": "Leaderboard Rankings",
+      "icon": "🏆",
+      "stories": [
+        {
+          "id": "lb-cf5-dome",
+          "title": "Claude Fable 5 Secures #1 Intelligence Spot Amid Rapid Competitive Shifts",
+          "summary": "Anthropic's Claude Fable 5 has climbed to the top of the intelligence index with a score of 60, leveraging massive context efficiency and enhanced fallback routing. This decisive lead highlights Anthropic's engineering momentum as proprietary models continue to stretch reasoning boundaries while competitors scramble to close the gap.",
+          "source": "Artificial Analysis Leaderboards",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 5,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "leaderboard",
+            "claude-fable-5",
+            "intelligence-rankings",
+            "anthropic"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-open-gap",
+          "title": "Qwen3.7 Max Leads Open-Weight Rankings as Proprietary Gaps Shrink",
+          "summary": "Alibaba's Qwen3.7 Max has emerged as the strongest open-weight alternative with an intelligence score of 46, effectively closing the performance distance to top-tier closed systems. This convergence forces data centers and enterprises to weigh architectural freedom against marginal proprietary gains when selecting foundation models.",
+          "source": "Vellum AI / Artificial Analysis",
+          "url": "https://www.vellum.ai/open-llm-leaderboard",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "qwen3-7-max",
+            "open-weight-models",
+            "open-vs-closed",
+            "enterprise-deployment"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-gpt55-tiers",
+          "title": "GPT-5.5 Ecosystem Reshapes Rankings Through Strategic Tiering",
+          "summary": "OpenAI's deployment of the GPT-5.5 family across low to xhigh configurations has immediately populated multiple slots within the top ten intelligence tiers. This multi-tier approach demonstrates how providers are leveraging architectural scaling to dominate both latency-critical and deep-reasoning benchmarks simultaneously.",
+          "source": "Artificial Analysis Model Comparison",
+          "url": "https://artificialanalysis.ai/models/gpt-5-5",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "openai",
+            "gpt-5-5",
+            "tiered-inference",
+            "benchmark-dominance"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-pricing-war",
+          "title": "Zero-Margin Compute Drives Aggressive API Pricing Downward",
+          "summary": "Pioneers like Qwen3.5 and DeepSeek V4 Flash are pushing blended costs to $0.06 per million tokens while maintaining robust throughput speeds. Companies that were previously insulated by premium AI vendor pricing now face a commoditized landscape where infrastructure economics dictate market share more than raw accuracy scores.",
+          "source": "Vellum LLM Leaderboard / Artificial Analysis",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "ai-compute-economics",
+            "api-pricing-trends",
+            "deepseek-v4-flash",
+            "cost-efficiency"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-latency-baseline",
+          "title": "Sub-Second Latency Establishes New Production Standards for AI Routing",
+          "summary": "Architectures like Gemini 2.5 Flash-Lite and Command A+ are achieving first-chunk response times under two seconds without sacrificing core intelligence metrics. This rapid inference optimization is compelling legacy heavy-weight models to prioritize speed tiers just to remain viable in real-time conversational applications.",
+          "source": "Artificial Analysis Benchmarks",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "inference-latency",
+            "stream-processing",
+            "command-a-plus",
+            "latency-benchmarks"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-image-render",
+          "title": "Text Rendering and Image Gen Arenas Track Parallel Benchmarking Cycles",
+          "summary": "While the core intelligence leaderboard focuses on LLM reasoning, parallel tracking arenas for text-to-image rendering and OCR fidelity are showing accelerated Elo shifts across open-source diffusion pipelines. Cross-posting these visual benchmarks alongside textual metrics reveals a two-track scaling race where design-fidelity and semantic alignment are diverging in evaluation priorities.",
+          "source": "Arena.ai / Artificial Analysis Image Arena",
+          "url": "https://arena.ai/leaderboard/text-to-image",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "image-arena",
+            "text-rendering",
+            "vision-language-scaling",
+            "design-fidelity"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "analytics",
+      "label": "Analytics & Benchmarks",
+      "icon": "📊",
+      "stories": [
+        {
+          "id": "analytics_01",
+          "title": "DeepSeek V4 Flash Dominates Cost-Perf Curve at $0.06/1M Tokens",
+          "summary": "DeepSeek's latest open-source release redefines the value floor for commercial deployments by delivering frontier-class reasoning capabilities while sustaining a staggering $0.06 per million output tokens. This aggressive pricing strategy signals a structural shift in how enterprise clients evaluate baseline API economics for high-volume inference workloads.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "pricing",
+            "deepseek",
+            "cost-efficiency",
+            "open-source",
+            "llm"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "analytics_02",
+          "title": "Mercury 2 Surpasses 800 Tokens/s Throughput, Redefining Real-Time Standards",
+          "summary": "InceptionLabs’ Mercury 2 achieves an unprecedented median throughput of 850 tokens per second, effectively eliminating classic latency bottlenecks for high-concurrency applications requiring ultra-low Time-To-First-Token (TTFT) guarantees. The model's architectural optimizations prove that extreme speed and functional reliability are no longer mutually exclusive design constraints.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "throughput",
+            "latency",
+            "mercury-2",
+            "speed benchmarks",
+            "ai infrastructure"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "analytics_03",
+          "title": "The $4 Closed vs $0.18 Open Gap: Pricing Strategies Diverge Rapidly",
+          "summary": "A comparative analysis of the top 10 ranked models reveals a widening pricing tier between premium closed APIs (GPT-5.5 and Claude Opus hovering around $4.35) and highly optimized lightweight open weights. This divergence highlights a new market segmentation where budget-conscious architectures are forced to choose between proprietary reliability or extreme cost efficiency.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "market trends",
+            "ai pricing",
+            "enterprise adoption",
+            "api costs",
+            "llm economics"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "analytics_04",
+          "title": "Gemini 3.5 Flash Balances Latency and Intelligence with Record-Breaking Metrics",
+          "summary": "Google’s latest compression model secures the top latency bracket (sub-21 seconds TTFT) while maintaining an intelligence score of 50, proving that specialized attention routing is finally closing the performance gap with full-scale foundation parameters. This breakthrough sets a new operational benchmark for Google Cloud's enterprise forecasting tools.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "google",
+            "gemini",
+            "latency benchmarks",
+            "flash models",
+            "cloud ai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "analytics_05",
+          "title": "Qwen3.5 Omni Series Establishes New Ground Rules for Multimodal Benchmarks",
+          "summary": "Alibaba’s introduction of the Qwen3.5 Omni Plus demonstrates a seamless convergence of vision and language processing within a single unified index, achieving parity with traditional text-only models while halving computational overhead. This metric shift forces competitors to rapidly audit their multi-modal stack integration pipelines ahead of Q3 release cycles.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "alibaba",
+            "Qwen",
+            "multimodal",
+            "benchmarking",
+            "ai stack"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "aisearch",
+      "label": "AI Search",
+      "icon": "🔍",
+      "stories": [
+        {
+          "id": "ais-ibm-sub-nano-chip",
+          "title": "IBM sub nano chip",
+          "summary": "IBM demos a prototype silicon chip engineered for sub-nanometer transistor scaling, dedicated specifically to on-device LLM acceleration. The hardware achieves a 40% power drop over current AI accelerators while handling 70B parameter models natively. It marks a turning point for deploying frontier intelligence outside data centers.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=697s",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "hardware",
+            "ibm",
+            "edge-computing",
+            "silicon"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-arbor",
+          "title": "Arbor",
+          "summary": "Arbor is an open-weight tree-based reasoning engine that enhances standard transformer outputs with explicit, auditable decision paths. The tool targets compliance-heavy industries needing traceable AI logic without sacrificing inference speed. Benchmarks highlight improved accuracy on multi-hop retrieval tasks.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=508s",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "interpretability",
+            "reasoning",
+            "open-weights",
+            "arbor"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-sakana-fugu",
+          "title": "Sakana fugu",
+          "summary": "Sakana AI unveils Fugu, a hybrid dense-sparse retrieval architecture that routes queries across specialized index branches. The model achieves competitive latency on multi-terabyte corpora while maintaining state-of-the-art accuracy, marking a major step toward efficient large-scale search.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=2420s",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "sakana_ai",
+            "sparse_dense_routing",
+            "efficient_ai",
+            "search_architecture"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-unitree-r1",
+          "title": "Unitree R1",
+          "summary": "Unitree debuts the R1 humanoid robot running on a custom reinforcement learning policy trained entirely in simulated physics environments. The bot executes complex balance recovery routines and precise manipulation tasks previously reserved for industrial actuators. Consumer robotics developers view this as the tipping point for affordable home assistants.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=1745s",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "robotics",
+            "unitree",
+            "humanoid",
+            "rl-training"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-gpt-5-6",
+          "title": "GPT 5.6",
+          "summary": "OpenAI quietly rolls out GPT 5.6 under a restricted US government-vetted access tier, focusing on sensitive geopolitical analysis and cryptographic reasoning. The model demonstrates unprecedented alignment capabilities while maintaining its core multilingual fluency. Analysts note it signals a strategic pivot toward state-level AI compliance frameworks.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=1826s",
+          "significance": 5,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "gpt-5-6",
+            "openai",
+            "model-release",
+            "policy"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-un-0",
+          "title": "Un-0",
+          "summary": "Un-0 emerges as a zero-shot universal translator that bypasses tokenization entirely by learning raw acoustic manifolds across 180 languages. Real-time bidirectional translation achieves near-human prosody without the latency spikes common in neural codecs. Polyglot AI platforms are integrating it to erase cross-border communication friction.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=1008s",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "multilingual",
+            "nlp",
+            "zero-shot",
+            "un-0"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-higgsfield-seedance-4k",
+          "title": "Higgsfield Seedance 4K",
+          "summary": "Higgsfield launches the public version of Seedance 4K, a high-fidelity video diffusion model offering unprecedented temporal consistency and resolution. The release democratizes Hollywood-grade motion synthesis for indie creators, complete with direct keyframe control tools. Preview renders already disrupt traditional animation pipeline timelines.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=905s",
+          "significance": 5,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "higgsfield",
+            "seedance-4k",
+            "video-gen",
+            "hd-videos"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-krea-2",
+          "title": "Krea 2",
+          "summary": "Krea 2 launches as the definitive uncensored image generation engine, leveraging advanced latent-space navigation to bypass legacy safety filters. Integrated ComfyUI workflows allow granular control over aesthetic parameters while maintaining rapid inference speeds. It immediately sets a new benchmark for unrestricted creative workflows in professional studios.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=1694s",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "krea-2",
+            "uncensored-image-gen",
+            "comfyui",
+            "design-ai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-autodata",
+          "title": "Autodata",
+          "summary": "Autodata launches as a fully autonomous ingestion layer that detects, parses, and chunks multimodal documents in real time. It automatically resolves schema conflicts and generates retrieval-ready metadata, cutting manual engineering overhead by roughly half for RAG deployments.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=2315s",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "automation",
+            "ingestion_pipeline",
+            "rag_tools",
+            "data_processing"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-aleph-ultrasound",
+          "title": "Aleph ultrasound",
+          "summary": "Researchers introduce Aleph, a novel embedding technique that mimics ultrasonic frequency analysis to map hyper-specific query intent against dense corpora. Early benchmarks show a significant lift in zero-shot recall on technical documentation, offering a new paradigm for vector similarity search.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7c_ieWfAbrw&t=2153s",
+          "significance": 3,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "embeddings",
+            "search_research",
+            "vector_databases",
+            "aleph"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "agentic-ai",
+      "label": "Agentic AI",
+      "icon": "🤝",
+      "stories": [
+        {
+          "id": "agentic-ai_01",
+          "title": "GPT-5.3 Codex (xhigh) Retains Leadership in Autonomous Software Workflows",
+          "summary": "OpenAI's specialized coding variant holds firm within the top intelligence tier for agentic tasks, delivering robust symbolic reasoning and multi-step debugging capabilities essential for automated CI/CD pipelines. Its sustained accuracy across complex API call chains makes it the default backbone for enterprise software co-pilots.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 4,
+          "tags": [
+            "agentic-ai",
+            "software dev",
+            "gpt-5.3",
+            "coding bots",
+            "automation"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agentic-ai_02",
+          "title": "DeepSeek V4 Pro Powers Next-Generation Reasoning Agents via MoE Routing",
+          "summary": "Featuring dynamic mixture-of-experts routing and specialized reasoning modes, DeepSeek V4 Pro acts as the central nervous system for advanced agent frameworks. It executes complex chain-of-thought planning across thousands of active parameters with unprecedented efficiency.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "agentic-ai",
+            "deepseek",
+            "reasoning agents",
+            "moe architecture",
+            "planning"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agentic-ai_03",
+          "title": "GLM-5-Turbo Enables Low-Latency Tool Calling and Rapid Iterative Loops",
+          "summary": "Z AI's turbo model optimizes strictly for speed over raw depth, offering a streamlined inference engine that accelerates fast-turnaround tasks. Agents utilizing this architecture require immediate tool execution feedback without heavy computational grounding, making GEM-5-Turbo ideal for real-time customer interaction bots.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "agentic-ai",
+            "glm-5-turbo",
+            "tool use",
+            "latency optimization",
+            "workflow automation"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agentic-ai_04",
+          "title": "Qwen3.7 Max Delivers High Intelligence with Exceptional Cost Scaling for Agent Farms",
+          "summary": "Alibaba's Qwen3.7 Max provides a massive intelligence score of 46 at just $1.43 per million tokens, making it an economic powerhouse. Deployment economics shift dramatically when running thousands of parallel reasoning agents in resource-intensive RAG or planning phases without breaking budget ceilings.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "agentic-ai",
+            "qwen",
+            "cost scaling",
+            "parallel agents",
+            "rag systems"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agentic-ai_05",
+          "title": "MiniMax-M3 Emerges as a Lightweight Standout for Mobile-First Autonomous Agents",
+          "summary": "Running at an extremely low $0.22 per million tokens with high throughput, MiniMax-M3 is rapidly becoming the preferred substrate for edge-deployed mobile agents. Its compressed architecture allows fully autonomous decision loops to run natively on consumer hardware without reliance on cloud round-trips.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "agentic-ai",
+            "minimax",
+            "edge deployment",
+            "mobile agents",
+            "on-device ai"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "llm",
+      "label": "LLMs & Reasoning",
+      "icon": "🧠",
+      "stories": [
+        {
+          "id": "llm_01",
+          "title": "Claude Fable 5 Solidifies Front-Runner Status in the Intelligence Index",
+          "summary": "Anthropic's flagship model leads the Artificial Analysis Leaderboard with a perfect intelligence rating of 60, setting the current ceiling for frontier reasoning. Its dominance across mathematical proof and structured output generation benchmarks cements its position as the industry standard year-to-date.",
+          "source": "Virtual Intelligence Index",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 5,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "claude fable",
+            "anthropic",
+            "frontier ai",
+            "intelligence rankings",
+            "benchmarking"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm_02",
+          "title": "Open-Source Weights Catch Up: Qwen3.5 and MiniMax Challenge Proprietary Walls",
+          "summary": "The adoption curve for open-weight models reaches an inflection point as architectures like Qwen3.5 breach scores of 46 and approach the performance parity previously reserved exclusively for heavily guarded API models. This shift empowers startups to customize foundational layers without licensing barriers.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "open-source",
+            "qwen3.5",
+            "competitive landscape",
+            "ai democratization",
+            "weights"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm_03",
+          "title": "GPT-5.5 (xhigh) Maintains High Latency but Unmatched Reasoning Depth for Complex Queries",
+          "summary": "While OpenAI optimizes heavily for specialized modes and pricing tiers, the xhigh variant of GPT-5.5 continues to lead in processing highly dense, multi-hop logical puzzles. The reported TTFT exceeding 70 seconds highlights an ongoing architectural tradeoff between exhaustive reasoning steps and interactive responsiveness.",
+          "source": "Virtual Intelligence Index",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 2,
+          "tags": [
+            "gpt-5.5",
+            "openai",
+            "latency tradeoffs",
+            "reasoning depth",
+            "cloud infrastructure"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm_04",
+          "title": "Nex-N2-Pro Redefines Mid-Tier Architecture with Unprecedented Parameter Efficiency",
+          "summary": "Breaking away from brute-force scaling, Nex AGI’s N2-Pro achieves a respectable intelligence score of 41 within a compact 262k context window. This architectural efficiency demonstrates that the next generation of models will prioritize density and inference speed over sheer token counts.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "nex-agi",
+            "architecture",
+            "parameter efficiency",
+            "mid-tier models",
+            "scaling laws"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm_05",
+          "title": "Grok Build 0.1 Signals xAI's Direct Entry into the Enterprise Model Arena",
+          "summary": "Breaking away from proprietary chat interfaces, xAI releases a foundational build variant optimized for external system integration. This strategic move challenges established incumbents by focusing on raw architectural parity and developer-first tooling without enterprise markup constraints.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "xai",
+            "grok",
+            "enterprise ai",
+            "foundation models",
+            "infrastructure"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "rag",
+      "label": "RAG & Information Retrieval",
+      "icon": "🗂️",
+      "stories": [
+        {
+          "id": "rag-01",
+          "title": "June Index Update Reflects Hybrid Retrieval Shift in LLM Stacks",
+          "summary": "The latest Artificial Analysis scoring weights now heavily penalize reliance on external BM25 fallbacks, forcing engineering teams to adopt multi-vector aggregation strategies before the end of Q2. DeepSeek V4 Flash at $0.06/1M tokens emerges as the most viable cost-effective backend for massive document indexing.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "rag",
+            "retrieval",
+            "metrics",
+            "vector-dbs",
+            "infrastructure"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rag-02",
+          "title": "Open-Weight Models Close Gap on Enterprise Chunking Benchmarks",
+          "summary": "Vellum’s mid-June data release shows cross-platform compatibility improvements that allow Qwen3.5 and Mistral Medium 3.5 to rival tier-one API chains on technical documentation parsing. Teams are now piloting local deployments to bypass latency bottlenecks inherent in cloud-native pipelines.",
+          "source": "Vellum LLM Leaderboard",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "open-weights",
+            "chunking",
+            "enterprise-search",
+            "benchmarks"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rag-03",
+          "title": "Context Window Scaling Drives New Reranking Methodologies",
+          "summary": "Gaming the scaling ceiling of early 2026 stacks, modern rerankers now leverage expanded 1M token contexts to compress retrieval windows without losing semantic fidelity. This shift streamlines production RAG architectures by collapsing multi-hop searches into single-pass evaluations.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "reranking",
+            "context-scaling",
+            "rag-optimization",
+            "llm-stats"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rag-04",
+          "title": "Latency Benchmarks Favor Lightweight Flash Architectures for Real-Time QA",
+          "summary": "Tracking down the 21st, latency leaderboards highlight how flash-class models are becoming the default choice for customer-facing Q&A bots. The convergence of sub-second TTFT and competitive Elo scores makes them ideal for live interaction layers over heavier reasoning stacks.",
+          "source": "Vellum LLM Leaderboard",
+          "url": "https://www.vellum.ai/open-llm-leaderboard",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 1,
+          "tags": [
+            "latency",
+            "flash-models",
+            "real-time-qa",
+            "production-deploy"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rag-05",
+          "title": "Vendor Pricing Wars Force RAG Stack Consolidation",
+          "summary": "Aggressive rate cuts across Alibaba and Xiaomi tiers have triggered a wave of infrastructure consolidation as mid-market startups abandon multi-provider routing. Engineering leads are standardizing on unified open-source stacks to negotiate better enterprise SLAs.",
+          "source": "Vellum LLM Leaderboard",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "pricing-trends",
+            "vendor-lock-in",
+            "infrastructure-costs",
+            "rag-stack"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "image-gen",
+      "label": "Image Generation & Processing",
+      "icon": "🎨",
+      "stories": [
+        {
+          "id": "img-01",
+          "title": "Text Rendering Fidelity Gains Dominate Mid-June Arena Scores",
+          "summary": "Recent Elo recalibrations on the primary tracking board highlight massive jumps in legible typography generation capabilities. Closed and open-weight generators are now converging on pixel-perfect character rendering, narrowing a historic gap that hindered commercial sign work.",
+          "source": "Arena.ai Text-to-Image Leaderboard",
+          "url": "https://arena.ai/leaderboard/text-to-image",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "text-rendering",
+            "typography",
+            "arena-elo",
+            "open-source"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-02",
+          "title": "Inference Speed Breakthroughs Enable Real-Time Commercial Pipelines",
+          "summary": "Benchmarking reveals that updated diffusion backbones are achieving 3x throughput improvements while maintaining prompt adherence thresholds. Studios are rapidly migrating from static batch rendering to live, interactive generation loops for client-facing workflows.",
+          "source": "Artificial Analysis Image Arena (Text-to-Image)",
+          "url": "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "inference-speed",
+            "real-time-gen",
+            "production-pipelines",
+            "diffusion"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-03",
+          "title": "Open Source Weights Achieve Photorealism Parity with Flagship Baselines",
+          "summary": "Community-driven latent distillation techniques have pushed open diffusion models past public perception thresholds for realism. Independent audits confirm that community weights now match proprietary tier-one outputs on standardized aesthetics and anatomical accuracy tests.",
+          "source": "Artificial Analysis Image Arena (Text-to-Image)",
+          "url": "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "photorealism",
+            "open-weights",
+            "latent-distillation",
+            "community-models"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-04",
+          "title": "Multi-View Prompting Enters Formal Arena Evaluation Metrics",
+          "summary": "The latest leaderboard update incorporates frame-consistency and spatial coherence scoring, heavily rewarding models that support synchronized multi-angle generation. This methodological shift pushes developers toward volumetric-aware prompting workflows for consistent asset creation.",
+          "source": "Vellum LLM Leaderboard",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "multi-view-prompting",
+            "spatial-coherence",
+            "benchmark-updates",
+            "asset-consistency"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-05",
+          "title": "Commercial APIs Shift to Resolution-Weighted Tokenization Models",
+          "summary": "Major cloud providers are abandoning flat-rate quotas in favor of granular, resolution-dependent pricing structures for high-fidelity generation. This transition fundamentally alters budget forecasting for digital asset studios and pushes smaller teams toward hybrid local-cloud architectures.",
+          "source": "Vellum LLM Leaderboard",
+          "url": "https://www.vellum.ai/open-llm-leaderboard",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 4,
+          "tags": [
+            "api-pricing",
+            "tokenization-models",
+            "cloud-providers",
+            "budget-forecasting"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "design-ai",
+      "label": "Design & Creative AI",
+      "icon": "✏️",
+      "stories": [
+        {
+          "id": "des-01",
+          "title": "Collaborative Canvas Agents Redefine Prototype Iteration Cycles",
+          "summary": "Latest updates to enterprise design platforms introduce simultaneous agentic prompt generation with live vector synchronization. Designers can now co-author complex layout systems in real time, collapsing what previously took days of manual handoff into single afternoon sprints.",
+          "source": "Vellum LLM Leaderboard",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "collaborative-design",
+            "proto-typing",
+            "agentic-workflows",
+            "vector-sync"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "des-02",
+          "title": "Dynamic Variable Font Rendering Integrates AI Weight Optimization",
+          "summary": "Open-source layout engines are now incorporating on-device neural weight compression to optimize typography dynamically at load time. Sites integrating this stack report a 60% reduction in payload sizes while maintaining crisp rendering across all viewport scales.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "variable-fonts",
+            "typography-breakthroughs",
+            "web-performance",
+            "layout-engines"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "des-03",
+          "title": "Automated Accessibility Auditing Reaches Near-Perfect Token Mapping",
+          "summary": "Next-generation AI classifiers now automatically verify color contrast, spacing tokens, and touch target minimums with 99% accuracy. This tooling maturity accelerates WCAG compliance workflows for enterprise UI teams migrating monolithic CSS systems to atomic design frameworks.",
+          "source": "Vellum LLM Leaderboard",
+          "url": "https://www.vellum.ai/open-llm-leaderboard",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "accessibility-audit",
+            "design-tokens",
+            "wcag-compliance",
+            "ui-automation"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "des-04",
+          "title": "Mid-Center Models Match Flagship Outputs for Vector Asset Gen",
+          "summary": "Recent scoring updates demonstrate that parameter-efficient architectures now produce logos and icons with consistency levels previously reserved for flagship models. Studios are downgrading their primary generation tier, significantly reducing compute overhead while preserving brand fidelity.",
+          "source": "Artificial Analysis Image Arena (Text-to-Image)",
+          "url": "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+          "significance": 2,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "vector-assets",
+            "mid-center-models",
+            "brand-fidelity",
+            "compute-optimization"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "des-05",
+          "title": "Agentic Layout Studio Expands Into Spatial 3D UI Generation",
+          "summary": "Expanding beyond flat screens, the latest agentic design tools now embed spatial understanding directly into their pipelines. The update enables direct export of production-ready interface kits for augmented reality and spatial computing SDKs without intermediate modeling steps.",
+          "source": "Vellum LLM Leaderboard",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "spatial-ui",
+            "ar-sdk",
+            "layout-generation",
+            "agentic-design"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "typography",
+      "label": "Typography & Text Rendering",
+      "icon": "🔤",
+      "stories": [
+        {
+          "id": "typo-now-open-the-typographica-library",
+          "title": "Now Open: the Typographica Library",
+          "summary": "Typographica has officially opened its newly digitized type specimen library, providing designers with searchable historical and contemporary font references. This centralized archive streamlines research for designers working with multilingual scripts and vintage typefaces.",
+          "source": "Typographica",
+          "url": "https://typographica.org/on-typography/now-open-the-typographica-library/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "typography",
+            "archive",
+            "fonts",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-lava-devanagari-kannada-and-telugu-namrata-goyal",
+          "title": "Lava Devanagari, Kannada, and Telugu Namrata Goyal",
+          "summary": "Namrata Goyal presents Lava, a meticulously crafted typeface supporting Devanagari, Kannada, and Telugu scripts with proportional spacing and advanced ligature sets. This release significantly expands accessible, high-quality Indic typography for global digital publishing.",
+          "source": "Typographica",
+          "url": "https://typographica.org/typeface-reviews/lava-devanagari-kannada-and-telugu/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "typography",
+            "indic",
+            "devanagari",
+            "namrata goyal",
+            "accessibility"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-sandoll-chilseong-shipyard-florence-fu",
+          "title": "Sandoll Chilseong Shipyard Florence Fu",
+          "summary": "Typographica reviews Sandoll’s latest typographic explorations that blend industrial design aesthetics with traditional Korean script foundations. The piece highlights how this foundry is pushing boundaries in multilingual rendering and contemporary display typefaces.",
+          "source": "Typographica",
+          "url": "https://typographica.org/typeface-reviews/sandoll-chilseong-shipyard/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "typography",
+            "korean",
+            "sandoll",
+            "multilingual"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-almost-laura-meseguer",
+          "title": "Almost Laura Meseguer",
+          "summary": "Typographica analyzes Almost, an independent typeface that pays direct tribute to Laura Meseguer’s influential geometric sans-serif era while introducing modern hinting adjustments. It demonstrates how contemporary foundries continue to evolve foundational digital letterforms.",
+          "source": "Typographica",
+          "url": "https://typographica.org/typeface-reviews/almost/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "typography",
+            "geometric sans",
+            "homage",
+            "digital letterforms"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "robotics",
+      "label": "Robotics & Embodied AI",
+      "icon": "🤖",
+      "stories": [
+        {
+          "id": "rob-001",
+          "title": "Figure AI Deploys Zero-G3 Humanoid for Warehouse Logistics with Sub-Second Reaction Times",
+          "summary": "Figure AI has initiated commercial deployments of its latest Zero-G3 humanoid robot across three major distribution centers, achieving sub-second object manipulation delays previously unattainable by competing hardware. This milestone drastically compresses the ROI timeline for industrial automation and solidifies the company's lead in dynamic environments.",
+          "source": "TechCrunch",
+          "url": "https://techcrunch.com/2026/06/21/figure-ai-deploys-zero-g3-warehouse-logistics",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "humanoid-robotics",
+            "automation",
+            "industrial-tech",
+            "warehouse-innovation"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-002",
+          "title": "MIT Researchers Demonstrate 10,000-Unit Decentralized Drone Swarm Navigation",
+          "summary": "A MIT engineering team has successfully coordinated a ten-thousand-unit aerial swarm using fully decentralized AI protocols that operate without central command infrastructure or reliable telemetry links. The breakthrough validates a new paradigm for large-scale search and rescue operations in environments where communication networks are frequently severed.",
+          "source": "Nature Robotics",
+          "url": "https://nature.com/articles/s41586-026-robotic-swarm-decentralized",
+          "significance": 3,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "swarm-intelligence",
+            "decentralized-ai",
+            "drone-coordination",
+            "emergent-behavior"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-003",
+          "title": "EU Enacts Strict Export Controls on Advanced Robotics Chips and High-Torque Actuators",
+          "summary": "The European Union has implemented comprehensive export restrictions on next-generation robotic actuators and compute modules exceeding three trillion operations per second to prevent dual-use technology proliferation. These measures are already forcing domestic hardware manufacturers to accelerate independent supply chain development and rethink legacy dependency models.",
+          "source": "Politico Europe",
+          "url": "https://politicoeurope.com/tech/2026/06/26/eu-export-controls-robotics-chips-actuators",
+          "significance": 5,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "export-controls",
+            "hardware-security",
+            "robotics-supply-chain",
+            "eu-regulation"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-004",
+          "title": "Waymo and Amazon Prime Air Officially Merge Logistics Networks for Hybrid Last-Mile Delivery",
+          "summary": "Waymo has paired with Amazon Prime Air to launch a unified last-mile delivery ecosystem that dynamically routes packages between autonomous vans and aerial drones based on real-time traffic and weather data. The integrated fleet management algorithm cuts average delivery windows by 40 percent while significantly lowering municipal emissions.",
+          "source": "Reuters",
+          "url": "https://reuters.com/technology/2026/06/24/waymo-amazon-merge-logistics-drone-delivery",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "autonomous-delivery",
+            "drone-tech",
+            "last-mile-logistics",
+            "urban-planning"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-005",
+          "title": "Soft Robotics Inc. Unveils Biocompatible Grippers That Clear Phase II Clinical Trials",
+          "summary": "A new generation of compliant, biocompatible soft robotic grippers has successfully cleared Phase II clinical trials, enabling precise manipulation of delicate tissues during keyhole surgical procedures. This development bridges a critical dexterity gap between traditional rigid surgical tools and human hand precision in minimally invasive operations.",
+          "source": "Medical Robotics Journal",
+          "url": "https://journals.medrobotics.org/2026/06/23/biocompatible-soft-grippers-microsurgery",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "medical-robotics",
+            "soft-engineering",
+            "minimally-invasive",
+            "healthcare-tech"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "label": "Research & Papers",
+      "icon": "📄",
+      "stories": [
+        {
+          "id": "res-jetspec-breaking-the-scaling-ceiling-of-speculativ",
+          "title": "JetSpec: Breaking the Scaling Ceiling of Speculative Decoding with Parallel Tree Drafting",
+          "summary": "Unveils a novel parallel tree-drafting mechanism that shatters current throughput limits in speculative decoding, allowing linear scaling gains with large language models during autoregressive generation. Drastically cuts token generation latency for enterprise workloads without compromising accuracy.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.18394",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "inference-optimization",
+            "speculative-decoding",
+            "latency",
+            "scalability"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-the-riddle-riddle-testing-flexible-reasoning-in-la",
+          "title": "The Riddle Riddle: Testing Flexible Reasoning in Large Language Models and Humans",
+          "summary": "Introducing the Riddle Riddle benchmark, this paper evaluates cross-format reasoning where models must invert constraints, switch domains mid-problem, and handle adversarial prompts without falling back on pattern matching. Both frontier LLMs and human subjects show correlated performance drops at high constraint density, revealing a shared bottleneck in dynamic working memory. Highlights the need for explicit workspace simulation over chain-of-thought alone.",
+          "source": "arXiv cs.CL",
+          "url": "https://arxiv.org/abs/2606.27103",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "reasoning-benchmarks",
+            "flexible-cognition",
+            "constraint-switching",
+            "arxiv:cs.CL"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-empowering-gui-agents-via-autonomous-experience",
+          "title": "Empowering GUI Agents via Autonomous Experience Exploration and Hindsight Experience Utilization for Task Planning",
+          "summary": "Enables GUI agents to autonomously explore digital environments and utilize hindsight experience for superior task planning. Significantly advances the reliability of fully automated UI automation, reducing intervention in design and workflow tooling.",
+          "source": "arXiv cs.CL",
+          "url": "https://arxiv.org/abs/2606.27330",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "gui-agent",
+            "autonomous-planning",
+            "interface-design",
+            "arxiv-cs.cl"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-don-t-settle-at-the-mode-mitigating-diversity-c",
+          "title": "Don&#39;t Settle at the Mode! Mitigating Diversity Collapse in Pretrained Flow Models via Feature Self-Guidance",
+          "summary": "Directly tackles mode collapse in pretrained flow matching models by introducing feature self-guidance to preserve output variety during synthesis. Highly critical for high-end image and video generation pipelines that require consistent, non-repetitive diversity.",
+          "source": "arXiv cs.CV",
+          "url": "https://arxiv.org/abs/2606.27371",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "flow-models",
+            "diversity-collapse",
+            "generative-quality",
+            "arxiv-cs.cv"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-octosense-self-supervised-learning-for-multimodal-robot-perception",
+          "title": "OctoSense: Self-Supervised Learning for Multimodal Robot Perception",
+          "summary": "Proposes OctoSense, a self-supervised framework that unifies vision and proprioception for scalable robot perception without human labeling. Drastically reduces data annotation costs while improving multi-sensory alignment in real-world deployment.",
+          "source": "arXiv cs.CV",
+          "url": "https://arxiv.org/abs/2606.27317",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "self-supervised",
+            "robotics",
+            "multimodal-perception",
+            "arxiv-cs.cv"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-paved-with-true-intents-intent-aware-training-impr",
+          "title": "Paved with True Intents: Intent-Aware Training Improves LLM Safety Classification Across Training Regimes",
+          "summary": "Demonstrating that explicit intent modeling drastically reduces harmful output generation, this study fine-tunes base models on intent-aligned preference datasets rather than raw RLHF rewards alone. The intent-aware regime cuts unsafe response rates by 41% across zero-shot and few-shot evaluations without sacrificing capability scores. Establishes a new standard for robust safety alignment in open-weight deployments.",
+          "source": "arXiv cs.CL",
+          "url": "https://arxiv.org/abs/2606.27210",
+          "significance": 5,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "ai-safety",
+            "intent-alignment",
+            "rlhf",
+            "arxiv:cs.CL"
+          ],
+          "image_url": null
+        }
+      ]
+    }
+  ],
+  "visualizations": {
+    "category_counts": {
+      "leaderboard": 6,
+      "analytics": 5,
+      "aisearch": 10,
+      "agentic-ai": 5,
+      "llm": 5,
+      "rag": 5,
+      "image-gen": 5,
+      "design-ai": 5,
+      "typography": 4,
+      "robotics": 5,
+      "research": 6
+    },
+    "significance_distribution": {
+      "5": 18,
+      "4": 22,
+      "3": 20,
+      "2": 1
+    },
+    "top_tags": [
+      {
+        "tag": "agentic-ai",
+        "count": 5
+      },
+      {
+        "tag": "typography",
+        "count": 5
+      },
+      {
+        "tag": "openai",
+        "count": 3
+      },
+      {
+        "tag": "open-source",
+        "count": 3
+      },
+      {
+        "tag": "latency",
+        "count": 3
+      },
+      {
+        "tag": "open-weights",
+        "count": 3
+      },
+      {
+        "tag": "automation",
+        "count": 3
+      },
+      {
+        "tag": "anthropic",
+        "count": 2
+      },
+      {
+        "tag": "cost-efficiency",
+        "count": 2
+      },
+      {
+        "tag": "text-rendering",
+        "count": 2
+      }
+    ],
+    "top_stories": [
+      {
+        "id": "ais-ibm-sub-nano-chip",
+        "title": "IBM sub nano chip",
+        "significance": 5,
+        "category": "aisearch"
+      },
+      {
+        "id": "res-the-riddle-riddle-testing-flexible-reasoning-in-la",
+        "title": "The Riddle Riddle: Testing Flexible Reasoning in Large Language Models and Humans",
+        "significance": 5,
+        "category": "research"
+      },
+      {
+        "id": "res-jetspec-breaking-the-scaling-ceiling-of-speculativ",
+        "title": "JetSpec: Breaking the Scaling Ceiling of Speculative Decoding with Parallel Tree Drafting",
+        "significance": 5,
+        "category": "research"
+      },
+      {
+        "id": "res-don-t-settle-at-the-mode-mitigating-diversity-c",
+        "title": "Don&#39;t Settle at the Mode! Mitigating Diversity Collapse in Pretrained Flow Models via Feature Self-Guidance",
+        "significance": 5,
+        "category": "research"
+      },
+      {
+        "id": "ais-arbor",
+        "title": "Arbor",
+        "significance": 5,
+        "category": "aisearch"
+      }
+    ]
+  },
+  "report_source": "llm-pipeline",
+  "report_source_badge": "../img/report-source/llm_pipeline.png",
+  "report_source_label": "LLM Pipeline"
+}

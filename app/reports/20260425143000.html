@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily — April 25, 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<style>
+:root {
+    --bg: #0d1117; --card-bg: #161b22; --masthead-bg: #0d1117;
+    --masthead-text: #e6edf3; --accent: #58a6ff;
+    --pill-active-bg: #388bfd26; --pill-active-text: #58a6ff;
+    --pill-inactive-bg: #21262d; --pill-inactive-text: #8b949e;
+    --border: #30363d; --muted: #8b949e; --sig-color: #d29922;
+    --text: #e6edf3;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --cat-llm: #388bfd; --cat-image: #bc8cff; --cat-design: #39d2c0;
+    --cat-typo: #f85149; --cat-robot: #f0883e; --cat-research: #58a6ff;
+    --hm-empty: #21262d; --hm-1: #1a3a5c; --hm-2: #1a4a7a; --hm-3: #1a6fa0; --hm-4: #58a6ff;
+    --hm-label: #8b949e; --hm-selection: #58a6ff; --hm-hover: #8b949e;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .masthead { background: var(--masthead-bg); color: var(--masthead-text); padding: 20px 24px 16px; display: flex; flex-direction: column; gap: 6px; border-bottom: 1px solid var(--border); }
+  .masthead-top { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .report-source-seal {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.14);
+    line-height: 0;
+    padding: 4px 8px;
+    cursor: help;
+  }
+  .report-source-seal img {
+    display: block;
+    height: 40px;
+    width: auto;
+    max-width: 128px;
+    object-fit: contain;
+  }
+  .masthead h1 { font-size: 18px; font-weight: 600; letter-spacing: 0; text-transform: none; }
+  .masthead-date { font-size: 13px; font-weight: 700; letter-spacing: 0.4px; color: var(--text); text-transform: uppercase; }
+  .masthead-summary { font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 920px; padding-top: 8px; }
+
+  .top-stories-bar { background: #161b22; padding: 10px 24px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+  .top-stories-label { font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); white-space: nowrap; font-weight: 500; }
+  .top-story-pill { background: #21262d; color: var(--accent); padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; border: 1px solid var(--border); transition: background 0.15s, border-color 0.15s; white-space: nowrap; }
+  .top-story-pill:hover { background: #388bfd26; border-color: var(--accent); }
+
+  .layout {
+    display: flex; align-items: stretch; min-height: calc(100vh - 120px);
+    --sidebar-w: 220px;
+  }
+
+  .sidebar {
+    width: var(--sidebar-w); min-width: 160px; max-width: 420px; flex-shrink: 0;
+    background: var(--masthead-bg); padding: 20px 16px;
+    position: sticky; top: 0; height: calc(100vh - 120px); overflow-y: auto;
+  }
+  .layout-resizer {
+    flex-shrink: 0; width: 6px; margin: 0 -3px; position: relative; z-index: 2;
+    cursor: col-resize; touch-action: none;
+    background: transparent; border-left: 1px solid var(--border);
+  }
+  .layout-resizer::after {
+    content: ''; position: absolute; top: 0; bottom: 0; left: -3px; right: -3px;
+  }
+  .layout-resizer:hover, .layout-resizer.dragging { background: #388bfd33; border-left-color: var(--accent); }
+
+  .main { flex: 1; min-width: 0; padding: 20px 24px; background: var(--bg); }
+  .sidebar-section { margin-bottom: 24px; }
+  .sidebar-title { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  svg text { font-family: var(--font-sans); }
+  .tag-cloud { display: flex; flex-wrap: wrap; gap: 4px; }
+  .tag-item { font-size: 11px; background: var(--pill-inactive-bg); color: var(--muted); padding: 2px 7px; border-radius: 10px; border: 1px solid var(--border); cursor: pointer; transition: all 0.15s; }
+  .tag-item:hover { border-color: var(--accent); color: var(--text); }
+  .tag-item.tag-active { background: var(--pill-active-bg); color: var(--accent); border-color: var(--accent); }
+  .tag-item.tag-dim { opacity: 0.3; }
+  .tag-count { color: var(--accent); font-size: 10px; margin-left: 3px; }
+  .sig-row:hover .sig-bar { filter: brightness(1.2); }
+  #sig-chart { cursor: pointer; }
+
+  .filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; align-items: center; }
+  .pill { padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); transition: all 0.15s; font-family: var(--font-sans); background: var(--pill-inactive-bg); color: var(--pill-inactive-text); }
+  .pill.active { background: var(--pill-active-bg); color: var(--pill-active-text); border-color: var(--accent); }
+  .pill.inactive:hover { background: #21262d; border-color: #8b949e; color: var(--text); }
+
+  /* AI Search hub view */
+  .aisearch-hub { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 24px; gap: 32px; }
+  .aisearch-hub-title { font-size: 22px; font-weight: 700; color: var(--text); text-align: center; }
+  .aisearch-hub-sub { font-size: 13px; color: var(--muted); text-align: center; max-width: 480px; line-height: 1.6; margin-top: -20px; }
+  .aisearch-hub-links { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .aisearch-hub-link { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 28px 36px; background: #161b22; border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text); transition: border-color 0.15s, background 0.15s; min-width: 180px; }
+  .aisearch-hub-link:hover { border-color: #f0883e; background: #f0883e08; }
+  .aisearch-hub-link-icon { font-size: 36px; }
+  .aisearch-hub-link-label { font-size: 15px; font-weight: 600; }
+  .aisearch-hub-link-url { font-size: 11px; color: var(--muted); }
+
+  .story-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; }
+
+  .story-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px 16px 12px; cursor: pointer; transition: border-color 0.15s; position: relative; overflow: hidden; }
+  .story-card:hover { border-color: #8b949e; }
+  .story-card.expanded { border-color: var(--accent); }
+  .card-cat-badge { position: absolute; top: 12px; right: 12px; font-size: 1rem; }
+  .card-copy { position: absolute; top: 10px; right: 32px; width: 20px; height: 20px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 5px; border: 1px solid var(--border); background: var(--card-bg); color: var(--muted); cursor: pointer; opacity: 0.4; transition: opacity 0.15s, color 0.15s, border-color 0.15s; z-index: 4; }
+  .card-copy:hover { opacity: 1; color: var(--accent); border-color: var(--accent); }
+  .card-copy.copied { opacity: 1; color: #3fb950; border-color: #3fb950; }
+  .card-copy.copy-failed { opacity: 1; color: #f85149; border-color: #f85149; }
+  .card-cat-stripe { position: absolute; top: 0; left: 0; width: 3px; height: 100%; }
+  .card-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .card-source { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; }
+  .card-info { width: 15px; height: 15px; padding: 0; border-radius: 50%; border: 1px solid var(--border); background: transparent; color: var(--muted); font: italic 10px/13px Georgia, serif; text-align: center; cursor: pointer; opacity: 0.45; transition: opacity 0.15s, border-color 0.15s, color 0.15s; }
+  .card-info:hover { opacity: 1; border-color: var(--accent); color: var(--accent); }
+  .card-trace { position: absolute; z-index: 5; top: 34px; left: 16px; right: 16px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; box-shadow: 0 4px 14px rgba(0,0,0,0.4); }
+  .card-trace[hidden] { display: none; }
+  .trace-row { display: flex; gap: 8px; padding: 2px 0; align-items: baseline; }
+  .trace-k { color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-size: 9px; min-width: 46px; flex-shrink: 0; }
+  .trace-v { color: var(--text); font-size: 11px; background: none; word-break: break-all; }
+  .card-sig { display: flex; gap: 2px; margin-left: auto; padding-right: 54px; }
+  .sig-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
+  .sig-dot.filled { background: var(--sig-color); }
+  .card-title { font-size: 13px; font-weight: 600; line-height: 1.4; color: var(--text); }
+  .card-expand { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .card-expand.visible { display: block; }
+  .card-summary { font-size: 12px; line-height: 1.6; color: var(--muted); margin-bottom: 12px; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+  .card-tag { font-size: 11px; background: #21262d; color: var(--muted); padding: 1px 6px; border-radius: 10px; border: 1px solid var(--border); }
+  .card-link { display: inline-flex; align-items: center; gap: 4px; color: var(--accent); font-size: 12px; font-weight: 500; text-decoration: none; }
+  .card-link:hover { text-decoration: underline; }
+  .card-links { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
+  .card-resource-link {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 11px; font-weight: 500; color: var(--accent);
+    text-decoration: none; padding: 3px 8px; border-radius: 999px;
+    border: 1px solid var(--border); background: var(--pill-inactive-bg, #21262d);
+  }
+  .card-resource-link:hover { text-decoration: underline; border-color: var(--accent); }
+  .card-resource-link-primary { border-color: var(--accent); font-weight: 600; }
+
+  .empty-state { text-align: center; padding: 40px; color: var(--muted); }
+
+  .footer { border-top: 1px solid var(--border); padding: 12px 24px; font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; background: var(--masthead-bg); }
+
+  .d3-tooltip { position: fixed; background: #161b22; border: 1px solid var(--border); color: var(--text); padding: 6px 10px; border-radius: 6px; font-size: 12px; font-family: var(--font-sans); pointer-events: none; opacity: 0; transition: opacity 0.15s; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+
+  .masthead-archive { font-size: 12px; margin-left: auto; }
+  .masthead-archive a { color: var(--accent); text-decoration: none; }
+  .masthead-archive a:hover { text-decoration: underline; }
+  .content-loading { padding: 48px 24px; color: var(--muted); text-align: center; }
+
+  /* ── Leaderboard ── */
+  .lb-wrap { grid-column: 1 / -1; width: 100%; }
+  .lb-tabs { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .lb-tab { padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--pill-inactive-bg); color: var(--pill-inactive-text); transition: all 0.15s; }
+  .lb-tab.active { background: var(--pill-active-bg); color: var(--accent); border-color: var(--accent); }
+  .lb-tab:hover:not(.active) { border-color: #8b949e; color: var(--text); }
+  .lb-src { font-size: 11px; color: var(--accent); text-decoration: none; margin-left: auto; }
+  .lb-src:hover { text-decoration: underline; }
+  .lb-updated { font-size: 11px; color: var(--muted); }
+  .lb-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+  .lb-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .lb-table thead { background: #161b22; position: sticky; top: 0; z-index: 1; }
+  .lb-th { padding: 8px 12px; text-align: left; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; white-space: nowrap; user-select: none; border-bottom: 1px solid var(--border); }
+  .lb-th:hover { color: var(--text); }
+    .lb-th-info { cursor: help; }
+    .lb-th-info[title] { border-bottom: 1px dotted var(--border); }
+  .sort-arrow { font-size: 10px; margin-left: 3px; opacity: 0.5; }
+  .lb-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+  .lb-table tbody tr:last-child { border-bottom: none; }
+  .lb-table tbody tr:hover { background: #21262d; }
+  .lb-table td { padding: 8px 12px; color: var(--text); white-space: nowrap; }
+  .lb-table td:first-child { color: var(--muted); font-weight: 600; }
+  .lb-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; flex-shrink: 0; }
+  .lb-bar-cell { display: flex; align-items: center; gap: 8px; min-width: 120px; }
+  .lb-bar-fill { display: inline-block; height: 6px; border-radius: 3px; min-width: 2px; }
+  .lb-bar-val { font-weight: 700; font-size: 13px; color: var(--text); }
+
+  /* ── Benchmark chart grid ── */
+  .lb-charts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .lb-chart-card { background: #161b22; border: 1px solid var(--border); border-radius: 8px; padding: 14px 12px 10px; }
+  .lb-chart-title { margin-bottom: 8px; }
+  .lb-chart-name { display: block; font-size: 13px; font-weight: 600; color: var(--text); }
+  .lb-chart-task { display: block; font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .lb-chart-svg { display: block; width: 100%; overflow: visible; }
+
+  /* ── More leaderboards (links) ── */
+  .lb-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+  .lb-links-group { background: #161b22; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+  .lb-links-head { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  .lb-link-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 6px 0; text-decoration: none; border-bottom: 1px solid transparent; }
+  .lb-link-row:hover { border-bottom-color: var(--border); }
+  .lb-link-name { font-size: 12px; color: var(--text); }
+  .lb-link-src { font-size: 11px; color: var(--accent); white-space: nowrap; flex-shrink: 0; }
+
+  @media (max-width: 1100px) { .lb-charts-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 860px) {
+    .layout { flex-direction: column; }
+    .layout-resizer { display: none; }
+    .sidebar { width: auto; max-width: none; position: static; height: auto; border-bottom: 1px solid var(--border); }
+    .masthead { padding: 16px; }
+    .top-stories-bar { padding: 10px 16px; }
+    .main { padding: 16px; }
+  }
+
+/* Light theme overrides — default is dark.css (:root). Toggle sets data-theme on <html>. */
+
+[data-theme="light"] {
+  --bg: #f6f8fa;
+  --card-bg: #ffffff;
+  --masthead-bg: #ffffff;
+  --masthead-text: #1f2328;
+  --accent: #0969da;
+  --pill-active-bg: #ddf4ff;
+  --pill-active-text: #0969da;
+  --pill-inactive-bg: #f6f8fa;
+  --pill-inactive-text: #656d76;
+  --border: #d0d7de;
+  --muted: #656d76;
+  --sig-color: #bf8700;
+  --text: #1f2328;
+  --cat-llm: #0969da;
+  --cat-image: #8250df;
+  --cat-design: #1a7f37;
+  --cat-typo: #cf222e;
+  --cat-robot: #bc4c00;
+  --cat-research: #0969da;
+  --hm-empty: #ebedf0;
+  --hm-1: #c6e6ff;
+  --hm-2: #79c0ff;
+  --hm-3: #4493f8;
+  --hm-4: #0969da;
+  --hm-label: #656d76;
+  --hm-selection: #0969da;
+  --hm-hover: #656d76;
+}
+
+[data-theme="light"] .top-stories-bar,
+[data-theme="light"] .lb-table thead,
+[data-theme="light"] .lb-chart-card,
+[data-theme="light"] .lb-links-group,
+[data-theme="light"] .aisearch-hub-link,
+[data-theme="light"] .frame-author,
+[data-theme="light"] .archive-charts-row .chart-panel,
+[data-theme="light"] .d3-tooltip {
+  background: #ffffff;
+}
+
+[data-theme="light"] .top-story-pill,
+[data-theme="light"] .tag-item,
+[data-theme="light"] .card-tag,
+[data-theme="light"] .year-pill {
+  background: #f6f8fa;
+}
+
+[data-theme="light"] .lb-table tbody tr:hover,
+[data-theme="light"] .pill.inactive:hover {
+  background: #f6f8fa;
+}
+
+[data-theme="light"] .heatmap-details,
+[data-theme="light"] .archive-details {
+  background: #ffffff;
+}
+
+[data-theme="light"] .diag-panel {
+  background: #f6f8fa;
+}
+
+[data-theme="light"] .d3-tooltip,
+[data-theme="light"] .card-trace {
+  box-shadow: 0 4px 12px rgba(31, 35, 40, 0.12);
+}
+
+</style>
+<script>(function () {
+  var STORAGE_KEY = 'aidigest-theme';
+
+  function preferredTheme() {
+    try {
+      return localStorage.getItem(STORAGE_KEY) || 'dark';
+    } catch (e) {
+      return 'dark';
+    }
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme === 'light' ? 'light' : 'dark');
+  }
+
+  applyTheme(preferredTheme());
+
+  window.addEventListener('storage', function (e) {
+    if (e.key === STORAGE_KEY) {
+      applyTheme(e.newValue || 'dark');
+    }
+  });
+
+  window.addEventListener('message', function (e) {
+    if (e.data && e.data.type === 'aidigest-theme') {
+      applyTheme(e.data.theme);
+    }
+  });
+})();
+</script>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-top">
+    <h1>AI Daily</h1>
+    <span class="report-source-seal" id="report-source-seal" hidden title="" aria-label="Report source"></span>
+    <span class="masthead-date" id="digest-date"></span>
+    <span class="masthead-archive"><a href="index.html#20260425143000">← Archive</a></span>
+  </div>
+  <div class="masthead-summary" id="digest-summary"></div>
+</div>
+
+<div class="top-stories-bar" id="top-stories-bar">
+  <span class="top-stories-label">Top Stories</span>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">By Category</div>
+      <svg id="donut-chart" width="208" height="160"></svg>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Significance</div>
+      <svg id="sig-chart" width="208" height="100"></svg>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Top Tags</div>
+      <div class="tag-cloud" id="tag-cloud"></div>
+    </div>
+  </aside>
+  <div class="layout-resizer" id="layout-resizer" role="separator" aria-orientation="vertical" aria-label="Resize sidebar" tabindex="0"></div>
+  <main class="main">
+    <div class="filter-bar" id="filter-bar"></div>
+    <div class="story-grid" id="story-grid"><div class="content-loading">Loading digest…</div></div>
+  </main>
+</div>
+
+<footer class="footer">
+  <span id="footer-count"></span>
+  <span>AI Daily · Generated by Claude · ai-search.io inspired</span>
+</footer>
+
+<div class="d3-tooltip" id="tooltip"></div>
+
+<script>window.__AIDIGEST_DIGEST__ = {
+  "generated_at": "2026-04-25T14:30:00Z",
+  "filename_prefix": "20260425143000",
+  "summary": "DeepSeek V4 drops as the biggest open-source model ever, OpenAI's GPT Images 2.0 cracks multilingual typography, and April 2026 closes out the most packed month for LLM releases in AI history.",
+  "categories": [
+    {
+      "id": "llm",
+      "label": "LLMs & Reasoning",
+      "icon": "🧠",
+      "stories": [
+        {
+          "id": "deepseek-v4-preview",
+          "title": "DeepSeek V4 Preview Drops: 1.6T Params, MIT License, Frontier-Class Reasoning",
+          "summary": "DeepSeek released preview versions of V4-Pro (1.6T total / 49B active params) and V4-Flash (284B / 13B active) on April 24 — MIT licensed, open weights, 1M token context. V4-Pro matches GPT-5.2 on most benchmarks at roughly one-seventh the API cost, and notably runs on Huawei Ascend 950PR chips rather than Nvidia silicon, signaling China's parallel AI hardware push.",
+          "source": "DeepSeek / Bloomberg / MIT Technology Review",
+          "url": "https://api-docs.deepseek.com/news/news260424",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "open-source",
+            "MoE",
+            "1M-context",
+            "china-ai",
+            "reasoning"
+          ]
+        },
+        {
+          "id": "april-2026-llm-recap",
+          "title": "April 2026: Most Packed LLM Month in History — Claude Opus 4, GPT-5 Turbo, Llama 4, Gemini 2.5, Qwen 3",
+          "summary": "By April 25, at least nine major models had shipped from six organizations: Claude Opus 4 (SWE-bench 72.1%), GPT-5 Turbo (native multimodal), Gemma 4 (Apache 2.0, four variants), Llama 4 Scout & Maverick (Meta's first MoE), Qwen 3 (0.6B–72B family), Mistral Medium 3 and more. The open/proprietary performance gap has effectively closed for most use cases.",
+          "source": "Fazm Blog / WhatLLM",
+          "url": "https://fazm.ai/blog/llm-news-april-2026",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "roundup",
+            "open-source",
+            "multimodal",
+            "benchmark"
+          ]
+        },
+        {
+          "id": "claude-mythos-preview",
+          "title": "Anthropic's Claude Mythos: Gated Preview for 50 Partners, Priced at $25/$125 per M tokens",
+          "summary": "Anthropic's unreleased frontier model, internally codenamed Capybara, is available to ~50 organizations via Project Glasswing. Described as a 'step change' above Opus 4.6, it focuses on cybersecurity vulnerability detection, reasoning, and coding. No public release date yet — for most developers, Opus 4.6 and Sonnet 4.6 remain the current options.",
+          "source": "WhatLLM / Fazm",
+          "url": "https://whatllm.org/blog/new-ai-models-april-2026",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "anthropic",
+            "frontier",
+            "gated-access",
+            "cybersecurity"
+          ]
+        },
+        {
+          "id": "qwen3-coder-next",
+          "title": "Qwen3 Coder Next Releases April 24 — Alibaba Keeps the Pace",
+          "summary": "Alibaba's Qwen team shipped Qwen3 Coder Next on April 24, continuing a relentless cadence of open-weight model releases. The broader Qwen 3 family (0.6B to 72B) has established itself as a go-to for multilingual workloads and local deployment on consumer hardware.",
+          "source": "LLM Gateway",
+          "url": "https://llmgateway.io/timeline",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "qwen",
+            "alibaba",
+            "open-source",
+            "coding",
+            "multilingual"
+          ]
+        },
+        {
+          "id": "frontier-plateau",
+          "title": "The Frontier is a Plateau: No Model Has Broken the Intelligence Index Ceiling Since Feb 2026",
+          "summary": "Despite the volume of April releases, the Intelligence Index ceiling of 57.18 has held since Gemini 3.1 Pro Preview in February. GPT-5.4 matched it in March. Multiple labs have models in the pipeline, but Q1 2026 ended without a new #1 — a meaningful inflection after 18 months of rapid benchmark progress.",
+          "source": "WhatLLM",
+          "url": "https://whatllm.org/blog/new-ai-models-april-2026",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "benchmark",
+            "analysis",
+            "frontier",
+            "intelligence-index"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "image-gen",
+      "label": "Image Generation & Processing",
+      "icon": "🎨",
+      "stories": [
+        {
+          "id": "gpt-images-2",
+          "title": "GPT Images 2.0 Launches: 99% Typography Accuracy, 2K Resolution, Thinking Mode",
+          "summary": "OpenAI released ChatGPT Images 2.0 (model ID: gpt-image-2) on April 21, immediately claiming #1 on Image Arena by a +242 point margin. The headline upgrade is text rendering: 99% accuracy across Latin, CJK, Devanagari, Arabic and more. Thinking mode can generate entire multi-panel comics or magazine layouts from a single prompt, and the model can search the web before generating.",
+          "source": "OpenAI / TechCrunch / Gizmodo",
+          "url": "https://openai.com/index/introducing-chatgpt-images-2-0/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "openai",
+            "image-gen",
+            "typography",
+            "multilingual",
+            "text-rendering"
+          ]
+        },
+        {
+          "id": "imagen4-ultra",
+          "title": "Google Imagen 4 Ultra: Most Photorealistic API Model of 2026",
+          "summary": "Imagen 4 Ultra from Google DeepMind leads on photorealism across independent testing in 2026 — skin textures, fabric details, lighting, and reflections at a fidelity that is hardest to distinguish from photographs. Available via Atlas Cloud and other API aggregators.",
+          "source": "Atlas Cloud Blog",
+          "url": "https://www.atlascloud.ai/blog/guides/best-ai-image-generation-models-2026",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "google",
+            "photorealism",
+            "image-gen",
+            "api"
+          ]
+        },
+        {
+          "id": "nano-banana-2",
+          "title": "Nano Banana 2 (Gemini's Default Image Model) Powers Search, Lens & Google Flow",
+          "summary": "Nano Banana 2 is now the default image generation model across Gemini Pro, Google Search, Google Lens, and Google Flow. Known for stylized editorial illustration and web-search grounding, it supports subject consistency across up to five characters and 14 objects, and includes SynthID watermarking and C2PA credentials.",
+          "source": "JXP / Atlas Cloud",
+          "url": "https://www.jxp.com/blog/gpt-image-2-vs-nano-banana-2",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "google",
+            "gemini",
+            "image-gen",
+            "watermarking",
+            "C2PA"
+          ]
+        },
+        {
+          "id": "sora-shutdown",
+          "title": "OpenAI Sora Shut Down March 24 — Thousands Lost Video Pipelines Overnight",
+          "summary": "OpenAI shut down the Sora app and API on March 24, citing unsustainable costs and a strategic pivot to robotics. The sudden discontinuation left many creator and production workflows without their video generation tool, accelerating adoption of alternatives like PixVerse, Kling 3.0, and Seedance 2.0.",
+          "source": "PixVerse Blog",
+          "url": "https://pixverse.ai/en/blog/gpt-image-2-review-and-prompt-guide",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "openai",
+            "sora",
+            "video-gen",
+            "deprecation"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design-ai",
+      "label": "Design & Creative AI",
+      "icon": "✏️",
+      "stories": [
+        {
+          "id": "images2-design-workflows",
+          "title": "GPT Images 2.0 Ends the 'Fix Typography in Photoshop' Step for Many Design Workflows",
+          "summary": "With 99% text rendering accuracy across scripts, GPT Image 2 is the first model reviewers trust to ship localized ad creatives end-to-end without a designer cleaning up typography. Marketing agencies can now generate multi-language campaign assets — Kannada tagline, English headline, CTA — in a single prompt pass. UI mockups, packaging labels, and poster designs no longer need post-generation text overlays.",
+          "source": "Segmind Blog / CreateVision AI",
+          "url": "https://blog.segmind.com/ai-image-generation-api-gpt-image-2-review-real-world-use-cases-2026/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "design-workflow",
+            "typography-in-images",
+            "localization",
+            "marketing"
+          ]
+        },
+        {
+          "id": "firefly-flux2-integration",
+          "title": "Adobe Firefly Now Integrates FLUX.2, Improving Typography in AI-Generated Images",
+          "summary": "Early 2026 saw Adobe integrate FLUX.2 as a selectable model within Firefly, significantly improving text rendering quality versus the Firefly Image 4 base. Adobe still recommends precise typography work in Illustrator or Photoshop for production assets. Firefly remains the only commercially indemnified option (up to $3M per asset on enterprise plans) for agencies where IP risk is primary.",
+          "source": "NestContent",
+          "url": "https://nestcontent.com/blog/text-to-image-ai",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "adobe",
+            "firefly",
+            "flux",
+            "IP-indemnification",
+            "design-tools"
+          ]
+        },
+        {
+          "id": "openai-codex-image-integration",
+          "title": "OpenAI Codex for Mac Now Integrates GPT Image 2 Natively — Visual Dev Workflows Unblocked",
+          "summary": "With 3 million weekly users, OpenAI Codex now embeds GPT Image 2 image generation directly in the same workspace as code, removing the separate API key and context-switch friction for prototyping visual assets inside dev workflows. OpenAI did not announce this loudly — but it's a quiet shift for design-to-code pipelines.",
+          "source": "BuildFastWithAI",
+          "url": "https://www.buildfastwithai.com/blogs/chatgpt-images-2-0-gpt-image-2-2026",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "openai",
+            "codex",
+            "design-dev",
+            "image-gen",
+            "workflow"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "typography",
+      "label": "Typography & Text Rendering",
+      "icon": "🔤",
+      "stories": [
+        {
+          "id": "gpt-image2-typography-breakthrough",
+          "title": "The Typography Gate Is Lifting: GPT Image 2, Ideogram 3.0, FLUX.2 All Clear 90%+ Accuracy",
+          "summary": "Text rendering in AI-generated images has made its most dramatic leap in 2026. GPT Image 2 claims 99% accuracy across scripts including Devanagari, CJK, and Arabic. Ideogram 3.0 reaches ~90% across fonts, sizes, and contexts, using a dedicated typography layer that treats text as a distinct rendering problem. FLUX.2 uses dual CLIP+T5 encoders, with T5 handling semantic text comprehension separately from visual generation. The 'fix it in Photoshop' era for AI-generated type is ending.",
+          "source": "NestContent / Segmind / MiraFlow",
+          "url": "https://nestcontent.com/blog/text-to-image-ai",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "text-rendering",
+            "multilingual",
+            "CJK",
+            "devanagari",
+            "arabic",
+            "typography-in-images"
+          ]
+        },
+        {
+          "id": "kinetic-typography-ai-future",
+          "title": "AI-Driven Kinetic Typography: Variable Fonts Meet Emotional AI in 2026",
+          "summary": "A piece from The Inkorporated explores the emerging fusion of AI and variable font technology: letters that morph in real time based on user sentiment, time of day, or biometric data. Tools are beginning to appear that suggest font pairings, generate typographic compositions, and analyze legibility under variable conditions. The convergence of adaptive typography and affective computing is emerging as a genuine design frontier.",
+          "source": "The Inkorporated",
+          "url": "https://www.theinkorporated.com/insights/future-of-typography/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "variable-fonts",
+            "kinetic-typography",
+            "affective-computing",
+            "AI-typography"
+          ]
+        },
+        {
+          "id": "non-latin-text-breakthrough-gpt2",
+          "title": "Non-Latin Script Rendering in AI Images: The First Production-Ready Milestone",
+          "summary": "GPT Image 2 is the first model that renders Hangul, Devanagari, Simplified Chinese, Japanese, Korean, Kannada, and Tamil as actual legible characters rather than 'decorative imitations.' A film studio reviewer notes: 'a storyboard with a menu board that reads as gibberish is a storyboard you cannot show the director.' That constraint is now lifted for major scripts.",
+          "source": "Segmind Blog",
+          "url": "https://blog.segmind.com/gpt-image-2-is-now-on-segmind-multilingual-text-that-actually-renders/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "non-latin",
+            "CJK",
+            "devanagari",
+            "hangul",
+            "RTL",
+            "multilingual"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "robotics",
+      "label": "Robotics & Embodied AI",
+      "icon": "🤖",
+      "stories": [
+        {
+          "id": "sora-pivot-robotics",
+          "title": "OpenAI Pivots from Sora to Robotics — Video Gen Shelved, Physical AI Prioritized",
+          "summary": "OpenAI's shutdown of Sora in March 2026 was framed as a strategic pivot toward robotics and physical AI. The move signals that OpenAI is betting its next major frontier is in embodied intelligence rather than video synthesis, aligning with a broader industry shift toward physical world models.",
+          "source": "PixVerse Blog",
+          "url": "https://pixverse.ai/en/blog/gpt-image-2-review-and-prompt-guide",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "openai",
+            "robotics",
+            "physical-ai",
+            "strategic-pivot"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "label": "Research & Papers",
+      "icon": "📄",
+      "stories": [
+        {
+          "id": "stanford-ai-index-2026",
+          "title": "Stanford AI Index 2026: Chinese Labs Have 'Effectively Closed' the AI Performance Gap",
+          "summary": "The Stanford AI Index 2026 found that Chinese AI companies have effectively closed the performance gap with US rivals. The report notes AI is 'sprinting' while societal and policy frameworks struggle to keep pace. Multiple US states, Australia, Taiwan, South Korea, Denmark and Italy have banned or restricted DeepSeek-R1 on privacy and national security grounds.",
+          "source": "Al Jazeera / MIT Technology Review",
+          "url": "https://www.aljazeera.com/economy/2026/4/24/chinas-deepseek-unveils-latest-model-a-year-after-upending-global-tech",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "stanford",
+            "ai-index",
+            "china-us",
+            "geopolitics",
+            "policy"
+          ]
+        },
+        {
+          "id": "transformer-architecture-2026",
+          "title": "Transformer-Based Diffusion (DiT) Is Now the Standard for Production Image Models",
+          "summary": "2026 has confirmed the architectural shift: U-Net based diffusion models are being supplanted by DiT (Diffusion Transformers) across FLUX, SD3, and newer image models. The attention mechanism in transformers gives better global coherence, scales more effectively with compute, and handles higher resolutions more naturally — enabling the text rendering and compositional precision gains seen this month.",
+          "source": "MiraFlow",
+          "url": "https://miraflow.ai/blog/ai-image-generation-arms-race-2026-everything-changes",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "DiT",
+            "diffusion-transformer",
+            "architecture",
+            "FLUX",
+            "SD3"
+          ]
+        }
+      ]
+    }
+  ],
+  "visualizations": {
+    "category_counts": {
+      "llm": 5,
+      "image-gen": 4,
+      "design-ai": 3,
+      "typography": 3,
+      "robotics": 1,
+      "research": 2
+    },
+    "significance_distribution": {
+      "5": 6,
+      "4": 7,
+      "3": 5,
+      "2": 0,
+      "1": 0
+    },
+    "top_tags": [
+      {
+        "tag": "open-source",
+        "count": 5
+      },
+      {
+        "tag": "multilingual",
+        "count": 4
+      },
+      {
+        "tag": "typography",
+        "count": 4
+      },
+      {
+        "tag": "text-rendering",
+        "count": 4
+      },
+      {
+        "tag": "openai",
+        "count": 4
+      },
+      {
+        "tag": "image-gen",
+        "count": 4
+      },
+      {
+        "tag": "benchmark",
+        "count": 3
+      },
+      {
+        "tag": "CJK",
+        "count": 3
+      },
+      {
+        "tag": "design-workflow",
+        "count": 3
+      },
+      {
+        "tag": "reasoning",
+        "count": 3
+      }
+    ],
+    "top_stories": [
+      {
+        "id": "deepseek-v4-preview",
+        "title": "DeepSeek V4 Preview Drops",
+        "significance": 5,
+        "category": "llm"
+      },
+      {
+        "id": "april-2026-llm-recap",
+        "title": "April 2026: Most Packed LLM Month in History",
+        "significance": 5,
+        "category": "llm"
+      },
+      {
+        "id": "gpt-images-2",
+        "title": "GPT Images 2.0 Launches",
+        "significance": 5,
+        "category": "image-gen"
+      },
+      {
+        "id": "gpt-image2-typography-breakthrough",
+        "title": "The Typography Gate Is Lifting",
+        "significance": 5,
+        "category": "typography"
+      },
+      {
+        "id": "non-latin-text-breakthrough-gpt2",
+        "title": "Non-Latin Script Rendering: First Production-Ready Milestone",
+        "significance": 5,
+        "category": "typography"
+      }
+    ]
+  },
+  "report_source": "llm-pipeline",
+  "report_source_badge": "../img/report-source/llm_pipeline.png",
+  "report_source_label": "LLM Pipeline"
+};</script>
+<script>
+const PAGE_PREFIX = "20260425143000";
+let digestData = null;
+const leaderboards = {
+  aa: {
+    title: "Intelligence Leaderboard",
+    source: "artificialanalysis.ai",
+    url: "https://artificialanalysis.ai/leaderboards/models",
+    updated: "Apr 26, 2026",
+    cols: ["#", "Model", "Provider", "Intelligence", "Speed (t/s)", "Latency (s)", "Context", "Price /1M"],
+    rows: [
+      [1,  "GPT-5.5 (xhigh)",                 "OpenAI",    60, 72,  64.21,  "922k", "$11.25"],
+      [2,  "GPT-5.5 (high)",                  "OpenAI",    59, 78,  26.09,  "922k", "$11.25"],
+      [3,  "Claude Opus 4.7 (max)",            "Anthropic", 57, 48,  19.46,  "1M",   "$10.00"],
+      [4,  "Gemini 3.1 Pro Preview",           "Google",    57, 123, 23.85,  "1M",   "$4.50"],
+      [5,  "GPT-5.4 (xhigh)",                 "OpenAI",    57, 79,  205.70, "1.05M","$5.63"],
+      [6,  "GPT-5.5 (medium)",                "OpenAI",    57, 73,  5.90,   "922k", "$11.25"],
+      [7,  "Kimi K2.6",                        "Kimi",      54, 100, 1.18,   "256k", "$1.71"],
+      [8,  "MiMo-V2.5-Pro",                   "Xiaomi",    54, 62,  2.82,   "1M",   "$1.50"],
+      [9,  "GPT-5.3 Codex (xhigh)",           "OpenAI",    54, 76,  98.43,  "400k", "$4.81"],
+      [10, "Muse Spark",                       "Meta",      52, "—", "—",    "262k", "—"],
+      [11, "Claude Opus 4.7 (non-reasoning)",  "Anthropic", 52, 40,  1.41,   "1M",   "$10.00"],
+      [12, "Qwen3.6 Max Preview",              "Alibaba",   52, 34,  3.34,   "256k", "$2.92"],
+      [13, "Claude Sonnet 4.6 (max)",          "Anthropic", 52, 62,  138.81, "1M",   "$6.00"],
+      [14, "DeepSeek V4 Pro (Max)",            "DeepSeek",  52, 37,  1.90,   "1M",   "$2.17"],
+      [15, "GLM-5.1",                          "Z AI",      51, 48,  1.47,   "200k", "$2.15"],
+      [16, "GPT-5.5 (low)",                   "OpenAI",    51, 74,  1.73,   "922k", "$11.25"],
+      [17, "Qwen3.6 Plus",                     "Alibaba",   50, 52,  2.63,   "1M",   "$1.13"],
+      [18, "DeepSeek V4 Pro (High)",           "DeepSeek",  50, 38,  1.85,   "1M",   "$2.17"],
+      [19, "GLM-5",                            "Z AI",      50, 65,  1.70,   "200k", "$1.55"],
+      [20, "MiniMax-M2.7",                     "MiniMax",   50, 47,  2.24,   "205k", "$0.53"],
+    ],
+    numericCols: [0, 3, 4, 5]
+  },
+  vellum: {
+    type: 'charts', title: "Benchmarks — All Models",
+    source: "vellum.ai", url: "https://www.vellum.ai/llm-leaderboard", updated: "Apr 23, 2026",
+    benchmarks: [
+      { name: "Reasoning", task: "GPQA Diamond", unit: "%", models: [
+        {model:"Claude 3 Opus",    provider:"Anthropic", score:95.4},
+        {model:"Claude Opus 4.7",  provider:"Anthropic", score:94.2},
+        {model:"GPT-5.5",          provider:"OpenAI",    score:93.6},
+        {model:"GPT-5.2",          provider:"OpenAI",    score:92.4},
+        {model:"Gemini 3 Pro",     provider:"Google",    score:91.9},
+      ]},
+      { name: "High School Math", task: "AIME 2025", unit: "%", models: [
+        {model:"Gemini 3 Pro",     provider:"Google",    score:100},
+        {model:"GPT-5.2",          provider:"OpenAI",    score:100},
+        {model:"Claude Opus 4.6",  provider:"Anthropic", score:99.8},
+        {model:"Kimi K2-Thinking", provider:"Kimi",      score:99.1},
+        {model:"GPT oss 20b",      provider:"OpenAI",    score:98.7},
+      ]},
+      { name: "Agentic Coding", task: "SWE-Bench", unit: "%", models: [
+        {model:"Claude Opus 4.7",  provider:"Anthropic", score:87.6},
+        {model:"Claude Sonnet 4.6",provider:"Anthropic", score:82.0},
+        {model:"Claude Opus 4.5",  provider:"Anthropic", score:80.9},
+        {model:"Claude Opus 4.6",  provider:"Anthropic", score:80.8},
+        {model:"GPT-5.2",          provider:"OpenAI",    score:80.0},
+      ]},
+      { name: "Overall Ability", task: "Humanity's Last Exam", unit: "%", models: [
+        {model:"Gemini 3 Pro",     provider:"Google",    score:45.8},
+        {model:"Kimi K2-Thinking", provider:"Kimi",      score:44.9},
+        {model:"GPT-5.5",          provider:"OpenAI",    score:42.1},
+        {model:"Claude Opus 4.7",  provider:"Anthropic", score:38.5},
+        {model:"DeepSeek V4 Pro",  provider:"DeepSeek",  score:35.2},
+      ]},
+      { name: "Visual Reasoning", task: "ARC-AGI 2", unit: "%", models: [
+        {model:"GPT-5.5",          provider:"OpenAI",    score:85.0},
+        {model:"Gemini 3 Pro",     provider:"Google",    score:74.2},
+        {model:"Claude Opus 4.7",  provider:"Anthropic", score:68.3},
+        {model:"GPT-5.2",          provider:"OpenAI",    score:65.1},
+        {model:"Kimi K2.5",        provider:"Kimi",      score:58.4},
+      ]},
+      { name: "Multilingual", task: "MMMLU", unit: "%", models: [
+        {model:"GPT-5.5",          provider:"OpenAI",    score:91.2},
+        {model:"Gemini 3 Pro",     provider:"Google",    score:90.4},
+        {model:"Claude Opus 4.7",  provider:"Anthropic", score:89.8},
+        {model:"GPT-5.2",          provider:"OpenAI",    score:88.7},
+        {model:"Kimi K2.6",        provider:"Kimi",      score:86.3},
+      ]},
+    ]
+  },
+  open: {
+    title: "Open-Weight Rankings",
+    source: "llm-stats.com",
+    url: "https://llm-stats.com/leaderboards/open-llm-leaderboard",
+    updated: "Apr 26, 2026",
+    cols: ["#", "Model", "Provider", "🌍", "Code Arena", "Reasoning", "Math"],
+    rows: [
+      [1,  "GLM-5",               "Zhipu AI",   "🇨🇳", 1576, 52.1, "—"],
+      [2,  "Kimi K2.5",           "Moonshot AI","🇨🇳", 1479, 50.5, 47.9],
+      [3,  "GLM-5.1",             "Zhipu AI",   "🇨🇳", 1423, 54.9, 46.4],
+      [4,  "Qwen3.5-397B-A17B",   "Qwen",       "🇨🇳", 1208, 49.6, 46.8],
+      [5,  "Kimi K2.6",           "Moonshot AI","🇨🇳", 1179, 59.5, 50.7],
+      [6,  "GLM-4.6",             "Zhipu AI",   "🇨🇳", 1135, 38.4, 34.7],
+      [7,  "GLM-4.7",             "Zhipu AI",   "🇨🇳", 1046, 44.2, 44.0],
+      [8,  "MiniMax M2.5",        "MiniMax",    "🇨🇳",  967, 53.4, "—"],
+      [9,  "Kimi K2-Thinking",    "Moonshot AI","🇨🇳",  941, 45.9, 47.5],
+      [10, "Gemma 4 26B-A4B",     "Google",     "🇺🇸",  935, 36.0, 31.9],
+      [11, "MiniMax M2.1",        "MiniMax",    "🇨🇳",  926, 41.6, 36.8],
+      [12, "DeepSeek-V3.2-Spec",  "DeepSeek",   "🇨🇳",  832, 43.0, 46.2],
+      [13, "Qwen3.5-122B-A10B",   "Qwen",       "🇨🇳",  802, 43.6, 44.4],
+      [14, "MiMo-V2-Flash",       "Xiaomi",     "🇨🇳",  793, 38.9, 38.1],
+      [15, "LongCat-Flash-Think", "Meituan",    "🇨🇳",  791, 36.1, 34.2],
+      [16, "LongCat-Flash-Chat",  "Meituan",    "🇨🇳",  778, 23.9, 23.0],
+      [17, "GLM-4.7-Flash",       "Zhipu AI",   "🇨🇳",  759, 31.9, 29.3],
+      [18, "DeepSeek-V3.2-Exp",   "DeepSeek",   "🇨🇳",  750, 36.1, 33.8],
+      [19, "GLM-4.5",             "Zhipu AI",   "🇨🇳",  744, 34.5, 34.6],
+      [20, "LongCat-Flash-Lite",  "Meituan",    "🇨🇳",  712, 23.2, 20.0],
+    ],
+    numericCols: [0, 4, 5, 6]
+  },
+  vellum_open: {
+    type: 'charts', title: "Benchmarks — Open-Weight",
+    source: "vellum.ai/open-llm-leaderboard", url: "https://www.vellum.ai/open-llm-leaderboard", updated: "Apr 23, 2026",
+    benchmarks: [
+      { name: "Reasoning", task: "GPQA Diamond", unit: "%", models: [
+        {model:"Qwen3.5-397B",     provider:"Alibaba",   score:88.4},
+        {model:"Kimi K2.5",        provider:"Kimi",      score:87.6},
+        {model:"DeepSeek V4 Pro",  provider:"DeepSeek",  score:83.1},
+        {model:"Llama 4 Maverick", provider:"Meta",      score:78.5},
+        {model:"GLM-5",            provider:"Zhipu AI",  score:76.2},
+      ]},
+      { name: "High School Math", task: "AIME 2025", unit: "%", models: [
+        {model:"Step-3.5-Flash",   provider:"Stepfun",   score:99.8},
+        {model:"Kimi K2-Thinking", provider:"Kimi",      score:99.1},
+        {model:"DeepSeek V4 Pro",  provider:"DeepSeek",  score:96.4},
+        {model:"Qwen3.5-397B",     provider:"Alibaba",   score:94.2},
+        {model:"GLM-5",            provider:"Zhipu AI",  score:91.5},
+      ]},
+      { name: "Agentic Coding", task: "SWE-Bench", unit: "%", models: [
+        {model:"Kimi K2.5",        provider:"Kimi",      score:76.8},
+        {model:"DeepSeek V4 Pro",  provider:"DeepSeek",  score:71.3},
+        {model:"Qwen3.5-397B",     provider:"Alibaba",   score:68.9},
+        {model:"GLM-5",            provider:"Zhipu AI",  score:63.4},
+        {model:"Llama 4 Maverick", provider:"Meta",      score:58.2},
+      ]},
+      { name: "Overall Ability", task: "Humanity's Last Exam", unit: "%", models: [
+        {model:"Kimi K2-Thinking", provider:"Kimi",      score:44.9},
+        {model:"DeepSeek V4 Pro",  provider:"DeepSeek",  score:35.2},
+        {model:"Qwen3.5-397B",     provider:"Alibaba",   score:31.8},
+        {model:"GLM-5",            provider:"Zhipu AI",  score:28.4},
+        {model:"Llama 4 Scout",    provider:"Meta",      score:24.1},
+      ]},
+      { name: "Speed", task: "Throughput (t/s)", unit: "t/s", models: [
+        {model:"Llama 4 Scout",    provider:"Meta",      score:2600},
+        {model:"Gemma 4 26B",      provider:"Google",    score:935},
+        {model:"Kimi K2.6",        provider:"Kimi",      score:100},
+        {model:"GLM-5",            provider:"Zhipu AI",  score:65},
+        {model:"Qwen3.6 Plus",     provider:"Alibaba",   score:52},
+      ]},
+    ]
+  }
+};
+
+const PROVIDER_COLORS = {
+  OpenAI: '#10a37f', Anthropic: '#d4763b', Google: '#4285f4',
+  DeepSeek: '#1a6cf5', Alibaba: '#ff6a00', Meta: '#0866ff',
+  Kimi: '#8b5cf6', Xiaomi: '#ff6900', 'Z AI': '#06b6d4', MiniMax: '#ec4899',
+  Reve: '#7c3aed', 'Microsoft AI': '#00a4ef', xAI: '#e0e0e0',
+  Ideogram: '#ff5c8a', 'Luma AI': '#14b8a6', 'Black Forest Labs': '#16a34a',
+  Bytedance: '#325ab4', 'Alibaba-ATH': '#ff8c42', KlingAI: '#00c2a8',
+  Runway: '#22c55e', Pixverse: '#a855f7', Pruna: '#f59e0b', Kandinsky: '#6366f1',
+  Tencent: '#1e90ff', Lightricks: '#ef4444', 'Genmo AI': '#0ea5e9',
+  HiDream: '#db2777', NVIDIA: '#76b900', Recraft: '#e11d48', Krea: '#fbbf24',
+  'Zhipu AI': '#38bdf8', 'Moonshot AI': '#a78bfa', Qwen: '#f97316', Meituan: '#ffb000'
+};
+
+const CAT_COLORS = {
+  leaderboard: '#F39C12', analytics: '#6366F1', aisearch: '#F0883E', youtube: '#E74C3C',
+  'agentic-ai': '#0EA5E9',
+  llm: '#2C3E50', rag: '#14B8A6', 'image-gen': '#8E44AD', 'design-ai': '#16A085',
+  typography: '#C0392B', robotics: '#E67E22', research: '#2980B9'
+};
+
+// Plain-language explanations for leaderboard column headers, shown on hover.
+// Keyed by the exact label text used in each tab's `cols` array.
+const LB_GLOSSARY = {
+  '#': 'Rank by the leaderboard\u2019s primary metric.',
+  'Model': 'Model being evaluated.',
+  'Model / Agent': 'Model (with its agent/scaffold) being evaluated.',
+  'Provider': 'Organization that develops the model.',
+  'Intelligence': 'Artificial Analysis Intelligence Index \u2014 a composite across reasoning, knowledge, coding and math benchmarks; higher is better.',
+  'Speed (t/s)': 'Output speed in tokens generated per second; higher is faster.',
+  'Latency (s)': 'Time to first token, in seconds; lower is more responsive.',
+  'Context': 'Maximum context window (input + output tokens) the model accepts.',
+  'Price /1M': 'Blended cost per 1 million tokens, in USD.',
+  'Resolved %': 'Share of SWE-bench Verified GitHub issues the agent fully resolved; higher is better.',
+  'Date': 'Date the result was submitted to the leaderboard.',
+  'Params (B)': 'Model size in billions of parameters (\u2014 if undisclosed).',
+  'HumanEval+': 'EvalPlus HumanEval+ pass@1 \u2014 % of Python problems solved against the harder, augmented test suite.',
+  'MBPP+': 'EvalPlus MBPP+ pass@1 \u2014 % solved on the augmented MBPP Python benchmark.',
+  '\uD83C\uDF0D': 'Country/region where the model originates.',
+  'Code Arena': 'Code-focused arena Elo from head-to-head human preference votes.',
+  'Reasoning': 'Reasoning benchmark score; higher is better.',
+  'Math': 'Math benchmark score; higher is better.',
+  'Elo': 'Elo rating from pairwise human preference votes \u2014 users pick the better of two outputs; higher means it wins more head-to-head matchups.',
+  'Score': 'Arena score (Elo-style) from head-to-head human preference votes; higher is better.',
+  'Votes': 'Number of human preference votes collected in the arena for this model.'
+};
+
+function lbTooltip(label) {
+  return LB_GLOSSARY[label] || '';
+}
+
+function resolveLbColumns(lb, activeLb) {
+  return {
+    providerCol: lb.providerCol != null ? lb.providerCol : (activeLb === 'aa' || activeLb === 'open') ? 2 : 1,
+    scoreCol:    lb.scoreCol    != null ? lb.scoreCol    : (activeLb === 'aa') ? 3 : -1,
+    scoreMax:    lb.scoreMax    != null ? lb.scoreMax    : (activeLb === 'aa') ? 60 : 100
+  };
+}
+
+function renderLbLinks(lb) {
+  return lb.groups.map(g => `
+        <div class="lb-links-group">
+          <div class="lb-links-head">${g.label}</div>
+          ${g.items.map(it => `<a class="lb-link-row" href="${it.url}" target="_blank" rel="noopener"><span class="lb-link-name">${it.name}</span><span class="lb-link-src">${it.source} ↗</span></a>`).join('')}
+        </div>`).join('');
+}
+
+let allStories = [];
+let activeFilter = 'all';
+let activeSig = null;
+let activeTag = null;
+
+function applyFilters() {
+  let stories = activeFilter === 'all' ? allStories : allStories.filter(s => s.catId === activeFilter);
+  if (activeSig !== null) stories = stories.filter(s => s.significance === activeSig);
+  if (activeTag !== null) stories = stories.filter(s => s.tags.includes(activeTag));
+  return stories;
+}
+
+function setSig(sig) {
+  activeSig = activeSig === sig ? null : sig;
+  redrawSigChart();
+  renderCards(activeFilter);
+}
+
+function setTag(tag) {
+  activeTag = activeTag === tag ? null : tag;
+  redrawTagCloud();
+  renderCards(activeFilter);
+}
+
+/** Branch badge: LLM Pipeline vs Hermes Agent (see report_source_* in digest JSON). */
+function reportSourceSealMarkup(data) {
+  const href = data && data.report_source_badge;
+  const label = (data && (data.report_source_label || data.report_source)) || 'Digest source';
+  if (!href) return '';
+  const tip = 'Produced by ' + label;
+  return '<img src="' + escHtml(href) + '" alt="' + escHtml(label) + '" title="' + escHtml(tip) + '">';
+}
+
+function renderReportSourceSeal(data) {
+  const el = document.getElementById('report-source-seal');
+  if (!el) return;
+  const label = (data && (data.report_source_label || data.report_source)) || 'Digest source';
+  const markup = reportSourceSealMarkup(data);
+  if (!markup) {
+    el.hidden = true;
+    el.innerHTML = '';
+    el.removeAttribute('title');
+    return;
+  }
+  el.hidden = false;
+  el.title = 'Produced by ' + label;
+  el.setAttribute('aria-label', label + ' report');
+  el.innerHTML = markup;
+}
+
+function render(data) {
+  allStories = [];
+  data.categories.forEach(cat => {
+    cat.stories.forEach(s => allStories.push({ ...s, catId: cat.id, catLabel: cat.label, catIcon: cat.icon }));
+  });
+  renderReportSourceSeal(data);
+  const dt = new Date(data.generated_at);
+  document.getElementById('digest-date').textContent =
+    dt.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' }).toUpperCase();
+  document.getElementById('digest-summary').textContent = data.summary;
+  renderTopStories(data);
+  renderFilterPills(data);
+  renderDonut(data);
+  renderSigChart(data);
+  renderTagCloud(data);
+  renderCards('all');
+  document.getElementById('footer-count').textContent =
+    allStories.length + ' stories · ' + data.categories.length + ' categories';
+  initLayoutResizer();
+}
+
+function renderTopStories(data) {
+  const bar = document.getElementById('top-stories-bar');
+  data.visualizations.top_stories.forEach(ts => {
+    const pill = document.createElement('button');
+    pill.className = 'top-story-pill';
+    pill.textContent = ts.title;
+    pill.onclick = () => scrollToStory(ts.id);
+    bar.appendChild(pill);
+  });
+}
+
+function renderFilterPills(data) {
+  const bar = document.getElementById('filter-bar');
+  bar.innerHTML = '';
+  const allPill = document.createElement('button');
+  allPill.className = 'pill active';
+  allPill.textContent = 'All (' + allStories.length + ')';
+  allPill.dataset.filter = 'all';
+  allPill.onclick = () => setFilter('all');
+  bar.appendChild(allPill);
+  data.categories.forEach(cat => {
+    const pill = document.createElement('button');
+    pill.className = 'pill inactive';
+    if (cat.id === 'leaderboard' || cat.id === 'aisearch' || cat.id === 'youtube') {
+      pill.innerHTML = cat.icon + ' ' + cat.label;
+    } else {
+      if (!cat.stories.length) return;
+      pill.innerHTML = cat.icon + ' ' + cat.label + ' <span style="color:var(--muted);font-size:.7em">(' + cat.stories.length + ')</span>';
+    }
+    pill.dataset.filter = cat.id;
+    pill.onclick = () => setFilter(cat.id);
+    bar.appendChild(pill);
+  });
+}
+
+function setFilter(id) {
+  activeFilter = id;
+  document.querySelectorAll('.pill').forEach(p => {
+    p.className = 'pill ' + (p.dataset.filter === id ? 'active' : 'inactive');
+  });
+  renderCards(id);
+}
+
+function renderAISearch(grid) {
+  const stories = allStories.filter(s => s.catId === 'aisearch');
+  const videoUrl   = digestData.aisearch_video_url   || 'https://www.youtube.com/@theAIsearch';
+  const videoLabel = digestData.aisearch_video_label || 'Latest video';
+  grid.innerHTML = `
+    <div style="grid-column:1/-1;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:4px;">
+      <span style="font-size:12px;font-weight:600;color:var(--text)">🔍 theAIsearch</span>
+      <a href="${videoUrl}" target="_blank" rel="noopener"
+         style="font-size:11px;color:var(--accent);text-decoration:none;display:flex;align-items:center;gap:4px;">
+        ▶ ${videoLabel}
+      </a>
+      <span style="margin-left:auto;display:flex;gap:12px;">
+        <a href="https://ai-search.io" target="_blank" rel="noopener" style="font-size:11px;color:var(--muted);text-decoration:none;">🌐 ai-search.io</a>
+        <a href="https://www.youtube.com/@theAIsearch" target="_blank" rel="noopener" style="font-size:11px;color:var(--muted);text-decoration:none;">▶ @theAIsearch</a>
+      </span>
+    </div>`;
+  stories.forEach(story => grid.appendChild(buildCard(story)));
+}
+
+function renderYouTube(grid) {
+  const cat = (digestData.categories || []).find(c => c.id === 'youtube');
+  const stories = allStories.filter(s => s.catId === 'youtube');
+  const sources = (cat && cat.sources) || [];
+
+  const channels = sources.length
+    ? sources.map(src => ({
+        key: src.channel_key || src.channel_label,
+        label: src.channel_label || src.channel_key,
+      }))
+    : Object.values(
+        stories.reduce((acc, s) => {
+          const key = s.channel_key || s.channel_label || 'youtube';
+          if (!acc[key]) {
+            acc[key] = { key, label: s.channel_label || s.channel_key || 'YouTube' };
+          }
+          return acc;
+        }, {})
+      ).sort((a, b) => a.label.localeCompare(b.label));
+
+  let activeChannel = 'all';
+
+  function channelTabs() {
+    return `
+      <div class="lb-tabs">
+        <button class="lb-tab ${activeChannel === 'all' ? 'active' : ''}" data-ch="all">
+          All (${stories.length})
+        </button>
+        ${channels.map(ch => `
+          <button class="lb-tab ${activeChannel === ch.key ? 'active' : ''}" data-ch="${ch.key}">
+            📺 ${ch.label}
+          </button>`).join('')}
+      </div>`;
+  }
+
+  function storiesForChannel(ch) {
+    return stories.filter(
+      s => s.channel_key === ch.key || s.channel_label === ch.label
+    );
+  }
+
+  function visibleStories() {
+    if (activeChannel === 'all') return stories;
+    const ch = channels.find(c => c.key === activeChannel);
+    return ch ? storiesForChannel(ch) : stories;
+  }
+
+  function draw() {
+    grid.innerHTML = '';
+    const wrap = document.createElement('div');
+    wrap.className = 'lb-wrap';
+    wrap.style.gridColumn = '1 / -1';
+    wrap.innerHTML = channelTabs();
+    wrap.querySelectorAll('.lb-tab').forEach(btn => {
+      btn.onclick = () => { activeChannel = btn.dataset.ch; draw(); };
+    });
+    grid.appendChild(wrap);
+    visibleStories().forEach(story => grid.appendChild(buildCard(story)));
+  }
+
+  draw();
+}
+
+function renderCards(filter) {
+  const grid = document.getElementById('story-grid');
+  if (filter === 'leaderboard') { renderLeaderboard(grid); return; }
+  if (filter === 'aisearch') { renderAISearch(grid); return; }
+  if (filter === 'youtube') { renderYouTube(grid); return; }
+  const stories = applyFilters();
+  if (!stories.length) { grid.innerHTML = '<div class="empty-state">No stories match the current filters.</div>'; return; }
+  grid.innerHTML = '';
+  stories.forEach(story => grid.appendChild(buildCard(story)));
+}
+
+function renderLeaderboard(grid) {
+  let activeLb = 'aa';
+  function tabs(lb) {
+    return `
+      <div class="lb-tabs">
+        <button class="lb-tab ${activeLb==='aa'?'active':''}"           data-lb="aa">🏅 AA: All Models</button>
+        <button class="lb-tab ${activeLb==='open'?'active':''}"         data-lb="open">🔓 Open-Weight</button>
+        <button class="lb-tab ${activeLb==='swe'?'active':''}"          data-lb="swe">🐛 SWE-bench</button>
+        <button class="lb-tab ${activeLb==='coding'?'active':''}"       data-lb="coding">⌨️ EvalPlus</button>
+        <button class="lb-tab ${activeLb==='arena_image'?'active':''}"  data-lb="arena_image">🎨 Image Arena</button>
+        <button class="lb-tab ${activeLb==='arena_t2i'?'active':''}"    data-lb="arena_t2i">🖼️ T2I: AA</button>
+        <button class="lb-tab ${activeLb==='arena_video'?'active':''}"  data-lb="arena_video">🎬 T2V: Arena</button>
+        <button class="lb-tab ${activeLb==='vellum'?'active':''}"       data-lb="vellum">📊 Vellum: All</button>
+        <button class="lb-tab ${activeLb==='vellum_open'?'active':''}"  data-lb="vellum_open">📊 Vellum: Open</button>
+        <button class="lb-tab ${activeLb==='links'?'active':''}"        data-lb="links">🔗 More</button>
+        ${lb.url ? `<a class="lb-src" href="${lb.url}" target="_blank" rel="noopener">↗ ${lb.source}</a>` : ''}
+        ${lb.updated ? `<span class="lb-updated">Updated ${lb.updated}</span>` : ''}
+      </div>`;
+  }
+  function buildTable(lb) {
+    let sortCol = null, sortDir = 1;
+    grid.innerHTML = `<div class="lb-wrap">${tabs(lb)}
+      <div class="lb-table-wrap">
+        <table class="lb-table" id="lb-table">
+          <thead><tr>${lb.cols.map((c,i)=>{const tip=lbTooltip(c);return `<th class="lb-th${tip?' lb-th-info':''}" data-col="${i}"${tip?` title="${tip.replace(/"/g,'&quot;')}"`:''}>${c} <span class="sort-arrow">↕</span></th>`;}).join('')}</tr></thead>
+          <tbody id="lb-body"></tbody>
+        </table>
+      </div></div>`;
+    grid.querySelectorAll('.lb-tab').forEach(btn => { btn.onclick = () => { activeLb = btn.dataset.lb; build(); }; });
+    function scoreColor(val, max) {
+      const t = val/max;
+      return t > 0.9 ? '#3fb950' : t > 0.75 ? '#58a6ff' : t > 0.6 ? '#d29922' : '#8b949e';
+    }
+    function drawRows(rows) {
+      const { providerCol, scoreCol, scoreMax } = resolveLbColumns(lb, activeLb);
+      document.getElementById('lb-body').innerHTML = rows.map(row => {
+        const provider = row[providerCol];
+        const dot = `<span class="lb-dot" style="background:${PROVIDER_COLORS[provider]||'#555'}"></span>`;
+        return '<tr>' + row.map((cell, i) => {
+          if (i === providerCol) return `<td>${dot}${cell}</td>`;
+          if (i === scoreCol && typeof cell === 'number' && cell > 0) {
+            const pct = Math.round((cell/scoreMax)*100);
+            return `<td><div class="lb-bar-cell"><span class="lb-bar-fill" style="width:${Math.min(pct,100)}%;background:${scoreColor(cell,scoreMax)}"></span><span class="lb-bar-val">${cell}</span></div></td>`;
+          }
+          return `<td>${cell === 0 ? '—' : cell}</td>`;
+        }).join('') + '</tr>';
+      }).join('');
+    }
+    drawRows(lb.rows);
+    grid.querySelectorAll('.lb-th').forEach(th => {
+      th.onclick = () => {
+        const col = +th.dataset.col;
+        sortDir = sortCol === col ? -sortDir : 1; sortCol = col;
+        grid.querySelectorAll('.lb-th .sort-arrow').forEach(a => a.textContent='↕');
+        th.querySelector('.sort-arrow').textContent = sortDir===1?'↑':'↓';
+        drawRows([...lb.rows].sort((a,b) => {
+          const va=a[col], vb=b[col];
+          if (va==='—'||va===null||va===0) return 1; if (vb==='—'||vb===null||vb===0) return -1;
+          return typeof va==='number'&&typeof vb==='number' ? (va-vb)*sortDir : String(va).localeCompare(String(vb))*sortDir;
+        }));
+      };
+    });
+  }
+  function buildCharts(lb) {
+    grid.innerHTML = `<div class="lb-wrap">${tabs(lb)}<div class="lb-charts-grid" id="lb-charts"></div></div>`;
+    grid.querySelectorAll('.lb-tab').forEach(btn => { btn.onclick = () => { activeLb = btn.dataset.lb; build(); }; });
+    const container = document.getElementById('lb-charts');
+    lb.benchmarks.forEach(bm => {
+      const card = document.createElement('div');
+      card.className = 'lb-chart-card';
+      card.innerHTML = `<div class="lb-chart-title"><span class="lb-chart-name">${bm.name}</span><span class="lb-chart-task">${bm.task}</span></div><svg class="lb-chart-svg"></svg>`;
+      container.appendChild(card);
+      const svg = card.querySelector('svg');
+      const W = card.clientWidth || 280, H = 180;
+      const ml = 8, mr = 8, mt = 28, mb = 52;
+      const w = W - ml - mr, h = H - mt - mb;
+      const models = bm.models;
+      const maxVal = Math.max(...models.map(m => m.score));
+      const minVal = Math.min(...models.map(m => m.score));
+      const yMin = Math.max(0, minVal - (maxVal - minVal) * 0.3);
+      const x = d3.scaleBand().domain(models.map((_,i)=>i)).range([0,w]).padding(0.25);
+      const y = d3.scaleLinear().domain([yMin, maxVal * 1.08]).range([h, 0]);
+      const s = d3.select(svg).attr('width','100%').attr('height', H).attr('viewBox',`0 0 ${W} ${H}`);
+      const g = s.append('g').attr('transform',`translate(${ml},${mt})`);
+      [0.25,0.5,0.75,1].forEach(t => {
+        const yv = yMin + (maxVal*1.08 - yMin)*t;
+        g.append('line').attr('x1',0).attr('x2',w).attr('y1',y(yv)).attr('y2',y(yv)).attr('stroke','#30363d').attr('stroke-width',1);
+        g.append('text').attr('x',-2).attr('y',y(yv)+3).attr('text-anchor','end').attr('font-size',8).attr('fill','#8b949e')
+          .text(bm.unit==='%' ? Math.round(yv)+'%' : Math.round(yv));
+      });
+      models.forEach((m, i) => {
+        const color = PROVIDER_COLORS[m.provider] || '#58a6ff';
+        const bx = x(i), bw = x.bandwidth();
+        const bar = g.append('rect').attr('x', bx).attr('y', h).attr('width', bw).attr('height', 0).attr('rx', 3).attr('fill', color).attr('opacity', 0.85);
+        bar.transition().duration(500).delay(i*80).attr('y', y(m.score)).attr('height', h - y(m.score));
+        g.append('text').attr('x', bx+bw/2).attr('y', y(m.score)-4).attr('text-anchor','middle').attr('font-size',9).attr('font-weight','700').attr('fill','#e6edf3')
+          .attr('opacity',0).text(m.score + (bm.unit==='%'?'%':''))
+          .transition().duration(400).delay(i*80+300).attr('opacity',1);
+        g.append('text').attr('transform',`translate(${bx+bw/2},${h+6}) rotate(35)`).attr('text-anchor','start').attr('font-size',9).attr('fill','#8b949e')
+          .text(m.model.length>14 ? m.model.slice(0,13)+'…' : m.model);
+      });
+    });
+  }
+  function buildLinks(lb) {
+    grid.innerHTML = `<div class="lb-wrap">${tabs(lb)}<div class="lb-links">${renderLbLinks(lb)}</div></div>`;
+    grid.querySelectorAll('.lb-tab').forEach(btn => { btn.onclick = () => { activeLb = btn.dataset.lb; build(); }; });
+  }
+  function build() {
+    const lb = leaderboards[activeLb];
+    if (lb.type === 'links') buildLinks(lb);
+    else if (lb.type === 'charts') buildCharts(lb);
+    else buildTable(lb);
+  }
+  build();
+}
+
+// Story link: real article -> "Read source"; ungrounded/demoted -> neutral
+// "Source pending" affordance (the topic is kept, we just have no verified URL).
+function sourceLinkHtml(url) {
+  return url
+    ? '<a class="card-link" href="' + url + '" target="_blank" rel="noopener">Read source →</a>'
+    : '<span class="card-link card-link-pending" title="No verified source link yet">Source pending</span>';
+}
+
+function storyLinksHtml(links) {
+  if (!links || !links.length) return '';
+  function label(link) {
+    const name = link.name || link.url || 'Link';
+    const kind = link.kind || '';
+    if (kind === 'github') return 'GitHub · ' + name;
+    if (kind === 'x') return 'X · ' + name;
+    if (kind === 'linkedin') return 'LinkedIn · ' + name;
+    if (kind === 'huggingface') return 'HF · ' + name;
+    if (kind === 'arxiv') return 'arXiv · ' + name;
+    return name;
+  }
+  return '<div class="card-links">' + links.map(function (link, i) {
+    const url = escHtml(link.url || '');
+    if (!url) return '';
+    const primary = i === 0 ? ' card-resource-link-primary' : '';
+    return '<a class="card-resource-link' + primary + '" href="' + url + '" target="_blank" rel="noopener">' + escHtml(label(link)) + ' ↗</a>';
+  }).join('') + '</div>';
+}
+
+// Minimal HTML escaping for values shown inside the provenance trace popover.
+function escHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// Provenance affordance: a light "(i)" that, on click, reveals how a story
+// entered the digest (its trace id + origin stage) so a mismatch between a
+// claim and its cited source can be traced back. Hidden by default.
+function provenanceHtml(story) {
+  const rows = [['id', story.id], ['via', story.provenance || 'unknown'], ['source', story.source]];
+  if (story.url) rows.push(['url', story.url]);
+  if (story.carried_forward) rows.push(['carried', 'yes']);
+  const items = rows.map(([k, v]) =>
+    '<div class="trace-row"><span class="trace-k">' + k + '</span><code class="trace-v">' + escHtml(v) + '</code></div>'
+  ).join('');
+  return '<button type="button" class="card-info" title="Show provenance trace" aria-label="Show provenance trace">i</button>' +
+    '<div class="card-trace" id="trace-' + escHtml(story.id) + '" hidden>' + items + '</div>';
+}
+
+// Shareable representations of a story for the clipboard: a rich-text HTML
+// fragment (links + emphasis preserved) and a Markdown/plain-text fallback.
+// Kept pure so it can be unit-tested without a DOM or a real clipboard.
+function storyCopyFormats(story) {
+  const title = String(story.title == null ? '' : story.title).trim();
+  const summary = String(story.summary == null ? '' : story.summary).trim();
+  const source = String(story.source == null ? '' : story.source).trim();
+  const url = story.url ? String(story.url).trim() : '';
+  const cat = String(story.catLabel || story.catId || '').trim();
+  const tags = Array.isArray(story.tags) ? story.tags : [];
+  const links = Array.isArray(story.links) ? story.links : [];
+
+  const meta = [source, cat].filter(Boolean).join(' \u00b7 ');
+  const tagLine = tags.length ? tags.map(t => '#' + String(t).trim().replace(/\s+/g, '')).join(' ') : '';
+  const linkLines = links.filter(l => l && l.url).map(l => '- [' + (l.name || l.url) + '](' + l.url + ')');
+
+  const md = [];
+  md.push('## ' + title);
+  if (meta) md.push('_' + meta + '_');
+  if (summary) md.push(summary);
+  if (linkLines.length) md.push(linkLines.join('\n'));
+  if (tagLine) md.push(tagLine);
+  if (url) md.push('[Read source \u2192](' + url + ')');
+  const markdown = md.join('\n\n');
+
+  const h = [];
+  h.push('<h3>' + (url ? '<a href="' + escHtml(url) + '">' + escHtml(title) + '</a>' : escHtml(title)) + '</h3>');
+  if (meta) h.push('<p><em>' + escHtml(meta) + '</em></p>');
+  if (summary) h.push('<p>' + escHtml(summary) + '</p>');
+  if (tagLine) h.push('<p>' + escHtml(tagLine) + '</p>');
+  if (url) h.push('<p><a href="' + escHtml(url) + '">Read source \u2192</a></p>');
+  const html = h.join('\n');
+
+  return { markdown, html };
+}
+
+// Write both formats to the clipboard in one shot (rich-text editors take the
+// HTML, plain editors take the Markdown), degrading to plain text where the
+// async ClipboardItem API is unavailable. Gives brief visual feedback.
+async function copyStory(story, btn) {
+  const { markdown, html } = storyCopyFormats(story);
+  let ok = false;
+  try {
+    if (navigator.clipboard && typeof ClipboardItem !== 'undefined') {
+      await navigator.clipboard.write([new ClipboardItem({
+        'text/html': new Blob([html], { type: 'text/html' }),
+        'text/plain': new Blob([markdown], { type: 'text/plain' })
+      })]);
+      ok = true;
+    } else if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(markdown);
+      ok = true;
+    }
+  } catch (e) {
+    try { await navigator.clipboard.writeText(markdown); ok = true; } catch (e2) { ok = false; }
+  }
+  if (btn) {
+    btn.classList.remove('copied', 'copy-failed');
+    btn.classList.add(ok ? 'copied' : 'copy-failed');
+    btn.title = ok ? 'Copied!' : 'Copy failed';
+    setTimeout(() => {
+      btn.classList.remove('copied', 'copy-failed');
+      btn.title = 'Copy story (rich text + Markdown)';
+    }, 1400);
+  }
+  return ok;
+}
+
+// One-icon copy affordance in the card's top-right corner.
+function copyButtonHtml() {
+  return '<button type="button" class="card-copy" title="Copy story (rich text + Markdown)" aria-label="Copy story">' +
+    '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<rect x="9" y="9" width="11" height="11" rx="2"></rect>' +
+    '<path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg></button>';
+}
+
+function buildCard(story) {
+  const color = CAT_COLORS[story.catId] || '#888';
+  const div = document.createElement('div');
+  div.className = 'story-card';
+  div.id = 'card-' + story.id;
+  const sigDots = Array.from({length:5},(_,i) => '<div class="sig-dot ' + (i < story.significance ? 'filled' : '') + '"></div>').join('');
+  const tags = story.tags.map(t => '<span class="card-tag">' + t + '</span>').join('');
+  div.innerHTML =
+    '<div class="card-cat-stripe" style="background:' + color + '"></div>' +
+    '<span class="card-cat-badge">' + story.catIcon + '</span>' +
+    copyButtonHtml() +
+    '<div class="card-meta"><span class="card-source">' + story.source + '</span>' + provenanceHtml(story) + '<div class="card-sig">' + sigDots + '</div></div>' +
+    '<div class="card-title">' + story.title + '</div>' +
+    '<div class="card-expand" id="expand-' + story.id + '">' +
+      '<p class="card-summary">' + story.summary + '</p>' +
+      storyLinksHtml(story.links) +
+      '<div class="card-tags">' + tags + '</div>' +
+      sourceLinkHtml(story.url) +
+    '</div>';
+  const info = div.querySelector('.card-info');
+  if (info) info.onclick = (e) => {
+    e.stopPropagation();
+    const trace = div.querySelector('.card-trace');
+    if (trace) trace.hidden = !trace.hidden;
+  };
+  const copyBtn = div.querySelector('.card-copy');
+  if (copyBtn) copyBtn.onclick = (e) => {
+    e.stopPropagation();
+    copyStory(story, copyBtn);
+  };
+  div.onclick = () => toggleCard(story.id, div);
+  return div;
+}
+
+function toggleCard(id, el) {
+  const expand = document.getElementById('expand-' + id);
+  const isExpanded = expand.classList.contains('visible');
+  document.querySelectorAll('.card-expand.visible').forEach(e => e.classList.remove('visible'));
+  document.querySelectorAll('.story-card.expanded').forEach(c => c.classList.remove('expanded'));
+  if (!isExpanded) { expand.classList.add('visible'); el.classList.add('expanded'); }
+}
+
+function scrollToStory(id) {
+  setFilter('all');
+  setTimeout(() => {
+    const el = document.getElementById('card-' + id);
+    if (el) { el.scrollIntoView({ behavior:'smooth', block:'center' }); toggleCard(id, el); }
+  }, 50);
+}
+
+function renderDonut(data) {
+  const counts = data.visualizations.category_counts;
+  const cats = data.categories.filter(c => counts[c.id] > 0);
+  const w = 208, h = 160, r = 60;
+  const svg = d3.select('#donut-chart').attr('width', w).attr('height', h);
+  const g = svg.append('g').attr('transform', 'translate(' + (r+10) + ',' + (h/2) + ')');
+  const pie = d3.pie().value(d => counts[d.id]).sort(null);
+  const arc = d3.arc().innerRadius(r*0.55).outerRadius(r);
+  const arcHover = d3.arc().innerRadius(r*0.55).outerRadius(r+5);
+  const tooltip = document.getElementById('tooltip');
+  const paths = g.selectAll('path').data(pie(cats)).enter().append('path')
+    .attr('fill', d => CAT_COLORS[d.data.id])
+    .attr('stroke', '#0d1117').attr('stroke-width', 2)
+    .attr('d', arc).style('cursor','pointer')
+    .on('mouseover', function(event, d) {
+      d3.select(this).transition().duration(120).attr('d', arcHover);
+      tooltip.style.opacity = '1';
+      tooltip.innerHTML = d.data.icon + ' ' + d.data.label + ': <strong>' + counts[d.data.id] + '</strong>';
+    })
+    .on('mousemove', function(event) {
+      tooltip.style.left = (event.clientX+12)+'px'; tooltip.style.top = (event.clientY-8)+'px';
+    })
+    .on('mouseout', function() {
+      d3.select(this).transition().duration(120).attr('d', arc); tooltip.style.opacity = '0';
+    })
+    .on('click', (event, d) => setFilter(d.data.id));
+  paths.transition().duration(600).attrTween('d', function(d) {
+    const interp = d3.interpolate({startAngle:0,endAngle:0}, d);
+    return t => arc(interp(t));
+  });
+  const legend = svg.append('g').attr('transform', 'translate(' + (r*2+18) + ',10)');
+  cats.forEach((cat, i) => {
+    legend.append('rect').attr('x',0).attr('y',i*18).attr('width',8).attr('height',8).attr('rx',2).attr('fill',CAT_COLORS[cat.id]);
+    legend.append('text').attr('x',12).attr('y',i*18+8).attr('font-size','9').attr('fill','#8b949e')
+      .text(cat.label.split(' ')[0] + ' (' + counts[cat.id] + ')');
+  });
+}
+
+let _sigItems = [], _sigX, _sigG, _sigW;
+
+function renderSigChart(data) {
+  const dist = data.visualizations.significance_distribution;
+  _sigItems = [5,4,3,2,1].map(k => ({ sig:k, count: dist[k]||0 })).filter(d => d.count > 0);
+  const w=208, h=100, ml=24, mr=8, mt=4, mb=4;
+  const svg = d3.select('#sig-chart').attr('width',w).attr('height',h);
+  svg.selectAll('*').remove();
+  if (!_sigItems.length) return;
+  const max = d3.max(_sigItems, d => d.count);
+  _sigW = w-ml-mr;
+  const rowH = (h-mt-mb)/_sigItems.length;
+  _sigG = svg.append('g').attr('transform','translate('+ml+','+mt+')');
+  _sigX = d3.scaleLinear().domain([0,max]).range([0,_sigW]);
+  _sigItems.forEach((d,i) => {
+    const y = i*rowH+2, bh = rowH-6;
+    const row = _sigG.append('g').attr('class','sig-row').style('cursor','pointer');
+    row.append('text').attr('x',-4).attr('y',y+bh/2+4).attr('text-anchor','end').attr('font-size','9').attr('fill','#888').text('★'.repeat(d.sig));
+    row.append('rect').attr('x',0).attr('y',y).attr('height',bh).attr('rx',2).attr('class','sig-bar')
+      .attr('fill', d3.interpolateViridis(d.sig/5)).attr('width',0)
+      .transition().duration(500).delay(i*80).attr('width', _sigX(d.count));
+    row.append('text').attr('x',_sigX(d.count)+4).attr('y',y+bh/2+4).attr('font-size','9').attr('fill','#8b949e').attr('class','sig-count').text(d.count);
+    row.append('rect').attr('x',-ml).attr('y',y-2).attr('width',w).attr('height',bh+4).attr('fill','transparent')
+      .on('click', () => setSig(d.sig));
+  });
+}
+
+function redrawSigChart() {
+  if (!_sigG) return;
+  _sigG.selectAll('.sig-row').each(function(_, i) {
+    const d = _sigItems[i];
+    const isActive = activeSig === d.sig;
+    const inactive = activeSig !== null && !isActive;
+    d3.select(this).select('.sig-bar').attr('opacity', inactive ? 0.25 : 1);
+    d3.select(this).select('.sig-count').attr('fill', isActive ? '#e6edf3' : '#8b949e');
+    d3.select(this).selectAll('text').filter((_, j) => j === 0).attr('fill', isActive ? '#e6edf3' : inactive ? '#555' : '#888');
+  });
+}
+
+let _tagData = [];
+
+function renderTagCloud(data) {
+  _tagData = data.visualizations.top_tags.slice(0, 12);
+  redrawTagCloud();
+}
+
+function redrawTagCloud() {
+  const cloud = document.getElementById('tag-cloud');
+  cloud.innerHTML = '';
+  _tagData.forEach(t => {
+    const span = document.createElement('span');
+    const isActive = activeTag === t.tag;
+    const inactive = activeTag !== null && !isActive;
+    span.className = 'tag-item' + (isActive ? ' tag-active' : '') + (inactive ? ' tag-dim' : '');
+    span.innerHTML = t.tag + '<span class="tag-count">' + t.count + '</span>';
+    span.onclick = () => setTag(t.tag);
+    cloud.appendChild(span);
+  });
+}
+
+
+function resetDigestView() {
+  document.getElementById('top-stories-bar').innerHTML = '<span class="top-stories-label">Top Stories</span>';
+  document.getElementById('filter-bar').innerHTML = '';
+  document.getElementById('story-grid').innerHTML = '';
+  d3.select('#donut-chart').selectAll('*').remove();
+  d3.select('#sig-chart').selectAll('*').remove();
+  document.getElementById('tag-cloud').innerHTML = '';
+  activeFilter = 'all';
+  activeSig = null;
+  activeTag = null;
+  allStories = [];
+  _sigG = null;
+}
+
+const SIDEBAR_WIDTH_KEY = 'aidigest.sidebarWidth';
+
+function initLayoutResizer() {
+  const layout = document.querySelector('.layout');
+  const resizer = document.getElementById('layout-resizer');
+  const sidebar = layout && layout.querySelector('.sidebar');
+  if (!layout || !resizer || !sidebar || resizer.dataset.bound) return;
+  resizer.dataset.bound = '1';
+
+  const saved = parseInt(localStorage.getItem(SIDEBAR_WIDTH_KEY), 10);
+  if (saved >= 160 && saved <= 420) layout.style.setProperty('--sidebar-w', saved + 'px');
+
+  let startX = 0;
+  let startW = 0;
+
+  function applyWidth(w) {
+    const clamped = Math.min(420, Math.max(160, w));
+    layout.style.setProperty('--sidebar-w', clamped + 'px');
+    return clamped;
+  }
+
+  function onMove(e) {
+    applyWidth(startW + (e.clientX - startX));
+  }
+
+  function onUp() {
+    resizer.classList.remove('dragging');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+    const w = parseInt(getComputedStyle(layout).getPropertyValue('--sidebar-w'), 10);
+    if (!isNaN(w)) localStorage.setItem(SIDEBAR_WIDTH_KEY, String(w));
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+  }
+
+  function onDown(e) {
+    if (window.matchMedia('(max-width: 860px)').matches) return;
+    e.preventDefault();
+    startX = e.clientX;
+    startW = sidebar.getBoundingClientRect().width;
+    resizer.classList.add('dragging');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  }
+
+  resizer.addEventListener('mousedown', onDown);
+  resizer.addEventListener('keydown', e => {
+    const step = e.shiftKey ? 40 : 12;
+    const cur = sidebar.getBoundingClientRect().width;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); localStorage.setItem(SIDEBAR_WIDTH_KEY, String(applyWidth(cur - step))); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); localStorage.setItem(SIDEBAR_WIDTH_KEY, String(applyWidth(cur + step))); }
+  });
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { PROVIDER_COLORS, CAT_COLORS, LB_GLOSSARY, lbTooltip, resolveLbColumns, renderLbLinks, sourceLinkHtml, provenanceHtml, escHtml, storyCopyFormats, reportSourceSealMarkup };
+}
+
+
+function loadDigest() {
+  digestData = window.__AIDIGEST_DIGEST__;
+  if (!digestData) {
+    throw new Error('Could not load ' + PAGE_PREFIX + '.json (expected sibling of this page)');
+  }
+  document.title = 'AI Daily | ' + (digestData.generated_at || PAGE_PREFIX).slice(0, 10);
+  render(digestData);
+}
+
+try {
+  loadDigest();
+} catch (err) {
+  document.getElementById('story-grid').innerHTML =
+    '<div class="empty-state">Failed to load digest: ' + err.message + '</div>';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+# GitHub Linguist language stats.
+# Python is the real codebase; HTML/JSON under reports/ and diagnostics/ are
+# generated artifacts; vendor/ and server/ hold third-party templates — exclude
+# them so the language bar reflects pipeline + agentic code, not published digests.
+# Patterns use a leading **/ so they match these dirs at ANY depth
+# (app/reports, llm_pipeline/reports, agentic/hermes/reports, ...), not just the repo root.
+
+**/reports/**       linguist-generated=true
+**/diagnostics/**   linguist-generated=true
+**/vendor/**        linguist-vendored=true
+**/server/**        linguist-vendored=true
+**/*.html           linguist-generated=true
+**/*.json           linguist-generated=true
+tests/data/**       linguist-generated=true

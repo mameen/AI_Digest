@@ -1,0 +1,20 @@
+Claude Code alternatives that are actually free: Aider, OpenCode, Gemini CLI, and three more.
+
+Chapters:
+0:00 Intro
+0:21 Free Frontier Models, No Card Required
+1:27 The Leaked Codebase With 100k Stars
+2:34 One GUI to Rule All Your Agents
+4:01 The Terminal Agent That Writes More Tests
+5:27 Auto-Commits Every AI Edit to Git
+7:06 The Security Layer Nobody Else Ships
+
+Tools & resources mentioned:
+- Aider: https://github.com/aider-ai/aider
+- OpenCode: https://opencode.ai
+- Gemini CLI: https://github.com/google-gemini/gemini-cli
+- cc-switch: https://github.com/musistudio/claude-code-router
+- ECC, Everything Claude Code
+
+About The Stack
+The Stack helps you build with AI.

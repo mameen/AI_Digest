@@ -1,0 +1,27 @@
+# Lifecycle manifest — paths for `python admin/manage.py` (bootstrap / nuke).
+# Ephemeral dirs are relative to llm_pipeline/ (see admin/manage.py).
+
+version: 1
+
+ephemeral:
+  dirs:
+    - .cache
+    - .preflight
+    - .pytest_cache
+    - .playwright
+
+protected:
+  dirs:
+    - reports
+    - diagnostics
+    - tests/data
+  files:
+    - config.yaml
+    - editorial_brief.md
+
+config_restore:
+  files:
+    - source: templates/config.yaml
+      dest: config.yaml
+    - source: templates/editorial_brief.md
+      dest: editorial_brief.md

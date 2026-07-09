@@ -1,0 +1,7 @@
+# Agentic ephemeral paths — `python agentic/hermes/admin/manage.py nuke`
+
+version: 1
+
+ephemeral:
+  dirs:
+    - agentic/hermes/.runtime

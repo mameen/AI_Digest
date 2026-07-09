@@ -1,0 +1,40 @@
+name: Deploy GitHub Pages
+
+# Production only: pushes to `main` update the live site.
+# Day-to-day work happens on `dev`; merge to `main` when reports/diagnostics are ready to publish.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Verify Pages artifact
+        run: |
+          test -f app/index/index.html || (echo "Missing app/index/index.html — run scripts/deploy_app.py before merging to main" && exit 1)
+          test -d app/reports
+      # Site root: app/index.html → index/index.html (digest archive frame)
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: app
+      - id: deployment
+        uses: actions/deploy-pages@v4

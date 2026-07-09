@@ -1,0 +1,1024 @@
+{
+  "generated_at": "2026-05-12T12:00:00Z",
+  "filename_prefix": "20260512120000",
+  "summary": "Self-evolving AI breaks into the mainstream: AlphaEvolve discovers better algorithms across DNA sequencing and quantum circuits, GPT-5.5 Instant cuts hallucinations 52% as ChatGPT's new default, Grok 4.3 enters the top-10 leaderboard, and Monotype AI Search transforms how designers find fonts.",
+  "aisearch_video_url": "https://www.youtube.com/watch?v=quxnhOeRz7I",
+  "aisearch_video_label": "May 10 — Self-evolving AI, robot fights, new GPT voice, local image model, Gemma upgrade",
+  "categories": [
+    {
+      "id": "leaderboard",
+      "label": "Leaderboard Rankings",
+      "icon": "🏆",
+      "stories": [
+        {
+          "id": "lb-gpt55-top",
+          "title": "GPT-5.5 Still Rules at Score 60 — Grok 4.3 Enters Top 10 at #9",
+          "summary": "The Artificial Analysis Intelligence Leaderboard remains stable at the top: GPT-5.5 (xhigh) holds #1 at score 60, Claude Opus 4.7 and Gemini 3.1 Pro Preview are tied at 57. The notable newcomer this week is Grok 4.3 from xAI, which debuted at #9 with a score of 53 — the first time xAI has cracked the top 10. At $1.25/M input tokens it aggressively undercuts frontier competitors while ranking #1 on Artificial Analysis for agentic tool-calling.",
+          "source": "Artificial Analysis / xAI",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "leaderboard",
+            "grok",
+            "xai",
+            "frontier",
+            "intelligence-index"
+          ]
+        },
+        {
+          "id": "lb-benchmark-claude-leads",
+          "title": "Vellum Benchmarks: Claude Mythos Leads GPQA at 94.6%, Opus 4.7 Tops SWE-bench at 87.6%",
+          "summary": "Vellum's May leaderboard shows Claude Mythos Preview at 94.6% GPQA Diamond, Claude Opus 4.7 leading agentic coding at 87.6% SWE-bench Verified, and GPT-5.5 leading visual reasoning at 85% ARC-AGI 2. Every frontier model now sits within 2–3 benchmark points of the others — what separates production agents today is deployment harness quality, cost economics, and reliability, not raw model capability.",
+          "source": "Vellum / FutureAGI",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "benchmark",
+            "claude",
+            "swe-bench",
+            "gpqa",
+            "frontier"
+          ]
+        },
+        {
+          "id": "lb-open-chinese-dominate",
+          "title": "Open-Weight Top 10: Chinese Labs Lock Down 9 of 10 Spots — GLM-5, Kimi K2.5, Qwen3.5 Lead",
+          "summary": "The open-weight leaderboard continues to be dominated by Chinese AI labs: GLM-5 (Zhipu AI) leads with Code Arena 1576, Kimi K2.5 (Moonshot AI) holds #2 at 1479, and GLM-5.1 takes #3 at 1423. The first non-Chinese model in the top 10 is Gemma 4 26B from Google at #10. Chinese labs now hold 9 of the top 10 open-weight slots — a remarkable shift from 18 months ago when Meta's Llama dominated.",
+          "source": "LLM Stats",
+          "url": "https://llm-stats.com/leaderboards/open-llm-leaderboard",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "open-source",
+            "leaderboard",
+            "chinese-ai",
+            "glm",
+            "kimi"
+          ]
+        },
+        {
+          "id": "lb-image-arena",
+          "title": "Image Arena: GPT Image 2 Leads at 1398 Elo, Grok Imagine Now #6, Microsoft MAI-Image-2 Debuts at #9",
+          "summary": "Arena.ai's text-to-image leaderboard (5M+ human preference votes) shows GPT Image 2 (medium) dominant at 1398 Elo with a 130-point gap over #2. Google models fill spots 2–3 and 5. xAI's Grok Imagine climbed to #6 at 1223, and Microsoft's MAI-Image-2 is a new entrant at #9 (1181) — Microsoft's first competitive standalone image model in the arena. Luma AI's Uni-1.1 family holds #7 and #8.",
+          "source": "Arena.ai",
+          "url": "https://arena.ai/leaderboard/text-to-image",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "image-gen",
+            "leaderboard",
+            "gpt-image",
+            "microsoft",
+            "arena"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aisearch",
+      "label": "AI Search",
+      "icon": "🔍",
+      "stories": [
+        {
+          "id": "ais-recgen",
+          "title": "RecGen: 3D Scene Reconstruction from RGB-D Beats Prior SOTA by 30% in Shape Quality",
+          "summary": "RecGen is a generative framework that reconstructs complete 3D multi-object scenes from one or more RGB-D images, recovering shape, texture, and pose even under heavy occlusion. It outperforms the previous state of the art by 30% in shape quality and 34% in pose estimation while requiring significantly fewer training meshes. theAIsearch highlights strong implications for robotics perception and AR scene understanding.",
+          "source": "theAIsearch / RecGen",
+          "url": "https://reconstruction-by-generation.github.io/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "3D",
+            "reconstruction",
+            "scene-understanding",
+            "robotics",
+            "research"
+          ]
+        },
+        {
+          "id": "ais-hidream-o1",
+          "title": "HiDream-O1: Open-Weight Unified Image Model Hits #8 in Arena — Reasoning Before Rendering",
+          "summary": "HiDream-O1-Image is a unified 8B-parameter model handling text-to-image, instruction editing, and subject-driven personalization in a single architecture using a Pixel-level Unified Transformer (UiT) without external VAEs — up to 2048×2048 resolution. Its Reasoning-Driven Prompt Agent explicitly reasons through layout and text placement before generating, debuting at #8 on the AA Text-to-Image Arena as the strongest open-weight image model of 2026. Released open-source on Hugging Face under a permissive license.",
+          "source": "theAIsearch / HiDream-ai",
+          "url": "https://huggingface.co/HiDream-ai/HiDream-O1-Image",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "image-gen",
+            "open-source",
+            "8B",
+            "text-rendering",
+            "unified-model"
+          ]
+        },
+        {
+          "id": "ais-unividx",
+          "title": "UniVidX: Unified Video Generation and Understanding in a Single Model Architecture",
+          "summary": "UniVidX is a unified framework jointly handling video generation, video understanding, and video editing tasks in a single model — eliminating the need for task-specific architectures. By sharing representations across generation and comprehension, UniVidX achieves strong performance on cross-task benchmarks that reward models that truly understand what they generate. theAIsearch frames it as evidence that the split between generative and discriminative video AI is closing.",
+          "source": "theAIsearch / HKUST",
+          "url": "https://houyuanchen111.github.io/UniVidX.github.io/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "video-gen",
+            "video-understanding",
+            "unified-model",
+            "research"
+          ]
+        },
+        {
+          "id": "ais-gemma4-mtp",
+          "title": "Gemma 4 MTP: Google's Multi-Token Prediction Brings Up to 3x Inference Speedup for Local Deployment",
+          "summary": "Google released Gemma 4 Multi-Token Prediction (MTP), a speculative decoding upgrade pairing Gemma 4 models with lightweight drafter models to predict multiple tokens simultaneously — delivering up to 3x speedup with no degradation in output quality. The technique addresses the memory-bandwidth bottleneck in standard LLM inference, enabling faster performance on consumer hardware, mobile, and edge devices. theAIsearch frames this as a major open-source contribution making frontier-quality inference accessible locally.",
+          "source": "theAIsearch / Google",
+          "url": "https://blog.google/innovation-and-ai/technology/developers-tools/multi-token-prediction-gemma-4/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "gemma",
+            "google",
+            "inference",
+            "speedup",
+            "open-source",
+            "edge-ai"
+          ]
+        },
+        {
+          "id": "ais-programbench",
+          "title": "ProgramBench: New Coding Benchmark Tests Real-World Programming Across 12 Languages",
+          "summary": "ProgramBench is a new programming evaluation suite testing LLMs on practical, multi-step coding tasks across 12 languages — moving beyond HumanEval's algorithmic puzzles toward realistic software engineering: API integration, debugging, and code review. theAIsearch highlights early results showing Claude Opus 4.7 leading, followed by GPT-5.5 and Grok 4.3. Designed from the start with contamination-resistant unpublished problem sets.",
+          "source": "theAIsearch / ProgramBench",
+          "url": "https://programbench.com/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "benchmark",
+            "coding",
+            "programming",
+            "evaluation",
+            "contamination-resistant"
+          ]
+        },
+        {
+          "id": "ais-molmoact2",
+          "title": "MolmoAct 2: Allen AI's Open Multimodal Robot Action Model Gets Major Generalization Upgrade",
+          "summary": "Allen AI released MolmoAct 2, the second version of their open-source multimodal action model that maps visual observations directly to robot actions without task-specific fine-tuning. The new version shows improved generalization across household manipulation tasks and supports a wider variety of robot embodiments. theAIsearch describes it as the most capable open-source vision-to-action model available, competitive with proprietary robot AI systems for domestic environments.",
+          "source": "theAIsearch / Allen AI",
+          "url": "https://allenai.org/blog/molmoact2",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "multimodal",
+            "open-source",
+            "action-model",
+            "allen-ai"
+          ]
+        },
+        {
+          "id": "ais-physforge",
+          "title": "PhysForge: Physics-Grounded Video Generation That Respects Real-World Laws",
+          "summary": "PhysForge from HKU MMLab integrates physical simulation priors into video generation, ensuring footage respects real-world physics: objects fall correctly, fluids behave plausibly, rigid-body collisions produce accurate outcomes. theAIsearch demos it on a water-pouring task and a demolition scene, both passing visual plausibility tests that standard diffusion models routinely fail. A key step toward trustworthy synthetic data for robotics training.",
+          "source": "theAIsearch / HKU MMLab",
+          "url": "https://hku-mmlab.github.io/PhysForge/",
+          "significance": 3,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "video-gen",
+            "physics-simulation",
+            "synthetic-data",
+            "robotics"
+          ]
+        },
+        {
+          "id": "ais-gpt-realtime2",
+          "title": "GPT Realtime 2: OpenAI's New Voice Intelligence Models Add 25-Language STT and Multi-Speaker Diarization",
+          "summary": "OpenAI's GPT Realtime 2 generation brings new voice intelligence models to the API, including gpt-4o-realtime-preview and two new transcription models. The Speech-to-Text API now supports 25 languages with multi-speaker diarization, batch and streaming modes, and dramatically lower latency. theAIsearch covers it alongside xAI's Grok 4.3 TTS API ($4.20/M characters), framing this week as the start of a new era for voice-driven AI applications.",
+          "source": "theAIsearch / OpenAI",
+          "url": "https://openai.com/index/advancing-voice-intelligence-with-new-models-in-the-api/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "voice",
+            "speech-to-text",
+            "openai",
+            "realtime",
+            "multilingual"
+          ]
+        },
+        {
+          "id": "ais-luma-agents",
+          "title": "Luma Agents: AI Agents Generate Full Video Sequences for Production Creative Pipelines",
+          "summary": "Luma AI launched Luma Agents, a system where AI agents autonomously plan and generate video content sequences — handling scene direction, camera transitions, and asset generation for production pipelines. Designed for marketing, advertising, and entertainment workflows requiring content at scale. theAIsearch demos a 30-second brand video generated from a brief in under 2 minutes.",
+          "source": "theAIsearch / Luma AI",
+          "url": "https://lumalabs.ai/aisearch-agents",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "video-gen",
+            "agents",
+            "luma",
+            "creative-workflow",
+            "production"
+          ]
+        },
+        {
+          "id": "ais-gene265",
+          "title": "Gene 26.5: Genesis AI Achieves Human-Level Robotic Manipulation — Cooking, Lab Work, Rubik's Cubes",
+          "summary": "Genesis AI released Gene 26.5, their first robotic foundation model performing complex manipulation tasks — cooking, laboratory work, solving Rubik's cubes — using a single model and shared hardware. Human-level manipulation here means composing contact in space and time with precision across diverse real-world tasks requiring dexterous hand control. The achievement is full-stack: Genesis Hand hardware, large-scale human demonstration data, low-latency control systems, and a manipulation foundation model working together.",
+          "source": "theAIsearch / Genesis AI",
+          "url": "https://www.genesis.ai/blog/gene-26-5-advancing-robotic-manipulation-to-human-level",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "manipulation",
+            "humanoid",
+            "foundation-model",
+            "dexterous"
+          ]
+        },
+        {
+          "id": "ais-alphaevolve",
+          "title": "AlphaEvolve: DeepMind's Self-Evolving Coding Agent Discovers Better Algorithms Across Science and Infrastructure",
+          "summary": "AlphaEvolve is a Gemini-powered coding agent from Google DeepMind that autonomously discovers and optimizes algorithms — 30% improvement in DNA sequencing accuracy, 10x reduction in quantum circuit errors, electricity grid optimization from 14% to 88% feasibility. Now integrated into Google's hardware design infrastructure and deployed commercially in finance, logistics, and materials science. theAIsearch calls it the week's most important story: self-improving AI accelerating algorithm discovery in real production systems.",
+          "source": "theAIsearch / Google DeepMind",
+          "url": "https://deepmind.google/blog/alphaevolve-impact/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "deepmind",
+            "self-evolving",
+            "algorithm-discovery",
+            "gemini",
+            "scientific-ai"
+          ]
+        },
+        {
+          "id": "ais-bach10",
+          "title": "Bach 1.0: AI Composition Platform Targets Film, Game, and Brand Audio with Multi-Movement Coherence",
+          "summary": "Bach 1.0 is a new AI music composition platform built for composers, filmmakers, and creative professionals who need original scores — not single clips. Users generate entire multi-movement pieces with consistent harmonic language by describing emotional arcs and structural changes in natural language. theAIsearch reviews it as the first AI music tool that feels like collaborating with a trained composer rather than rolling dice.",
+          "source": "theAIsearch / Bach.art",
+          "url": "https://www.bach.art/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "music-ai",
+            "creative-ai",
+            "composition",
+            "audio-gen",
+            "brand-audio"
+          ]
+        },
+        {
+          "id": "ais-zaya1",
+          "title": "Zaya1 8B: Zyphra's Compact Model Optimized for Low-Latency Agentic Workflows",
+          "summary": "Zyphra released Zaya1 8B, specifically tuned for low-latency agentic workflows — fast tool calls, multi-step reasoning in constrained environments, and local deployment on consumer hardware. At 8B parameters it benchmarks comparably to some 13B models on tool-use tasks while running at twice the throughput. theAIsearch presents it as a strong option for developers building agents that need to be fast and cheap on constrained inference budgets.",
+          "source": "theAIsearch / Zyphra",
+          "url": "https://www.zyphra.com/post/zaya1-8b",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "small-model",
+            "agentic",
+            "low-latency",
+            "open-source",
+            "zyphra"
+          ]
+        },
+        {
+          "id": "ais-atlas",
+          "title": "Boston Dynamics Electric Atlas Demonstrates Precision Industrial Assembly in Real Factory Setting",
+          "summary": "New Boston Dynamics footage shows the electric Atlas performing precision industrial assembly — component sorting, part insertion, tool handoffs — with dexterity rivaling specialized industrial robots. Unlike the hydraulic predecessor, the electric Atlas operates near-silently, has sustained runtime, and learns new tasks from demonstrations in hours rather than weeks. The footage is notably shot in what appears to be an actual factory deployment, not a pre-scripted lab demo.",
+          "source": "theAIsearch / Boston Dynamics",
+          "url": "https://bostondynamics.com/atlas",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "humanoid",
+            "boston-dynamics",
+            "atlas",
+            "industrial"
+          ]
+        },
+        {
+          "id": "ais-unitree-engineai",
+          "title": "Unitree vs EngineAI Robot Fight Goes Viral — Humanoid Robots Enter Competitive Performance",
+          "summary": "Footage of a Unitree humanoid sparring with an EngineAI competitor went viral this week, demonstrating the durability, recovery, and real-time responsiveness current humanoid platforms have reached. theAIsearch frames it as a cultural milestone — humanoid robots crossing from 'impressive for robots' to genuinely entertaining competitive performers, echoing the early drone racing era as a signal of a maturing industry approaching entertainment viability.",
+          "source": "theAIsearch / Unitree / EngineAI",
+          "url": "https://www.youtube.com/watch?v=quxnhOeRz7I",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "humanoid",
+            "unitree",
+            "embodied-ai",
+            "viral"
+          ]
+        },
+        {
+          "id": "ais-labos",
+          "title": "LabOS: AI Operating System for Scientific Labs Orchestrates Instruments and Experimental Workflows",
+          "summary": "LabOS is an AI-native operating system for scientific laboratories — it orchestrates instruments, tracks experimental state, auto-logs results, and suggests next steps based on running hypotheses. theAIsearch demos a chemistry workflow where LabOS manages a 6-step synthesis protocol across three instruments simultaneously, reducing human operator time by 80%. It represents a new category: agentic AI embedded directly in physical research infrastructure rather than a chat interface.",
+          "source": "theAIsearch / LabOS",
+          "url": "https://ai4labos.com/",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "agentic-ai",
+            "lab-automation",
+            "scientific-ai",
+            "research-tools"
+          ]
+        },
+        {
+          "id": "ais-drex",
+          "title": "DRex: Text-Driven Character Motion Re-Expression — Change How Characters Move Without Re-Generating Video",
+          "summary": "DRex from MPI Informatics enables fine-grained, text-driven re-expression of character motion in existing video — changing walking style, gesture quality, or movement energy by describing the desired change in natural language, without re-generating the full clip. The system decouples character expression from scene content, letting animators iterate on motion style at the character level. theAIsearch tests it changing choreography from contemporary to ballet mid-playback, describing it as making motion as editable as color grading.",
+          "source": "theAIsearch / MPI Informatics",
+          "url": "https://vcai.mpi-inf.mpg.de/projects/DRex/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "video-editing",
+            "motion-control",
+            "animation",
+            "text-driven",
+            "post-production"
+          ]
+        },
+        {
+          "id": "ais-twell",
+          "title": "TwELL: Sakana AI's Sparse LLM Format Finally Translates Sparsity to Real GPU Throughput Gains",
+          "summary": "TwELL (Tile-wise ELLPACK) from Sakana AI partitions LLM activation columns into GPU-friendly horizontal tiles, enabling direct kernel fusion without extra synchronization — aligning with how modern tiled matrix multiplication kernels already operate. Unlike previous sparsity approaches that produced theoretical savings that didn't materialize on real hardware, TwELL delivers 1.4–2.1x end-to-end throughput improvements with under 1% accuracy degradation. theAIsearch describes it as one of the most practically impactful LLM efficiency papers of 2026.",
+          "source": "theAIsearch / Sakana AI",
+          "url": "https://pub.sakana.ai/sparser-faster-llms/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "efficiency",
+            "sparsity",
+            "inference",
+            "sakana-ai",
+            "gpu"
+          ]
+        },
+        {
+          "id": "ais-swifti2v",
+          "title": "SwiftI2V: Image-to-Video in Under 3 Seconds on Consumer GPU — 8x Faster Than Kling at Comparable Quality",
+          "summary": "SwiftI2V from HKUST uses flow-matching with adaptive step scheduling to generate a 3-second video clip from a single image in under 3 seconds on a consumer GPU — 8x faster than Kling 3.0 at comparable visual quality for short clips. Open-source, runs locally without cloud APIs, and performs especially well on portrait and product shots. The first practical real-time image animation option for interactive creative tools.",
+          "source": "theAIsearch / HKUST",
+          "url": "https://hkust-longgroup.github.io/SwiftI2V/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "image-to-video",
+            "realtime",
+            "open-source",
+            "consumer-gpu"
+          ]
+        },
+        {
+          "id": "ais-cdm",
+          "title": "CDM: Continuous Diffusion Model Eliminates Tokenization Artifacts for Cleaner High-Fidelity Image Generation",
+          "summary": "CDM (Continuous Diffusion Model) operates directly in continuous pixel space rather than a tokenized latent space, eliminating the quantization artifacts that appear in discrete diffusion and VQVAE-based models. theAIsearch demos outputs showing cleaner fine details — fabric textures, hair strands, text edges — compared to standard diffusion baselines at matched resolution. Reduces pipeline complexity for high-fidelity image generation and opens a cleaner path to improved text rendering in images.",
+          "source": "theAIsearch / CDM Research",
+          "url": "https://byliutao.github.io/cdm_page/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "diffusion",
+            "image-gen",
+            "continuous",
+            "architecture",
+            "research"
+          ]
+        },
+        {
+          "id": "ais-map2world",
+          "title": "Map2World: Convert 2D Floor Plans to Traversable 3D Robot Environments — Deploy from Blueprints",
+          "summary": "Map2World converts standard 2D floor plans and maps into traversable 3D world models that robots can navigate using AI, without requiring physical LiDAR scans of the target environment. A generative model trained on floor-plan/real-scan pairs hallucinates geometrically consistent 3D environments from overhead layouts. theAIsearch presents this as a key enabler for deploying robots in new environments from blueprints alone — dramatically reducing factory and logistics deployment setup time.",
+          "source": "theAIsearch / Map2World Research",
+          "url": "https://robot0321.github.io/Map2World/index.html",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "3D",
+            "navigation",
+            "world-models",
+            "deployment"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "llm",
+      "label": "LLMs & Reasoning",
+      "icon": "🧠",
+      "stories": [
+        {
+          "id": "llm-gpt55-instant",
+          "title": "GPT-5.5 Instant Ships May 5 — 52% Fewer Hallucinations, 30% More Concise, Personalization Boost",
+          "summary": "OpenAI released GPT-5.5 Instant on May 5, replacing GPT-5.3 Instant as ChatGPT's default model across all tiers. The new model produces 52.5% fewer hallucinated claims on high-stakes prompts (medicine, law, finance) and uses 30% fewer words with no loss of clarity. Personalization is strengthened — the model draws on past chats, files, and connected Gmail for Plus and Pro users, with broader rollout to Free, Business, and Enterprise coming.",
+          "source": "OpenAI / TechCrunch / 9to5Mac",
+          "url": "https://openai.com/index/gpt-5-5-instant/",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "openai",
+            "gpt-5.5",
+            "hallucination-reduction",
+            "personalization",
+            "chatgpt"
+          ]
+        },
+        {
+          "id": "llm-grok43",
+          "title": "Grok 4.3: 1M Context, Native Video, Voice Cloning Suite, 40% Price Cut — xAI Enters Intelligence Top 10",
+          "summary": "xAI launched Grok 4.3 on May 6 at $1.25/M input tokens — a 40% cut from its predecessor — with a 1M-token context window, native video input, and a Voice Cloning API: Speech-to-Text in 25 languages with multi-speaker diarization, plus Text-to-Speech at $4.20/M characters. The model ranks #1 on Artificial Analysis for agentic tool-calling and instruction-following, and jumps to #9 overall on the Intelligence Index at score 53. A new 'Imagine' agent mode focuses on creative visual project generation.",
+          "source": "xAI / VentureBeat / Times of AI",
+          "url": "https://venturebeat.com/technology/xai-launches-grok-4-3-at-an-aggressively-low-price-and-a-new-fast-powerful-voice-cloning-suite",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "xai",
+            "grok",
+            "voice-cloning",
+            "1M-context",
+            "video-input"
+          ]
+        },
+        {
+          "id": "llm-mistral-medium35",
+          "title": "Mistral Medium 3.5: 128B Dense Open Weights with 77.6% SWE-bench — Runs Self-Hosted on 4 GPUs",
+          "summary": "Mistral AI released Mistral Medium 3.5, a dense 128B model with a 256k context window handling reasoning, coding, and vision in a single set of weights under a modified MIT license. It scores 77.6% on SWE-bench Verified (beating Devstral 2 and Qwen3.5 397B A17B) and can run self-hosted on as few as four consumer GPUs. Remote coding agents in Vibe — Mistral's coding platform — are now live, enabling async cloud coding sessions with the new model.",
+          "source": "Mistral AI / MarkTechPost",
+          "url": "https://mistral.ai/news/vibe-remote-agents-mistral-medium-3-5",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "mistral",
+            "open-source",
+            "128B",
+            "dense",
+            "swe-bench",
+            "vision"
+          ]
+        },
+        {
+          "id": "llm-frontier-convergence",
+          "title": "Frontier Convergence: Every Top Model Within 2-3 Benchmark Points — Production Stack Is the Real Differentiator",
+          "summary": "Analysis from FutureAGI and multiple leaderboard sources confirms that as of May 2026, every frontier model sits within 2–3 points of the others on public benchmarks — Claude leads some, GPT-5.5 leads others, Gemini leads photorealism. The gap that matters in production is deployment harness quality, cost economics, and reliability instrumentation, not raw model capability. This is a meaningful structural change: model selection is becoming an infrastructure decision, not a quality decision.",
+          "source": "FutureAGI / Air Street Press",
+          "url": "https://futureagi.com/blog/best-llms-may-2026",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "analysis",
+            "benchmark",
+            "frontier",
+            "production",
+            "convergence"
+          ]
+        },
+        {
+          "id": "llm-benchmark-contamination",
+          "title": "2026 Benchmarks Are Built to Resist Contamination — Five Detection Methods Now Standard Practice",
+          "summary": "After notable cases where GPT-4 and others showed training data overlap with benchmark sets, 2026's new benchmarks are being built contamination-resistant from the start: unpublished problem sets (Soohak), monthly refreshes (LiveBench), and real-world task data (WorldReasonBench). Five contamination detection methods have become standard practice in evaluation pipelines. Frontier model capability claims are increasingly scrutinized for contamination audits before being accepted as valid.",
+          "source": "Vellum / FutureAGI",
+          "url": "https://futureagi.substack.com/p/best-llms-in-may-2026-what-actually",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "benchmark",
+            "contamination",
+            "evaluation",
+            "research",
+            "integrity"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "image-gen",
+      "label": "Image Generation & Processing",
+      "icon": "🎨",
+      "stories": [
+        {
+          "id": "img-hidream-arena",
+          "title": "HiDream-O1: Open-Weight Unified Architecture Cracks Top 10 Image Arena — Best Open Model of 2026",
+          "summary": "HiDream-O1-Image debuted at #8 on the Artificial Analysis Text-to-Image Arena, becoming the highest-ranked open-weight image model in 2026. Its unified 8B-parameter architecture handles text-to-image, editing, and personalization without external VAEs, and its Reasoning-Driven Prompt Agent explicitly thinks through text layout before rendering — producing notably better text accuracy than most open models. Released on Hugging Face, it's the first strong open alternative to GPT Image 2 for workflows requiring local deployment.",
+          "source": "HiDream-ai / Artificial Analysis",
+          "url": "https://huggingface.co/HiDream-ai/HiDream-O1-Image",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "image-gen",
+            "open-source",
+            "8B",
+            "arena",
+            "text-rendering"
+          ]
+        },
+        {
+          "id": "img-gpt2-dominance",
+          "title": "GPT Image 2 Still Leads at 1398 Elo — Image AI Drives 6.5x More App Downloads Than LLM Updates",
+          "summary": "Arena.ai's text-to-image leaderboard shows GPT Image 2 dominant at 1398 Elo with a 130-point gap over #2. Google models fill spots 2–3 and 5, with Luma, xAI, and Microsoft competing in the 6–10 tier. A new Appfigures report finds image AI model releases drive 6.5x more app downloads than LLM updates — with OpenAI's 4o image model generating an estimated $70M in gross consumer spending in its first 28 days.",
+          "source": "Arena.ai / TechCrunch / Appfigures",
+          "url": "https://techcrunch.com/2026/05/04/image-ai-models-now-drive-app-growth-beating-chatbot-upgrades/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "image-gen",
+            "leaderboard",
+            "market-analysis",
+            "consumer",
+            "growth"
+          ]
+        },
+        {
+          "id": "img-qwen-image-20",
+          "title": "Qwen-Image-2.0 Technical Report: Alibaba's Unified Multimodal Image Model Tops HuggingFace Today",
+          "summary": "The Qwen-Image-2.0 Technical Report dropped as the #1 paper on HuggingFace today with 66 upvotes, detailing Alibaba's new multimodal image foundation model advancing both image generation and understanding in a unified framework. Particular strength in visual reasoning tasks interpreting charts, diagrams, and documents. The community flags it as especially strong for design workflows requiring both generating and analyzing visual content in a single model.",
+          "source": "Qwen / HuggingFace Papers",
+          "url": "https://huggingface.co/papers",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "qwen",
+            "alibaba",
+            "multimodal",
+            "image-understanding",
+            "technical-report"
+          ]
+        },
+        {
+          "id": "img-swifti2v",
+          "title": "SwiftI2V: Image-to-Video in Under 3 Seconds on Consumer GPU — First Practical Real-Time Animation",
+          "summary": "SwiftI2V from HKUST uses flow-matching with adaptive step scheduling to generate a 3-second video clip from a single image in under 3 seconds on a consumer GPU — 8x faster than Kling 3.0 at comparable visual quality for short clips. Open-source, runs locally, performs especially well on portrait and product shots. The first practical real-time image animation option for interactive design tools and rapid prototyping workflows.",
+          "source": "theAIsearch / HKUST",
+          "url": "https://hkust-longgroup.github.io/SwiftI2V/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "image-to-video",
+            "realtime",
+            "open-source",
+            "consumer-gpu"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design-ai",
+      "label": "Design & Creative AI",
+      "icon": "✏️",
+      "stories": [
+        {
+          "id": "design-opencodesign",
+          "title": "Open CoDesign: Open-Source AI Design Tool Turns Prompts into Prototypes — BYOK, Local-First, MIT Licensed",
+          "summary": "Open CoDesign is the open-source alternative to Claude Design and Codex Canvas — it turns a text prompt into a polished prototype, slide deck, or marketing asset locally, with the model you already use (Claude, GPT, Gemini, Kimi, GLM, or Ollama). Bring-your-own-key, local-first, MIT licensed, and multi-model, it removes subscription lock-in and cloud-only constraints from AI-native design. The GitHub repo gained significant traction this week as designers seek non-proprietary AI co-design tools.",
+          "source": "Open CoDesign / GitHub / Firethering",
+          "url": "https://github.com/OpenCoworkAI/open-codesign",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "co-design",
+            "open-source",
+            "local-first",
+            "BYOK",
+            "design-tool",
+            "MIT"
+          ]
+        },
+        {
+          "id": "design-drex-motion",
+          "title": "DRex: Text-Driven Character Motion Re-Expression Makes Motion as Editable as Color Grading",
+          "summary": "DRex enables animators and video editors to change how a character moves — walking style, gesture energy, movement quality — by describing the desired change in natural language, without re-generating the full video. A director can ask for 'more confident stride' or 'exhausted shuffling' and see the character's motion updated while background, lighting, and scene content stay unchanged. theAIsearch tests it as the first tool that treats character motion as a post-production variable rather than a generation-time commitment.",
+          "source": "theAIsearch / MPI Informatics",
+          "url": "https://vcai.mpi-inf.mpg.de/projects/DRex/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "animation",
+            "video-editing",
+            "motion-control",
+            "design-tool",
+            "post-production"
+          ]
+        },
+        {
+          "id": "design-grok-imagine",
+          "title": "Grok 4.3 'Imagine' Mode: AI Creative Agent Generates Slides, Storyboards, and Visuals in Chat",
+          "summary": "Grok 4.3's new Imagine agent mode turns the chat interface into a creative project environment — generating presentation slides, visual briefs, storyboards, and marketing assets directly in conversation. The mode integrates Grok's image generation with its reasoning capabilities to iterate on visual concepts based on natural language feedback. At $1.25/M input tokens, Grok 4.3 offers a significantly cheaper creative AI pipeline than GPT or Claude equivalents with image generation included.",
+          "source": "xAI / Times of AI",
+          "url": "https://www.timesofai.com/news/grok-4-3-all-new-features-explained/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "xai",
+            "grok",
+            "creative-agent",
+            "slides",
+            "visual-workflow"
+          ]
+        },
+        {
+          "id": "design-bach-creative",
+          "title": "Bach 1.0: AI Composer for Film, Game, and Brand Audio Generates Coherent Multi-Movement Scores",
+          "summary": "Bach 1.0 brings AI composition to professional creative workflows with a focus on long-form coherence — generating multi-movement scores with consistent harmonic language rather than isolated clips. Film composers, game audio directors, and brand sound designers can describe emotional arcs and structural changes in natural language and iterate on original material. theAIsearch notes it as the first AI music tool that feels like collaborating with a trained composer rather than a random generator.",
+          "source": "theAIsearch / Bach.art",
+          "url": "https://www.bach.art/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "music-ai",
+            "creative-workflow",
+            "audio-gen",
+            "brand-audio",
+            "film"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "typography",
+      "label": "Typography & Text Rendering",
+      "icon": "🔤",
+      "stories": [
+        {
+          "id": "typo-monotype-ai-search",
+          "title": "Monotype AI Search Goes Live: Natural Language Font Discovery Across 150,000+ Typefaces",
+          "summary": "Monotype launched AI Search, a natural language font discovery tool integrated across Monotype Fonts and MyFonts, letting designers describe creative intent conversationally — 'a geometric sans that feels warm for a healthcare brand' — and receive curated, context-aware recommendations from Monotype's 150,000+ font library. Creative Bloq: 'the process was a creativity killer' — referring to the old grid-browsing workflow that AI Search replaces. Now available to all Monotype subscribers.",
+          "source": "Monotype / Creative Bloq / WhatFontIs",
+          "url": "https://www.monotype.com/company/press-release/monotype-launches-ai-search-transforming-font-search-and-discovery-conversational-ai",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "monotype",
+            "font-discovery",
+            "NLP",
+            "search",
+            "typography-tools"
+          ]
+        },
+        {
+          "id": "typo-monotype-wondershare",
+          "title": "Monotype × Wondershare: 200 Professional Fonts Now Native in Filmora AI Video Editor",
+          "summary": "Monotype and Wondershare integrated 200 curated Monotype fonts directly into Filmora, the AI-powered video editing platform used by millions of creators. Professional-grade typography is now instantly accessible in video production workflows — no separate font licensing, no export/import friction. This marks Monotype's push to embed its font library into AI-native creative tools rather than traditional desktop publishing.",
+          "source": "Monotype / Wondershare",
+          "url": "https://www.prnewswire.com/news-releases/monotype-and-wondershare-boost-creativity-and-simplify-workflows-with-integration-of-200-curated-monotype-fonts-302686677.html",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "monotype",
+            "wondershare",
+            "filmora",
+            "font-integration",
+            "video-typography"
+          ]
+        },
+        {
+          "id": "typo-paperfit",
+          "title": "PaperFit: Vision-in-the-Loop Typesetting Optimization for Scientific Documents — #5 on HuggingFace",
+          "summary": "PaperFit from OpenDataLab uses a vision model to evaluate typesetting quality — spacing, overflow, figure placement, caption alignment — and iteratively adjusts parameters until a quality threshold is reached. Ranked #5 on HuggingFace today with 28 upvotes, it addresses a real pain point: automated LaTeX compilation frequently produces broken or ugly layouts. Implications extend to any document generation pipeline that needs visually validated output.",
+          "source": "OpenDataLab / HuggingFace Papers",
+          "url": "https://huggingface.co/papers",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "typesetting",
+            "document-ai",
+            "scientific-publishing",
+            "vision-in-loop",
+            "layout"
+          ]
+        },
+        {
+          "id": "typo-ai-backlash",
+          "title": "Designers Push Back on AI Fonts in 2026: 'The Gap Between Looks Like a Font and Is a Font'",
+          "summary": "A widely-shared WhatFontIs post captures an emerging backlash: designers are 'punishing' AI-generated typefaces, with AI fonts getting roasted and hand-made ones getting shared. AI font generators produce plausible-looking Latin sets but fall apart on kerning, diacritics, and weight consistency — the invisible craft that makes a font actually work. Human-AI collaboration, where AI assists the type designer rather than replaces them, is emerging as the viable path forward.",
+          "source": "WhatFontIs Blog / Creative Bloq",
+          "url": "https://www.whatfontis.com/blog/designers-are-punishing-ai-fonts-in-2026-and-its-making-type-more-human/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "AI-fonts",
+            "typography-craft",
+            "backlash",
+            "human-AI",
+            "type-design"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "robotics",
+      "label": "Robotics & Embodied AI",
+      "icon": "🤖",
+      "stories": [
+        {
+          "id": "rob-meta-assured",
+          "title": "Meta Acquires Assured Robot Intelligence — Major Bet on Humanoid AI Technology",
+          "summary": "Meta closed its acquisition of Assured Robot Intelligence on May 1, a startup developing AI models for robotic control, as part of Meta's push to build competitive humanoid technology. The deal follows Meta's acquisition of a wearables startup the same month, signaling a strategic convergence toward embodied and augmented intelligence beyond social media. Bloomberg reports Assured's AI will be integrated into Meta's Reality Labs humanoid research program.",
+          "source": "Bloomberg / Glass Almanac",
+          "url": "https://www.bloomberg.com/news/articles/2026-05-01/meta-acquires-assured-robot-intelligence-to-help-build-humanoid-technology",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "meta",
+            "robotics",
+            "acquisition",
+            "humanoid",
+            "embodied-ai"
+          ]
+        },
+        {
+          "id": "rob-gene265",
+          "title": "Gene 26.5: Genesis AI Achieves Human-Level Robotic Manipulation — Full-Stack, Actually Deployable",
+          "summary": "Genesis AI's Gene 26.5 performs complex manipulation tasks — cooking, lab work, dexterous puzzles — using a single model on shared hardware, with full-stack integration: Genesis Hand hardware, large-scale human demonstration data, low-latency control systems, and a manipulation foundation model working together. theAIsearch describes it as 'the most convincing human-level manipulation demo since OpenAI's Rubik's cube work, but actually deployable.' The robotic hand composes contact in space and time with precision across diverse real-world tasks.",
+          "source": "theAIsearch / Genesis AI",
+          "url": "https://www.genesis.ai/blog/gene-26-5-advancing-robotic-manipulation-to-human-level",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "manipulation",
+            "dexterous",
+            "foundation-model",
+            "genesis-ai"
+          ]
+        },
+        {
+          "id": "rob-unitree-engineai",
+          "title": "Unitree vs EngineAI Robot Fights Go Viral — Embodied AI Enters the Performance Arena",
+          "summary": "Footage of a Unitree humanoid sparring with an EngineAI competitor went viral this week, demonstrating durability, real-time recovery, and responsive control at a level humanoids haven't publicly shown before. theAIsearch frames it as the moment humanoid robots stopped being 'impressive for robots' and started being genuinely entertaining competitive performers — echoing the early drone racing era as a signal of an industry approaching entertainment and consumer viability.",
+          "source": "theAIsearch / Unitree / EngineAI",
+          "url": "https://www.youtube.com/watch?v=quxnhOeRz7I",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "humanoid",
+            "unitree",
+            "embodied-ai",
+            "viral"
+          ]
+        },
+        {
+          "id": "rob-atlas-industrial",
+          "title": "Boston Dynamics Electric Atlas in Real Factory Deployment — Learning New Tasks in Hours, Not Weeks",
+          "summary": "New Boston Dynamics footage shows the electric Atlas performing precision industrial assembly — component sorting, part insertion, tool handoffs — with dexterity rivaling specialized industrial robots in what appears to be a real factory setting, not a pre-scripted lab demo. Unlike its hydraulic predecessor, the electric Atlas operates near-silently, has sustained runtime, and learns new tasks from demonstrations in hours rather than weeks. A concrete step toward the promised 2026 commercial deployment timeline.",
+          "source": "theAIsearch / Boston Dynamics",
+          "url": "https://bostondynamics.com/atlas",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "boston-dynamics",
+            "atlas",
+            "industrial-robotics",
+            "humanoid",
+            "manufacturing"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "label": "Research & Papers",
+      "icon": "📄",
+      "stories": [
+        {
+          "id": "res-alphaevolve",
+          "title": "AlphaEvolve: DeepMind's Algorithm Discovery Agent Live in Production — 30% DNA Accuracy, 10x Quantum Error Reduction",
+          "summary": "Google DeepMind published production impact results from AlphaEvolve: a Gemini-powered coding agent that autonomously discovers and optimizes algorithms — 30% improvement in DNA sequencing accuracy, 10x reduction in quantum circuit errors, electricity grid optimization from 14% to 88% feasibility. Now integrated into Google's hardware design infrastructure and deployed commercially in finance, logistics, and materials science. The first AI algorithm-discovery system running in production at this scale.",
+          "source": "Google DeepMind",
+          "url": "https://deepmind.google/blog/alphaevolve-impact/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "deepmind",
+            "algorithm-discovery",
+            "self-evolving",
+            "scientific-ai",
+            "gemini"
+          ]
+        },
+        {
+          "id": "res-seif",
+          "title": "SEIF: Self-Evolving RL for Instruction Following — Models Improve Without Human Preference Labels",
+          "summary": "SEIF (Self-Evolving Instruction Following) from Fudan University introduces a reinforcement learning approach where models improve instruction-following by generating their own training signals — no human preference labels required. The system iteratively tests outputs against simple verifiable criteria, building instruction-following capability through self-play. #6 on HuggingFace today with 25 upvotes — a practical step toward models that improve themselves on targeted capabilities without expensive human annotation.",
+          "source": "Fudan University / HuggingFace Papers",
+          "url": "https://huggingface.co/papers",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "reinforcement-learning",
+            "self-evolving",
+            "instruction-following",
+            "self-play"
+          ]
+        },
+        {
+          "id": "res-soohak",
+          "title": "Soohak: Mathematician-Curated Benchmark Exposes Real Gaps in LLM Research-Level Math",
+          "summary": "Soohak is a new mathematical reasoning benchmark curated by professional mathematicians, targeting research-level problems beyond competition math that frontier LLMs now nearly saturate. #2 on HuggingFace with 61 upvotes from EleutherAI — it reveals that even models scoring 99%+ on AIME struggle with open-ended research questions requiring novel proof steps. Contamination-resistant by design with unpublished problem sets.",
+          "source": "EleutherAI / HuggingFace Papers",
+          "url": "https://huggingface.co/papers",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "math-benchmark",
+            "research-level",
+            "eleutherai",
+            "contamination-resistant",
+            "evaluation"
+          ]
+        },
+        {
+          "id": "res-collabvr",
+          "title": "CollabVR: VLM + Video Generation Collaboration for Complex Temporal Video Reasoning",
+          "summary": "CollabVR from KAIST AI introduces a framework where vision-language models and video generation models collaborate on video reasoning — the VLM analyzes scene state, the video model fills temporal gaps, and the two iterate to answer questions requiring physical world understanding across time. #3 on HuggingFace with 46 upvotes. Relevant for robotics, security analysis, and complex video annotation workflows requiring long-range temporal understanding.",
+          "source": "KAIST AI / HuggingFace Papers",
+          "url": "https://huggingface.co/papers",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "video-reasoning",
+            "multimodal",
+            "VLM",
+            "temporal-understanding"
+          ]
+        },
+        {
+          "id": "res-recgen",
+          "title": "RecGen: 3D Scene Reconstruction Beats Prior SOTA by 30% Shape Quality — Fewer Training Meshes Required",
+          "summary": "RecGen reconstructs complete 3D multi-object scenes from RGB-D images, recovering shape, texture, and pose under heavy occlusion — outperforming previous SOTA by 30% in shape quality and 34% in pose estimation while requiring significantly fewer training meshes. Synthetic training data combined with robust 3D shape priors enables strong real-world generalization. Strong implications for robotics perception (cluttered tabletop scenes) and augmented reality (consistent 3D overlays).",
+          "source": "theAIsearch / RecGen Research",
+          "url": "https://reconstruction-by-generation.github.io/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "3D-reconstruction",
+            "robotics",
+            "AR",
+            "scene-understanding",
+            "research"
+          ]
+        }
+      ]
+    }
+  ],
+  "visualizations": {
+    "category_counts": {
+      "leaderboard": 4,
+      "aisearch": 21,
+      "llm": 5,
+      "image-gen": 4,
+      "design-ai": 4,
+      "typography": 4,
+      "robotics": 4,
+      "research": 5
+    },
+    "significance_distribution": {
+      "5": 4,
+      "4": 18,
+      "3": 29,
+      "2": 0,
+      "1": 0
+    },
+    "top_tags": [
+      {
+        "tag": "open-source",
+        "count": 9
+      },
+      {
+        "tag": "robotics",
+        "count": 9
+      },
+      {
+        "tag": "image-gen",
+        "count": 7
+      },
+      {
+        "tag": "research",
+        "count": 7
+      },
+      {
+        "tag": "benchmark",
+        "count": 6
+      },
+      {
+        "tag": "design-tool",
+        "count": 5
+      },
+      {
+        "tag": "video-gen",
+        "count": 5
+      },
+      {
+        "tag": "frontier",
+        "count": 5
+      },
+      {
+        "tag": "multimodal",
+        "count": 4
+      },
+      {
+        "tag": "openai",
+        "count": 4
+      }
+    ],
+    "top_stories": [
+      {
+        "id": "ais-alphaevolve",
+        "title": "AlphaEvolve: Self-Evolving AI Discovers Better Algorithms in Production",
+        "significance": 5,
+        "category": "aisearch"
+      },
+      {
+        "id": "rob-gene265",
+        "title": "Gene 26.5: Human-Level Robotic Manipulation Achieved",
+        "significance": 5,
+        "category": "robotics"
+      },
+      {
+        "id": "llm-gpt55-instant",
+        "title": "GPT-5.5 Instant: 52% Fewer Hallucinations as New ChatGPT Default",
+        "significance": 4,
+        "category": "llm"
+      },
+      {
+        "id": "design-opencodesign",
+        "title": "Open CoDesign: Open-Source AI Co-Design Tool Goes Viral",
+        "significance": 4,
+        "category": "design-ai"
+      },
+      {
+        "id": "typo-monotype-ai-search",
+        "title": "Monotype AI Search: NLP Font Discovery Across 150k Typefaces",
+        "significance": 4,
+        "category": "typography"
+      }
+    ]
+  },
+  "report_source": "llm-pipeline",
+  "report_source_badge": "../../docs/img/llm_pipeline/llm_pipeline.png",
+  "report_source_label": "LLM Pipeline"
+}

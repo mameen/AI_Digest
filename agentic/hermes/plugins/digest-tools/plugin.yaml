@@ -1,0 +1,14 @@
+name: digest-tools
+version: 0.1.0
+description: AI Digest ingest + synthesize tools for Hermes kanban workers
+provides_tools:
+  - verify_url
+  - fetch_rss
+  - read_preflight_category
+  - read_crawl_markdown
+  - read_structured_json
+  - read_topic_config
+  - synthesize_digest
+  - digest_board_status
+  - digest_setup_board
+  - digest_go

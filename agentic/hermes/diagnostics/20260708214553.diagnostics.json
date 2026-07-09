@@ -1,0 +1,130 @@
+{
+  "schema": "agentic_hermes.diagnostics/v1",
+  "title": "Hermes agent diagnostics",
+  "prefix": "20260708214553",
+  "poc_id": "agentic_hermes",
+  "status": "ok",
+  "started_at": "2026-07-08T21:45:54Z",
+  "finished_at": "2026-07-08T21:51:29Z",
+  "total_duration_ms": 333475.8,
+  "total_cpu_ms": 0.0,
+  "environment": {
+    "schema": "ai_digest.environment/v1",
+    "platform_kind": "mac",
+    "os": "Darwin",
+    "os_release": "25.5.0",
+    "machine": "arm64",
+    "cpu": "Apple M3 Max",
+    "cpu_count": 16,
+    "ram_gb": 48.0,
+    "gpu": {
+      "backend": "metal",
+      "name": "Apple M3 Max"
+    },
+    "python": "3.11.12",
+    "hostname": "Mohameds-MacBook-Pro.local"
+  },
+  "network": {},
+  "llm": {
+    "enabled": true,
+    "provider": "ollama",
+    "model": "llama3.1:latest"
+  },
+  "agents": {
+    "graph": "orio_concierge → orio_researcher × N → orio_librarian → orio_synthesizer → render",
+    "profiles": [
+      "orio_concierge",
+      "orio_researcher",
+      "orio_librarian",
+      "orio_synthesizer",
+      "concierge",
+      "researcher",
+      "librarian",
+      "synthesizer"
+    ],
+    "task_count": 4
+  },
+  "stages": [
+    {
+      "id": "go.setup",
+      "label": "Concierge · board setup",
+      "started_at": "2026-07-08T21:45:54Z",
+      "ended_at": "2026-07-08T21:45:57Z",
+      "duration_ms": 3125.7,
+      "cpu_ms": 0.0,
+      "ok": true,
+      "critical": true,
+      "error": null,
+      "meta": {},
+      "children": []
+    },
+    {
+      "id": "go.research",
+      "label": "Research workers",
+      "started_at": "2026-07-08T21:45:58Z",
+      "ended_at": "2026-07-08T21:51:28Z",
+      "duration_ms": 330350.1,
+      "cpu_ms": 0.0,
+      "ok": true,
+      "critical": true,
+      "error": null,
+      "meta": {},
+      "children": [
+        {
+          "id": "task.t_3b0d13dc",
+          "label": "Research: aisearch · Researcher",
+          "started_at": "2026-07-08T21:46:01Z",
+          "ended_at": "2026-07-08T21:48:31Z",
+          "duration_ms": 149140.8,
+          "cpu_ms": 0.0,
+          "ok": false,
+          "critical": true,
+          "error": "blocked",
+          "meta": {
+            "profile": "orio_researcher",
+            "task_id": "t_3b0d13dc"
+          },
+          "children": []
+        },
+        {
+          "id": "task.t_3e179069",
+          "label": "Research: leaderboard · Researcher",
+          "started_at": "2026-07-08T21:48:31Z",
+          "ended_at": "2026-07-08T21:51:28Z",
+          "duration_ms": 177046.0,
+          "cpu_ms": 0.0,
+          "ok": false,
+          "critical": true,
+          "error": "blocked",
+          "meta": {
+            "profile": "orio_researcher",
+            "task_id": "t_3e179069"
+          },
+          "children": []
+        }
+      ]
+    }
+  ],
+  "llm_calls": [],
+  "crawls": [],
+  "tool_calls": [],
+  "log": [],
+  "totals": {
+    "stage_count": 2,
+    "task_count": 4,
+    "llm_call_count": 0,
+    "llm_duration_ms": 0,
+    "llm_share_pct": 0.0,
+    "tool_call_count": 0,
+    "tool_calls_ok": 0,
+    "stage_failures": 0,
+    "failed_stages": [],
+    "prompt_tokens": null,
+    "completion_tokens": null,
+    "total_tokens": null,
+    "tokens_estimated": true
+  },
+  "report_source": "agentic-hermes",
+  "report_source_label": "Hermes Agent",
+  "report_source_badge": "../../../docs/img/agentic/hermes/hermes-agent.png"
+}

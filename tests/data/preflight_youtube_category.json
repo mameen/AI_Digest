@@ -1,0 +1,28 @@
+{
+  "prefix": "20260709120000",
+  "categories": [
+    {
+      "id": "youtube",
+      "label": "YouTube",
+      "icon": "📺",
+      "stories": [
+        {
+          "title": "Nate Herk — LLM Wiki workflow",
+          "url": "https://www.youtube.com/watch?v=nate1&t=0s"
+        },
+        {
+          "title": "IBM Technology — Granite agent update",
+          "url": "https://www.youtube.com/watch?v=ibm1&t=0s"
+        },
+        {
+          "title": "Google Cloud Tech — Gemini tooling",
+          "url": "https://www.youtube.com/watch?v=gcp1&t=0s"
+        }
+      ],
+      "sources": [
+        {"channel_key": "nate-herk", "channel_label": "Nate Herk"},
+        {"channel_key": "ibm-technology", "channel_label": "IBM Technology"}
+      ]
+    }
+  ]
+}
