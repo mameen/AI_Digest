@@ -1,0 +1,13 @@
+agentic/hermes/.kb/
+agentic/hermes/.runtime/
+.cache/
+.preflight/
+llm_pipeline/.cache/
+llm_pipeline/.preflight/
+.venv/
+venv/
+
+tests/fixtures/
+tests/data/
+**/*.example.json
+tests/test_check_secrets.py

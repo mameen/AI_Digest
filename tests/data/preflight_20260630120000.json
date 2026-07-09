@@ -1,0 +1,107 @@
+{
+  "prefix": "20260630120000",
+  "requires_web_fetch": [
+    {
+      "label": "AA Intelligence Leaderboard",
+      "url": "https://artificialanalysis.ai/leaderboards/models",
+      "category": "leaderboard",
+      "priority": "HIGH",
+      "why": "Top 5 by intelligence score, rank changes, closed vs open comparison"
+    },
+    {
+      "label": "Vellum LLM Leaderboard",
+      "url": "https://www.vellum.ai/llm-leaderboard",
+      "category": "leaderboard",
+      "priority": "HIGH",
+      "why": "GPQA, AIME, SWE-bench, FrontierMath scores"
+    },
+    {
+      "label": "Vellum Open LLM Leaderboard",
+      "url": "https://www.vellum.ai/open-llm-leaderboard",
+      "category": "leaderboard",
+      "priority": "HIGH",
+      "why": "Best open-weight model, open vs closed gap"
+    },
+    {
+      "label": "AA Image Arena (Text-to-Image)",
+      "url": "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+      "category": "image-gen",
+      "priority": "HIGH",
+      "why": "Top image gen Elo scores"
+    },
+    {
+      "label": "Arena.ai Text-to-Image Leaderboard",
+      "url": "https://arena.ai/leaderboard/text-to-image",
+      "category": "image-gen",
+      "priority": "HIGH",
+      "why": "Text Rendering subcategory specifically — cross-post to typography"
+    },
+    {
+      "label": "Arena.ai Text-to-Video Leaderboard",
+      "url": "https://arena.ai/leaderboard/text-to-video",
+      "category": "image-gen",
+      "priority": "HIGH",
+      "why": "Top text-to-video Elo scores (Sora, Veo, Kling, Seedance)"
+    },
+    {
+      "label": "AA Text-to-Video Leaderboard",
+      "url": "https://artificialanalysis.ai/video/leaderboard/text-to-video",
+      "category": "image-gen",
+      "priority": "HIGH",
+      "why": "Artificial Analysis video-gen Elo index"
+    }
+  ],
+  "categories": [
+    {
+      "id": "aisearch",
+      "stories": [
+        {
+          "title": "dSpark intro",
+          "url": "https://www.youtube.com/watch?v=J0D7qV3nl7w&t=0s"
+        },
+        {
+          "title": "Deepseek situation",
+          "url": "https://www.youtube.com/watch?v=J0D7qV3nl7w&t=65s"
+        },
+        {
+          "title": "Why AI models are slow",
+          "url": "https://www.youtube.com/watch?v=J0D7qV3nl7w&t=140s"
+        }
+      ]
+    },
+    {
+      "id": "typography",
+      "stories": [
+        {
+          "title": "ILT Academy (courses)",
+          "url": "https://ilovetypography.com/academy"
+        },
+        {
+          "title": "Steven Heller’s Font of the Month",
+          "url": "https://ilovetypography.com/fotm"
+        },
+        {
+          "title": "Acceptable use policy",
+          "url": "https://fonts.ilovetypography.com/legal/website-acceptable-use-policy"
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "stories": [
+        {
+          "title": "Program-as-Weights: A Programming Paradigm for Fuzzy Functions",
+          "url": "https://huggingface.co/papers/2607.02512"
+        },
+        {
+          "title": "Morphing into Hybrid Attention Models",
+          "url": "https://huggingface.co/papers/2606.30562"
+        },
+        {
+          "title": "Multi-Resolution Flow Matching: Training-Free Diffusion Acceleration via Staged Sampling",
+          "url": "https://huggingface.co/papers/2607.01642"
+        }
+      ]
+    }
+  ]
+}

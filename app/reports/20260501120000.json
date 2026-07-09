@@ -1,0 +1,958 @@
+{
+  "generated_at": "2026-05-01T12:00:00Z",
+  "filename_prefix": "20260501120000",
+  "summary": "Anthropic launches Claude Design to rival Figma and Adobe; Meta acquires Assured Robot Intelligence for humanoid AI; OpenAI-Microsoft end Azure exclusivity; Grok 4.3 enters the AA Intelligence top 10.",
+  "aisearch_video_url": "https://www.youtube.com/watch?v=XJUpuOBpT-4",
+  "aisearch_video_label": "May 1 — The insane engineering of DeepSeek V4",
+  "categories": [
+    {
+      "id": "leaderboard",
+      "label": "Leaderboard Rankings",
+      "icon": "🏆",
+      "stories": [
+        {
+          "id": "lb-grok43-enters-top10",
+          "title": "Grok 4.3 Enters AA Intelligence Top 10 at #9 — Score 53, 196 t/s, $1.56/M",
+          "summary": "xAI's Grok 4.3 entered the Artificial Analysis Intelligence Index at position #9 this week with a score of 53, displacing GPT-5.4 (xhigh) from the top 10. At 196 tokens/second and $1.56/M tokens it is the fastest and cheapest model in the top 10 — offering competitive intelligence at a significant discount versus OpenAI's top-tier offerings.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "leaderboard",
+            "xai",
+            "grok",
+            "intelligence-index",
+            "value"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-gpt55-still-1",
+          "title": "GPT-5.5 Holds #1 at Score 60 — Intelligence Ceiling Unchanged Since April 23",
+          "summary": "GPT-5.5 (xhigh) maintains the top spot at score 60 on the AA Intelligence Index, a position held since April 23. OpenAI occupies five of the top seven positions across GPT-5.5 variants. The ceiling has not moved in over a week; the next breakthrough likely requires a new model family rather than incremental variants.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 1,
+          "tags": [
+            "leaderboard",
+            "openai",
+            "gpt-5.5",
+            "intelligence-index"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-kimi-k2-thinking-humanity",
+          "title": "Kimi K2 Thinking Leads Vellum's Humanity's Last Exam at 44.9% — Beats GPT-5.5",
+          "summary": "On Vellum's Humanity's Last Exam — the broadest test of overall AI capability — Kimi K2 Thinking (Moonshot AI) scores 44.9%, narrowly edging GPT-5.5 Pro (43.1%) and GPT-5.5 (41.4%). Gemini 3 Pro leads at 45.8%. This places a Chinese open-weight model above GPT-5.5 on at least one top-tier general benchmark.",
+          "source": "Vellum AI Leaderboard",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "leaderboard",
+            "kimi",
+            "moonshot-ai",
+            "humanity-last-exam",
+            "benchmark",
+            "china-ai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-image-arena-may1",
+          "title": "Image Arena: GPT Image 2 Widens Lead to 172 Elo Points Above Open-Weight",
+          "summary": "GPT Image 2 (high) holds 1335 Elo on the Artificial Analysis Image Arena, up 1 from last week. The gap between GPT Image 2 and the nearest open-weight model (FLUX.2 at 1163 Elo) is now 172 points — historically wide. In the Text Rendering subcategory, GPT Image 2 maintains a dominant lead over all challengers.",
+          "source": "Artificial Analysis / Arena AI",
+          "url": "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 4,
+          "tags": [
+            "leaderboard",
+            "image-gen",
+            "gpt-image-2",
+            "arena-elo",
+            "text-rendering"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-chinese-open-dominance",
+          "title": "Open-Weight Rankings: 9 of Top 10 Are Chinese Labs — GLM-5 Holds #1 at 1576 Elo",
+          "summary": "The open-weight code arena leaderboard remains dominated by Chinese labs. Zhipu AI's GLM-5 leads at 1576 Elo, with Kimi K2.5 (1479) and GLM-5.1 (1423) rounding out the top three. Gemma 4 26B from Google is the only non-Chinese model in the top 10. Kimi K2 Thinking matches or beats most closed models on AIME 2025, further narrowing the open-closed gap.",
+          "source": "LLM Stats",
+          "url": "https://llm-stats.com/leaderboards/open-llm-leaderboard",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 1,
+          "tags": [
+            "open-source",
+            "china-ai",
+            "glm-5",
+            "zhipu-ai",
+            "kimi",
+            "leaderboard"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "aisearch",
+      "label": "AI Search",
+      "icon": "🔍",
+      "stories": [
+        {
+          "id": "ais-deepseek-v4-engineering",
+          "title": "theAIsearch Deep-Dive: The Insane Engineering of DeepSeek V4",
+          "summary": "theAIsearch's latest video breaks down how DeepSeek V4 — built by a team 40× smaller than OpenAI, without top NVIDIA chips — matches frontier closed models. The video walks through the full paper in plain terms, covering MoE architecture, hybrid attention, hardware-constrained training, and why the MIT-licensed release is a defining moment for open-source AI.",
+          "source": "theAIsearch / YouTube",
+          "url": "https://www.youtube.com/watch?v=XJUpuOBpT-4",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "deepseek",
+            "open-source",
+            "MoE",
+            "engineering",
+            "theAIsearch",
+            "china-ai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-deepseek-v4-specs",
+          "title": "DeepSeek V4 Specs: 1.6T Params, 49B Active, 1M Context, MIT License",
+          "summary": "DeepSeek V4-Pro packs 1.6 trillion total parameters but activates only 49 billion per token via MoE routing — giving frontier-class intelligence at a fraction of the inference cost. Context window is 1 million tokens. Three reasoning modes: Non-Think (fast), Think High (logical), Think Max (maximum depth, needs 384K+ context). MIT licensed and fully open-weights.",
+          "source": "theAIsearch / DeepSeek HuggingFace",
+          "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "deepseek",
+            "MoE",
+            "open-source",
+            "1M-context",
+            "specs",
+            "MIT"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-deepseek-v4-hybrid-attention",
+          "title": "DeepSeek V4's Hybrid Attention Cuts Inference FLOPs 73% at 1M Tokens",
+          "summary": "One of V4's core innovations is a hybrid of Compressed Sparse Attention (CSA) and Heavily Compressed Attention (HCA). Together they reduce per-token inference FLOPs by 73% compared to V3.2 at 1M-token contexts, and cut KV cache memory by 90%. This is what makes running a 1.6T-parameter model over million-token contexts economically viable.",
+          "source": "theAIsearch / DeepSeek V4 Paper",
+          "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro/blob/main/DeepSeek_V4.pdf",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "deepseek",
+            "attention",
+            "efficiency",
+            "long-context",
+            "architecture"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-deepseek-v4-hardware-constraints",
+          "title": "DeepSeek V4 Trained Without Top NVIDIA Chips — Runs on Huawei Ascend",
+          "summary": "DeepSeek V4 was trained primarily on NVIDIA Hopper GPUs using INT8 precision, but the architecture is explicitly designed to run on Huawei Ascend and other domestic Chinese chips via MXFP4 precision and the TileLang DSL (replacing CUDA kernels). The MegaMoE fused kernel was successfully deployed on Ascend. DeepSeek's 40-person team vs OpenAI's ~1600 makes this the most compute-constrained frontier model ever built.",
+          "source": "theAIsearch / ChinaTalk",
+          "url": "https://www.chinatalk.media/p/deepseek-v4",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "deepseek",
+            "hardware",
+            "huawei-ascend",
+            "china-ai",
+            "efficiency"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-deepseek-v4-benchmarks",
+          "title": "DeepSeek V4 Benchmarks: 93.5% LiveCodeBench, 90.1% GPQA, 80.6% SWE-Bench",
+          "summary": "DeepSeek V4-Pro leads all open-source models on LiveCodeBench (93.5%) and GPQA Diamond (90.1%), and ties near-frontier on SWE-Bench Verified (80.6%). On AIME 2025 math, the Think-Max mode scores 96.4%. These numbers place it inside the top 5 globally across reasoning, coding, and math — while being fully open-source and MIT licensed.",
+          "source": "theAIsearch / DeepSeek HuggingFace",
+          "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "deepseek",
+            "benchmark",
+            "open-source",
+            "LiveCodeBench",
+            "GPQA",
+            "SWE-bench"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-claude-design-launch",
+          "title": "Anthropic Launches Claude Design — Prompt-to-Prototype That Rivals Figma and Adobe",
+          "summary": "Anthropic launched Claude Design in late April 2026, turning prompts into prototypes, slide decks, and marketing assets powered by Claude Opus 4.7. It exports to Canva, PDF, PowerPoint, and HTML. Unlike Figma or Adobe, it assumes no trained designer — Claude generates from a text description. Figma dropped 5% on launch day. Adobe is simultaneously a partner (via MCP) and a competitor.",
+          "source": "VentureBeat / Inc / The New Stack",
+          "url": "https://venturebeat.com/technology/anthropic-just-launched-claude-design-an-ai-tool-that-turns-prompts-into-prototypes-and-challenges-figma",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "anthropic",
+            "claude-design",
+            "design-tool",
+            "figma",
+            "adobe",
+            "prototyping"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-meta-robotics-acquisition",
+          "title": "Meta Acquires Assured Robot Intelligence — Building the 'Android of Humanoid Robots'",
+          "summary": "Meta closed its acquisition of Assured Robot Intelligence on May 1. The startup built foundation models for robots to understand, predict, and adapt to human behavior in dynamic environments. Co-founders Lerrel Pinto and Xiaolong Wang (ex-NVIDIA) join Meta Superintelligence Labs. Meta's stated goal: provide what Android/Qualcomm did for smartphones — a platform for the entire humanoid robot market.",
+          "source": "Bloomberg / TechCrunch",
+          "url": "https://www.bloomberg.com/news/articles/2026-05-01/meta-acquires-assured-robot-intelligence-to-help-build-humanoid-technology",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "meta",
+            "robotics",
+            "humanoid",
+            "acquisition",
+            "physical-ai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-openai-ms-restructure",
+          "title": "OpenAI-Microsoft End Azure Exclusivity — Models Now Ship on AWS and Google Cloud",
+          "summary": "OpenAI and Microsoft restructured their partnership on April 27. Microsoft's exclusive right to distribute OpenAI models via Azure is terminated — OpenAI can now serve enterprise customers across AWS and Google Cloud. Microsoft stops paying revenue share to OpenAI; OpenAI continues paying Microsoft through 2030 with a total cap. Microsoft retains a non-exclusive IP license through 2032.",
+          "source": "CNBC / Microsoft Blog / OpenAI Blog",
+          "url": "https://openai.com/index/next-phase-of-microsoft-partnership/",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "openai",
+            "microsoft",
+            "azure",
+            "aws",
+            "cloud",
+            "partnership"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-ask-youtube",
+          "title": "YouTube Launches 'Ask YouTube' AI Conversational Search for Premium Users",
+          "summary": "YouTube rolled out 'Ask YouTube,' a chatbot-style search mode for US Premium subscribers (18+) starting April 29. It replaces the classic search bar with a conversational interface that returns blended text summaries, short clips, and full videos. Users can ask follow-up questions with relevant video segments auto-highlighted. The test runs through June 8.",
+          "source": "TechCrunch / Engadget",
+          "url": "https://techcrunch.com/2026/04/28/youtube-is-testing-an-ai-powered-search-feature-that-shows-guided-answers/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "youtube",
+            "google",
+            "ai-search",
+            "conversational-ai",
+            "discovery"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-higgsfield-mcp",
+          "title": "Higgsfield MCP Launches: Claude Now Generates Video and Images Natively",
+          "summary": "Higgsfield AI launched its MCP server on April 30, integrating video and image generation directly into Claude (web, Cowork, and Claude Code). Via the connector, Claude accesses Seedance 2.0, Sora 2, Kling 3.0, Veo 3.1, GPT Image 2, FLUX 2, and more without leaving the chat. This is the first MCP giving Claude direct access to a full creative media stack.",
+          "source": "Higgsfield AI / Phemex News",
+          "url": "https://higgsfield.ai/mcp",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "higgsfield",
+            "mcp",
+            "claude",
+            "video-gen",
+            "image-gen",
+            "creative-workflow"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-lovable-mobile",
+          "title": "Lovable Launches Mobile App — Vibe-Coding Comes to iOS and Android",
+          "summary": "Lovable, the AI-powered no-code app builder with 1M+ users, shipped its first mobile app for iOS and Android. Users can now build and deploy full-stack applications from their phones using natural language. The app includes a visual preview, live deployment, and GitHub sync.",
+          "source": "Promethean AI",
+          "url": "https://lovable.dev",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "lovable",
+            "vibe-coding",
+            "no-code",
+            "mobile",
+            "app-builder"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-pika-agents",
+          "title": "Pika Labs Launches AI Agents for Automated Script-to-Publish Video Pipelines",
+          "summary": "Pika Labs introduced AI Agents for video creation, chaining script generation, storyboarding, video generation, editing, and publishing into a fully automated pipeline. Early access is available to Pika Pro subscribers. This is Pika's biggest product expansion since its 2023 model launch.",
+          "source": "Promethean AI",
+          "url": "https://pika.art",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "pika",
+            "video-gen",
+            "ai-agents",
+            "automation",
+            "creative-workflow"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-stripe-link-ai",
+          "title": "Stripe Link AI Agent: Autonomous Shopping and Checkout via Claude and GPT",
+          "summary": "Stripe launched Link AI Agent, allowing Claude and GPT to complete purchases on behalf of users using stored Stripe Link payment methods. The agent can browse, add to cart, and checkout with user confirmation via a secure approval flow. This is Stripe's first AI-native agentic product and positions it as infrastructure for AI shopping agents.",
+          "source": "Promethean AI / The AI Marketers",
+          "url": "https://stripe.com/link",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "stripe",
+            "payments",
+            "ai-agents",
+            "agentic-commerce",
+            "claude"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "llm",
+      "label": "LLMs & Reasoning",
+      "icon": "🧠",
+      "stories": [
+        {
+          "id": "llm-openai-ms-end-exclusivity",
+          "title": "OpenAI-Microsoft Restructure: End of Azure Exclusivity Reshapes Enterprise AI Market",
+          "summary": "The renegotiated OpenAI-Microsoft deal allows OpenAI to distribute its models via Amazon AWS and Google Cloud for the first time. The change was driven by enterprise demand for multi-cloud flexibility and OpenAI's $50B Amazon deal. Microsoft's prior exclusive arrangement had been a structural advantage for Azure enterprise deals; that moat is now gone.",
+          "source": "CNBC / Microsoft Blog / OpenAI Blog",
+          "url": "https://blogs.microsoft.com/blog/2026/04/27/the-next-phase-of-the-microsoft-openai-partnership/",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "openai",
+            "microsoft",
+            "azure",
+            "aws",
+            "cloud-strategy",
+            "enterprise"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-kimi-k2-thinking-benchmark",
+          "title": "Kimi K2 Thinking Scores 44.9% on Humanity's Last Exam — Narrowly Topping GPT-5.5",
+          "summary": "Moonshot AI's Kimi K2 Thinking scores 44.9% on the Humanity's Last Exam benchmark, narrowly topping GPT-5.5 Pro (43.1%). On AIME 2025 math, K2 Thinking hits 99.1%. These results establish Moonshot as a credible frontier reasoning lab outside the US/Google/Anthropic tier, with models available at competitive API pricing.",
+          "source": "Vellum AI Leaderboard",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "kimi",
+            "moonshot-ai",
+            "reasoning",
+            "benchmark",
+            "china-ai",
+            "frontier"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-claude-opus-swebench",
+          "title": "Claude Opus 4.7 Dominates SWE-Bench at 87.6% — Anthropic Holds All Top 4 Coding Spots",
+          "summary": "Anthropic's Claude Opus 4.7 leads SWE-Bench Verified at 87.6%, with Claude Sonnet 4.6 (82.0%), Claude Opus 4.5 (80.9%), and Claude Opus 4.6 (80.8%) rounding out the top four. GPT-5.2 at 80.0% is the first non-Anthropic model. In agentic coding, Anthropic's dominance is unambiguous across all current benchmarks.",
+          "source": "Vellum AI Leaderboard",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 4,
+          "novelty": 2,
+          "relevance_design": 2,
+          "tags": [
+            "anthropic",
+            "swe-bench",
+            "coding",
+            "claude-opus",
+            "agentic-coding"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-gemini-pro-leads-hlx",
+          "title": "Gemini 3 Pro Leads Humanity's Last Exam at 45.8% and Ties AIME 2025 at 100%",
+          "summary": "Google's Gemini 3 Pro holds the top spot on Vellum's Humanity's Last Exam at 45.8% and ties GPT-5.2 at 100% on AIME 2025 math. Combined with Gemini 3.1 Pro Preview sitting at #4 on the AA Intelligence Index, Google is performing strongly across both general reasoning and mathematical tasks heading into May.",
+          "source": "Vellum AI Leaderboard",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 1,
+          "tags": [
+            "google",
+            "gemini",
+            "benchmark",
+            "reasoning",
+            "math"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-amazon-openai-enterprise",
+          "title": "Amazon Now Offers OpenAI Products on AWS — Three-Cloud Distribution Begins",
+          "summary": "Following the OpenAI-Microsoft restructure, OpenAI models are now available directly through AWS for enterprise customers. This creates a three-way cloud distribution for OpenAI's models (Azure, AWS, GCP) and meaningfully changes the competitive landscape for enterprise AI platform deals. Amazon's $50B investment is now actively bearing commercial fruit.",
+          "source": "Promethean AI / TechCrunch",
+          "url": "https://techcrunch.com/2026/04/27/openai-ends-microsoft-legal-peril-over-its-50b-amazon-deal/",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "openai",
+            "amazon",
+            "aws",
+            "enterprise",
+            "cloud",
+            "distribution"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "image-gen",
+      "label": "Image Generation & Processing",
+      "icon": "🎨",
+      "stories": [
+        {
+          "id": "img-higgsfield-mcp-creative",
+          "title": "Higgsfield MCP: Full Creative Stack Inside Claude — Seedance 2.0, Kling 3.0, GPT Image 2",
+          "summary": "Higgsfield's MCP server (launched April 30) gives Claude access to a full suite of generation models: Seedance 2.0, Sora 2, Kling 3.0, Veo 3.1, WAN 2.6, and Hailuo 02 for video; GPT Image 2, FLUX 2, Nano Banana Pro, Soul 2.0, and Seedream 5.0 for images. Creative directors and marketing teams can now run multi-model campaigns from a single Claude conversation.",
+          "source": "Higgsfield AI / MCP Directory",
+          "url": "https://higgsfield.ai/mcp",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "higgsfield",
+            "mcp",
+            "video-gen",
+            "image-gen",
+            "multi-model",
+            "claude"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-gpt-image2-arena-lead",
+          "title": "GPT Image 2 Arena Lead Widens: 172 Elo Points Above Nearest Open-Weight Model",
+          "summary": "As of May 1, GPT Image 2 (high) holds 1335 Elo on the Image Arena — 172 points above FLUX.2 dev (1163 Elo), the top open-weight model. The open-vs-closed gap in image generation is at a historic high. Ideogram v3 is the next closed model worth watching, with reviewers calling it the clearest winner specifically for typography fidelity.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 3,
+          "tags": [
+            "gpt-image-2",
+            "openai",
+            "arena-elo",
+            "image-gen",
+            "leaderboard"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-google-photos-tryon",
+          "title": "Google Photos AI Try-On: Gemini Vision Powers Virtual Clothing Previews",
+          "summary": "Google Photos launched an AI try-on feature powered by Gemini Vision, letting users virtually preview clothing from their saved photos or Google Shopping on a photo of themselves. The feature runs on-device for privacy and handles varying body types. Design teams at apparel brands are exploring the API for customer-facing try-on experiences.",
+          "source": "Promethean AI",
+          "url": "https://photos.google.com",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "google",
+            "gemini",
+            "try-on",
+            "fashion-ai",
+            "image-processing"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-pika-agents-video",
+          "title": "Pika Labs AI Agents: Script-to-Publish Video Pipelines Without Human Handoffs",
+          "summary": "Pika Labs' AI Agents chains together script generation, storyboarding, video generation, editing, and publishing into a fully automated pipeline with no human handoffs required. Early access for Pro subscribers. Pika now positions itself as an end-to-end video production platform, competing directly with Runway's Gen-4 pipeline mode.",
+          "source": "Promethean AI",
+          "url": "https://pika.art",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "pika",
+            "video-gen",
+            "ai-agents",
+            "automation",
+            "pipeline"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "design-ai",
+      "label": "Design & Creative AI",
+      "icon": "✏️",
+      "stories": [
+        {
+          "id": "design-claude-design-launch",
+          "title": "Anthropic Launches Claude Design — Prompt-to-Prototype Without a Designer in the Loop",
+          "summary": "Claude Design launched in late April 2026 as a direct challenge to Figma, Adobe Express, and Canva. Users describe what they need in plain text; Claude Opus 4.7 generates a first draft of a prototype, slide deck, or marketing asset. Refinement happens through chat, inline comments, and adjustment sliders Claude itself generates. It exports to Canva, PDF, PowerPoint, and HTML. Figma dropped 5% on launch day; Adobe stock followed.",
+          "source": "VentureBeat / Inc / The New Stack / PYMNTS",
+          "url": "https://venturebeat.com/technology/anthropic-just-launched-claude-design-an-ai-tool-that-turns-prompts-into-prototypes-and-challenges-figma",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "anthropic",
+            "claude-design",
+            "design-tool",
+            "figma",
+            "adobe",
+            "prototyping",
+            "no-code"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-adobe-firefly-agents",
+          "title": "Adobe Firefly Agents: 60+ Pro-Grade Generative Tools and Claude MCP Integration",
+          "summary": "Adobe launched Firefly Agents on April 15, adding 60+ pro-grade generative AI tools across Photoshop, Illustrator, and Express. Simultaneously, Adobe opened its 50+ app ecosystem to Claude via MCP — allowing Claude Code and Claude Design to use Photoshop, Illustrator, and Firefly as callable tools. Adobe is simultaneously competing and partnering with Anthropic — a complex frenemy dynamic the market is still processing.",
+          "source": "Shashi.co / PYMNTS",
+          "url": "https://www.shashi.co/2026/04/anthropic-just-made-adobe-its-most.html",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "adobe",
+            "firefly",
+            "mcp",
+            "claude",
+            "design-tools",
+            "generative-ai",
+            "workflow"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-figma-ai-text-layout",
+          "title": "Figma AI: Text-to-Layout, Smart Components, and Figma Make for Vibe-Coding UI",
+          "summary": "Figma's AI features reached a meaningful milestone this week: text-to-layout converts prose into responsive Figma frames, smart component suggestions recommend swaps based on surrounding context, and Figma Make (vibe-coding for UI) is now stable. Independent comparisons pit Figma Make directly against Claude Design — reviewers split on which produces better initial output.",
+          "source": "CPO Club / MindStudio",
+          "url": "https://www.mindstudio.ai/blog/claude-design-vs-figma",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "figma",
+            "design-ai",
+            "text-to-layout",
+            "UI-generation",
+            "vibe-coding"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-open-codesign",
+          "title": "Open CoDesign: MIT-Licensed Claude Design Alternative with Local-First, Multi-Model Operation",
+          "summary": "Open CoDesign (GitHub: OpenCoworkAI/open-codesign) is an MIT-licensed, local-first AI design tool that generates prototypes, slides, and marketing assets from prompts. It supports Claude, GPT, Gemini, DeepSeek, Kimi, GLM, and Ollama via BYOK — no cloud dependency. Positioned as the open-source alternative to Claude Design for teams that need design automation without vendor lock-in.",
+          "source": "GitHub / AI Tool Net",
+          "url": "https://github.com/OpenCoworkAI/open-codesign",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "open-source",
+            "design-ai",
+            "co-design",
+            "local-first",
+            "MIT",
+            "multi-model"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-race-three-way",
+          "title": "Three-Way AI Design Race: Claude Design vs Figma AI vs Canva Magic Studio",
+          "summary": "Claude Design's launch crystallizes a three-way AI design race. Early reviews favor Claude Design for first-draft quality, Figma for design-system coherence, and Canva for social media templates. Adobe sits at the center as both tool and infrastructure. The market for 'AI design for non-designers' is now actively contested at the highest level of the software industry.",
+          "source": "Claude Codex FR / MindStudio",
+          "url": "https://claude-codex.fr/en/content/claude-design-vs-figma/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "design-tools",
+            "competitive-landscape",
+            "figma",
+            "canva",
+            "anthropic",
+            "design-ai"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "typography",
+      "label": "Typography & Text Rendering",
+      "icon": "🔤",
+      "stories": [
+        {
+          "id": "typo-ideogram-v3-best-fidelity",
+          "title": "Ideogram v3 Rated Best for Typography Fidelity in 2026 Comprehensive Reviews",
+          "summary": "Multiple 2026 reviews of image generation models rate Ideogram v3 as the top choice for legibility and accuracy in Latin-script text rendering. While GPT Image 2 leads on multilingual breadth (CJK, Devanagari, Arabic), Ideogram v3 excels on Western typography fidelity — fine details like serif stroke weight, ligatures, and kerning. Designers working in Latin scripts still prefer Ideogram for production typography.",
+          "source": "PXZ.ai / NestContent / Atlas Cloud",
+          "url": "https://pxz.ai/blog/ideogram-ai-review-2026",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "ideogram",
+            "typography",
+            "text-rendering",
+            "latin-script",
+            "design-workflow"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-gpt-image2-text-standard",
+          "title": "GPT Image 2 Sets the Multilingual Text Standard — First Model Handling 8+ Script Families",
+          "summary": "OpenAI's GPT Image 2 remains the only model that renders legible text across Latin, CJK, Devanagari, Hangul, Arabic, Tamil, Kannada, and Hebrew in a single model. Independent testing confirms that prompts specifying foreign-language text now land correctly on the first try for most scripts. This removes the 'fix it in Photoshop' step for multilingual design assets.",
+          "source": "TechCrunch / Segmind Blog / ofox.ai",
+          "url": "https://techcrunch.com/2026/04/21/chatgpts-new-images-2-0-model-is-surprisingly-good-at-generating-text/",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "gpt-image-2",
+            "openai",
+            "typography",
+            "multilingual",
+            "CJK",
+            "devanagari",
+            "text-rendering"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-arena-text-subcategory",
+          "title": "Arena Text Rendering Subcategory: GPT Image 2 Leads, Ideogram v3 Is Closest Challenger",
+          "summary": "The Text Rendering subcategory of the Artificial Analysis Image Arena has GPT Image 2 at the top with the widest margin of any subcategory. Ideogram v3 is the closest challenger, followed by FLUX.2 for open-weight. The subcategory is critical for: advertising assets, packaging design, data visualization, UI mockups, and any design output where legible text is non-negotiable.",
+          "source": "Arena AI / Artificial Analysis",
+          "url": "https://arena.ai/leaderboard/text-to-image",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 5,
+          "tags": [
+            "arena",
+            "text-rendering",
+            "leaderboard",
+            "gpt-image-2",
+            "ideogram",
+            "typography"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "robotics",
+      "label": "Robotics & Embodied AI",
+      "icon": "🤖",
+      "stories": [
+        {
+          "id": "robot-meta-assured-intelligence",
+          "title": "Meta Acquires Assured Robot Intelligence — Building the 'Android of Humanoid Robots'",
+          "summary": "Meta closed its acquisition of Assured Robot Intelligence on May 1. The startup developed foundation models for humanoid robots to understand, predict, and adapt to human behavior in complex environments. Co-founders Lerrel Pinto and Xiaolong Wang (ex-NVIDIA) join Meta Superintelligence Labs. Meta's stated strategy: create what Android/Qualcomm created for smartphones — a foundational platform for the entire humanoid robotics ecosystem.",
+          "source": "Bloomberg / TechCrunch / The Next Web",
+          "url": "https://www.bloomberg.com/news/articles/2026-05-01/meta-acquires-assured-robot-intelligence-to-help-build-humanoid-technology",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "meta",
+            "robotics",
+            "humanoid",
+            "acquisition",
+            "physical-ai",
+            "foundation-model"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "robot-figure03-247",
+          "title": "Figure 03 Reaches 24/7 Autonomous Operation — First Humanoid to Run Continuously",
+          "summary": "Figure AI announced Figure 03 has achieved 24/7 autonomous operation in a controlled factory environment — the first humanoid robot to demonstrate continuous operation without human intervention over multiple days. The milestone was reached in a BMW parts logistics cell and marks a transition from demo-capable to operationally viable humanoid robotics.",
+          "source": "Promethean AI",
+          "url": "https://www.figure.ai",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "figure-ai",
+            "humanoid",
+            "autonomous-operation",
+            "manufacturing",
+            "milestone"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "robot-haneda-airport",
+          "title": "Haneda Airport Begins Japan's Largest Humanoid Robot Trial in May 2026",
+          "summary": "Japan Airlines and Haneda Airport launched a humanoid robot trial in Terminal 2 in May 2026 for passenger guidance and baggage handling. The trial runs through August with two domestic robot models. Japan's labor shortage, cultural openness to robots, and high air traffic density make it a proving ground for service-sector humanoid deployment.",
+          "source": "Promethean AI",
+          "url": "https://www.jal.com/en/news/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "humanoid",
+            "robotics",
+            "japan",
+            "airport",
+            "service-robots",
+            "deployment"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "robot-china-power-grid",
+          "title": "China Plans 8,500 Power Grid Robots in $1B Investment Program Through 2029",
+          "summary": "China's State Grid Corporation announced a $1B investment to deploy 8,500 specialized robots across its national power grid for inspection, maintenance, and repair. The program runs 2026–2029 and aims to automate dangerous high-voltage work. This is one of the largest single robotics procurement programs globally and will stress-test AI navigation and manipulation in outdoor industrial environments.",
+          "source": "Promethean AI",
+          "url": "https://www.sgcc.com.cn",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "china",
+            "industrial-ai",
+            "infrastructure",
+            "grid-inspection"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "label": "Research & Papers",
+      "icon": "📄",
+      "stories": [
+        {
+          "id": "research-hetero-scientific-model",
+          "title": "Heterogeneous Scientific Foundation Model Collaboration — UIUC Paper Tops HuggingFace (#1, 176 upvotes)",
+          "summary": "UIUC's paper describes a framework for composing multiple domain-specific scientific AI models (chemistry, biology, materials science) into a unified reasoning pipeline. The approach outperforms single large models on cross-domain scientific questions. With 176 upvotes, it's the most discussed AI paper on May 1 — signaling strong researcher interest in modular scientific AI architectures.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "research",
+            "scientific-ai",
+            "foundation-model",
+            "multi-domain",
+            "UIUC"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "research-visual-gen-agentic-world",
+          "title": "Visual Generation Evolution to Agentic World Modeling (HuggingFace #2, 70 upvotes)",
+          "summary": "This paper traces the evolution from static image generation to dynamic world models capable of simulating physics, agent behavior, and temporal consistency. It proposes a taxonomy of 'agentic generation' where image/video models transition from content producers to world simulators that can answer counterfactual questions. Highly relevant for robotics sim-to-real transfer.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "research",
+            "world-models",
+            "agentic-ai",
+            "video-gen",
+            "simulation"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "research-exoactor-humanoid",
+          "title": "ExoActor: Training Humanoid Robots from Third-Person Human Video (HuggingFace #4, 31 upvotes)",
+          "summary": "ExoActor trains humanoid robots using exocentric (third-person) video of humans performing tasks — rather than first-person or synthetic data. The model achieves state-of-the-art on several manipulation benchmarks by leveraging the massive amount of third-person video already on the internet, dramatically reducing robot training data collection costs.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "research",
+            "robotics",
+            "humanoid",
+            "video-training",
+            "imitation-learning"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "research-bytedance-rl-image-editing",
+          "title": "ByteDance Seed: RL Fine-Tuning Significantly Improves Image Editing Instruction Following",
+          "summary": "ByteDance Seed's paper demonstrates that RL-based fine-tuning of image editing models significantly improves instruction following — reducing unwanted edits outside the target area and improving spatial accuracy. The technique applies on top of existing diffusion models without full retraining, making it practically deployable. ByteDance's growing presence in image research reinforces their push into creative AI beyond TikTok.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "research",
+            "ByteDance",
+            "RL",
+            "image-editing",
+            "diffusion",
+            "instruction-following"
+          ],
+          "image_url": null
+        }
+      ]
+    }
+  ],
+  "visualizations": {
+    "category_counts": {
+      "leaderboard": 5,
+      "aisearch": 13,
+      "llm": 5,
+      "image-gen": 4,
+      "design-ai": 5,
+      "typography": 3,
+      "robotics": 4,
+      "research": 4
+    },
+    "significance_distribution": {
+      "5": 11,
+      "4": 16,
+      "3": 16,
+      "2": 0,
+      "1": 0
+    },
+    "top_tags": [
+      {
+        "tag": "deepseek",
+        "count": 6
+      },
+      {
+        "tag": "openai",
+        "count": 8
+      },
+      {
+        "tag": "open-source",
+        "count": 8
+      },
+      {
+        "tag": "design-ai",
+        "count": 7
+      },
+      {
+        "tag": "leaderboard",
+        "count": 7
+      },
+      {
+        "tag": "robotics",
+        "count": 6
+      },
+      {
+        "tag": "MoE",
+        "count": 4
+      },
+      {
+        "tag": "china-ai",
+        "count": 5
+      },
+      {
+        "tag": "typography",
+        "count": 5
+      },
+      {
+        "tag": "claude",
+        "count": 5
+      }
+    ],
+    "top_stories": [
+      {
+        "id": "ais-deepseek-v4-engineering",
+        "title": "theAIsearch: The Insane Engineering of DeepSeek V4",
+        "significance": 5,
+        "category": "aisearch"
+      },
+      {
+        "id": "design-claude-design-launch",
+        "title": "Anthropic Launches Claude Design",
+        "significance": 5,
+        "category": "design-ai"
+      },
+      {
+        "id": "robot-meta-assured-intelligence",
+        "title": "Meta Acquires Assured Robot Intelligence",
+        "significance": 5,
+        "category": "robotics"
+      },
+      {
+        "id": "llm-openai-ms-end-exclusivity",
+        "title": "OpenAI Ends Azure Exclusivity with Microsoft",
+        "significance": 5,
+        "category": "llm"
+      },
+      {
+        "id": "ais-deepseek-v4-hybrid-attention",
+        "title": "DeepSeek V4 Hybrid Attention Cuts FLOPs 73% at 1M Tokens",
+        "significance": 5,
+        "category": "aisearch"
+      }
+    ]
+  },
+  "report_source": "llm-pipeline",
+  "report_source_badge": "../img/report-source/llm_pipeline.png",
+  "report_source_label": "LLM Pipeline"
+}

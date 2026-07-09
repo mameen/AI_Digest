@@ -1,0 +1,114 @@
+# AI Digest pipeline configuration
+# Local LLM via Ollama (default). Copy .env.example → .env only if you add cloud keys.
+
+run:
+  history_days: 10
+  # Pre-run self-check ("doctor"): verify Ollama/model, enrich deps, writable
+  # output dirs, and source reachability before a long run. Blocking failures
+  # stop the run (override with --force); soft issues warn but proceed. Skip a
+  # single run with --skip-doctor, or run it standalone with --doctor.
+  doctor:
+    enabled: true
+    check_sources: true
+
+output:
+  reports_dir: reports
+  cache_dir: .cache
+  preflight_dir: .preflight
+
+diagnostics:
+  enabled: true
+  output_dir: diagnostics
+
+ingestion:
+  preflight: true
+  force_refetch: false
+
+  crawl4ai:
+    enabled: true
+    urls_from_preflight: true
+    max_pages: 12
+    timeout_seconds: 60
+
+  # Structured-API leaderboard sources (direct JSON, no scraping).
+  # See pipeline/structured_sources.py for the registry.
+  structured_sources:
+    enabled: true
+
+llm:
+  enabled: true
+  provider: ollama
+  model: qwen3.6:35b
+  base_url: http://192.168.1.20:11434/v1
+  max_retries: 3
+  structured_output:
+    library: instructor
+
+enrich:
+  stories_per_batch: 18
+  gap_categories_per_call: 3
+  # Per-category retries when a gap category comes back empty (local models
+  # occasionally zero one). Each empty category is re-asked on its own.
+  gap_fill_retries: 2
+  # Last-resort safety net: if a required category is still empty after gap
+  # refill, seed it from the most recent in-window prior digest (already-verified,
+  # already-published links). Runs after the grounding guard; stories are flagged
+  # carried_forward. Keeps a thin news day from zeroing a required category.
+  carry_forward:
+    enabled: true
+  # Agentic link-verification loop: after gap-fill, before the grounding guard,
+  # let the model call verify_url (and optionally web_search) to actively check
+  # and repair cited links. Default-off; the deterministic guard always runs.
+  tool_loop:
+    enabled: false
+    max_iterations: 8
+    web_search: false
+  category_targets:
+    leaderboard: 6
+    analytics: 5
+    aisearch: 10
+    youtube: null
+    agentic-ai: 5
+    llm: 5
+    rag: 5
+    image-gen: 5
+    design-ai: 5
+    typography: 4
+    robotics: 5
+    research: 6
+
+validation:
+  min_total_stories: 55
+  min_categories: 12
+  required_category_ids:
+    - leaderboard
+    - analytics
+    - aisearch
+    - youtube
+    - agentic-ai
+    - llm
+    - rag
+    - image-gen
+    - design-ai
+    - typography
+    - robotics
+    - research
+  fail_on_missing: false
+
+render:
+  rebuild_html: true
+  rebuild_index: true
+  open_browser: false
+
+# Footer links in archive frames (reports/index.html, diagnostics/index.html)
+site:
+  author_name: Ameen Demiry
+  author_short: ademiry
+  author_bio: Senior engineer with extensive experience in developing distributed and cloud-based solutions.
+  author_photo: ademiry.jpg  # local path under llm_pipeline/assets/ (pipeline archive frames)
+  # author_photo_url: https://…  # optional absolute URL for app/ GitHub Pages frames (no asset copy)
+  linkedin_url: https://www.linkedin.com/in/ademiry/
+  portfolio_url: https://demiry.net/
+  github_url: https://github.com/mameen/AI_Digest
+  # Local control admin (llm_pipeline/server/) — hide frame nav link until server is ready
+  admin_nav_enabled: false

@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en" data-admin-deploy="static">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Digest · Control Admin</title>
+  <style>:root {
+    --bg: #0d1117; --card-bg: #161b22; --masthead-bg: #0d1117;
+    --masthead-text: #e6edf3; --accent: #58a6ff;
+    --pill-active-bg: #388bfd26; --pill-active-text: #58a6ff;
+    --pill-inactive-bg: #21262d; --pill-inactive-text: #8b949e;
+    --border: #30363d; --muted: #8b949e; --sig-color: #d29922;
+    --text: #e6edf3;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --cat-llm: #388bfd; --cat-image: #bc8cff; --cat-design: #39d2c0;
+    --cat-typo: #f85149; --cat-robot: #f0883e; --cat-research: #58a6ff;
+    --hm-empty: #21262d; --hm-1: #1a3a5c; --hm-2: #1a4a7a; --hm-3: #1a6fa0; --hm-4: #58a6ff;
+    --hm-label: #8b949e; --hm-selection: #58a6ff; --hm-hover: #8b949e;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .masthead { background: var(--masthead-bg); color: var(--masthead-text); padding: 20px 24px 16px; display: flex; flex-direction: column; gap: 6px; border-bottom: 1px solid var(--border); }
+  .masthead-top { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .masthead h1 { font-size: 18px; font-weight: 600; letter-spacing: 0; text-transform: none; }
+  .masthead-date { font-size: 13px; font-weight: 700; letter-spacing: 0.4px; color: var(--text); text-transform: uppercase; }
+  .masthead-summary { font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 920px; padding-top: 8px; }
+
+  .top-stories-bar { background: #161b22; padding: 10px 24px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+  .top-stories-label { font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); white-space: nowrap; font-weight: 500; }
+  .top-story-pill { background: #21262d; color: var(--accent); padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; border: 1px solid var(--border); transition: background 0.15s, border-color 0.15s; white-space: nowrap; }
+  .top-story-pill:hover { background: #388bfd26; border-color: var(--accent); }
+
+  .layout {
+    display: flex; align-items: stretch; min-height: calc(100vh - 120px);
+    --sidebar-w: 220px;
+  }
+
+  .sidebar {
+    width: var(--sidebar-w); min-width: 160px; max-width: 420px; flex-shrink: 0;
+    background: var(--masthead-bg); padding: 20px 16px;
+    position: sticky; top: 0; height: calc(100vh - 120px); overflow-y: auto;
+  }
+  .layout-resizer {
+    flex-shrink: 0; width: 6px; margin: 0 -3px; position: relative; z-index: 2;
+    cursor: col-resize; touch-action: none;
+    background: transparent; border-left: 1px solid var(--border);
+  }
+  .layout-resizer::after {
+    content: ''; position: absolute; top: 0; bottom: 0; left: -3px; right: -3px;
+  }
+  .layout-resizer:hover, .layout-resizer.dragging { background: #388bfd33; border-left-color: var(--accent); }
+
+  .main { flex: 1; min-width: 0; padding: 20px 24px; background: var(--bg); }
+  .sidebar-section { margin-bottom: 24px; }
+  .sidebar-title { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  svg text { font-family: var(--font-sans); }
+  .tag-cloud { display: flex; flex-wrap: wrap; gap: 4px; }
+  .tag-item { font-size: 11px; background: var(--pill-inactive-bg); color: var(--muted); padding: 2px 7px; border-radius: 10px; border: 1px solid var(--border); cursor: pointer; transition: all 0.15s; }
+  .tag-item:hover { border-color: var(--accent); color: var(--text); }
+  .tag-item.tag-active { background: var(--pill-active-bg); color: var(--accent); border-color: var(--accent); }
+  .tag-item.tag-dim { opacity: 0.3; }
+  .tag-count { color: var(--accent); font-size: 10px; margin-left: 3px; }
+  .sig-row:hover .sig-bar { filter: brightness(1.2); }
+  #sig-chart { cursor: pointer; }
+
+  .filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; align-items: center; }
+  .pill { padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); transition: all 0.15s; font-family: var(--font-sans); background: var(--pill-inactive-bg); color: var(--pill-inactive-text); }
+  .pill.active { background: var(--pill-active-bg); color: var(--pill-active-text); border-color: var(--accent); }
+  .pill.inactive:hover { background: #21262d; border-color: #8b949e; color: var(--text); }
+
+  /* AI Search hub view */
+  .aisearch-hub { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 24px; gap: 32px; }
+  .aisearch-hub-title { font-size: 22px; font-weight: 700; color: var(--text); text-align: center; }
+  .aisearch-hub-sub { font-size: 13px; color: var(--muted); text-align: center; max-width: 480px; line-height: 1.6; margin-top: -20px; }
+  .aisearch-hub-links { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .aisearch-hub-link { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 28px 36px; background: #161b22; border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text); transition: border-color 0.15s, background 0.15s; min-width: 180px; }
+  .aisearch-hub-link:hover { border-color: #f0883e; background: #f0883e08; }
+  .aisearch-hub-link-icon { font-size: 36px; }
+  .aisearch-hub-link-label { font-size: 15px; font-weight: 600; }
+  .aisearch-hub-link-url { font-size: 11px; color: var(--muted); }
+
+  .story-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; }
+
+  .story-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px 16px 12px; cursor: pointer; transition: border-color 0.15s; position: relative; overflow: hidden; }
+  .story-card:hover { border-color: #8b949e; }
+  .story-card.expanded { border-color: var(--accent); }
+  .card-cat-badge { position: absolute; top: 12px; right: 12px; font-size: 1rem; }
+  .card-copy { position: absolute; top: 10px; right: 32px; width: 20px; height: 20px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 5px; border: 1px solid var(--border); background: var(--card-bg); color: var(--muted); cursor: pointer; opacity: 0.4; transition: opacity 0.15s, color 0.15s, border-color 0.15s; z-index: 4; }
+  .card-copy:hover { opacity: 1; color: var(--accent); border-color: var(--accent); }
+  .card-copy.copied { opacity: 1; color: #3fb950; border-color: #3fb950; }
+  .card-copy.copy-failed { opacity: 1; color: #f85149; border-color: #f85149; }
+  .card-cat-stripe { position: absolute; top: 0; left: 0; width: 3px; height: 100%; }
+  .card-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .card-source { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; }
+  .card-info { width: 15px; height: 15px; padding: 0; border-radius: 50%; border: 1px solid var(--border); background: transparent; color: var(--muted); font: italic 10px/13px Georgia, serif; text-align: center; cursor: pointer; opacity: 0.45; transition: opacity 0.15s, border-color 0.15s, color 0.15s; }
+  .card-info:hover { opacity: 1; border-color: var(--accent); color: var(--accent); }
+  .card-trace { position: absolute; z-index: 5; top: 34px; left: 16px; right: 16px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; box-shadow: 0 4px 14px rgba(0,0,0,0.4); }
+  .card-trace[hidden] { display: none; }
+  .trace-row { display: flex; gap: 8px; padding: 2px 0; align-items: baseline; }
+  .trace-k { color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-size: 9px; min-width: 46px; flex-shrink: 0; }
+  .trace-v { color: var(--text); font-size: 11px; background: none; word-break: break-all; }
+  .card-sig { display: flex; gap: 2px; margin-left: auto; padding-right: 54px; }
+  .sig-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
+  .sig-dot.filled { background: var(--sig-color); }
+  .card-title { font-size: 13px; font-weight: 600; line-height: 1.4; color: var(--text); }
+  .card-expand { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .card-expand.visible { display: block; }
+  .card-summary { font-size: 12px; line-height: 1.6; color: var(--muted); margin-bottom: 12px; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+  .card-tag { font-size: 11px; background: #21262d; color: var(--muted); padding: 1px 6px; border-radius: 10px; border: 1px solid var(--border); }
+  .card-link { display: inline-flex; align-items: center; gap: 4px; color: var(--accent); font-size: 12px; font-weight: 500; text-decoration: none; }
+  .card-link:hover { text-decoration: underline; }
+  .card-links { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
+  .card-resource-link {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 11px; font-weight: 500; color: var(--accent);
+    text-decoration: none; padding: 3px 8px; border-radius: 999px;
+    border: 1px solid var(--border); background: var(--pill-inactive-bg, #21262d);
+  }
+  .card-resource-link:hover { text-decoration: underline; border-color: var(--accent); }
+  .card-resource-link-primary { border-color: var(--accent); font-weight: 600; }
+
+  .empty-state { text-align: center; padding: 40px; color: var(--muted); }
+
+  .footer { border-top: 1px solid var(--border); padding: 12px 24px; font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; background: var(--masthead-bg); }
+
+  .d3-tooltip { position: fixed; background: #161b22; border: 1px solid var(--border); color: var(--text); padding: 6px 10px; border-radius: 6px; font-size: 12px; font-family: var(--font-sans); pointer-events: none; opacity: 0; transition: opacity 0.15s; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+
+  .masthead-archive { font-size: 12px; margin-left: auto; }
+  .masthead-archive a { color: var(--accent); text-decoration: none; }
+  .masthead-archive a:hover { text-decoration: underline; }
+  .content-loading { padding: 48px 24px; color: var(--muted); text-align: center; }
+
+  /* ── Leaderboard ── */
+  .lb-wrap { grid-column: 1 / -1; width: 100%; }
+  .lb-tabs { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .lb-tab { padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--pill-inactive-bg); color: var(--pill-inactive-text); transition: all 0.15s; }
+  .lb-tab.active { background: var(--pill-active-bg); color: var(--accent); border-color: var(--accent); }
+  .lb-tab:hover:not(.active) { border-color: #8b949e; color: var(--text); }
+  .lb-src { font-size: 11px; color: var(--accent); text-decoration: none; margin-left: auto; }
+  .lb-src:hover { text-decoration: underline; }
+  .lb-updated { font-size: 11px; color: var(--muted); }
+  .lb-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+  .lb-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .lb-table thead { background: #161b22; position: sticky; top: 0; z-index: 1; }
+  .lb-th { padding: 8px 12px; text-align: left; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; white-space: nowrap; user-select: none; border-bottom: 1px solid var(--border); }
+  .lb-th:hover { color: var(--text); }
+    .lb-th-info { cursor: help; }
+    .lb-th-info[title] { border-bottom: 1px dotted var(--border); }
+  .sort-arrow { font-size: 10px; margin-left: 3px; opacity: 0.5; }
+  .lb-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+  .lb-table tbody tr:last-child { border-bottom: none; }
+  .lb-table tbody tr:hover { background: #21262d; }
+  .lb-table td { padding: 8px 12px; color: var(--text); white-space: nowrap; }
+  .lb-table td:first-child { color: var(--muted); font-weight: 600; }
+  .lb-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; flex-shrink: 0; }
+  .lb-bar-cell { display: flex; align-items: center; gap: 8px; min-width: 120px; }
+  .lb-bar-fill { display: inline-block; height: 6px; border-radius: 3px; min-width: 2px; }
+  .lb-bar-val { font-weight: 700; font-size: 13px; color: var(--text); }
+
+  /* ── Benchmark chart grid ── */
+  .lb-charts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .lb-chart-card { background: #161b22; border: 1px solid var(--border); border-radius: 8px; padding: 14px 12px 10px; }
+  .lb-chart-title { margin-bottom: 8px; }
+  .lb-chart-name { display: block; font-size: 13px; font-weight: 600; color: var(--text); }
+  .lb-chart-task { display: block; font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .lb-chart-svg { display: block; width: 100%; overflow: visible; }
+
+  /* ── More leaderboards (links) ── */
+  .lb-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+  .lb-links-group { background: #161b22; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+  .lb-links-head { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  .lb-link-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 6px 0; text-decoration: none; border-bottom: 1px solid transparent; }
+  .lb-link-row:hover { border-bottom-color: var(--border); }
+  .lb-link-name { font-size: 12px; color: var(--text); }
+  .lb-link-src { font-size: 11px; color: var(--accent); white-space: nowrap; flex-shrink: 0; }
+
+  @media (max-width: 1100px) { .lb-charts-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 860px) {
+    .layout { flex-direction: column; }
+    .layout-resizer { display: none; }
+    .sidebar { width: auto; max-width: none; position: static; height: auto; border-bottom: 1px solid var(--border); }
+    .masthead { padding: 16px; }
+    .top-stories-bar { padding: 10px 16px; }
+    .main { padding: 16px; }
+  }
+
+/* Light theme overrides — default is dark.css (:root). Toggle sets data-theme on <html>. */
+
+[data-theme="light"] {
+  --bg: #f6f8fa;
+  --card-bg: #ffffff;
+  --masthead-bg: #ffffff;
+  --masthead-text: #1f2328;
+  --accent: #0969da;
+  --pill-active-bg: #ddf4ff;
+  --pill-active-text: #0969da;
+  --pill-inactive-bg: #f6f8fa;
+  --pill-inactive-text: #656d76;
+  --border: #d0d7de;
+  --muted: #656d76;
+  --sig-color: #bf8700;
+  --text: #1f2328;
+  --cat-llm: #0969da;
+  --cat-image: #8250df;
+  --cat-design: #1a7f37;
+  --cat-typo: #cf222e;
+  --cat-robot: #bc4c00;
+  --cat-research: #0969da;
+  --hm-empty: #ebedf0;
+  --hm-1: #c6e6ff;
+  --hm-2: #79c0ff;
+  --hm-3: #4493f8;
+  --hm-4: #0969da;
+  --hm-label: #656d76;
+  --hm-selection: #0969da;
+  --hm-hover: #656d76;
+}
+
+[data-theme="light"] .top-stories-bar,
+[data-theme="light"] .lb-table thead,
+[data-theme="light"] .lb-chart-card,
+[data-theme="light"] .lb-links-group,
+[data-theme="light"] .aisearch-hub-link,
+[data-theme="light"] .frame-author,
+[data-theme="light"] .archive-charts-row .chart-panel,
+[data-theme="light"] .d3-tooltip {
+  background: #ffffff;
+}
+
+[data-theme="light"] .top-story-pill,
+[data-theme="light"] .tag-item,
+[data-theme="light"] .card-tag,
+[data-theme="light"] .year-pill {
+  background: #f6f8fa;
+}
+
+[data-theme="light"] .lb-table tbody tr:hover,
+[data-theme="light"] .pill.inactive:hover {
+  background: #f6f8fa;
+}
+
+[data-theme="light"] .heatmap-details,
+[data-theme="light"] .archive-details {
+  background: #ffffff;
+}
+
+[data-theme="light"] .diag-panel {
+  background: #f6f8fa;
+}
+
+[data-theme="light"] .d3-tooltip,
+[data-theme="light"] .card-trace {
+  box-shadow: 0 4px 12px rgba(31, 35, 40, 0.12);
+}
+
+/* Archive frame: heatmap row, trend charts, author card dismiss, chrome controls. */
+
+.heatmap-summary,
+.archive-summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 12px 108px 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  user-select: none;
+}
+.heatmap-summary::-webkit-details-marker,
+.archive-summary::-webkit-details-marker { display: none; }
+.heatmap-summary::before,
+.archive-summary::before {
+  content: '▸';
+  color: var(--muted);
+  font-size: 11px;
+  transition: transform 0.15s;
+}
+.heatmap-details[open] .heatmap-summary::before,
+.archive-details[open] .archive-summary::before { transform: rotate(90deg); }
+.heatmap-title,
+.archive-title { font-size: 12px; font-weight: 600; color: var(--text); }
+.heatmap-sub,
+.archive-sub { font-size: 11px; color: var(--muted); }
+.heatmap-body,
+.archive-body { padding: 0 24px 16px; position: relative; padding-bottom: 4px; }
+.heatmap-header,
+.archive-header { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+.heatmap-legend,
+.archive-legend { display: flex; align-items: center; gap: 4px; margin-top: 8px; margin-bottom: 2px; }
+.hm-leg-label { font-size: 10px; color: var(--muted); }
+.hm-swatch { width: 13px; height: 13px; border-radius: 2px; }
+.hm-swatch.hm-empty { background: var(--hm-empty); }
+.hm-swatch.hm-1 { background: var(--hm-1); }
+.hm-swatch.hm-2 { background: var(--hm-2); }
+.hm-swatch.hm-3 { background: var(--hm-3); }
+.hm-swatch.hm-4 { background: var(--hm-4); }
+#heatmap-wrap svg { display: block; overflow: visible; }
+.year-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; margin-bottom: 2px; }
+.year-pill {
+  font-size: 11px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--border);
+  background: #21262d; color: var(--muted); cursor: pointer;
+}
+.year-pill.active { background: #388bfd26; color: var(--accent); border-color: #388bfd66; }
+.frame-error { padding: 24px; color: #f85149; }
+.panel-bar {
+  display: flex; align-items: center; gap: 12px; padding: 8px 16px;
+  border-bottom: 1px solid var(--border); font-size: 11px; color: var(--muted); flex-shrink: 0;
+}
+.panel-bar strong { color: var(--text); }
+.panel-bar a { color: var(--accent); text-decoration: none; }
+.diag-panel { flex: 1; min-height: 360px; border: none; width: 100%; background: var(--bg); }
+
+.heatmap-details,
+.archive-details {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.archive-charts-row {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(260px, 1fr);
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 8px;
+  position: relative;
+  padding-top: 34px;
+}
+
+.chart-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px 12px;
+  min-width: 0;
+}
+
+.chart-panel-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+#heatmap-wrap,
+#topic-trend-wrap,
+#perf-trend-wrap {
+  overflow-x: auto;
+}
+
+#topic-trend-wrap svg,
+#perf-trend-wrap svg {
+  display: block;
+}
+
+.trend-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-top: 8px;
+}
+
+.trend-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.trend-legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.frame-controls {
+  position: fixed;
+  top: 8px;
+  right: 12px;
+  z-index: 320;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.frame-nav {
+  display: flex;
+  gap: 5px;
+}
+
+.frame-nav a,
+.frame-controls .theme-toggle,
+.frame-controls .author-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text);
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0.88;
+  transition: opacity 0.15s, border-color 0.15s, color 0.15s;
+  padding: 0;
+  cursor: pointer;
+}
+
+.frame-nav a:hover,
+.frame-controls .theme-toggle:hover,
+.frame-controls .author-toggle:hover {
+  opacity: 1;
+  border-color: var(--accent);
+}
+
+.frame-controls .author-toggle .author-toggle-i {
+  font: italic 12px/1 Georgia, serif;
+  color: var(--muted);
+}
+
+.frame-controls .author-toggle.is-active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px #388bfd44;
+}
+
+.frame-controls .author-toggle.is-active .author-toggle-i {
+  color: var(--accent);
+}
+
+.frame-nav a[aria-current="page"] {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px #388bfd44;
+  cursor: default;
+  pointer-events: none;
+}
+
+.frame-author {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 70;
+  max-width: 272px;
+  padding: 6px 28px 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card-bg);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+  pointer-events: auto;
+}
+
+.frame-author-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.frame-author img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.frame-author-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.frame-author-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.25;
+}
+
+.frame-author-bio {
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.frame-author-links {
+  font-size: 10px;
+  margin-top: 2px;
+  line-height: 1.3;
+}
+
+.frame-author-links a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.frame-author-links a:hover {
+  text-decoration: underline;
+}
+
+.frame-author-dismiss {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0.75;
+}
+
+.frame-author-dismiss:hover {
+  opacity: 1;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.frame-author.is-collapsed {
+  display: none;
+}
+
+@media (min-width: 901px) {
+  .heatmap-body,
+  .archive-body {
+    min-height: 108px;
+  }
+}
+
+body.diag-archive-frame {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+body.diag-archive-frame .archive-details {
+  flex-shrink: 0;
+}
+
+body.diag-archive-frame .diag-panel {
+  flex: 1 1 auto;
+  min-height: 360px;
+}
+
+body.diag-archive-frame .site-footer {
+  flex-shrink: 0;
+}
+
+.site-footer {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  background: var(--masthead-bg);
+  text-align: center;
+}
+
+.site-footer a { color: var(--accent); text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; }
+.site-footer-sep { margin: 0 6px; opacity: 0.5; }
+.site-footer svg { vertical-align: -1px; margin-right: 2px; }
+
+@media (max-width: 900px) {
+  .archive-charts-row {
+    grid-template-columns: 1fr;
+  }
+  .frame-author:not(.is-collapsed) {
+    max-width: min(260px, calc(100vw - 56px));
+  }
+}
+
+/* Admin control dashboard — extends digest dark/light tokens */
+
+.admin-readonly-banner {
+  background: linear-gradient(90deg, #d2992215, #58a6ff15);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 24px;
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.5;
+}
+.admin-readonly-banner.hidden { display: none; }
+.admin-readonly-banner code {
+  background: var(--pill-inactive-bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+.admin-masthead {
+  border-bottom: none;
+  background: linear-gradient(180deg, #161b22 0%, var(--bg) 100%);
+  padding: 20px 24px 12px;
+  padding-right: 120px;
+  position: relative;
+  overflow: hidden;
+}
+.admin-masthead::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 10% -20%, #58a6ff18, transparent 55%);
+  pointer-events: none;
+}
+.admin-masthead-inner {
+  position: relative;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.admin-brand { display: flex; align-items: center; gap: 14px; }
+.admin-brand-glyph {
+  font-size: 28px;
+  line-height: 1;
+  filter: drop-shadow(0 0 12px #58a6ff66);
+}
+.admin-masthead h1 {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.admin-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+.admin-status-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.admin-pill {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--muted);
+}
+.admin-pill-ok { border-color: #3fb95066; color: #3fb950; background: #3fb95015; }
+.admin-pill-warn { border-color: #d2992266; color: #d29922; background: #d2992215; }
+.admin-pill-live { border-color: #58a6ff66; color: var(--accent); background: #388bfd18; }
+.admin-pill-readonly { border-color: #bc8cff66; color: #bc8cff; background: #bc8cff15; }
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+  padding: 20px 24px 48px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.admin-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  box-shadow: 0 0 0 1px #00000022, 0 8px 24px #00000033;
+  position: relative;
+  overflow: hidden;
+}
+.admin-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #58a6ff44, transparent);
+}
+.admin-card-wide { grid-column: 1 / -1; }
+.admin-card h2 {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.admin-card p.hint { font-size: 12px; color: var(--muted); margin-bottom: 12px; line-height: 1.5; }
+
+.admin-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+.admin-row label { font-size: 11px; color: var(--muted); min-width: 72px; }
+
+.admin-input, .admin-select, .admin-textarea {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 12px;
+  padding: 7px 10px;
+  font-family: inherit;
+}
+.admin-textarea {
+  width: 100%;
+  min-height: 140px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  line-height: 1.45;
+  resize: vertical;
+}
+.admin-input:focus, .admin-select:focus, .admin-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px #388bfd33;
+}
+.admin-textarea[readonly], .admin-input[readonly] { opacity: 0.85; cursor: default; }
+.admin-textarea.is-locked { opacity: 0.72; background: var(--pill-inactive-bg); }
+.admin-tuning-locked { color: #d29922; border-left: 3px solid #d29922; padding-left: 10px; }
+
+.admin-btn {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--pill-inactive-bg);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, opacity 0.15s;
+}
+.admin-btn:hover:not(:disabled) { border-color: var(--accent); background: #388bfd18; }
+.admin-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.admin-btn-primary {
+  border-color: #388bfd66;
+  background: linear-gradient(180deg, #388bfd33, #388bfd18);
+  color: var(--accent);
+}
+.admin-btn-danger { border-color: #f8514966; color: #f85149; }
+.admin-btn-danger:hover:not(:disabled) { background: #f8514918; }
+
+.admin-table-wrap { overflow-x: auto; margin-top: 8px; }
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+.admin-table th, .admin-table td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.admin-table th { color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; font-size: 10px; }
+.admin-table tr:hover td { background: #58a6ff08; }
+
+.admin-log {
+  margin-top: 10px;
+  max-height: 200px;
+  overflow: auto;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px;
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 10px;
+  line-height: 1.45;
+  color: var(--muted);
+  white-space: pre-wrap;
+}
+
+.admin-tabs { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+.admin-tab {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.admin-tab.active { background: #388bfd26; color: var(--accent); border-color: #388bfd66; }
+
+[data-theme="light"] .admin-masthead { background: linear-gradient(180deg, #f6f8fa 0%, var(--bg) 100%); }
+[data-theme="light"] .admin-card { box-shadow: 0 1px 3px #00000012; }
+</style>
+</head>
+<body>
+<div class="frame-controls"><nav class="frame-nav" aria-label="Switch view"><a href="../reports/index.html" title="Digest archive">📰</a><a href="../diagnostics/index.html" title="Pipeline diagnostics">⏱️</a></nav></div>
+  <div class="admin-readonly-banner hidden" id="admin-readonly-banner" role="status"></div>
+  <header class="admin-masthead">
+    <div class="admin-masthead-inner">
+      <div class="admin-brand">
+        <span class="admin-brand-glyph">⎈</span>
+        <div>
+          <h1>Control Admin</h1>
+          <p class="admin-sub">Pipeline · git · tuning · deployment precheck</p>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="admin-status-bar" id="admin-status-strip" aria-label="Admin status">
+    <span class="admin-pill admin-pill-warn" id="admin-api-pill">API offline</span>
+    <span class="admin-pill" id="admin-git-pill">git …</span>
+    <span class="admin-pill" id="admin-precheck-pill">precheck pending</span>
+  </div>
+  <main class="admin-grid" id="admin-root"></main>
+  <script>(function(){var h=(location.hostname||'').toLowerCase();window.__ADMIN_READONLY__=h.endsWith('.github.io');window.__ADMIN_API__='';})();</script>
+  <script>(function () {
+  var STORAGE_KEY = 'aidigest-theme';
+
+  function preferredTheme() {
+    try {
+      return localStorage.getItem(STORAGE_KEY) || 'dark';
+    } catch (e) {
+      return 'dark';
+    }
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme === 'light' ? 'light' : 'dark');
+    document.querySelectorAll('.theme-toggle').forEach(function (btn) {
+      var isLight = theme === 'light';
+      btn.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+      btn.textContent = isLight ? '\u263E' : '\u2600';
+      btn.title = isLight ? 'Dark mode' : 'Light mode';
+    });
+    try {
+      document.dispatchEvent(new CustomEvent('aidigest-theme-change', {
+        detail: { theme: theme === 'light' ? 'light' : 'dark' }
+      }));
+    } catch (e) {}
+    syncEmbeddedThemes(theme);
+  }
+
+  function syncEmbeddedThemes(theme) {
+    var value = theme === 'light' ? 'light' : 'dark';
+    document.querySelectorAll('iframe').forEach(function (frame) {
+      try {
+        if (frame.contentDocument && frame.contentDocument.documentElement) {
+          frame.contentDocument.documentElement.setAttribute('data-theme', value);
+        }
+        if (frame.contentWindow) {
+          frame.contentWindow.postMessage({ type: 'aidigest-theme', theme: value }, '*');
+        }
+      } catch (e) {}
+    });
+  }
+
+  function authorCards() {
+    return Array.prototype.slice.call(document.querySelectorAll('.frame-author'));
+  }
+
+  function authorExpanded() {
+    var cards = authorCards();
+    return cards.length === 0 || !cards[0].classList.contains('is-collapsed');
+  }
+
+  function setAuthorExpanded(expanded) {
+    authorCards().forEach(function (card) {
+      card.classList.toggle('is-collapsed', !expanded);
+      card.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    });
+    document.querySelectorAll('.author-toggle').forEach(function (btn) {
+      btn.classList.toggle('is-active', expanded);
+      btn.setAttribute('aria-pressed', expanded ? 'true' : 'false');
+      btn.setAttribute('aria-label', expanded ? 'Hide author info' : 'Show author info');
+      btn.title = expanded ? 'Hide author info' : 'Show author info';
+    });
+  }
+
+  function toggleAuthor() {
+    setAuthorExpanded(!authorExpanded());
+  }
+
+  function mountThemeToggle(container) {
+    if (!container || container.querySelector('.theme-toggle')) return;
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'theme-toggle';
+    btn.addEventListener('click', function () {
+      var next = preferredTheme() === 'light' ? 'dark' : 'light';
+      try { localStorage.setItem(STORAGE_KEY, next); } catch (e) {}
+      applyTheme(next);
+    });
+    container.appendChild(btn);
+    applyTheme(preferredTheme());
+  }
+
+  function mountAuthorToggle(container) {
+    if (!container || container.querySelector('.author-toggle')) return;
+    if (!authorCards().length) return;
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'author-toggle';
+    btn.innerHTML = '<span class="author-toggle-i">i</span>';
+    btn.addEventListener('click', toggleAuthor);
+    var themeBtn = container.querySelector('.theme-toggle');
+    if (themeBtn) container.insertBefore(btn, themeBtn);
+    else container.appendChild(btn);
+  }
+
+  function wireAuthorCard() {
+    authorCards().forEach(function (card) {
+      if (card.dataset.authorWired === '1') return;
+      card.dataset.authorWired = '1';
+      card.setAttribute('aria-expanded', 'true');
+
+      var dismiss = card.querySelector('.frame-author-dismiss');
+      if (dismiss) {
+        dismiss.addEventListener('click', function (ev) {
+          ev.stopPropagation();
+          setAuthorExpanded(false);
+        });
+      }
+
+      card.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+      });
+    });
+    setAuthorExpanded(true);
+  }
+
+  function isEmbeddedView() {
+    try {
+      return window.self !== window.top;
+    } catch (e) {
+      return true;
+    }
+  }
+
+  function mountControls() {
+    applyTheme(preferredTheme());
+    if (isEmbeddedView()) return;
+
+    var host = document.querySelector('.frame-controls');
+    if (!host) {
+      host = document.createElement('div');
+      host.className = 'frame-controls';
+      document.body.insertBefore(host, document.body.firstChild);
+    }
+    mountAuthorToggle(host);
+    mountThemeToggle(host);
+    wireAuthorCard();
+  }
+
+  applyTheme(preferredTheme());
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', mountControls);
+  } else {
+    mountControls();
+  }
+
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+      preferredTheme: preferredTheme,
+      applyTheme: applyTheme,
+      setAuthorExpanded: setAuthorExpanded,
+      authorExpanded: authorExpanded
+    };
+  }
+})();
+</script>
+  <script>(function () {
+  'use strict';
+
+  var API = (typeof window !== 'undefined' && window.__ADMIN_API__) || '';
+  var TUNING_TABS = [
+    { id: 'pipeline', label: 'Pipeline & ingest', kind: 'config' },
+    { id: 'enrich', label: 'Enrich & LLM', kind: 'config' },
+    { id: 'publish', label: 'Validation & site', kind: 'config' },
+    { id: 'brief', label: 'Editorial brief', kind: 'brief' },
+    { id: 'prompts', label: 'Prompt passes', kind: 'reference' }
+  ];
+  var PROMPT_REFERENCE =
+    'LLM enrich passes (pipeline/enrich.py)\n\n' +
+    'Every pass prepends pipeline/editorial_brief.md, then adds a task block:\n\n' +
+    '1. Skeleton enrich (_llm_category_enrich)\n' +
+    '   aisearch, youtube, research, typography, robotics\n' +
+    '   Extra rules per category in _skeleton_rules()\n\n' +
+    '2. Curation (_llm_curate_category)\n' +
+    '   Trims to enrich.category_targets (aisearch default 10; youtube null = keep all)\n\n' +
+    '3. Leaderboard (_llm_leaderboard)\n' +
+    '   6 stories from crawled leaderboard markdown + llm-stats\n\n' +
+    '4. Gap fill (_llm_gap_fill)\n' +
+    '   analytics, agentic-ai, llm, rag, image-gen, design-ai\n' +
+    '   Strict URL grounding from ingestion context\n\n' +
+    '5. Daily summary (_llm_summary)\n' +
+    '   One-sentence masthead + aisearch video label\n\n' +
+    'Optional: enrich.tool_loop.enabled — agentic URL verify (default off)\n\n' +
+    'See docs/TUNING.md for source knobs (YouTube channels, link_extract, etc.)';
+
+  var SECTION_KEYS = {
+    pipeline: ['run', 'output', 'diagnostics', 'ingestion'],
+    enrich: ['llm', 'enrich'],
+    publish: ['validation', 'render', 'site']
+  };
+
+  var SECTION_META = {
+    pipeline: {
+      label: 'Pipeline & ingest',
+      hint: 'Run window, doctor, output dirs, crawl4ai, structured sources.'
+    },
+    enrich: {
+      label: 'Enrich & LLM',
+      hint: 'Model, batch sizes, category targets, tool loop, carry-forward.'
+    },
+    publish: {
+      label: 'Validation & site',
+      hint: 'Story minimums, required categories, render flags, footer links.'
+    }
+  };
+
+  function splitConfigYaml(yaml) {
+    var blocks = {};
+    var currentKey = null;
+    var currentLines = [];
+    var lines = String(yaml || '').split('\n');
+
+    function flush() {
+      if (currentKey) blocks[currentKey] = currentLines.join('\n').replace(/\n+$/, '');
+    }
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      var match = /^([a-z_][\w-]*):\s*(.*)$/i.exec(line);
+      if (match && line.charAt(0) !== ' ' && line.charAt(0) !== '\t') {
+        flush();
+        currentKey = match[1];
+        currentLines = [line];
+      } else if (currentKey) {
+        currentLines.push(line);
+      }
+    }
+    flush();
+
+    var sections = { pipeline: '', enrich: '', publish: '' };
+    Object.keys(SECTION_KEYS).forEach(function (sectionId) {
+      var parts = [];
+      SECTION_KEYS[sectionId].forEach(function (key) {
+        if (blocks[key]) parts.push(blocks[key]);
+      });
+      sections[sectionId] = parts.join('\n');
+    });
+    return sections;
+  }
+
+  var state = {
+    readonly: true,
+    deploy: 'unknown',
+    apiLive: false,
+    precheckOk: false,
+    git: null,
+    digests: [],
+    jobs: [],
+    configSections: { pipeline: '', enrich: '', publish: '' },
+    tuningMeta: {},
+    editorialBrief: '',
+    activeTab: 'pipeline'
+  };
+
+  function pageLocation() {
+    if (typeof location !== 'undefined') return location;
+    if (typeof window !== 'undefined' && window.location) return window.location;
+    return {};
+  }
+
+  function deployMode(loc) {
+    var L = loc || pageLocation();
+    var h = (L.hostname || '').toLowerCase();
+    if (h === 'mameen.github.io' || h.endsWith('.github.io')) return 'pages';
+    if (L.protocol === 'file:') return 'file';
+    if (h === '127.0.0.1' || h === 'localhost') return 'local';
+    return 'unknown';
+  }
+
+  function isDeployedViewOnly() {
+    return deployMode() === 'pages' || (typeof window !== 'undefined' && window.__ADMIN_READONLY__ === true);
+  }
+
+  function isFullControl() {
+    return !isDeployedViewOnly() && state.apiLive;
+  }
+
+  function isPagesReadonly() {
+    return isDeployedViewOnly();
+  }
+
+  function resolveReadonly() {
+    return !isFullControl();
+  }
+
+  function canTune() {
+    return !state.readonly && state.git && !state.git.on_main;
+  }
+
+  function tuningLocked() {
+    return !state.readonly && state.git && state.git.on_main;
+  }
+
+  function activeTabMeta() {
+    for (var i = 0; i < TUNING_TABS.length; i++) {
+      if (TUNING_TABS[i].id === state.activeTab) return TUNING_TABS[i];
+    }
+    return TUNING_TABS[0];
+  }
+
+  function editorValue() {
+    var tab = activeTabMeta();
+    if (tab.kind === 'brief') return state.editorialBrief;
+    if (tab.kind === 'reference') return PROMPT_REFERENCE;
+    return state.configSections[tab.id] || '';
+  }
+
+  function persistEditorValue() {
+    if (state.readonly || !canTune()) return;
+    var editor = $('tuning-editor');
+    if (!editor) return;
+    var tab = activeTabMeta();
+    if (tab.kind === 'brief') state.editorialBrief = editor.value;
+    else if (tab.kind === 'config') state.configSections[tab.id] = editor.value;
+  }
+
+  function $(id) { return document.getElementById(id); }
+
+  function esc(s) {
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+  }
+
+  function apiUrl(path) {
+    var base = API || '';
+    if (base && base.charAt(base.length - 1) === '/') base = base.slice(0, -1);
+    return base + path;
+  }
+
+  function fetchJson(path, opts) {
+    opts = opts || {};
+    return fetch(apiUrl(path), opts).then(function (r) {
+      if (!r.ok) return r.json().then(function (j) { throw new Error(j.error || r.statusText); });
+      return r.json();
+    });
+  }
+
+  function fetchText(path) {
+    return fetch(path).then(function (r) {
+      if (!r.ok) throw new Error('Failed to load ' + path);
+      return r.text();
+    });
+  }
+
+  function setPill(id, text, cls) {
+    var el = $(id);
+    if (!el) return;
+    el.textContent = text;
+    el.className = 'admin-pill' + (cls ? ' ' + cls : '');
+  }
+
+  function updateChrome() {
+    state.readonly = resolveReadonly();
+    var banner = $('admin-readonly-banner');
+    if (banner) {
+      if (state.readonly) {
+        banner.classList.remove('hidden');
+        if (isDeployedViewOnly()) {
+          banner.innerHTML =
+            '<strong>View only</strong> — deployed on GitHub Pages. Browse config, prompts, and digests. ' +
+            'For pipeline runs, git, and edits: <code>python run.py --server</code> on your machine.';
+        } else if (state.deploy === 'file') {
+          banner.innerHTML =
+            '<strong>Read-only</strong> — open via <code>python run.py --server</code> for local API control.';
+        } else {
+          banner.innerHTML =
+            '<strong>Read-only</strong> — local admin API offline. Start <code>python run.py --server</code>.';
+        }
+      } else {
+        banner.classList.add('hidden');
+      }
+    }
+    if (state.readonly) {
+      if (isDeployedViewOnly()) {
+        setPill('admin-api-pill', 'view only', 'admin-pill-readonly');
+      } else {
+        setPill('admin-api-pill', 'view only', 'admin-pill-warn');
+      }
+    } else {
+      setPill('admin-api-pill', 'full control', 'admin-pill-ok');
+    }
+    if (state.git) {
+      var g = state.git.branch + (state.git.dirty ? ' *' : '');
+      setPill('admin-git-pill', g, state.git.on_main && state.git.dirty ? 'admin-pill-warn' : '');
+    }
+    if (state.readonly) {
+      setPill('admin-precheck-pill', 'view only', 'admin-pill-readonly');
+    } else if (state.precheckOk) {
+      setPill('admin-precheck-pill', 'precheck ok', 'admin-pill-ok');
+    } else {
+      setPill('admin-precheck-pill', 'precheck pending', 'admin-pill-warn');
+    }
+    render();
+  }
+
+  function probeApi() {
+    if (isPagesReadonly()) {
+      state.apiLive = false;
+      state.deploy = 'pages';
+      return loadStaticData().then(updateChrome);
+    }
+    return fetchJson('/api/health').then(function () {
+      state.apiLive = true;
+      state.deploy = 'local';
+      return refreshAll();
+    }).catch(function () {
+      state.apiLive = false;
+      state.deploy = deployMode();
+      return loadStaticData();
+    }).then(updateChrome);
+  }
+
+  function applyConfigBundle(c) {
+    state.editorialBrief = c.editorial_brief || '';
+    if (c.config_sections) {
+      state.configSections = c.config_sections;
+    } else if (c.config_yaml) {
+      state.configSections = splitConfigYaml(c.config_yaml);
+    }
+    state.tuningMeta = c.tuning_sections || SECTION_META;
+  }
+
+  function loadStaticData() {
+    return Promise.all([
+      fetchText('../config.yaml').catch(function () { return '# config.yaml unavailable'; }),
+      fetchText('../pipeline/editorial_brief.md').catch(function () { return '# editorial brief unavailable'; }),
+      fetch('../reports/index.json').then(function (r) { return r.ok ? r.json() : { digests: [] }; }).catch(function () { return { digests: [] }; })
+    ]).then(function (parts) {
+      applyConfigBundle({ config_yaml: parts[0], editorial_brief: parts[1] });
+      state.digests = (parts[2].digests || []).map(function (d) {
+        return {
+          prefix: d.prefix,
+          display_date: d.display_date,
+          story_count: d.story_count,
+          has_html: true,
+          has_json: true,
+          has_diagnostics: true
+        };
+      });
+    });
+  }
+
+  function refreshAll() {
+    return Promise.all([
+      fetchJson('/api/git/status').then(function (g) { state.git = g; }),
+      fetchJson('/api/config').then(function (c) {
+        applyConfigBundle(c);
+        if (c.git) state.git = c.git;
+      }),
+      fetchJson('/api/digests').then(function (d) { state.digests = d.digests || []; }),
+      fetchJson('/api/jobs').then(function (j) { state.jobs = j.jobs || []; }),
+      fetchJson('/api/precheck').then(function (p) { state.precheckOk = !!p.ok; })
+    ]).catch(function (e) {
+      console.warn(e);
+    });
+  }
+
+  function disabledAttr() { return state.readonly ? ' disabled' : ''; }
+
+  function tuningHintHtml() {
+    if (state.readonly) {
+      return '<p class="hint">Browse tuning files read-only. Local server required to edit.</p>';
+    }
+    if (tuningLocked()) {
+      return '<p class="hint admin-tuning-locked">' +
+        'Tuning is <strong>locked on main</strong>. Use <em>Create tuning branch</em> above before editing or saving.' +
+        '</p>';
+    }
+    var meta = state.tuningMeta[state.activeTab];
+    if (meta && meta.hint) {
+      return '<p class="hint">' + esc(meta.hint) + '</p>';
+    }
+    if (state.activeTab === 'brief') {
+      return '<p class="hint">Shared editorial voice — prepended to every enrich LLM call.</p>';
+    }
+    if (state.activeTab === 'prompts') {
+      return '<p class="hint">Read-only map of enrich passes. Edit task rules in <code>pipeline/enrich.py</code> or <code>docs/TUNING.md</code>.</p>';
+    }
+    return '<p class="hint">Edit this section, then save. Other config sections stay unchanged.</p>';
+  }
+
+  function render() {
+    var root = $('admin-root');
+    if (!root) return;
+    var ro = state.readonly;
+    var runDisabled = ro || !state.precheckOk ? ' disabled' : '';
+    var tune = canTune();
+    var tab = activeTabMeta();
+    var editorReadonly = ro || !tune || tab.kind === 'reference';
+    var saveDisabled = ro || !tune || tab.kind === 'reference' ? ' disabled' : '';
+
+    root.innerHTML =
+      '<section class="admin-card">' +
+        '<h2>Deployment precheck</h2>' +
+        '<p class="hint">Lint + tests must pass before pipeline runs (local admin only).</p>' +
+        '<div class="admin-row">' +
+          '<button type="button" class="admin-btn admin-btn-primary" id="btn-precheck"' + disabledAttr() + '>Run lint &amp; test</button>' +
+          '<span id="precheck-msg" style="font-size:11px;color:var(--muted)"></span>' +
+        '</div>' +
+        '<pre class="admin-log" id="precheck-log"></pre>' +
+      '</section>' +
+
+      '<section class="admin-card">' +
+        '<h2>Pipeline</h2>' +
+        '<p class="hint">Full run, ingest-only, skeleton, or frontend rebuild.</p>' +
+        '<div class="admin-row"><label>Start</label><input class="admin-input" id="pipe-start" type="date" value="2026-07-03"' + (ro ? ' readonly' : '') + '></div>' +
+        '<div class="admin-row"><label>History</label><input class="admin-input" id="pipe-history" type="number" min="1" max="30" value="10" style="width:72px"' + (ro ? ' readonly' : '') + '></div>' +
+        '<div class="admin-row"><label>Mode</label>' +
+          '<select class="admin-select" id="pipe-mode"' + disabledAttr() + '>' +
+            '<option value="full">Full pipeline</option>' +
+            '<option value="fetch-only">Fetch only</option>' +
+            '<option value="skeleton-only">Skeleton only</option>' +
+            '<option value="archives-only">Frontend / archives only</option>' +
+          '</select>' +
+        '</div>' +
+        '<div class="admin-row">' +
+          '<button type="button" class="admin-btn admin-btn-primary" id="btn-pipeline"' + runDisabled + '>Launch pipeline</button>' +
+        '</div>' +
+        '<pre class="admin-log" id="job-log"></pre>' +
+      '</section>' +
+
+      '<section class="admin-card">' +
+        '<h2>Git workflow</h2>' +
+        '<p class="hint">Create a tuning branch before editing config or prompts.</p>' +
+        '<div class="admin-row">' +
+          '<button type="button" class="admin-btn admin-btn-primary" id="btn-branch"' + disabledAttr() + '>Create tuning branch</button>' +
+          '<button type="button" class="admin-btn" id="btn-commit"' + disabledAttr() + '>Commit</button>' +
+          '<button type="button" class="admin-btn" id="btn-push"' + disabledAttr() + '>Push branch</button>' +
+          '<button type="button" class="admin-btn admin-btn-danger" id="btn-merge"' + disabledAttr() + '>Merge → main</button>' +
+        '</div>' +
+      '</section>' +
+
+      '<section class="admin-card admin-card-wide">' +
+        '<h2>Tuning</h2>' +
+        tuningHintHtml() +
+        '<div class="admin-tabs">' +
+        TUNING_TABS.map(function (t) {
+          return '<button type="button" class="admin-tab' + (state.activeTab === t.id ? ' active' : '') +
+            '" data-tab="' + t.id + '">' + esc(t.label) + '</button>';
+        }).join('') +
+        '</div>' +
+        '<textarea class="admin-textarea' + (editorReadonly ? ' is-locked' : '') + '" id="tuning-editor"' +
+          (editorReadonly ? ' readonly' : '') + '>' +
+          esc(editorValue()) +
+        '</textarea>' +
+        '<div class="admin-row" style="margin-top:10px">' +
+          '<button type="button" class="admin-btn admin-btn-primary" id="btn-save-config"' + saveDisabled + '>Save section</button>' +
+        '</div>' +
+      '</section>' +
+
+      '<section class="admin-card admin-card-wide">' +
+        '<h2>Digests</h2>' +
+        '<div class="admin-table-wrap"><table class="admin-table"><thead><tr>' +
+          '<th>Prefix</th><th>Date</th><th>Stories</th><th>Actions</th>' +
+        '</tr></thead><tbody>' +
+        state.digests.map(function (d) {
+          return '<tr><td><code>' + esc(d.prefix) + '</code></td><td>' + esc(d.display_date || '') + '</td><td>' +
+            esc(d.story_count != null ? d.story_count : '—') + '</td><td>' +
+            '<button type="button" class="admin-btn" data-render="' + esc(d.prefix) + '"' + disabledAttr() + '>Re-render</button> ' +
+            '<button type="button" class="admin-btn admin-btn-danger" data-delete="' + esc(d.prefix) + '"' + disabledAttr() + '>Delete</button>' +
+            '</td></tr>';
+        }).join('') +
+        '</tbody></table></div>' +
+      '</section>' +
+
+      '<section class="admin-card">' +
+        '<h2>Local server</h2>' +
+        '<p class="hint"><code>run.py --server</code> keeps running until you stop it (Ctrl+C in the terminal, or here).</p>' +
+        '<div class="admin-row">' +
+          '<button type="button" class="admin-btn admin-btn-danger" id="btn-shutdown"' + disabledAttr() + '>Stop server</button>' +
+          '<span id="shutdown-msg" style="font-size:11px;color:var(--muted)"></span>' +
+        '</div>' +
+      '</section>';
+
+    wireEvents();
+  }
+
+  function wireEvents() {
+    var pre = $('btn-precheck');
+    if (pre) pre.onclick = runPrecheck;
+    var pipe = $('btn-pipeline');
+    if (pipe) pipe.onclick = launchPipeline;
+    var branch = $('btn-branch');
+    if (branch) branch.onclick = createBranch;
+    var commit = $('btn-commit');
+    if (commit) commit.onclick = gitCommit;
+    var push = $('btn-push');
+    if (push) push.onclick = gitPush;
+    var merge = $('btn-merge');
+    if (merge) merge.onclick = gitMerge;
+    var save = $('btn-save-config');
+    if (save) save.onclick = saveConfig;
+    var shutdown = $('btn-shutdown');
+    if (shutdown) shutdown.onclick = shutdownServer;
+
+    document.querySelectorAll('.admin-tab').forEach(function (btn) {
+      btn.onclick = function () {
+        persistEditorValue();
+        state.activeTab = btn.getAttribute('data-tab');
+        render();
+      };
+    });
+
+    document.querySelectorAll('[data-render]').forEach(function (btn) {
+      btn.onclick = function () {
+        renderOnly(btn.getAttribute('data-render'));
+      };
+    });
+    document.querySelectorAll('[data-delete]').forEach(function (btn) {
+      btn.onclick = function () {
+        deleteDigest(btn.getAttribute('data-delete'));
+      };
+    });
+  }
+
+  function runPrecheck() {
+    if (state.readonly) return;
+    var log = $('precheck-log');
+    if (log) log.textContent = 'Running compileall + run_tests.py…';
+    fetchJson('/api/precheck', { method: 'POST' }).then(function (r) {
+      state.precheckOk = !!r.ok;
+      if (log) log.textContent = (r.log || []).join('\n');
+      var msg = $('precheck-msg');
+      if (msg) msg.textContent = r.ok ? 'All green — pipeline enabled.' : 'Fix failures before running.';
+      updateChrome();
+    }).catch(function (e) {
+      if (log) log.textContent = String(e.message || e);
+    });
+  }
+
+  function launchPipeline() {
+    if (state.readonly || !state.precheckOk) return;
+    var start = ($('pipe-start') || {}).value;
+    var history = parseInt(($('pipe-history') || {}).value, 10) || 10;
+    var mode = ($('pipe-mode') || {}).value || 'full';
+    fetchJson('/api/pipeline/run', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mode: mode, start: start, history: history })
+    }).then(function (job) {
+      pollJob(job.id);
+    }).catch(function (e) { alert(e.message || e); });
+  }
+
+  function renderOnly(prefix) {
+    if (state.readonly) return;
+    fetchJson('/api/pipeline/run', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mode: 'render-only', prefix: prefix })
+    }).then(function (job) { pollJob(job.id); }).catch(function (e) { alert(e.message || e); });
+  }
+
+  function deleteDigest(prefix) {
+    if (state.readonly) return;
+    if (!confirm('Delete digest ' + prefix + ' and its artifacts?')) return;
+    fetchJson('/api/digests/' + prefix, { method: 'DELETE' }).then(function () {
+      return refreshAll();
+    }).then(updateChrome).catch(function (e) { alert(e.message || e); });
+  }
+
+  function pollJob(id) {
+    var log = $('job-log');
+    var tick = function () {
+      fetchJson('/api/jobs/' + id).then(function (job) {
+        if (log) log.textContent = (job.log || []).join('\n');
+        if (job.state === 'running' || job.state === 'queued') {
+          setTimeout(tick, 1500);
+        } else {
+          refreshAll().then(updateChrome);
+        }
+      });
+    };
+    tick();
+  }
+
+  function createBranch() {
+    if (state.readonly) return;
+    fetchJson('/api/git/branch', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' })
+      .then(function (r) {
+        alert(r.created ? 'Created ' + r.branch : 'On ' + r.branch);
+        return refreshAll();
+      })
+      .then(updateChrome).catch(function (e) { alert(e.message || e); });
+  }
+
+  function gitCommit() {
+    if (state.readonly) return;
+    var msg = prompt('Commit message:');
+    if (!msg) return;
+    fetchJson('/api/git/commit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: msg })
+    }).then(function () { return refreshAll(); }).then(updateChrome).catch(function (e) { alert(e.message || e); });
+  }
+
+  function gitPush() {
+    if (state.readonly) return;
+    fetchJson('/api/git/push', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' })
+      .then(function () { alert('Pushed.'); }).catch(function (e) { alert(e.message || e); });
+  }
+
+  function gitMerge() {
+    if (state.readonly) return;
+    if (!confirm('Merge current branch into main locally? Review changes first.')) return;
+    fetchJson('/api/git/merge-main', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' })
+      .then(function (r) { alert('Merged ' + r.merged); return refreshAll(); }).then(updateChrome)
+      .catch(function (e) { alert(e.message || e); });
+  }
+
+  function saveConfig() {
+    if (!canTune()) {
+      alert('Create a tuning branch before saving.');
+      return;
+    }
+    var editor = $('tuning-editor');
+    if (!editor) return;
+    var tab = activeTabMeta();
+    if (tab.kind === 'reference') return;
+
+    var body = {};
+    if (tab.kind === 'brief') body.editorial_brief = editor.value;
+    else {
+      body.config_section = tab.id;
+      body.section_yaml = editor.value;
+    }
+
+    fetchJson('/api/config', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }).then(function () {
+      alert('Saved ' + tab.label + '.');
+      return refreshAll();
+    }).then(updateChrome).catch(function (e) { alert(e.message || e); });
+  }
+
+  function shutdownServer() {
+    if (state.readonly) return;
+    if (!confirm('Stop the local server on this machine?')) return;
+    var msg = $('shutdown-msg');
+    if (msg) msg.textContent = 'Shutting down…';
+    fetchJson('/api/shutdown', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' })
+      .then(function () {
+        state.apiLive = false;
+        if (msg) msg.textContent = 'Server stopped.';
+        setPill('admin-api-pill', 'server stopped', 'admin-pill-warn');
+      })
+      .catch(function (e) {
+        if (msg) msg.textContent = String(e.message || e);
+      });
+  }
+
+  if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', probeApi);
+    } else {
+      probeApi();
+    }
+  }
+
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+      deployMode: deployMode,
+      isPagesReadonly: isPagesReadonly,
+      isDeployedViewOnly: isDeployedViewOnly,
+      isFullControl: isFullControl,
+      canTune: canTune,
+      tuningLocked: tuningLocked,
+      splitConfigYaml: splitConfigYaml,
+      pageLocation: pageLocation
+    };
+  }
+})();
+</script>
+<footer class="site-footer">
+  <span>AI Digest pipeline</span>
+  <span class="site-footer-sep">·</span>
+  <span class="site-footer-version">v0.6</span>
+  <span class="site-footer-sep">·</span>
+  <span>ademiry</span>
+  <span class="site-footer-sep">·</span>
+  <a href="https://www.linkedin.com/in/ademiry/" target="_blank" rel="noopener">LinkedIn</a>
+  <span class="site-footer-sep">·</span>
+  <a href="https://demiry.net/" target="_blank" rel="noopener">Portfolio</a>
+  <span class="site-footer-sep">·</span>
+  <a href="https://github.com/mameen/AI_Digest" target="_blank" rel="noopener" title="Source on GitHub"><svg viewBox="0 0 16 16" width="10" height="10" fill="currentColor" aria-hidden="true" style="vertical-align:-1px;margin-right:2px"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+</footer>
+</body>
+</html>

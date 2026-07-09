@@ -1,0 +1,148 @@
+{
+  "updated_at": "2026-07-09T05:32:53Z",
+  "latest": "20260709051615",
+  "digests": [
+    {
+      "prefix": "20260707182407",
+      "date": "2026-07-07",
+      "display_date": "TUESDAY, JULY 07, 2026",
+      "summary": "Claude Fable 5 and Meta Llama 4 Scout lead current intelligence rankings while performance benchmarks now prioritize output token throughput over context size to bypass initial latency delays, commercial models adopt segmented pricing tiers, and robotics research advances through computational soft-body frameworks paired with hybrid vector databases for reliable retrieval.",
+      "story_count": 40,
+      "avg_significance": 3.9,
+      "categories": {
+        "leaderboard": 6,
+        "analytics": 5,
+        "aisearch": 10,
+        "agentic-ai": 5,
+        "llm": 5,
+        "rag": 5,
+        "image-gen": 5,
+        "design-ai": 5,
+        "typography": 4,
+        "robotics": 5,
+        "research": 6
+      },
+      "report_source": "agentic-hermes",
+      "report_source_label": "Hermes Agent"
+    },
+    {
+      "prefix": "20260708120000",
+      "date": "2026-07-08",
+      "display_date": "WEDNESDAY, JULY 08, 2026",
+      "summary": "Today AI development centers on practical agent tooling and infrastructure tuning, as new compact SWE benchmarks launch alongside open-weights fine-tuning pipelines, latency bottlenecks shift toward output generation, and hybrid retrieval architectures gain traction over standalone vector databases.",
+      "story_count": 47,
+      "avg_significance": 3.9,
+      "categories": {
+        "leaderboard": 6,
+        "analytics": 5,
+        "aisearch": 10,
+        "agentic-ai": 5,
+        "llm": 5,
+        "rag": 5,
+        "image-gen": 5,
+        "design-ai": 5,
+        "typography": 4,
+        "robotics": 5,
+        "research": 6
+      },
+      "report_source": "agentic-hermes",
+      "report_source_label": "Hermes Agent"
+    },
+    {
+      "prefix": "20260709051615",
+      "date": "2026-07-09",
+      "display_date": "THURSDAY, JULY 09, 2026",
+      "summary": "Market benchmarks tighten as Claude Fable 5 solidifies its intelligence lead while GPT-5.6 Sol captures a top-three spot amid shifting index dynamics. Performance standards shift toward sub-30 millisecond latency, driven by speculative decoding optimizations and Grok 4.5's launch for advanced reasoning tasks. Development ecosystems pivot toward refined prompt architectures and knowledge base routing to streamline personalized AI operations.",
+      "story_count": 95,
+      "avg_significance": 3.9,
+      "categories": {
+        "leaderboard": 6,
+        "analytics": 5,
+        "aisearch": 10,
+        "youtube": 36,
+        "agentic-ai": 5,
+        "llm": 5,
+        "rag": 5,
+        "image-gen": 5,
+        "design-ai": 2,
+        "typography": 4,
+        "robotics": 5,
+        "research": 6
+      },
+      "report_source": "agentic-hermes",
+      "report_source_label": "Hermes Agent"
+    }
+  ],
+  "by_date": [
+    {
+      "prefix": "20260707182407",
+      "date": "2026-07-07",
+      "display_date": "TUESDAY, JULY 07, 2026",
+      "summary": "Claude Fable 5 and Meta Llama 4 Scout lead current intelligence rankings while performance benchmarks now prioritize output token throughput over context size to bypass initial latency delays, commercial models adopt segmented pricing tiers, and robotics research advances through computational soft-body frameworks paired with hybrid vector databases for reliable retrieval.",
+      "story_count": 40,
+      "avg_significance": 3.9,
+      "categories": {
+        "leaderboard": 6,
+        "analytics": 5,
+        "aisearch": 10,
+        "agentic-ai": 5,
+        "llm": 5,
+        "rag": 5,
+        "image-gen": 5,
+        "design-ai": 5,
+        "typography": 4,
+        "robotics": 5,
+        "research": 6
+      },
+      "report_source": "agentic-hermes",
+      "report_source_label": "Hermes Agent"
+    },
+    {
+      "prefix": "20260708120000",
+      "date": "2026-07-08",
+      "display_date": "WEDNESDAY, JULY 08, 2026",
+      "summary": "Today AI development centers on practical agent tooling and infrastructure tuning, as new compact SWE benchmarks launch alongside open-weights fine-tuning pipelines, latency bottlenecks shift toward output generation, and hybrid retrieval architectures gain traction over standalone vector databases.",
+      "story_count": 47,
+      "avg_significance": 3.9,
+      "categories": {
+        "leaderboard": 6,
+        "analytics": 5,
+        "aisearch": 10,
+        "agentic-ai": 5,
+        "llm": 5,
+        "rag": 5,
+        "image-gen": 5,
+        "design-ai": 5,
+        "typography": 4,
+        "robotics": 5,
+        "research": 6
+      },
+      "report_source": "agentic-hermes",
+      "report_source_label": "Hermes Agent"
+    },
+    {
+      "prefix": "20260709051615",
+      "date": "2026-07-09",
+      "display_date": "THURSDAY, JULY 09, 2026",
+      "summary": "Market benchmarks tighten as Claude Fable 5 solidifies its intelligence lead while GPT-5.6 Sol captures a top-three spot amid shifting index dynamics. Performance standards shift toward sub-30 millisecond latency, driven by speculative decoding optimizations and Grok 4.5's launch for advanced reasoning tasks. Development ecosystems pivot toward refined prompt architectures and knowledge base routing to streamline personalized AI operations.",
+      "story_count": 95,
+      "avg_significance": 3.9,
+      "categories": {
+        "leaderboard": 6,
+        "analytics": 5,
+        "aisearch": 10,
+        "youtube": 36,
+        "agentic-ai": 5,
+        "llm": 5,
+        "rag": 5,
+        "image-gen": 5,
+        "design-ai": 2,
+        "typography": 4,
+        "robotics": 5,
+        "research": 6
+      },
+      "report_source": "agentic-hermes",
+      "report_source_label": "Hermes Agent"
+    }
+  ]
+}

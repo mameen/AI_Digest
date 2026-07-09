@@ -1,0 +1,1005 @@
+{
+  "generated_at": "2026-06-27T12:00:00Z",
+  "filename_prefix": "20260627120000",
+  "summary": "OpenAI previews GPT-5.6 Sol under a US government-vetted access lock while Anthropic's Claude Fable 5 remains suspended; Krea 2 ships as the most uncensored open-source image model with ComfyUI workflows; Figma Config 2026 and Adobe Firefly agentic studio redefine the design stack; and Figure AI hits one robot per hour at BotQ.",
+  "aisearch_video_url": "https://www.youtube.com/watch?v=1U8dJ94QFNc",
+  "aisearch_video_label": "Jun 27 — Krea 2 local image gen, Luma Agents, ComfyUI LoRAs",
+  "categories": [
+    {
+      "id": "leaderboard",
+      "label": "Leaderboard Rankings",
+      "icon": "🏆",
+      "stories": [
+        {
+          "id": "lb-fable-suspended-opus-leads",
+          "title": "Claude Fable 5 still #1 on AA (score 60) but globally suspended since June 12",
+          "summary": "Artificial Analysis still ranks Claude Fable 5 (with Opus 4.8 fallback) at #1 with an intelligence score of 60 — but the model has been unavailable to all users since June 12, when a US export-control directive ordered Anthropic to suspend Fable 5 and Mythos 5. Claude Opus 4.8 (score 56) is the practical #1 for developers today.",
+          "source": "Artificial Analysis / Anthropic",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "leaderboard",
+            "anthropic",
+            "export-control",
+            "frontier"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-gpt56-preview",
+          "title": "GPT-5.6 Sol preview: 91.9% Terminal-Bench 2.1 Ultra — government-gated launch",
+          "summary": "OpenAI previewed GPT-5.6 Sol, Terra, and Luna on June 26 under a US government-vetted partner program. Sol scores 88.8% on Terminal-Bench 2.1 (91.9% in Ultra mode with subagents), surpassing Claude Fable 5's 83.4% — but general API access is weeks away.",
+          "source": "OpenAI",
+          "url": "https://openai.com/index/previewing-gpt-5-6-sol/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "openai",
+            "benchmark",
+            "agentic",
+            "government"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-opus48-hle",
+          "title": "Claude Opus 4.8 leads Humanity's Last Exam at 57.9% among available models",
+          "summary": "Among models developers can actually call, Claude Opus 4.8 holds the HLE lead at 57.9% on Vellum's tracker — well ahead of Gemini 3 Pro (45.8%) and Kimi K2 Thinking (44.9%). On SWE-bench Verified, Opus 4.8 sits at 88.6%, making it the top unrestricted coding model.",
+          "source": "Vellum AI",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "benchmark",
+            "anthropic",
+            "hle",
+            "swe-bench"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-kimi-open",
+          "title": "Kimi K2.5 tops Vellum open-weight board: 87.6% GPQA, 76.8% SWE-bench",
+          "summary": "Vellum's open LLM leaderboard puts Kimi K2.5 at #1 open-weight with 87.6% GPQA and 76.8% SWE-bench Verified. Kimi K2 Thinking follows at #2 with 99.1% AIME. The open vs closed gap on coding benchmarks continues to narrow even as frontier closed models face regulatory suspension.",
+          "source": "Vellum AI",
+          "url": "https://www.vellum.ai/open-llm-leaderboard",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "open-source",
+            "kimi",
+            "leaderboard",
+            "benchmark"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-gpt-image2-arena",
+          "title": "GPT Image 2 (medium) holds #1 on Arena text-to-image at Elo 1384",
+          "summary": "Arena.ai's text-to-image leaderboard still has GPT Image 2 (medium) at #1 with Elo 1384, followed by Reve 2.0 (1280) and Gemini 3.1 Flash Image Preview (1269). Among open-source models, Krea 2 is the week's breakout — theAIsearch's latest video positions it as the fastest uncensored local generator with strong text rendering.",
+          "source": "Arena.ai / theAIsearch",
+          "url": "https://arena.ai/leaderboard/text-to-image",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "image-gen",
+            "leaderboard",
+            "openai",
+            "open-source"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-price-compression",
+          "title": "GPT-5.6 Luna at $1/$6 per M undercuts frontier pricing further",
+          "summary": "GPT-5.6 pricing sets a new floor: Sol at $5/$30, Terra at $2.50/$15, Luna at $1/$6 per million tokens — under half the cost of the suspended Claude Fable 5 ($10/$50). Gemini 3.5 Flash remains the value leader among generally available models at $1.31/M input.",
+          "source": "OpenAI / Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "pricing",
+            "leaderboard",
+            "openai",
+            "google"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "aisearch",
+      "label": "AI Search",
+      "icon": "🔍",
+      "stories": [
+        {
+          "id": "ais-krea-2-intro",
+          "title": "Krea 2 intro — new open-source image generator",
+          "summary": "Krea 2 releases model weights for free offline use on consumer GPUs (8 GB VRAM). theAIsearch highlights photorealistic aesthetics with natural imperfections, strong anime and anatomy, and built-in text rendering — positioning it as the most uncensored open image model available.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=0s",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "krea",
+            "open-source",
+            "image-gen",
+            "local"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-demos-aesthetics",
+          "title": "Demos and aesthetics",
+          "summary": "Demo gallery shows Krea 2 handling multiple art styles, tricky multi-element prompts, and character consistency. The model deliberately excludes AI-generated images from pre-training data to avoid generic synthetic aesthetics.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=30s",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "krea",
+            "aesthetics",
+            "image-gen"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-comfyui-krea",
+          "title": "How to use Krea 2 in ComfyUI",
+          "summary": "Step-by-step ComfyUI install: update portable build, select the offline Krea text-to-image template, download turbo FP8 weights (~13 GB), Qwen3 VL text encoder, and VAE. First run generates images in ~10–12 seconds on consumer hardware.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=124s",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "comfyui",
+            "workflow",
+            "open-source"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-krea-workflow",
+          "title": "Krea 2 workflow",
+          "summary": "Default ComfyUI workflow covers text-to-image with turbo model variants (BF16, FP8, MXFP8, NVFP4). Raw model available for fine-tuning; turbo model optimized for fast inference with fewer steps.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=322s",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "comfyui",
+            "workflow",
+            "krea"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-luma-agents",
+          "title": "Luma Agents",
+          "summary": "Luma Agents segment covers Luma's agentic video/image tooling — part of theAIsearch's weekly roundup of creative AI agents beyond static image generation.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=457s",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "luma",
+            "agents",
+            "video-gen"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-krea-loras",
+          "title": "How to use Krea 2 LoRAs",
+          "summary": "Official ComfyUI HuggingFace repo ships starter LoRAs (warm pastel, etc.). Tutorial covers trigger words, strength tuning, and bypassing the multi-LoRA node for simpler workflows.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=581s",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "lora",
+            "fine-tuning",
+            "krea"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-uncensored",
+          "title": "Uncensored generation with Conditioning Krea Rebalance",
+          "summary": "Krea 2 is positioned as the most uncensored mainstream open image model. Adding the Conditioning Krea2 Rebalance custom node (via git clone) enables robust uncensored output beyond Flux, Ideogram, or Z-Image defaults.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=750s",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "krea",
+            "uncensored",
+            "comfyui"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-train-loras",
+          "title": "How to train LoRAs",
+          "summary": "Austrit's AI Toolkit already supports Krea 2 LoRA training — example: multi-face character LoRA. Early community tooling for fine-tuning on the raw (non-turbo) checkpoint.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=894s",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "lora",
+            "training",
+            "krea"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-tech-report",
+          "title": "Interesting details from Krea 2 technical report",
+          "summary": "Krea's report reveals zero AI-generated images in pre-training, rich OCR/metadata captioning pipeline, multi-length prompt reformatting, and GPU scaling instability beyond 128 GPUs — honest infrastructure lessons for frontier image training.",
+          "source": "theAIsearch / Krea",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=922s",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "research",
+            "training",
+            "krea"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-license",
+          "title": "License — commercial use under $1M revenue",
+          "summary": "Krea 2 community license permits commercial use for companies under $1M annual revenue — more permissive than Ideogram or Flux commercial terms, though not full Apache/MIT.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=1072s",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "license",
+            "krea",
+            "open-source"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "agentic-ai",
+      "label": "Agentic AI",
+      "icon": "🤝",
+      "stories": [
+        {
+          "id": "ag-mcp-stateless-rc",
+          "title": "MCP 2026-07-28 RC: protocol goes stateless — sessions and handshake removed",
+          "summary": "The Model Context Protocol's largest revision since launch enters final validation before the July 28 ship date. Remote MCP servers can run behind plain round-robin load balancers without sticky sessions; new Mcp-Method and Mcp-Name headers replace session routing.",
+          "source": "Model Context Protocol",
+          "url": "https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "mcp",
+            "agents",
+            "protocol",
+            "stateless"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ag-openai-codex-replay",
+          "title": "OpenAI Codex record-and-replay for agentic debugging workflows",
+          "summary": "OpenAI shipped record-and-replay in Codex — developers can capture agent sessions and replay them for debugging multi-step coding workflows. Pairs with GPT-5.6 Sol's Terminal-Bench leadership for long-horizon agentic tasks.",
+          "source": "OpenAI",
+          "url": "https://developers.openai.com/codex/record-and-replay",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "codex",
+            "agents",
+            "debugging",
+            "openai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ag-gpt56-subagents",
+          "title": "GPT-5.6 Sol Ultra mode: parallel subagents for 91.9% Terminal-Bench",
+          "summary": "GPT-5.6 Sol's Ultra mode leverages parallel subagents — evoking OpenClaw-style orchestration — to reach 91.9% on Terminal-Bench 2.1. Terra and Luna tiers bring agentic capability at 2× and 5× lower cost respectively.",
+          "source": "OpenAI / The Verge",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/957845/openai-gpt-5-6-trump-administration-ai-preview",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "multi-agent",
+            "openai",
+            "benchmark",
+            "orchestration"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ag-figma-mcp",
+          "title": "Figma agent connects via MCP — writes to design files with real tokens",
+          "summary": "Figma's Config 2026 agent update supports MCP server connections so external AI agents can create and modify design assets using team components, variables, and tokens — bridging agentic coding and design systems.",
+          "source": "Figma",
+          "url": "https://help.figma.com/hc/en-us/articles/39582753756695-What-s-new-from-Config-2026",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "figma",
+            "mcp",
+            "agents",
+            "design-systems"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ag-adobe-firefly-assistant",
+          "title": "Adobe Firefly AI Assistant (beta) — agentic creative studio across apps",
+          "summary": "Adobe's Firefly AI Assistant now orchestrates multi-step workflows across Premiere, Photoshop, Illustrator, and InDesign from a single conversational interface — brand kit generation, Quick Cut video assembly, and storyboard creation.",
+          "source": "Adobe",
+          "url": "https://blog.adobe.com/en/publish/2026/06/18/adobe-firefly-introduces-new-agentic-capabilities-and-an-upgraded-creative-ai-studio-built-for-the-way-you-work",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "adobe",
+            "agents",
+            "firefly",
+            "creative"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "llm",
+      "label": "LLMs & Reasoning",
+      "icon": "🧠",
+      "stories": [
+        {
+          "id": "llm-gpt56-sol",
+          "title": "GPT-5.6 Sol: OpenAI's strongest model — biology, cyber, and coding gains",
+          "summary": "GPT-5.6 Sol sets SOTA on Terminal-Bench 2.1, shows broad GeneBench v1 biology improvements with fewer tokens, and crosses the 'High' cyber risk threshold at 96.7% on internal attack tests. Limited preview for government-vetted partners only.",
+          "source": "OpenAI",
+          "url": "https://openai.com/index/previewing-gpt-5-6-sol/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "openai",
+            "frontier",
+            "reasoning",
+            "cybersecurity"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-fable-suspended",
+          "title": "Claude Fable 5 suspended globally — export control directive June 12",
+          "summary": "Anthropic disabled Claude Fable 5 and Mythos 5 for all users on June 12 after a US Commerce Department export-control directive. Fable 5 had launched June 9 with 80.3% SWE-Bench Pro; Opus 4.8 is the recommended fallback. No restoration timeline as of June 27.",
+          "source": "Anthropic / Gizmodo",
+          "url": "https://gizmodotech.com/technews/claude-fable-5-ban/",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "anthropic",
+            "export-control",
+            "frontier",
+            "policy"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-glm52-aa",
+          "title": "GLM-5.2 (max) enters AA top 10 — Zhipu AI open-weight push continues",
+          "summary": "GLM-5.2 (max) now appears in Artificial Analysis's top frontier models alongside Claude, GPT, and Gemini entries — continuing Zhipu AI's open-weight momentum. GLM-5.2 GGUFs circulated widely on Unsloth for local deployment.",
+          "source": "Artificial Analysis / Unsloth",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "glm",
+            "open-source",
+            "zhipu",
+            "leaderboard"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-gpt56-terra-luna",
+          "title": "GPT-5.6 Terra and Luna: 2× and 5× cheaper tiers with strong agentic scores",
+          "summary": "Terra ($2.50/$15) matches GPT-5.5 performance at half the cost; Luna ($1/$6) scores 84.3% on Terminal-Bench 2.1 — tying Claude Mythos 5 — at the lowest frontier pricing tier. Both show cyber capability improvements on ExploitGym.",
+          "source": "OpenAI",
+          "url": "https://openai.com/index/previewing-gpt-5-6-sol/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "openai",
+            "pricing",
+            "reasoning"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-mythos5-redeploy",
+          "title": "Claude Mythos 5 partial redeploy to US critical infrastructure only",
+          "summary": "Anthropic's June 27 update indicates Mythos 5 is redeploying to US critical-infrastructure organizations first while Fable 5 remains suspended for general use. Mythos Preview still holds 93.9% SWE-bench Verified in benchmark tracking.",
+          "source": "Anthropic / explainx.ai",
+          "url": "https://explainx.ai/blog/gpt-5-6-vs-claude-fable-5-comparison-2026",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "anthropic",
+            "mythos",
+            "safety",
+            "government"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "image-gen",
+      "label": "Image Generation & Processing",
+      "icon": "🎨",
+      "stories": [
+        {
+          "id": "img-krea2",
+          "title": "Krea 2: fastest uncensored open image model — 10s on 8GB VRAM",
+          "summary": "Krea 2 ships turbo FP8 weights for ComfyUI with Qwen3 VL encoder. Strong text rendering, anime, anatomy, and photorealism without synthetic-data pre-training bias. Community license allows commercial use under $1M revenue.",
+          "source": "Krea / theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "krea",
+            "open-source",
+            "comfyui",
+            "local"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-gpt-image2-arena",
+          "title": "GPT Image 2 still #1 on Arena — Elo 1384 with text rendering lead",
+          "summary": "Proprietary leaderboard dominance unchanged: GPT Image 2 (medium) at Elo 1384, Reve 2.0 at 1280. Open-source gap closing with Krea 2 and FLUX.2 variants but proprietary models retain typography edge on Arena subcategories.",
+          "source": "Arena.ai",
+          "url": "https://arena.ai/leaderboard/text-to-image",
+          "significance": 4,
+          "novelty": 2,
+          "relevance_design": 5,
+          "tags": [
+            "openai",
+            "leaderboard",
+            "text-rendering"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-qwen-image-agent",
+          "title": "Qwen-Image-Agent paper: bridging context gap in real-world image gen",
+          "summary": "HuggingFace Papers #5 this week: Qwen-Image-Agent uses agentic planning to handle complex multi-reference image generation — relevant for design workflows needing brand consistency across assets.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.26907",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "qwen",
+            "agents",
+            "image-gen",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-danceopd",
+          "title": "DanceOPD: on-policy generative field distillation — HF Papers #1",
+          "summary": "Top trending paper on HuggingFace: DanceOPD applies on-policy distillation to generative fields — potentially relevant for faster open-source image model training pipelines.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.27377",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "diffusion",
+            "distillation",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-luma-agents",
+          "title": "Luma Agents expand generative video/image orchestration",
+          "summary": "Luma's agent framework for chained image-to-video workflows featured in theAIsearch's latest roundup — part of the shift from single-shot generation to agentic creative pipelines.",
+          "source": "Luma AI / theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=457s",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "luma",
+            "video-gen",
+            "agents"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "design-ai",
+      "label": "Design & Creative AI",
+      "icon": "✏️",
+      "stories": [
+        {
+          "id": "des-figma-config",
+          "title": "Figma Config 2026: Motion, Code Layers, shaders, and agent on canvas",
+          "summary": "Figma shipped Motion (timeline + keyframe export to CSS/React/MP4), Code Layers (closed beta July), generative plugins, Weave tools, and shader effects via the Figma agent — all rolling out June 24. Design-to-code loop tightens with Make canvas sync.",
+          "source": "Figma / CMSWire",
+          "url": "https://www.cmswire.com/digital-experience/figma-launches-code-layers-motion-at-config-2026/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "figma",
+            "motion",
+            "code-layers",
+            "config-2026"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "des-adobe-firefly-studio",
+          "title": "Adobe Firefly reimagined studio: Elements, Projects, persistent context",
+          "summary": "Adobe's upgraded Firefly creative AI studio (private beta) unifies generation and editing with Elements for reusable assets and Projects for organized workflows — persistent context from ideation to production without app-switching.",
+          "source": "Adobe / The Verge",
+          "url": "https://www.theverge.com/tech/952104/adobe-firefly-ai-agent-elements-projects-update",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "adobe",
+            "firefly",
+            "workflow",
+            "brand"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "des-krea-typography",
+          "title": "Krea 2 text rendering: open-source typography in images without post-fix",
+          "summary": "Krea 2's built-in text rendering — highlighted in theAIsearch's ComfyUI tutorial — reduces the 'fix typography in Photoshop' step for localized ad creatives and poster designs running fully offline.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=30s",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "typography-in-images",
+            "krea",
+            "design-workflow"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "des-figma-weave",
+          "title": "Figma Weave: repeatable generative workflows on the design canvas",
+          "summary": "Weave tools in Figma Design let teams build scalable generative pipelines — image generation, image-to-video, and brand-guideline-to-illustration-set workflows directly on the collaborative canvas.",
+          "source": "Figma",
+          "url": "https://help.figma.com/hc/en-us/articles/39582753756695-What-s-new-from-Config-2026",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "figma",
+            "weave",
+            "generative",
+            "workflow"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "des-midjourney-medical",
+          "title": "Midjourney Medical: design AI enters regulated healthcare visuals",
+          "summary": "Midjourney launched a medical imaging/visualization vertical — signaling design AI tools expanding into specialized regulated domains beyond marketing and concept art.",
+          "source": "Midjourney / theAIsearch",
+          "url": "https://www.midjourney.com/medical",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "midjourney",
+            "healthcare",
+            "design-ai"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "typography",
+      "label": "Typography & Text Rendering",
+      "icon": "🔤",
+      "stories": [
+        {
+          "id": "typo-lava-devanagari",
+          "title": "Lava Devanagari, Kannada, and Telugu — Typographica typeface review",
+          "summary": "Typographica reviews Lava's Indic script expansion — relevant as AI image models (Krea 2, GPT Image 2) improve non-Latin text rendering; human type design for Devanagari/Kannada/Telugu sets quality benchmarks AI models aspire to match.",
+          "source": "Typographica",
+          "url": "https://typographica.org/typeface-reviews/lava-devanagari-kannada-and-telugu/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "indic",
+            "variable-fonts",
+            "typography",
+            "multilingual"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-typographica-library",
+          "title": "Typographica Library opens — curated typography reference archive",
+          "summary": "Typographica launched its Library — a curated archive of typeface reviews and essays. Useful reference for designers evaluating AI-generated typography against professional standards.",
+          "source": "Typographica",
+          "url": "https://typographica.org/on-typography/now-open-the-typographica-library/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "typography",
+            "archive",
+            "reference"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-krea-text",
+          "title": "Krea 2 built-in text rendering — open-source typography without LoRA hacks",
+          "summary": "Unlike Flux or Z-Image that need typography LoRAs, Krea 2 renders legible type across styles out of the box per theAIsearch review — a meaningful open-source milestone for text-in-image workflows.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "text-rendering",
+            "krea",
+            "open-source"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-viq-paper",
+          "title": "ViQ paper: text-aligned visual quantized representations at any resolution",
+          "summary": "HuggingFace trending: ViQ aligns visual and text representations at arbitrary resolutions — potentially improving OCR-aware image generation and typography fidelity in next-gen models.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.27313",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "text-rendering",
+            "research",
+            "multimodal"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "robotics",
+      "label": "Robotics & Embodied AI",
+      "icon": "🤖",
+      "stories": [
+        {
+          "id": "rob-figure-botq",
+          "title": "Figure AI hits 1 robot/hour at BotQ — 350+ Figure 03 units produced",
+          "summary": "Figure AI achieved one Figure 03 humanoid per hour at its BotQ factory (~55/week, 350+ total). Production scaling signals humanoids moving from prototype to manufacturing cadence.",
+          "source": "Figure AI / Humanoid.press",
+          "url": "https://humanoid.press/",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "figure",
+            "humanoid",
+            "manufacturing"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-boston-atlas",
+          "title": "Boston Dynamics electric Atlas: 2026 units shipping to Hyundai and DeepMind",
+          "summary": "Boston Dynamics' electric Atlas begins initial commercial deployments with Hyundai (RMAC) and Google DeepMind — 2026 production fully committed to partners.",
+          "source": "Boston Dynamics",
+          "url": "https://humanoid.press/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "boston-dynamics",
+            "atlas",
+            "hyundai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-unitree-ipo",
+          "title": "Unitree files $610M IPO on Shanghai STAR Market — $7B target valuation",
+          "summary": "Unitree Robotics filed for a 4.2B yuan IPO in March 2026 targeting ~$7B valuation with 5,500+ units shipped in 2025 and 10–20k shipment targets for 2026 — the sector's most significant near-term liquidity event.",
+          "source": "KraneShares",
+          "url": "https://kraneshares.com/humanoid-robotics-in-2026-the-race-from-pilot-to-platform/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "unitree",
+            "ipo",
+            "humanoid"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-ic-world-model",
+          "title": "In-Context World Modeling for Robotic Control — HF Papers #2",
+          "summary": "Second trending HuggingFace paper applies in-context learning to robotic world models — enabling robots to adapt control policies from demonstration context without full retraining.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.26025",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "robotics",
+            "world-models",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-bmw-aeon",
+          "title": "BMW deploys Hexagon AEON humanoid at Plant Leipzig — summer 2026 pilot",
+          "summary": "Following Figure 02 validation (1,250 operational hours), BMW expands humanoid program to Europe with Hexagon AB's AEON at Plant Leipzig for EV battery assembly — humanoids enabling in-house work previously outsourced.",
+          "source": "KraneShares",
+          "url": "https://kraneshares.com/humanoid-robotics-in-2026-the-race-from-pilot-to-platform/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "bmw",
+            "humanoid",
+            "manufacturing"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "label": "Research & Papers",
+      "icon": "📄",
+      "stories": [
+        {
+          "id": "res-danceopd",
+          "title": "DanceOPD: On-Policy Generative Field Distillation",
+          "summary": "HuggingFace Papers #1: novel on-policy distillation method for generative fields — top trending paper of the week with implications for faster diffusion model training.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.27377",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "diffusion",
+            "distillation",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-ic-world-model",
+          "title": "In-Context World Modeling for Robotic Control",
+          "summary": "HF #2: in-context world models for robotic control without full policy retraining — bridges foundation model research and embodied AI deployment.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.26025",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "robotics",
+            "world-models",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-opid",
+          "title": "OPID: On-Policy Skill Distillation for Agentic RL",
+          "summary": "HF #3: on-policy skill distillation for agentic reinforcement learning — directly relevant to the week's GPT-5.6 agentic benchmark narrative and MCP orchestration trends.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.26790",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "agents",
+            "rl",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-qwen-image-agent",
+          "title": "Qwen-Image-Agent: Context Gap in Real-World Image Generation",
+          "summary": "HF #5: agentic image generation framework addressing multi-reference context — design-relevant for brand-consistent asset pipelines.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.26907",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "qwen",
+            "agents",
+            "image-gen"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-verification-horizon",
+          "title": "The Verification Horizon: No Silver Bullet for Coding Agent Rewards",
+          "summary": "HF #6: argues no single verification signal suffices for coding agent RL rewards — timely given Terminal-Bench 2.1 competition between GPT-5.6 and Claude models.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.26300",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "agents",
+            "benchmark",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-viq",
+          "title": "ViQ: Text-Aligned Visual Quantized Representations at Any Resolution",
+          "summary": "Text-aligned visual quantization at arbitrary resolution — potential typography and OCR improvements for next-gen image models.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.27313",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "typography",
+            "multimodal",
+            "research"
+          ],
+          "image_url": null
+        }
+      ]
+    }
+  ],
+  "visualizations": {
+    "category_counts": {
+      "leaderboard": 6,
+      "aisearch": 10,
+      "agentic-ai": 5,
+      "llm": 5,
+      "image-gen": 5,
+      "design-ai": 5,
+      "typography": 4,
+      "robotics": 5,
+      "research": 6
+    },
+    "significance_distribution": {
+      "5": 10,
+      "4": 29,
+      "3": 12
+    },
+    "top_tags": [
+      {
+        "tag": "krea",
+        "count": 11
+      },
+      {
+        "tag": "agents",
+        "count": 10
+      },
+      {
+        "tag": "research",
+        "count": 10
+      },
+      {
+        "tag": "openai",
+        "count": 8
+      },
+      {
+        "tag": "open-source",
+        "count": 8
+      },
+      {
+        "tag": "leaderboard",
+        "count": 6
+      },
+      {
+        "tag": "benchmark",
+        "count": 5
+      },
+      {
+        "tag": "image-gen",
+        "count": 5
+      },
+      {
+        "tag": "anthropic",
+        "count": 4
+      },
+      {
+        "tag": "comfyui",
+        "count": 4
+      }
+    ],
+    "top_stories": [
+      {
+        "id": "lb-gpt56-preview",
+        "title": "GPT-5.6 Sol preview: 91.9% Terminal-Bench 2.1 Ultra — govern",
+        "significance": 5,
+        "category": "leaderboard"
+      },
+      {
+        "id": "ais-krea-2-intro",
+        "title": "Krea 2 intro — new open-source image generator",
+        "significance": 5,
+        "category": "aisearch"
+      },
+      {
+        "id": "ag-mcp-stateless-rc",
+        "title": "MCP 2026-07-28 RC: protocol goes stateless — sessions and ha",
+        "significance": 5,
+        "category": "agentic-ai"
+      },
+      {
+        "id": "ag-gpt56-subagents",
+        "title": "GPT-5.6 Sol Ultra mode: parallel subagents for 91.9% Termina",
+        "significance": 5,
+        "category": "agentic-ai"
+      },
+      {
+        "id": "llm-gpt56-sol",
+        "title": "GPT-5.6 Sol: OpenAI's strongest model — biology, cyber, and ",
+        "significance": 5,
+        "category": "llm"
+      }
+    ]
+  },
+  "report_source": "llm-pipeline",
+  "report_source_badge": "../img/report-source/llm_pipeline.png",
+  "report_source_label": "LLM Pipeline"
+}

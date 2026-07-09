@@ -1,0 +1,33 @@
+---
+description: AI Digest agent onboarding and versioning — read before changing this repo
+alwaysApply: true
+---
+
+# AI Digest — agent entry & versioning
+
+## Read first
+
+Before non-trivial work in this repo, read:
+
+1. `.agents/README.md` — layout, symlinks, reading order
+2. `.agents/AGENTS.md` — day-to-day rules (testing, commit/push, versioning)
+3. `.agents/onboarding/principles-and-workflow.md` — workflow and versioning detail
+
+Source of truth for this rule file: `.agents/.cursor/rules/ai-digest-agent.mdc`
+(repo-root `.cursor/rules/ai-digest-agent.mdc` is a symlink).
+
+## Versioning (non-negotiable)
+
+Source of truth: `__version__` in `pipeline/__init__.py` (`MAJOR.MINOR` only).
+
+- **Never bump MAJOR or MINOR** unless the maintainer explicitly asks.
+- The **build segment** is the run prefix (`YYYYMMDDHHmmss`), appended by `generator_version(prefix)` — e.g. `0.5.20260702120000`. It moves per run; do not invent a second timestamp.
+- Footers show the bare release line (`v0.5`); JSON carries full `generator_version`.
+- Do not change `__version__` as part of feature work, refactors, or UI fixes.
+
+## Workflow reminders
+
+- Commit on a branch; **never push** without explicit permission.
+- **Never** add `Co-authored-by` automation trailers to commits.
+- Prefer re-render over re-run for UI/render-only changes.
+- Test with `python run_tests.py`; use real fixtures, avoid mocks.

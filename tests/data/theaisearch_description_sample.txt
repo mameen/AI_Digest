@@ -1,0 +1,13 @@
+DSpark by Deepseek. Huge speed and throughput unlock. #ai #ainews #llm #agi #singularity
+Thanks to our sponsor Higgsfield. Try Claude Fable with Higgsfield today: https://higgsfield.ai/s/mcp-theaisearch
+
+dSpark paper: https://github.com/deepseek-ai/DeepSpark
+dSpark code: https://github.com/deepseek-ai/DeepSpec/
+Deepseek with dSpark: https://huggingface.co/deepseek-ai/DeepSpark
+
+00:00 dSpark intro
+01:05 Deepseek situation
+02:20 Why AI models are slow
+
+Newsletter: https://aisearch.substack.com/
+Find AI tools & jobs: https://ai-search.io/

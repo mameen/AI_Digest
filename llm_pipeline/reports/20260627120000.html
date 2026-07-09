@@ -1,0 +1,2123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily — April 25, 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<style>
+:root {
+    --bg: #0d1117; --card-bg: #161b22; --masthead-bg: #0d1117;
+    --masthead-text: #e6edf3; --accent: #58a6ff;
+    --pill-active-bg: #388bfd26; --pill-active-text: #58a6ff;
+    --pill-inactive-bg: #21262d; --pill-inactive-text: #8b949e;
+    --border: #30363d; --muted: #8b949e; --sig-color: #d29922;
+    --text: #e6edf3;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --cat-llm: #388bfd; --cat-image: #bc8cff; --cat-design: #39d2c0;
+    --cat-typo: #f85149; --cat-robot: #f0883e; --cat-research: #58a6ff;
+    --hm-empty: #21262d; --hm-1: #1a3a5c; --hm-2: #1a4a7a; --hm-3: #1a6fa0; --hm-4: #58a6ff;
+    --hm-label: #8b949e; --hm-selection: #58a6ff; --hm-hover: #8b949e;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .masthead { background: var(--masthead-bg); color: var(--masthead-text); padding: 20px 24px 16px; display: flex; flex-direction: column; gap: 6px; border-bottom: 1px solid var(--border); }
+  .masthead-top { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .report-source-seal {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.14);
+    line-height: 0;
+    padding: 4px 8px;
+    cursor: help;
+  }
+  .report-source-seal img {
+    display: block;
+    height: 40px;
+    width: auto;
+    max-width: 128px;
+    object-fit: contain;
+  }
+  .masthead h1 { font-size: 18px; font-weight: 600; letter-spacing: 0; text-transform: none; }
+  .masthead-date { font-size: 13px; font-weight: 700; letter-spacing: 0.4px; color: var(--text); text-transform: uppercase; }
+  .masthead-summary { font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 920px; padding-top: 8px; }
+
+  .top-stories-bar { background: #161b22; padding: 10px 24px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+  .top-stories-label { font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); white-space: nowrap; font-weight: 500; }
+  .top-story-pill { background: #21262d; color: var(--accent); padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; border: 1px solid var(--border); transition: background 0.15s, border-color 0.15s; white-space: nowrap; }
+  .top-story-pill:hover { background: #388bfd26; border-color: var(--accent); }
+
+  .layout {
+    display: flex; align-items: stretch; min-height: calc(100vh - 120px);
+    --sidebar-w: 220px;
+  }
+
+  .sidebar {
+    width: var(--sidebar-w); min-width: 160px; max-width: 420px; flex-shrink: 0;
+    background: var(--masthead-bg); padding: 20px 16px;
+    position: sticky; top: 0; height: calc(100vh - 120px); overflow-y: auto;
+  }
+  .layout-resizer {
+    flex-shrink: 0; width: 6px; margin: 0 -3px; position: relative; z-index: 2;
+    cursor: col-resize; touch-action: none;
+    background: transparent; border-left: 1px solid var(--border);
+  }
+  .layout-resizer::after {
+    content: ''; position: absolute; top: 0; bottom: 0; left: -3px; right: -3px;
+  }
+  .layout-resizer:hover, .layout-resizer.dragging { background: #388bfd33; border-left-color: var(--accent); }
+
+  .main { flex: 1; min-width: 0; padding: 20px 24px; background: var(--bg); }
+  .sidebar-section { margin-bottom: 24px; }
+  .sidebar-title { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  svg text { font-family: var(--font-sans); }
+  .tag-cloud { display: flex; flex-wrap: wrap; gap: 4px; }
+  .tag-item { font-size: 11px; background: var(--pill-inactive-bg); color: var(--muted); padding: 2px 7px; border-radius: 10px; border: 1px solid var(--border); cursor: pointer; transition: all 0.15s; }
+  .tag-item:hover { border-color: var(--accent); color: var(--text); }
+  .tag-item.tag-active { background: var(--pill-active-bg); color: var(--accent); border-color: var(--accent); }
+  .tag-item.tag-dim { opacity: 0.3; }
+  .tag-count { color: var(--accent); font-size: 10px; margin-left: 3px; }
+  .sig-row:hover .sig-bar { filter: brightness(1.2); }
+  #sig-chart { cursor: pointer; }
+
+  .filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; align-items: center; }
+  .pill { padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); transition: all 0.15s; font-family: var(--font-sans); background: var(--pill-inactive-bg); color: var(--pill-inactive-text); }
+  .pill.active { background: var(--pill-active-bg); color: var(--pill-active-text); border-color: var(--accent); }
+  .pill.inactive:hover { background: #21262d; border-color: #8b949e; color: var(--text); }
+
+  /* AI Search hub view */
+  .aisearch-hub { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 24px; gap: 32px; }
+  .aisearch-hub-title { font-size: 22px; font-weight: 700; color: var(--text); text-align: center; }
+  .aisearch-hub-sub { font-size: 13px; color: var(--muted); text-align: center; max-width: 480px; line-height: 1.6; margin-top: -20px; }
+  .aisearch-hub-links { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .aisearch-hub-link { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 28px 36px; background: #161b22; border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text); transition: border-color 0.15s, background 0.15s; min-width: 180px; }
+  .aisearch-hub-link:hover { border-color: #f0883e; background: #f0883e08; }
+  .aisearch-hub-link-icon { font-size: 36px; }
+  .aisearch-hub-link-label { font-size: 15px; font-weight: 600; }
+  .aisearch-hub-link-url { font-size: 11px; color: var(--muted); }
+
+  .story-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; }
+
+  .story-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px 16px 12px; cursor: pointer; transition: border-color 0.15s; position: relative; overflow: hidden; }
+  .story-card:hover { border-color: #8b949e; }
+  .story-card.expanded { border-color: var(--accent); }
+  .card-cat-badge { position: absolute; top: 12px; right: 12px; font-size: 1rem; }
+  .card-copy { position: absolute; top: 10px; right: 32px; width: 20px; height: 20px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 5px; border: 1px solid var(--border); background: var(--card-bg); color: var(--muted); cursor: pointer; opacity: 0.4; transition: opacity 0.15s, color 0.15s, border-color 0.15s; z-index: 4; }
+  .card-copy:hover { opacity: 1; color: var(--accent); border-color: var(--accent); }
+  .card-copy.copied { opacity: 1; color: #3fb950; border-color: #3fb950; }
+  .card-copy.copy-failed { opacity: 1; color: #f85149; border-color: #f85149; }
+  .card-cat-stripe { position: absolute; top: 0; left: 0; width: 3px; height: 100%; }
+  .card-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .card-source { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; }
+  .card-info { width: 15px; height: 15px; padding: 0; border-radius: 50%; border: 1px solid var(--border); background: transparent; color: var(--muted); font: italic 10px/13px Georgia, serif; text-align: center; cursor: pointer; opacity: 0.45; transition: opacity 0.15s, border-color 0.15s, color 0.15s; }
+  .card-info:hover { opacity: 1; border-color: var(--accent); color: var(--accent); }
+  .card-trace { position: absolute; z-index: 5; top: 34px; left: 16px; right: 16px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; box-shadow: 0 4px 14px rgba(0,0,0,0.4); }
+  .card-trace[hidden] { display: none; }
+  .trace-row { display: flex; gap: 8px; padding: 2px 0; align-items: baseline; }
+  .trace-k { color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-size: 9px; min-width: 46px; flex-shrink: 0; }
+  .trace-v { color: var(--text); font-size: 11px; background: none; word-break: break-all; }
+  .card-sig { display: flex; gap: 2px; margin-left: auto; padding-right: 54px; }
+  .sig-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
+  .sig-dot.filled { background: var(--sig-color); }
+  .card-title { font-size: 13px; font-weight: 600; line-height: 1.4; color: var(--text); }
+  .card-expand { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .card-expand.visible { display: block; }
+  .card-summary { font-size: 12px; line-height: 1.6; color: var(--muted); margin-bottom: 12px; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+  .card-tag { font-size: 11px; background: #21262d; color: var(--muted); padding: 1px 6px; border-radius: 10px; border: 1px solid var(--border); }
+  .card-link { display: inline-flex; align-items: center; gap: 4px; color: var(--accent); font-size: 12px; font-weight: 500; text-decoration: none; }
+  .card-link:hover { text-decoration: underline; }
+  .card-links { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
+  .card-resource-link {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 11px; font-weight: 500; color: var(--accent);
+    text-decoration: none; padding: 3px 8px; border-radius: 999px;
+    border: 1px solid var(--border); background: var(--pill-inactive-bg, #21262d);
+  }
+  .card-resource-link:hover { text-decoration: underline; border-color: var(--accent); }
+  .card-resource-link-primary { border-color: var(--accent); font-weight: 600; }
+
+  .empty-state { text-align: center; padding: 40px; color: var(--muted); }
+
+  .footer { border-top: 1px solid var(--border); padding: 12px 24px; font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; background: var(--masthead-bg); }
+
+  .d3-tooltip { position: fixed; background: #161b22; border: 1px solid var(--border); color: var(--text); padding: 6px 10px; border-radius: 6px; font-size: 12px; font-family: var(--font-sans); pointer-events: none; opacity: 0; transition: opacity 0.15s; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+
+  .masthead-archive { font-size: 12px; margin-left: auto; }
+  .masthead-archive a { color: var(--accent); text-decoration: none; }
+  .masthead-archive a:hover { text-decoration: underline; }
+  .content-loading { padding: 48px 24px; color: var(--muted); text-align: center; }
+
+  /* ── Leaderboard ── */
+  .lb-wrap { grid-column: 1 / -1; width: 100%; }
+  .lb-tabs { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .lb-tab { padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--pill-inactive-bg); color: var(--pill-inactive-text); transition: all 0.15s; }
+  .lb-tab.active { background: var(--pill-active-bg); color: var(--accent); border-color: var(--accent); }
+  .lb-tab:hover:not(.active) { border-color: #8b949e; color: var(--text); }
+  .lb-src { font-size: 11px; color: var(--accent); text-decoration: none; margin-left: auto; }
+  .lb-src:hover { text-decoration: underline; }
+  .lb-updated { font-size: 11px; color: var(--muted); }
+  .lb-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+  .lb-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .lb-table thead { background: #161b22; position: sticky; top: 0; z-index: 1; }
+  .lb-th { padding: 8px 12px; text-align: left; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; white-space: nowrap; user-select: none; border-bottom: 1px solid var(--border); }
+  .lb-th:hover { color: var(--text); }
+    .lb-th-info { cursor: help; }
+    .lb-th-info[title] { border-bottom: 1px dotted var(--border); }
+  .sort-arrow { font-size: 10px; margin-left: 3px; opacity: 0.5; }
+  .lb-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+  .lb-table tbody tr:last-child { border-bottom: none; }
+  .lb-table tbody tr:hover { background: #21262d; }
+  .lb-table td { padding: 8px 12px; color: var(--text); white-space: nowrap; }
+  .lb-table td:first-child { color: var(--muted); font-weight: 600; }
+  .lb-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; flex-shrink: 0; }
+  .lb-bar-cell { display: flex; align-items: center; gap: 8px; min-width: 120px; }
+  .lb-bar-fill { display: inline-block; height: 6px; border-radius: 3px; min-width: 2px; }
+  .lb-bar-val { font-weight: 700; font-size: 13px; color: var(--text); }
+
+  /* ── Benchmark chart grid ── */
+  .lb-charts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .lb-chart-card { background: #161b22; border: 1px solid var(--border); border-radius: 8px; padding: 14px 12px 10px; }
+  .lb-chart-title { margin-bottom: 8px; }
+  .lb-chart-name { display: block; font-size: 13px; font-weight: 600; color: var(--text); }
+  .lb-chart-task { display: block; font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .lb-chart-svg { display: block; width: 100%; overflow: visible; }
+
+  /* ── More leaderboards (links) ── */
+  .lb-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+  .lb-links-group { background: #161b22; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+  .lb-links-head { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  .lb-link-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 6px 0; text-decoration: none; border-bottom: 1px solid transparent; }
+  .lb-link-row:hover { border-bottom-color: var(--border); }
+  .lb-link-name { font-size: 12px; color: var(--text); }
+  .lb-link-src { font-size: 11px; color: var(--accent); white-space: nowrap; flex-shrink: 0; }
+
+  @media (max-width: 1100px) { .lb-charts-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 860px) {
+    .layout { flex-direction: column; }
+    .layout-resizer { display: none; }
+    .sidebar { width: auto; max-width: none; position: static; height: auto; border-bottom: 1px solid var(--border); }
+    .masthead { padding: 16px; }
+    .top-stories-bar { padding: 10px 16px; }
+    .main { padding: 16px; }
+  }
+
+/* Light theme overrides — default is dark.css (:root). Toggle sets data-theme on <html>. */
+
+[data-theme="light"] {
+  --bg: #f6f8fa;
+  --card-bg: #ffffff;
+  --masthead-bg: #ffffff;
+  --masthead-text: #1f2328;
+  --accent: #0969da;
+  --pill-active-bg: #ddf4ff;
+  --pill-active-text: #0969da;
+  --pill-inactive-bg: #f6f8fa;
+  --pill-inactive-text: #656d76;
+  --border: #d0d7de;
+  --muted: #656d76;
+  --sig-color: #bf8700;
+  --text: #1f2328;
+  --cat-llm: #0969da;
+  --cat-image: #8250df;
+  --cat-design: #1a7f37;
+  --cat-typo: #cf222e;
+  --cat-robot: #bc4c00;
+  --cat-research: #0969da;
+  --hm-empty: #ebedf0;
+  --hm-1: #c6e6ff;
+  --hm-2: #79c0ff;
+  --hm-3: #4493f8;
+  --hm-4: #0969da;
+  --hm-label: #656d76;
+  --hm-selection: #0969da;
+  --hm-hover: #656d76;
+}
+
+[data-theme="light"] .top-stories-bar,
+[data-theme="light"] .lb-table thead,
+[data-theme="light"] .lb-chart-card,
+[data-theme="light"] .lb-links-group,
+[data-theme="light"] .aisearch-hub-link,
+[data-theme="light"] .frame-author,
+[data-theme="light"] .archive-charts-row .chart-panel,
+[data-theme="light"] .d3-tooltip {
+  background: #ffffff;
+}
+
+[data-theme="light"] .top-story-pill,
+[data-theme="light"] .tag-item,
+[data-theme="light"] .card-tag,
+[data-theme="light"] .year-pill {
+  background: #f6f8fa;
+}
+
+[data-theme="light"] .lb-table tbody tr:hover,
+[data-theme="light"] .pill.inactive:hover {
+  background: #f6f8fa;
+}
+
+[data-theme="light"] .heatmap-details,
+[data-theme="light"] .archive-details {
+  background: #ffffff;
+}
+
+[data-theme="light"] .diag-panel {
+  background: #f6f8fa;
+}
+
+[data-theme="light"] .d3-tooltip,
+[data-theme="light"] .card-trace {
+  box-shadow: 0 4px 12px rgba(31, 35, 40, 0.12);
+}
+
+</style>
+<script>(function () {
+  var STORAGE_KEY = 'aidigest-theme';
+
+  function preferredTheme() {
+    try {
+      return localStorage.getItem(STORAGE_KEY) || 'dark';
+    } catch (e) {
+      return 'dark';
+    }
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme === 'light' ? 'light' : 'dark');
+  }
+
+  applyTheme(preferredTheme());
+
+  window.addEventListener('storage', function (e) {
+    if (e.key === STORAGE_KEY) {
+      applyTheme(e.newValue || 'dark');
+    }
+  });
+
+  window.addEventListener('message', function (e) {
+    if (e.data && e.data.type === 'aidigest-theme') {
+      applyTheme(e.data.theme);
+    }
+  });
+})();
+</script>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-top">
+    <h1>AI Daily</h1>
+    <span class="report-source-seal" id="report-source-seal" hidden title="" aria-label="Report source"></span>
+    <span class="masthead-date" id="digest-date"></span>
+    <span class="masthead-archive"><a href="index.html#20260627120000">← Archive</a></span>
+  </div>
+  <div class="masthead-summary" id="digest-summary"></div>
+</div>
+
+<div class="top-stories-bar" id="top-stories-bar">
+  <span class="top-stories-label">Top Stories</span>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">By Category</div>
+      <svg id="donut-chart" width="208" height="160"></svg>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Significance</div>
+      <svg id="sig-chart" width="208" height="100"></svg>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Top Tags</div>
+      <div class="tag-cloud" id="tag-cloud"></div>
+    </div>
+  </aside>
+  <div class="layout-resizer" id="layout-resizer" role="separator" aria-orientation="vertical" aria-label="Resize sidebar" tabindex="0"></div>
+  <main class="main">
+    <div class="filter-bar" id="filter-bar"></div>
+    <div class="story-grid" id="story-grid"><div class="content-loading">Loading digest…</div></div>
+  </main>
+</div>
+
+<footer class="footer">
+  <span id="footer-count"></span>
+  <span>AI Daily · Generated by Claude · ai-search.io inspired</span>
+</footer>
+
+<div class="d3-tooltip" id="tooltip"></div>
+
+<script>window.__AIDIGEST_DIGEST__ = {
+  "generated_at": "2026-06-27T12:00:00Z",
+  "filename_prefix": "20260627120000",
+  "summary": "OpenAI previews GPT-5.6 Sol under a US government-vetted access lock while Anthropic's Claude Fable 5 remains suspended; Krea 2 ships as the most uncensored open-source image model with ComfyUI workflows; Figma Config 2026 and Adobe Firefly agentic studio redefine the design stack; and Figure AI hits one robot per hour at BotQ.",
+  "aisearch_video_url": "https://www.youtube.com/watch?v=1U8dJ94QFNc",
+  "aisearch_video_label": "Jun 27 — Krea 2 local image gen, Luma Agents, ComfyUI LoRAs",
+  "categories": [
+    {
+      "id": "leaderboard",
+      "label": "Leaderboard Rankings",
+      "icon": "🏆",
+      "stories": [
+        {
+          "id": "lb-fable-suspended-opus-leads",
+          "title": "Claude Fable 5 still #1 on AA (score 60) but globally suspended since June 12",
+          "summary": "Artificial Analysis still ranks Claude Fable 5 (with Opus 4.8 fallback) at #1 with an intelligence score of 60 — but the model has been unavailable to all users since June 12, when a US export-control directive ordered Anthropic to suspend Fable 5 and Mythos 5. Claude Opus 4.8 (score 56) is the practical #1 for developers today.",
+          "source": "Artificial Analysis / Anthropic",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "leaderboard",
+            "anthropic",
+            "export-control",
+            "frontier"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-gpt56-preview",
+          "title": "GPT-5.6 Sol preview: 91.9% Terminal-Bench 2.1 Ultra — government-gated launch",
+          "summary": "OpenAI previewed GPT-5.6 Sol, Terra, and Luna on June 26 under a US government-vetted partner program. Sol scores 88.8% on Terminal-Bench 2.1 (91.9% in Ultra mode with subagents), surpassing Claude Fable 5's 83.4% — but general API access is weeks away.",
+          "source": "OpenAI",
+          "url": "https://openai.com/index/previewing-gpt-5-6-sol/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "openai",
+            "benchmark",
+            "agentic",
+            "government"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-opus48-hle",
+          "title": "Claude Opus 4.8 leads Humanity's Last Exam at 57.9% among available models",
+          "summary": "Among models developers can actually call, Claude Opus 4.8 holds the HLE lead at 57.9% on Vellum's tracker — well ahead of Gemini 3 Pro (45.8%) and Kimi K2 Thinking (44.9%). On SWE-bench Verified, Opus 4.8 sits at 88.6%, making it the top unrestricted coding model.",
+          "source": "Vellum AI",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "benchmark",
+            "anthropic",
+            "hle",
+            "swe-bench"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-kimi-open",
+          "title": "Kimi K2.5 tops Vellum open-weight board: 87.6% GPQA, 76.8% SWE-bench",
+          "summary": "Vellum's open LLM leaderboard puts Kimi K2.5 at #1 open-weight with 87.6% GPQA and 76.8% SWE-bench Verified. Kimi K2 Thinking follows at #2 with 99.1% AIME. The open vs closed gap on coding benchmarks continues to narrow even as frontier closed models face regulatory suspension.",
+          "source": "Vellum AI",
+          "url": "https://www.vellum.ai/open-llm-leaderboard",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "open-source",
+            "kimi",
+            "leaderboard",
+            "benchmark"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-gpt-image2-arena",
+          "title": "GPT Image 2 (medium) holds #1 on Arena text-to-image at Elo 1384",
+          "summary": "Arena.ai's text-to-image leaderboard still has GPT Image 2 (medium) at #1 with Elo 1384, followed by Reve 2.0 (1280) and Gemini 3.1 Flash Image Preview (1269). Among open-source models, Krea 2 is the week's breakout — theAIsearch's latest video positions it as the fastest uncensored local generator with strong text rendering.",
+          "source": "Arena.ai / theAIsearch",
+          "url": "https://arena.ai/leaderboard/text-to-image",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "image-gen",
+            "leaderboard",
+            "openai",
+            "open-source"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-price-compression",
+          "title": "GPT-5.6 Luna at $1/$6 per M undercuts frontier pricing further",
+          "summary": "GPT-5.6 pricing sets a new floor: Sol at $5/$30, Terra at $2.50/$15, Luna at $1/$6 per million tokens — under half the cost of the suspended Claude Fable 5 ($10/$50). Gemini 3.5 Flash remains the value leader among generally available models at $1.31/M input.",
+          "source": "OpenAI / Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "pricing",
+            "leaderboard",
+            "openai",
+            "google"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "aisearch",
+      "label": "AI Search",
+      "icon": "🔍",
+      "stories": [
+        {
+          "id": "ais-krea-2-intro",
+          "title": "Krea 2 intro — new open-source image generator",
+          "summary": "Krea 2 releases model weights for free offline use on consumer GPUs (8 GB VRAM). theAIsearch highlights photorealistic aesthetics with natural imperfections, strong anime and anatomy, and built-in text rendering — positioning it as the most uncensored open image model available.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=0s",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "krea",
+            "open-source",
+            "image-gen",
+            "local"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-demos-aesthetics",
+          "title": "Demos and aesthetics",
+          "summary": "Demo gallery shows Krea 2 handling multiple art styles, tricky multi-element prompts, and character consistency. The model deliberately excludes AI-generated images from pre-training data to avoid generic synthetic aesthetics.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=30s",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "krea",
+            "aesthetics",
+            "image-gen"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-comfyui-krea",
+          "title": "How to use Krea 2 in ComfyUI",
+          "summary": "Step-by-step ComfyUI install: update portable build, select the offline Krea text-to-image template, download turbo FP8 weights (~13 GB), Qwen3 VL text encoder, and VAE. First run generates images in ~10–12 seconds on consumer hardware.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=124s",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "comfyui",
+            "workflow",
+            "open-source"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-krea-workflow",
+          "title": "Krea 2 workflow",
+          "summary": "Default ComfyUI workflow covers text-to-image with turbo model variants (BF16, FP8, MXFP8, NVFP4). Raw model available for fine-tuning; turbo model optimized for fast inference with fewer steps.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=322s",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "comfyui",
+            "workflow",
+            "krea"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-luma-agents",
+          "title": "Luma Agents",
+          "summary": "Luma Agents segment covers Luma's agentic video/image tooling — part of theAIsearch's weekly roundup of creative AI agents beyond static image generation.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=457s",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "luma",
+            "agents",
+            "video-gen"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-krea-loras",
+          "title": "How to use Krea 2 LoRAs",
+          "summary": "Official ComfyUI HuggingFace repo ships starter LoRAs (warm pastel, etc.). Tutorial covers trigger words, strength tuning, and bypassing the multi-LoRA node for simpler workflows.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=581s",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "lora",
+            "fine-tuning",
+            "krea"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-uncensored",
+          "title": "Uncensored generation with Conditioning Krea Rebalance",
+          "summary": "Krea 2 is positioned as the most uncensored mainstream open image model. Adding the Conditioning Krea2 Rebalance custom node (via git clone) enables robust uncensored output beyond Flux, Ideogram, or Z-Image defaults.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=750s",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "krea",
+            "uncensored",
+            "comfyui"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-train-loras",
+          "title": "How to train LoRAs",
+          "summary": "Austrit's AI Toolkit already supports Krea 2 LoRA training — example: multi-face character LoRA. Early community tooling for fine-tuning on the raw (non-turbo) checkpoint.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=894s",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "lora",
+            "training",
+            "krea"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-tech-report",
+          "title": "Interesting details from Krea 2 technical report",
+          "summary": "Krea's report reveals zero AI-generated images in pre-training, rich OCR/metadata captioning pipeline, multi-length prompt reformatting, and GPU scaling instability beyond 128 GPUs — honest infrastructure lessons for frontier image training.",
+          "source": "theAIsearch / Krea",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=922s",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "research",
+            "training",
+            "krea"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-license",
+          "title": "License — commercial use under $1M revenue",
+          "summary": "Krea 2 community license permits commercial use for companies under $1M annual revenue — more permissive than Ideogram or Flux commercial terms, though not full Apache/MIT.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=1072s",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "license",
+            "krea",
+            "open-source"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "agentic-ai",
+      "label": "Agentic AI",
+      "icon": "🤝",
+      "stories": [
+        {
+          "id": "ag-mcp-stateless-rc",
+          "title": "MCP 2026-07-28 RC: protocol goes stateless — sessions and handshake removed",
+          "summary": "The Model Context Protocol's largest revision since launch enters final validation before the July 28 ship date. Remote MCP servers can run behind plain round-robin load balancers without sticky sessions; new Mcp-Method and Mcp-Name headers replace session routing.",
+          "source": "Model Context Protocol",
+          "url": "https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "mcp",
+            "agents",
+            "protocol",
+            "stateless"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ag-openai-codex-replay",
+          "title": "OpenAI Codex record-and-replay for agentic debugging workflows",
+          "summary": "OpenAI shipped record-and-replay in Codex — developers can capture agent sessions and replay them for debugging multi-step coding workflows. Pairs with GPT-5.6 Sol's Terminal-Bench leadership for long-horizon agentic tasks.",
+          "source": "OpenAI",
+          "url": "https://developers.openai.com/codex/record-and-replay",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "codex",
+            "agents",
+            "debugging",
+            "openai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ag-gpt56-subagents",
+          "title": "GPT-5.6 Sol Ultra mode: parallel subagents for 91.9% Terminal-Bench",
+          "summary": "GPT-5.6 Sol's Ultra mode leverages parallel subagents — evoking OpenClaw-style orchestration — to reach 91.9% on Terminal-Bench 2.1. Terra and Luna tiers bring agentic capability at 2× and 5× lower cost respectively.",
+          "source": "OpenAI / The Verge",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/957845/openai-gpt-5-6-trump-administration-ai-preview",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "multi-agent",
+            "openai",
+            "benchmark",
+            "orchestration"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ag-figma-mcp",
+          "title": "Figma agent connects via MCP — writes to design files with real tokens",
+          "summary": "Figma's Config 2026 agent update supports MCP server connections so external AI agents can create and modify design assets using team components, variables, and tokens — bridging agentic coding and design systems.",
+          "source": "Figma",
+          "url": "https://help.figma.com/hc/en-us/articles/39582753756695-What-s-new-from-Config-2026",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "figma",
+            "mcp",
+            "agents",
+            "design-systems"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ag-adobe-firefly-assistant",
+          "title": "Adobe Firefly AI Assistant (beta) — agentic creative studio across apps",
+          "summary": "Adobe's Firefly AI Assistant now orchestrates multi-step workflows across Premiere, Photoshop, Illustrator, and InDesign from a single conversational interface — brand kit generation, Quick Cut video assembly, and storyboard creation.",
+          "source": "Adobe",
+          "url": "https://blog.adobe.com/en/publish/2026/06/18/adobe-firefly-introduces-new-agentic-capabilities-and-an-upgraded-creative-ai-studio-built-for-the-way-you-work",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "adobe",
+            "agents",
+            "firefly",
+            "creative"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "llm",
+      "label": "LLMs & Reasoning",
+      "icon": "🧠",
+      "stories": [
+        {
+          "id": "llm-gpt56-sol",
+          "title": "GPT-5.6 Sol: OpenAI's strongest model — biology, cyber, and coding gains",
+          "summary": "GPT-5.6 Sol sets SOTA on Terminal-Bench 2.1, shows broad GeneBench v1 biology improvements with fewer tokens, and crosses the 'High' cyber risk threshold at 96.7% on internal attack tests. Limited preview for government-vetted partners only.",
+          "source": "OpenAI",
+          "url": "https://openai.com/index/previewing-gpt-5-6-sol/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "openai",
+            "frontier",
+            "reasoning",
+            "cybersecurity"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-fable-suspended",
+          "title": "Claude Fable 5 suspended globally — export control directive June 12",
+          "summary": "Anthropic disabled Claude Fable 5 and Mythos 5 for all users on June 12 after a US Commerce Department export-control directive. Fable 5 had launched June 9 with 80.3% SWE-Bench Pro; Opus 4.8 is the recommended fallback. No restoration timeline as of June 27.",
+          "source": "Anthropic / Gizmodo",
+          "url": "https://gizmodotech.com/technews/claude-fable-5-ban/",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "anthropic",
+            "export-control",
+            "frontier",
+            "policy"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-glm52-aa",
+          "title": "GLM-5.2 (max) enters AA top 10 — Zhipu AI open-weight push continues",
+          "summary": "GLM-5.2 (max) now appears in Artificial Analysis's top frontier models alongside Claude, GPT, and Gemini entries — continuing Zhipu AI's open-weight momentum. GLM-5.2 GGUFs circulated widely on Unsloth for local deployment.",
+          "source": "Artificial Analysis / Unsloth",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "glm",
+            "open-source",
+            "zhipu",
+            "leaderboard"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-gpt56-terra-luna",
+          "title": "GPT-5.6 Terra and Luna: 2× and 5× cheaper tiers with strong agentic scores",
+          "summary": "Terra ($2.50/$15) matches GPT-5.5 performance at half the cost; Luna ($1/$6) scores 84.3% on Terminal-Bench 2.1 — tying Claude Mythos 5 — at the lowest frontier pricing tier. Both show cyber capability improvements on ExploitGym.",
+          "source": "OpenAI",
+          "url": "https://openai.com/index/previewing-gpt-5-6-sol/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "openai",
+            "pricing",
+            "reasoning"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-mythos5-redeploy",
+          "title": "Claude Mythos 5 partial redeploy to US critical infrastructure only",
+          "summary": "Anthropic's June 27 update indicates Mythos 5 is redeploying to US critical-infrastructure organizations first while Fable 5 remains suspended for general use. Mythos Preview still holds 93.9% SWE-bench Verified in benchmark tracking.",
+          "source": "Anthropic / explainx.ai",
+          "url": "https://explainx.ai/blog/gpt-5-6-vs-claude-fable-5-comparison-2026",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "anthropic",
+            "mythos",
+            "safety",
+            "government"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "image-gen",
+      "label": "Image Generation & Processing",
+      "icon": "🎨",
+      "stories": [
+        {
+          "id": "img-krea2",
+          "title": "Krea 2: fastest uncensored open image model — 10s on 8GB VRAM",
+          "summary": "Krea 2 ships turbo FP8 weights for ComfyUI with Qwen3 VL encoder. Strong text rendering, anime, anatomy, and photorealism without synthetic-data pre-training bias. Community license allows commercial use under $1M revenue.",
+          "source": "Krea / theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "krea",
+            "open-source",
+            "comfyui",
+            "local"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-gpt-image2-arena",
+          "title": "GPT Image 2 still #1 on Arena — Elo 1384 with text rendering lead",
+          "summary": "Proprietary leaderboard dominance unchanged: GPT Image 2 (medium) at Elo 1384, Reve 2.0 at 1280. Open-source gap closing with Krea 2 and FLUX.2 variants but proprietary models retain typography edge on Arena subcategories.",
+          "source": "Arena.ai",
+          "url": "https://arena.ai/leaderboard/text-to-image",
+          "significance": 4,
+          "novelty": 2,
+          "relevance_design": 5,
+          "tags": [
+            "openai",
+            "leaderboard",
+            "text-rendering"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-qwen-image-agent",
+          "title": "Qwen-Image-Agent paper: bridging context gap in real-world image gen",
+          "summary": "HuggingFace Papers #5 this week: Qwen-Image-Agent uses agentic planning to handle complex multi-reference image generation — relevant for design workflows needing brand consistency across assets.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.26907",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "qwen",
+            "agents",
+            "image-gen",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-danceopd",
+          "title": "DanceOPD: on-policy generative field distillation — HF Papers #1",
+          "summary": "Top trending paper on HuggingFace: DanceOPD applies on-policy distillation to generative fields — potentially relevant for faster open-source image model training pipelines.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.27377",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "diffusion",
+            "distillation",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-luma-agents",
+          "title": "Luma Agents expand generative video/image orchestration",
+          "summary": "Luma's agent framework for chained image-to-video workflows featured in theAIsearch's latest roundup — part of the shift from single-shot generation to agentic creative pipelines.",
+          "source": "Luma AI / theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=457s",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "luma",
+            "video-gen",
+            "agents"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "design-ai",
+      "label": "Design & Creative AI",
+      "icon": "✏️",
+      "stories": [
+        {
+          "id": "des-figma-config",
+          "title": "Figma Config 2026: Motion, Code Layers, shaders, and agent on canvas",
+          "summary": "Figma shipped Motion (timeline + keyframe export to CSS/React/MP4), Code Layers (closed beta July), generative plugins, Weave tools, and shader effects via the Figma agent — all rolling out June 24. Design-to-code loop tightens with Make canvas sync.",
+          "source": "Figma / CMSWire",
+          "url": "https://www.cmswire.com/digital-experience/figma-launches-code-layers-motion-at-config-2026/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "figma",
+            "motion",
+            "code-layers",
+            "config-2026"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "des-adobe-firefly-studio",
+          "title": "Adobe Firefly reimagined studio: Elements, Projects, persistent context",
+          "summary": "Adobe's upgraded Firefly creative AI studio (private beta) unifies generation and editing with Elements for reusable assets and Projects for organized workflows — persistent context from ideation to production without app-switching.",
+          "source": "Adobe / The Verge",
+          "url": "https://www.theverge.com/tech/952104/adobe-firefly-ai-agent-elements-projects-update",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "adobe",
+            "firefly",
+            "workflow",
+            "brand"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "des-krea-typography",
+          "title": "Krea 2 text rendering: open-source typography in images without post-fix",
+          "summary": "Krea 2's built-in text rendering — highlighted in theAIsearch's ComfyUI tutorial — reduces the 'fix typography in Photoshop' step for localized ad creatives and poster designs running fully offline.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc&t=30s",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "typography-in-images",
+            "krea",
+            "design-workflow"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "des-figma-weave",
+          "title": "Figma Weave: repeatable generative workflows on the design canvas",
+          "summary": "Weave tools in Figma Design let teams build scalable generative pipelines — image generation, image-to-video, and brand-guideline-to-illustration-set workflows directly on the collaborative canvas.",
+          "source": "Figma",
+          "url": "https://help.figma.com/hc/en-us/articles/39582753756695-What-s-new-from-Config-2026",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "figma",
+            "weave",
+            "generative",
+            "workflow"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "des-midjourney-medical",
+          "title": "Midjourney Medical: design AI enters regulated healthcare visuals",
+          "summary": "Midjourney launched a medical imaging/visualization vertical — signaling design AI tools expanding into specialized regulated domains beyond marketing and concept art.",
+          "source": "Midjourney / theAIsearch",
+          "url": "https://www.midjourney.com/medical",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "midjourney",
+            "healthcare",
+            "design-ai"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "typography",
+      "label": "Typography & Text Rendering",
+      "icon": "🔤",
+      "stories": [
+        {
+          "id": "typo-lava-devanagari",
+          "title": "Lava Devanagari, Kannada, and Telugu — Typographica typeface review",
+          "summary": "Typographica reviews Lava's Indic script expansion — relevant as AI image models (Krea 2, GPT Image 2) improve non-Latin text rendering; human type design for Devanagari/Kannada/Telugu sets quality benchmarks AI models aspire to match.",
+          "source": "Typographica",
+          "url": "https://typographica.org/typeface-reviews/lava-devanagari-kannada-and-telugu/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "indic",
+            "variable-fonts",
+            "typography",
+            "multilingual"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-typographica-library",
+          "title": "Typographica Library opens — curated typography reference archive",
+          "summary": "Typographica launched its Library — a curated archive of typeface reviews and essays. Useful reference for designers evaluating AI-generated typography against professional standards.",
+          "source": "Typographica",
+          "url": "https://typographica.org/on-typography/now-open-the-typographica-library/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "typography",
+            "archive",
+            "reference"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-krea-text",
+          "title": "Krea 2 built-in text rendering — open-source typography without LoRA hacks",
+          "summary": "Unlike Flux or Z-Image that need typography LoRAs, Krea 2 renders legible type across styles out of the box per theAIsearch review — a meaningful open-source milestone for text-in-image workflows.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=1U8dJ94QFNc",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "text-rendering",
+            "krea",
+            "open-source"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-viq-paper",
+          "title": "ViQ paper: text-aligned visual quantized representations at any resolution",
+          "summary": "HuggingFace trending: ViQ aligns visual and text representations at arbitrary resolutions — potentially improving OCR-aware image generation and typography fidelity in next-gen models.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.27313",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "text-rendering",
+            "research",
+            "multimodal"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "robotics",
+      "label": "Robotics & Embodied AI",
+      "icon": "🤖",
+      "stories": [
+        {
+          "id": "rob-figure-botq",
+          "title": "Figure AI hits 1 robot/hour at BotQ — 350+ Figure 03 units produced",
+          "summary": "Figure AI achieved one Figure 03 humanoid per hour at its BotQ factory (~55/week, 350+ total). Production scaling signals humanoids moving from prototype to manufacturing cadence.",
+          "source": "Figure AI / Humanoid.press",
+          "url": "https://humanoid.press/",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "figure",
+            "humanoid",
+            "manufacturing"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-boston-atlas",
+          "title": "Boston Dynamics electric Atlas: 2026 units shipping to Hyundai and DeepMind",
+          "summary": "Boston Dynamics' electric Atlas begins initial commercial deployments with Hyundai (RMAC) and Google DeepMind — 2026 production fully committed to partners.",
+          "source": "Boston Dynamics",
+          "url": "https://humanoid.press/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "boston-dynamics",
+            "atlas",
+            "hyundai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-unitree-ipo",
+          "title": "Unitree files $610M IPO on Shanghai STAR Market — $7B target valuation",
+          "summary": "Unitree Robotics filed for a 4.2B yuan IPO in March 2026 targeting ~$7B valuation with 5,500+ units shipped in 2025 and 10–20k shipment targets for 2026 — the sector's most significant near-term liquidity event.",
+          "source": "KraneShares",
+          "url": "https://kraneshares.com/humanoid-robotics-in-2026-the-race-from-pilot-to-platform/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "unitree",
+            "ipo",
+            "humanoid"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-ic-world-model",
+          "title": "In-Context World Modeling for Robotic Control — HF Papers #2",
+          "summary": "Second trending HuggingFace paper applies in-context learning to robotic world models — enabling robots to adapt control policies from demonstration context without full retraining.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.26025",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "robotics",
+            "world-models",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-bmw-aeon",
+          "title": "BMW deploys Hexagon AEON humanoid at Plant Leipzig — summer 2026 pilot",
+          "summary": "Following Figure 02 validation (1,250 operational hours), BMW expands humanoid program to Europe with Hexagon AB's AEON at Plant Leipzig for EV battery assembly — humanoids enabling in-house work previously outsourced.",
+          "source": "KraneShares",
+          "url": "https://kraneshares.com/humanoid-robotics-in-2026-the-race-from-pilot-to-platform/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "bmw",
+            "humanoid",
+            "manufacturing"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "label": "Research & Papers",
+      "icon": "📄",
+      "stories": [
+        {
+          "id": "res-danceopd",
+          "title": "DanceOPD: On-Policy Generative Field Distillation",
+          "summary": "HuggingFace Papers #1: novel on-policy distillation method for generative fields — top trending paper of the week with implications for faster diffusion model training.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.27377",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "diffusion",
+            "distillation",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-ic-world-model",
+          "title": "In-Context World Modeling for Robotic Control",
+          "summary": "HF #2: in-context world models for robotic control without full policy retraining — bridges foundation model research and embodied AI deployment.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.26025",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "robotics",
+            "world-models",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-opid",
+          "title": "OPID: On-Policy Skill Distillation for Agentic RL",
+          "summary": "HF #3: on-policy skill distillation for agentic reinforcement learning — directly relevant to the week's GPT-5.6 agentic benchmark narrative and MCP orchestration trends.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.26790",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "agents",
+            "rl",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-qwen-image-agent",
+          "title": "Qwen-Image-Agent: Context Gap in Real-World Image Generation",
+          "summary": "HF #5: agentic image generation framework addressing multi-reference context — design-relevant for brand-consistent asset pipelines.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.26907",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "qwen",
+            "agents",
+            "image-gen"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-verification-horizon",
+          "title": "The Verification Horizon: No Silver Bullet for Coding Agent Rewards",
+          "summary": "HF #6: argues no single verification signal suffices for coding agent RL rewards — timely given Terminal-Bench 2.1 competition between GPT-5.6 and Claude models.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.26300",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "agents",
+            "benchmark",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-viq",
+          "title": "ViQ: Text-Aligned Visual Quantized Representations at Any Resolution",
+          "summary": "Text-aligned visual quantization at arbitrary resolution — potential typography and OCR improvements for next-gen image models.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.27313",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "typography",
+            "multimodal",
+            "research"
+          ],
+          "image_url": null
+        }
+      ]
+    }
+  ],
+  "visualizations": {
+    "category_counts": {
+      "leaderboard": 6,
+      "aisearch": 10,
+      "agentic-ai": 5,
+      "llm": 5,
+      "image-gen": 5,
+      "design-ai": 5,
+      "typography": 4,
+      "robotics": 5,
+      "research": 6
+    },
+    "significance_distribution": {
+      "5": 10,
+      "4": 29,
+      "3": 12
+    },
+    "top_tags": [
+      {
+        "tag": "krea",
+        "count": 11
+      },
+      {
+        "tag": "agents",
+        "count": 10
+      },
+      {
+        "tag": "research",
+        "count": 10
+      },
+      {
+        "tag": "openai",
+        "count": 8
+      },
+      {
+        "tag": "open-source",
+        "count": 8
+      },
+      {
+        "tag": "leaderboard",
+        "count": 6
+      },
+      {
+        "tag": "benchmark",
+        "count": 5
+      },
+      {
+        "tag": "image-gen",
+        "count": 5
+      },
+      {
+        "tag": "anthropic",
+        "count": 4
+      },
+      {
+        "tag": "comfyui",
+        "count": 4
+      }
+    ],
+    "top_stories": [
+      {
+        "id": "lb-gpt56-preview",
+        "title": "GPT-5.6 Sol preview: 91.9% Terminal-Bench 2.1 Ultra — govern",
+        "significance": 5,
+        "category": "leaderboard"
+      },
+      {
+        "id": "ais-krea-2-intro",
+        "title": "Krea 2 intro — new open-source image generator",
+        "significance": 5,
+        "category": "aisearch"
+      },
+      {
+        "id": "ag-mcp-stateless-rc",
+        "title": "MCP 2026-07-28 RC: protocol goes stateless — sessions and ha",
+        "significance": 5,
+        "category": "agentic-ai"
+      },
+      {
+        "id": "ag-gpt56-subagents",
+        "title": "GPT-5.6 Sol Ultra mode: parallel subagents for 91.9% Termina",
+        "significance": 5,
+        "category": "agentic-ai"
+      },
+      {
+        "id": "llm-gpt56-sol",
+        "title": "GPT-5.6 Sol: OpenAI's strongest model — biology, cyber, and ",
+        "significance": 5,
+        "category": "llm"
+      }
+    ]
+  },
+  "report_source": "llm-pipeline",
+  "report_source_badge": "../../docs/img/llm_pipeline/llm_pipeline.png",
+  "report_source_label": "LLM Pipeline"
+};</script>
+<script>
+const PAGE_PREFIX = "20260627120000";
+let digestData = null;
+const leaderboards = {"aa":{"title":"Intelligence Leaderboard","source":"artificialanalysis.ai","url":"https://artificialanalysis.ai/leaderboards/models","updated":"Jun 27, 2026","cols":["#","Model","Provider","Intelligence","Speed (t/s)","Context","Price /1M"],"rows":[[1,"Claude Fable 5 (fallback)","Anthropic",60,0,"1M","— (suspended)"],[2,"Claude Opus 4.8 (max)","Anthropic",56,64,"1M","$4.10"],[3,"GPT-5.5 (xhigh)","OpenAI",55,68,"922k","$4.35"],[4,"Claude Opus 4.7 (max)","Anthropic",54,53,"1M","$4.10"],[5,"GPT-5.5 (high)","OpenAI",53,71,"922k","$4.35"],[6,"GLM-5.2 (max)","Z AI",52,52,"200k","$0.90"],[7,"GPT-5.5 (medium)","OpenAI",52,66,"922k","$4.35"],[8,"Gemini 3.5 Flash","Google",51,187,"1M","$1.31"],[9,"Claude Sonnet 4.6 (max)","Anthropic",51,54,"1M","$2.46"],[10,"Gemini 3.1 Pro Preview","Google",50,138,"1M","$1.74"],[11,"Qwen3.7 Max","Alibaba",50,169,"1M","$1.43"],[12,"DeepSeek V4 Pro (Max)","DeepSeek",49,54,"1M","$0.18"],[13,"GPT-5.3 Codex (xhigh)","OpenAI",49,81,"400k","$1.87"],[14,"Kimi K2.6","Kimi",48,44,"256k","$0.70"],[15,"MiMo-V2.5-Pro","Xiaomi",48,43,"1M","$0.18"],[16,"Grok 4.3 (high)","xAI",47,158,"1M","$0.64"],[17,"MiniMax-M3","MiniMax",47,0,"1M","—"],[18,"GPT-5.6 Sol (preview)","OpenAI",0,0,"—","$5/$30 (gated)"],[19,"GPT-5.6 Terra (preview)","OpenAI",0,0,"—","$2.50/$15 (gated)"],[20,"GPT-5.6 Luna (preview)","OpenAI",0,0,"—","$1/$6 (gated)"]],"numericCols":[0,3,4]},"vellum":{"type":"charts","title":"Benchmarks — All Models","source":"vellum.ai","url":"https://www.vellum.ai/llm-leaderboard","updated":"Jun 27, 2026","benchmarks":[{"name":"Agentic Coding","task":"Terminal-Bench 2.1","unit":"%","models":[{"model":"GPT-5.6 Sol Ultra","provider":"OpenAI","score":91.9},{"model":"GPT-5.6 Sol","provider":"OpenAI","score":88.8},{"model":"GPT-5.5","provider":"OpenAI","score":88.0},{"model":"Claude Mythos 5","provider":"Anthropic","score":84.3},{"model":"Claude Fable 5","provider":"Anthropic","score":83.4}]},{"name":"Agentic Coding","task":"SWE-Bench Verified","unit":"%","models":[{"model":"Claude Opus 4.8","provider":"Anthropic","score":88.6},{"model":"Claude Opus 4.7","provider":"Anthropic","score":87.6},{"model":"GPT-5.6 Sol","provider":"OpenAI","score":85.0},{"model":"Claude Sonnet 4.5","provider":"Anthropic","score":82.0},{"model":"GPT-5.5","provider":"OpenAI","score":80.0}]},{"name":"Overall Ability","task":"Humanity's Last Exam","unit":"%","models":[{"model":"Claude Opus 4.8","provider":"Anthropic","score":57.9},{"model":"Gemini 3 Pro","provider":"Google","score":45.8},{"model":"Kimi K2 Thinking","provider":"Kimi","score":44.9},{"model":"GPT-5.5 Pro","provider":"OpenAI","score":43.1},{"model":"GPT-5.5","provider":"OpenAI","score":41.4}]},{"name":"Reasoning","task":"GPQA Diamond","unit":"%","models":[{"model":"Claude 3 Opus","provider":"Anthropic","score":95.4},{"model":"Claude Opus 4.8","provider":"Anthropic","score":93.6},{"model":"GPT-5.5","provider":"OpenAI","score":93.6},{"model":"Claude Opus 4.7","provider":"Anthropic","score":94.2},{"model":"GPT-5.2","provider":"OpenAI","score":92.4}]},{"name":"High School Math","task":"AIME 2025","unit":"%","models":[{"model":"Gemini 3 Pro","provider":"Google","score":100},{"model":"GPT-5.2","provider":"OpenAI","score":100},{"model":"Kimi K2 Thinking","provider":"Kimi","score":99.1},{"model":"Claude Opus 4.6","provider":"Anthropic","score":99.8},{"model":"GPT oss 20b","provider":"OpenAI","score":98.7}]},{"name":"Frontier Coding","task":"SWE-bench Pro","unit":"%","models":[{"model":"Claude Mythos Preview","provider":"Anthropic","score":77.8},{"model":"MiniMax M3","provider":"MiniMax","score":59.0},{"model":"GPT-5.5","provider":"OpenAI","score":57.7},{"model":"Claude Opus 4.6","provider":"Anthropic","score":53.4},{"model":"MAI-Thinking-1","provider":"Microsoft","score":52.0}]}]},"open":{"title":"Open-Weight Rankings","source":"vellum.ai","url":"https://www.vellum.ai/open-llm-leaderboard","updated":"Jun 27, 2026","cols":["#","Model","Provider","GPQA %","SWE-Bench %","AIME %","HLE %"],"rows":[[1,"Kimi K2.5","Moonshot AI",87.6,76.8,96.1,30.1],[2,"Kimi K2 Thinking","Moonshot AI",84.5,71.3,99.1,44.9],[3,"GPT oss 120b","OpenAI",80.1,0,97.9,14.9],[4,"GLM-5.2 (max)","Z AI",78.0,65.0,0,12.0],[5,"Nemotron Ultra 253B","NVIDIA",76.0,0,0,0],[6,"Llama 4 Behemoth","Meta",73.7,0,0,0],[7,"DeepSeek V4 Pro","DeepSeek",0,49.2,0,8.6],[8,"Qwen3.7 Max","Alibaba",0,63.4,0,0],[9,"MiniMax M3","MiniMax",0,59.0,0,0],[10,"GPT oss 20b","OpenAI",0,0,98.7,10.9]],"numericCols":[0,3,4,5,6]},"image":{"title":"Image Arena Leaderboard","source":"arena.ai","url":"https://arena.ai/leaderboard/text-to-image","updated":"Jun 27, 2026","cols":["#","Model","Provider","Arena Elo"],"rows":[[1,"GPT Image 2 (medium)","OpenAI",1384],[2,"Reve 2.0","Reve",1280],[3,"Gemini 3.1 Flash Image Preview","Google",1269],[4,"MAI-Image-2.5","Microsoft",1254],[5,"Gemini 3 Pro Image Preview 2k","Google",1245],[6,"Krea 2 (turbo)","Krea",1220],[7,"GPT Image 1.5 (high fidelity)","OpenAI",1242],[8,"Grok Imagine (quality)","xAI",1232],[9,"Ideogram 4.0 (quality)","Ideogram",1204],[10,"FLUX.2 Ultra","Black Forest",1195]],"numericCols":[0,3]},"open_img":{"title":"Best Open-Source Image Models","source":"artificialanalysis.ai","url":"https://artificialanalysis.ai/image/leaderboard/text-to-image","updated":"Jun 27, 2026","cols":["#","Model","Provider","Notes"],"rows":[[1,"Krea 2 (turbo FP8)","Krea","New — uncensored, ComfyUI, 8GB VRAM"],[2,"Cosmos 3 (T2I)","NVIDIA","#1 open T2I, 8.68k HF stars"],[3,"FLUX.2 Ultra","Black Forest","Top FLUX open weights"],[4,"Z-Image Turbo","Comfy-Org","Fast T2I, Qwen3-4B encoder"],[5,"NVIDIA PiD","NVIDIA","Best decoder, 5.9× faster at 2K"]],"numericCols":[0]}};
+
+const PROVIDER_COLORS = {
+  OpenAI: '#10a37f', Anthropic: '#d4763b', Google: '#4285f4',
+  DeepSeek: '#1a6cf5', Alibaba: '#ff6a00', Meta: '#0866ff',
+  Kimi: '#8b5cf6', Xiaomi: '#ff6900', 'Z AI': '#06b6d4', MiniMax: '#ec4899',
+  Reve: '#7c3aed', 'Microsoft AI': '#00a4ef', xAI: '#e0e0e0',
+  Ideogram: '#ff5c8a', 'Luma AI': '#14b8a6', 'Black Forest Labs': '#16a34a',
+  Bytedance: '#325ab4', 'Alibaba-ATH': '#ff8c42', KlingAI: '#00c2a8',
+  Runway: '#22c55e', Pixverse: '#a855f7', Pruna: '#f59e0b', Kandinsky: '#6366f1',
+  Tencent: '#1e90ff', Lightricks: '#ef4444', 'Genmo AI': '#0ea5e9',
+  HiDream: '#db2777', NVIDIA: '#76b900', Recraft: '#e11d48', Krea: '#fbbf24',
+  'Zhipu AI': '#38bdf8', 'Moonshot AI': '#a78bfa', Qwen: '#f97316', Meituan: '#ffb000'
+};
+
+const CAT_COLORS = {
+  leaderboard: '#F39C12', analytics: '#6366F1', aisearch: '#F0883E', youtube: '#E74C3C',
+  'agentic-ai': '#0EA5E9',
+  llm: '#2C3E50', rag: '#14B8A6', 'image-gen': '#8E44AD', 'design-ai': '#16A085',
+  typography: '#C0392B', robotics: '#E67E22', research: '#2980B9'
+};
+
+// Plain-language explanations for leaderboard column headers, shown on hover.
+// Keyed by the exact label text used in each tab's `cols` array.
+const LB_GLOSSARY = {
+  '#': 'Rank by the leaderboard\u2019s primary metric.',
+  'Model': 'Model being evaluated.',
+  'Model / Agent': 'Model (with its agent/scaffold) being evaluated.',
+  'Provider': 'Organization that develops the model.',
+  'Intelligence': 'Artificial Analysis Intelligence Index \u2014 a composite across reasoning, knowledge, coding and math benchmarks; higher is better.',
+  'Speed (t/s)': 'Output speed in tokens generated per second; higher is faster.',
+  'Latency (s)': 'Time to first token, in seconds; lower is more responsive.',
+  'Context': 'Maximum context window (input + output tokens) the model accepts.',
+  'Price /1M': 'Blended cost per 1 million tokens, in USD.',
+  'Resolved %': 'Share of SWE-bench Verified GitHub issues the agent fully resolved; higher is better.',
+  'Date': 'Date the result was submitted to the leaderboard.',
+  'Params (B)': 'Model size in billions of parameters (\u2014 if undisclosed).',
+  'HumanEval+': 'EvalPlus HumanEval+ pass@1 \u2014 % of Python problems solved against the harder, augmented test suite.',
+  'MBPP+': 'EvalPlus MBPP+ pass@1 \u2014 % solved on the augmented MBPP Python benchmark.',
+  '\uD83C\uDF0D': 'Country/region where the model originates.',
+  'Code Arena': 'Code-focused arena Elo from head-to-head human preference votes.',
+  'Reasoning': 'Reasoning benchmark score; higher is better.',
+  'Math': 'Math benchmark score; higher is better.',
+  'Elo': 'Elo rating from pairwise human preference votes \u2014 users pick the better of two outputs; higher means it wins more head-to-head matchups.',
+  'Score': 'Arena score (Elo-style) from head-to-head human preference votes; higher is better.',
+  'Votes': 'Number of human preference votes collected in the arena for this model.'
+};
+
+function lbTooltip(label) {
+  return LB_GLOSSARY[label] || '';
+}
+
+function resolveLbColumns(lb, activeLb) {
+  return {
+    providerCol: lb.providerCol != null ? lb.providerCol : (activeLb === 'aa' || activeLb === 'open') ? 2 : 1,
+    scoreCol:    lb.scoreCol    != null ? lb.scoreCol    : (activeLb === 'aa') ? 3 : -1,
+    scoreMax:    lb.scoreMax    != null ? lb.scoreMax    : (activeLb === 'aa') ? 60 : 100
+  };
+}
+
+function renderLbLinks(lb) {
+  return lb.groups.map(g => `
+        <div class="lb-links-group">
+          <div class="lb-links-head">${g.label}</div>
+          ${g.items.map(it => `<a class="lb-link-row" href="${it.url}" target="_blank" rel="noopener"><span class="lb-link-name">${it.name}</span><span class="lb-link-src">${it.source} ↗</span></a>`).join('')}
+        </div>`).join('');
+}
+
+let allStories = [];
+let activeFilter = 'all';
+let activeSig = null;
+let activeTag = null;
+
+function applyFilters() {
+  let stories = activeFilter === 'all' ? allStories : allStories.filter(s => s.catId === activeFilter);
+  if (activeSig !== null) stories = stories.filter(s => s.significance === activeSig);
+  if (activeTag !== null) stories = stories.filter(s => s.tags.includes(activeTag));
+  return stories;
+}
+
+function setSig(sig) {
+  activeSig = activeSig === sig ? null : sig;
+  redrawSigChart();
+  renderCards(activeFilter);
+}
+
+function setTag(tag) {
+  activeTag = activeTag === tag ? null : tag;
+  redrawTagCloud();
+  renderCards(activeFilter);
+}
+
+/** Branch badge: LLM Pipeline vs Hermes Agent (see report_source_* in digest JSON). */
+function reportSourceSealMarkup(data) {
+  const href = data && data.report_source_badge;
+  const label = (data && (data.report_source_label || data.report_source)) || 'Digest source';
+  if (!href) return '';
+  const tip = 'Produced by ' + label;
+  return '<img src="' + escHtml(href) + '" alt="' + escHtml(label) + '" title="' + escHtml(tip) + '">';
+}
+
+function renderReportSourceSeal(data) {
+  const el = document.getElementById('report-source-seal');
+  if (!el) return;
+  const label = (data && (data.report_source_label || data.report_source)) || 'Digest source';
+  const markup = reportSourceSealMarkup(data);
+  if (!markup) {
+    el.hidden = true;
+    el.innerHTML = '';
+    el.removeAttribute('title');
+    return;
+  }
+  el.hidden = false;
+  el.title = 'Produced by ' + label;
+  el.setAttribute('aria-label', label + ' report');
+  el.innerHTML = markup;
+}
+
+function render(data) {
+  allStories = [];
+  data.categories.forEach(cat => {
+    cat.stories.forEach(s => allStories.push({ ...s, catId: cat.id, catLabel: cat.label, catIcon: cat.icon }));
+  });
+  renderReportSourceSeal(data);
+  const dt = new Date(data.generated_at);
+  document.getElementById('digest-date').textContent =
+    dt.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' }).toUpperCase();
+  document.getElementById('digest-summary').textContent = data.summary;
+  renderTopStories(data);
+  renderFilterPills(data);
+  renderDonut(data);
+  renderSigChart(data);
+  renderTagCloud(data);
+  renderCards('all');
+  document.getElementById('footer-count').textContent =
+    allStories.length + ' stories · ' + data.categories.length + ' categories';
+  initLayoutResizer();
+}
+
+function renderTopStories(data) {
+  const bar = document.getElementById('top-stories-bar');
+  data.visualizations.top_stories.forEach(ts => {
+    const pill = document.createElement('button');
+    pill.className = 'top-story-pill';
+    pill.textContent = ts.title;
+    pill.onclick = () => scrollToStory(ts.id);
+    bar.appendChild(pill);
+  });
+}
+
+function renderFilterPills(data) {
+  const bar = document.getElementById('filter-bar');
+  bar.innerHTML = '';
+  const allPill = document.createElement('button');
+  allPill.className = 'pill active';
+  allPill.textContent = 'All (' + allStories.length + ')';
+  allPill.dataset.filter = 'all';
+  allPill.onclick = () => setFilter('all');
+  bar.appendChild(allPill);
+  data.categories.forEach(cat => {
+    const pill = document.createElement('button');
+    pill.className = 'pill inactive';
+    if (cat.id === 'leaderboard' || cat.id === 'aisearch' || cat.id === 'youtube') {
+      pill.innerHTML = cat.icon + ' ' + cat.label;
+    } else {
+      if (!cat.stories.length) return;
+      pill.innerHTML = cat.icon + ' ' + cat.label + ' <span style="color:var(--muted);font-size:.7em">(' + cat.stories.length + ')</span>';
+    }
+    pill.dataset.filter = cat.id;
+    pill.onclick = () => setFilter(cat.id);
+    bar.appendChild(pill);
+  });
+}
+
+function setFilter(id) {
+  activeFilter = id;
+  document.querySelectorAll('.pill').forEach(p => {
+    p.className = 'pill ' + (p.dataset.filter === id ? 'active' : 'inactive');
+  });
+  renderCards(id);
+}
+
+function renderAISearch(grid) {
+  const stories = allStories.filter(s => s.catId === 'aisearch');
+  const videoUrl   = digestData.aisearch_video_url   || 'https://www.youtube.com/@theAIsearch';
+  const videoLabel = digestData.aisearch_video_label || 'Latest video';
+  grid.innerHTML = `
+    <div style="grid-column:1/-1;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:4px;">
+      <span style="font-size:12px;font-weight:600;color:var(--text)">🔍 theAIsearch</span>
+      <a href="${videoUrl}" target="_blank" rel="noopener"
+         style="font-size:11px;color:var(--accent);text-decoration:none;display:flex;align-items:center;gap:4px;">
+        ▶ ${videoLabel}
+      </a>
+      <span style="margin-left:auto;display:flex;gap:12px;">
+        <a href="https://ai-search.io" target="_blank" rel="noopener" style="font-size:11px;color:var(--muted);text-decoration:none;">🌐 ai-search.io</a>
+        <a href="https://www.youtube.com/@theAIsearch" target="_blank" rel="noopener" style="font-size:11px;color:var(--muted);text-decoration:none;">▶ @theAIsearch</a>
+      </span>
+    </div>`;
+  stories.forEach(story => grid.appendChild(buildCard(story)));
+}
+
+function renderYouTube(grid) {
+  const cat = (digestData.categories || []).find(c => c.id === 'youtube');
+  const stories = allStories.filter(s => s.catId === 'youtube');
+  const sources = (cat && cat.sources) || [];
+
+  const channels = sources.length
+    ? sources.map(src => ({
+        key: src.channel_key || src.channel_label,
+        label: src.channel_label || src.channel_key,
+      }))
+    : Object.values(
+        stories.reduce((acc, s) => {
+          const key = s.channel_key || s.channel_label || 'youtube';
+          if (!acc[key]) {
+            acc[key] = { key, label: s.channel_label || s.channel_key || 'YouTube' };
+          }
+          return acc;
+        }, {})
+      ).sort((a, b) => a.label.localeCompare(b.label));
+
+  let activeChannel = 'all';
+
+  function channelTabs() {
+    return `
+      <div class="lb-tabs">
+        <button class="lb-tab ${activeChannel === 'all' ? 'active' : ''}" data-ch="all">
+          All (${stories.length})
+        </button>
+        ${channels.map(ch => `
+          <button class="lb-tab ${activeChannel === ch.key ? 'active' : ''}" data-ch="${ch.key}">
+            📺 ${ch.label}
+          </button>`).join('')}
+      </div>`;
+  }
+
+  function storiesForChannel(ch) {
+    return stories.filter(
+      s => s.channel_key === ch.key || s.channel_label === ch.label
+    );
+  }
+
+  function visibleStories() {
+    if (activeChannel === 'all') return stories;
+    const ch = channels.find(c => c.key === activeChannel);
+    return ch ? storiesForChannel(ch) : stories;
+  }
+
+  function draw() {
+    grid.innerHTML = '';
+    const wrap = document.createElement('div');
+    wrap.className = 'lb-wrap';
+    wrap.style.gridColumn = '1 / -1';
+    wrap.innerHTML = channelTabs();
+    wrap.querySelectorAll('.lb-tab').forEach(btn => {
+      btn.onclick = () => { activeChannel = btn.dataset.ch; draw(); };
+    });
+    grid.appendChild(wrap);
+    visibleStories().forEach(story => grid.appendChild(buildCard(story)));
+  }
+
+  draw();
+}
+
+function renderCards(filter) {
+  const grid = document.getElementById('story-grid');
+  if (filter === 'leaderboard') { renderLeaderboard(grid); return; }
+  if (filter === 'aisearch') { renderAISearch(grid); return; }
+  if (filter === 'youtube') { renderYouTube(grid); return; }
+  const stories = applyFilters();
+  if (!stories.length) { grid.innerHTML = '<div class="empty-state">No stories match the current filters.</div>'; return; }
+  grid.innerHTML = '';
+  stories.forEach(story => grid.appendChild(buildCard(story)));
+}
+
+function renderLeaderboard(grid) {
+  let activeLb = 'aa';
+  function tabs(lb) {
+    return `
+      <div class="lb-tabs">
+        <button class="lb-tab ${activeLb==='aa'?'active':''}"           data-lb="aa">🏅 AA: All Models</button>
+        <button class="lb-tab ${activeLb==='open'?'active':''}"         data-lb="open">🔓 Open-Weight</button>
+        <button class="lb-tab ${activeLb==='swe'?'active':''}"          data-lb="swe">🐛 SWE-bench</button>
+        <button class="lb-tab ${activeLb==='coding'?'active':''}"       data-lb="coding">⌨️ EvalPlus</button>
+        <button class="lb-tab ${activeLb==='arena_image'?'active':''}"  data-lb="arena_image">🎨 Image Arena</button>
+        <button class="lb-tab ${activeLb==='arena_t2i'?'active':''}"    data-lb="arena_t2i">🖼️ T2I: AA</button>
+        <button class="lb-tab ${activeLb==='arena_video'?'active':''}"  data-lb="arena_video">🎬 T2V: Arena</button>
+        <button class="lb-tab ${activeLb==='vellum'?'active':''}"       data-lb="vellum">📊 Vellum: All</button>
+        <button class="lb-tab ${activeLb==='vellum_open'?'active':''}"  data-lb="vellum_open">📊 Vellum: Open</button>
+        <button class="lb-tab ${activeLb==='links'?'active':''}"        data-lb="links">🔗 More</button>
+        ${lb.url ? `<a class="lb-src" href="${lb.url}" target="_blank" rel="noopener">↗ ${lb.source}</a>` : ''}
+        ${lb.updated ? `<span class="lb-updated">Updated ${lb.updated}</span>` : ''}
+      </div>`;
+  }
+  function buildTable(lb) {
+    let sortCol = null, sortDir = 1;
+    grid.innerHTML = `<div class="lb-wrap">${tabs(lb)}
+      <div class="lb-table-wrap">
+        <table class="lb-table" id="lb-table">
+          <thead><tr>${lb.cols.map((c,i)=>{const tip=lbTooltip(c);return `<th class="lb-th${tip?' lb-th-info':''}" data-col="${i}"${tip?` title="${tip.replace(/"/g,'&quot;')}"`:''}>${c} <span class="sort-arrow">↕</span></th>`;}).join('')}</tr></thead>
+          <tbody id="lb-body"></tbody>
+        </table>
+      </div></div>`;
+    grid.querySelectorAll('.lb-tab').forEach(btn => { btn.onclick = () => { activeLb = btn.dataset.lb; build(); }; });
+    function scoreColor(val, max) {
+      const t = val/max;
+      return t > 0.9 ? '#3fb950' : t > 0.75 ? '#58a6ff' : t > 0.6 ? '#d29922' : '#8b949e';
+    }
+    function drawRows(rows) {
+      const { providerCol, scoreCol, scoreMax } = resolveLbColumns(lb, activeLb);
+      document.getElementById('lb-body').innerHTML = rows.map(row => {
+        const provider = row[providerCol];
+        const dot = `<span class="lb-dot" style="background:${PROVIDER_COLORS[provider]||'#555'}"></span>`;
+        return '<tr>' + row.map((cell, i) => {
+          if (i === providerCol) return `<td>${dot}${cell}</td>`;
+          if (i === scoreCol && typeof cell === 'number' && cell > 0) {
+            const pct = Math.round((cell/scoreMax)*100);
+            return `<td><div class="lb-bar-cell"><span class="lb-bar-fill" style="width:${Math.min(pct,100)}%;background:${scoreColor(cell,scoreMax)}"></span><span class="lb-bar-val">${cell}</span></div></td>`;
+          }
+          return `<td>${cell === 0 ? '—' : cell}</td>`;
+        }).join('') + '</tr>';
+      }).join('');
+    }
+    drawRows(lb.rows);
+    grid.querySelectorAll('.lb-th').forEach(th => {
+      th.onclick = () => {
+        const col = +th.dataset.col;
+        sortDir = sortCol === col ? -sortDir : 1; sortCol = col;
+        grid.querySelectorAll('.lb-th .sort-arrow').forEach(a => a.textContent='↕');
+        th.querySelector('.sort-arrow').textContent = sortDir===1?'↑':'↓';
+        drawRows([...lb.rows].sort((a,b) => {
+          const va=a[col], vb=b[col];
+          if (va==='—'||va===null||va===0) return 1; if (vb==='—'||vb===null||vb===0) return -1;
+          return typeof va==='number'&&typeof vb==='number' ? (va-vb)*sortDir : String(va).localeCompare(String(vb))*sortDir;
+        }));
+      };
+    });
+  }
+  function buildCharts(lb) {
+    grid.innerHTML = `<div class="lb-wrap">${tabs(lb)}<div class="lb-charts-grid" id="lb-charts"></div></div>`;
+    grid.querySelectorAll('.lb-tab').forEach(btn => { btn.onclick = () => { activeLb = btn.dataset.lb; build(); }; });
+    const container = document.getElementById('lb-charts');
+    lb.benchmarks.forEach(bm => {
+      const card = document.createElement('div');
+      card.className = 'lb-chart-card';
+      card.innerHTML = `<div class="lb-chart-title"><span class="lb-chart-name">${bm.name}</span><span class="lb-chart-task">${bm.task}</span></div><svg class="lb-chart-svg"></svg>`;
+      container.appendChild(card);
+      const svg = card.querySelector('svg');
+      const W = card.clientWidth || 280, H = 180;
+      const ml = 8, mr = 8, mt = 28, mb = 52;
+      const w = W - ml - mr, h = H - mt - mb;
+      const models = bm.models;
+      const maxVal = Math.max(...models.map(m => m.score));
+      const minVal = Math.min(...models.map(m => m.score));
+      const yMin = Math.max(0, minVal - (maxVal - minVal) * 0.3);
+      const x = d3.scaleBand().domain(models.map((_,i)=>i)).range([0,w]).padding(0.25);
+      const y = d3.scaleLinear().domain([yMin, maxVal * 1.08]).range([h, 0]);
+      const s = d3.select(svg).attr('width','100%').attr('height', H).attr('viewBox',`0 0 ${W} ${H}`);
+      const g = s.append('g').attr('transform',`translate(${ml},${mt})`);
+      [0.25,0.5,0.75,1].forEach(t => {
+        const yv = yMin + (maxVal*1.08 - yMin)*t;
+        g.append('line').attr('x1',0).attr('x2',w).attr('y1',y(yv)).attr('y2',y(yv)).attr('stroke','#30363d').attr('stroke-width',1);
+        g.append('text').attr('x',-2).attr('y',y(yv)+3).attr('text-anchor','end').attr('font-size',8).attr('fill','#8b949e')
+          .text(bm.unit==='%' ? Math.round(yv)+'%' : Math.round(yv));
+      });
+      models.forEach((m, i) => {
+        const color = PROVIDER_COLORS[m.provider] || '#58a6ff';
+        const bx = x(i), bw = x.bandwidth();
+        const bar = g.append('rect').attr('x', bx).attr('y', h).attr('width', bw).attr('height', 0).attr('rx', 3).attr('fill', color).attr('opacity', 0.85);
+        bar.transition().duration(500).delay(i*80).attr('y', y(m.score)).attr('height', h - y(m.score));
+        g.append('text').attr('x', bx+bw/2).attr('y', y(m.score)-4).attr('text-anchor','middle').attr('font-size',9).attr('font-weight','700').attr('fill','#e6edf3')
+          .attr('opacity',0).text(m.score + (bm.unit==='%'?'%':''))
+          .transition().duration(400).delay(i*80+300).attr('opacity',1);
+        g.append('text').attr('transform',`translate(${bx+bw/2},${h+6}) rotate(35)`).attr('text-anchor','start').attr('font-size',9).attr('fill','#8b949e')
+          .text(m.model.length>14 ? m.model.slice(0,13)+'…' : m.model);
+      });
+    });
+  }
+  function buildLinks(lb) {
+    grid.innerHTML = `<div class="lb-wrap">${tabs(lb)}<div class="lb-links">${renderLbLinks(lb)}</div></div>`;
+    grid.querySelectorAll('.lb-tab').forEach(btn => { btn.onclick = () => { activeLb = btn.dataset.lb; build(); }; });
+  }
+  function build() {
+    const lb = leaderboards[activeLb];
+    if (lb.type === 'links') buildLinks(lb);
+    else if (lb.type === 'charts') buildCharts(lb);
+    else buildTable(lb);
+  }
+  build();
+}
+
+// Story link: real article -> "Read source"; ungrounded/demoted -> neutral
+// "Source pending" affordance (the topic is kept, we just have no verified URL).
+function sourceLinkHtml(url) {
+  return url
+    ? '<a class="card-link" href="' + url + '" target="_blank" rel="noopener">Read source →</a>'
+    : '<span class="card-link card-link-pending" title="No verified source link yet">Source pending</span>';
+}
+
+function storyLinksHtml(links) {
+  if (!links || !links.length) return '';
+  function label(link) {
+    const name = link.name || link.url || 'Link';
+    const kind = link.kind || '';
+    if (kind === 'github') return 'GitHub · ' + name;
+    if (kind === 'x') return 'X · ' + name;
+    if (kind === 'linkedin') return 'LinkedIn · ' + name;
+    if (kind === 'huggingface') return 'HF · ' + name;
+    if (kind === 'arxiv') return 'arXiv · ' + name;
+    return name;
+  }
+  return '<div class="card-links">' + links.map(function (link, i) {
+    const url = escHtml(link.url || '');
+    if (!url) return '';
+    const primary = i === 0 ? ' card-resource-link-primary' : '';
+    return '<a class="card-resource-link' + primary + '" href="' + url + '" target="_blank" rel="noopener">' + escHtml(label(link)) + ' ↗</a>';
+  }).join('') + '</div>';
+}
+
+// Minimal HTML escaping for values shown inside the provenance trace popover.
+function escHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// Provenance affordance: a light "(i)" that, on click, reveals how a story
+// entered the digest (its trace id + origin stage) so a mismatch between a
+// claim and its cited source can be traced back. Hidden by default.
+function provenanceHtml(story) {
+  const rows = [['id', story.id], ['via', story.provenance || 'unknown'], ['source', story.source]];
+  if (story.url) rows.push(['url', story.url]);
+  if (story.carried_forward) rows.push(['carried', 'yes']);
+  const items = rows.map(([k, v]) =>
+    '<div class="trace-row"><span class="trace-k">' + k + '</span><code class="trace-v">' + escHtml(v) + '</code></div>'
+  ).join('');
+  return '<button type="button" class="card-info" title="Show provenance trace" aria-label="Show provenance trace">i</button>' +
+    '<div class="card-trace" id="trace-' + escHtml(story.id) + '" hidden>' + items + '</div>';
+}
+
+// Shareable representations of a story for the clipboard: a rich-text HTML
+// fragment (links + emphasis preserved) and a Markdown/plain-text fallback.
+// Kept pure so it can be unit-tested without a DOM or a real clipboard.
+function storyCopyFormats(story) {
+  const title = String(story.title == null ? '' : story.title).trim();
+  const summary = String(story.summary == null ? '' : story.summary).trim();
+  const source = String(story.source == null ? '' : story.source).trim();
+  const url = story.url ? String(story.url).trim() : '';
+  const cat = String(story.catLabel || story.catId || '').trim();
+  const tags = Array.isArray(story.tags) ? story.tags : [];
+  const links = Array.isArray(story.links) ? story.links : [];
+
+  const meta = [source, cat].filter(Boolean).join(' \u00b7 ');
+  const tagLine = tags.length ? tags.map(t => '#' + String(t).trim().replace(/\s+/g, '')).join(' ') : '';
+  const linkLines = links.filter(l => l && l.url).map(l => '- [' + (l.name || l.url) + '](' + l.url + ')');
+
+  const md = [];
+  md.push('## ' + title);
+  if (meta) md.push('_' + meta + '_');
+  if (summary) md.push(summary);
+  if (linkLines.length) md.push(linkLines.join('\n'));
+  if (tagLine) md.push(tagLine);
+  if (url) md.push('[Read source \u2192](' + url + ')');
+  const markdown = md.join('\n\n');
+
+  const h = [];
+  h.push('<h3>' + (url ? '<a href="' + escHtml(url) + '">' + escHtml(title) + '</a>' : escHtml(title)) + '</h3>');
+  if (meta) h.push('<p><em>' + escHtml(meta) + '</em></p>');
+  if (summary) h.push('<p>' + escHtml(summary) + '</p>');
+  if (tagLine) h.push('<p>' + escHtml(tagLine) + '</p>');
+  if (url) h.push('<p><a href="' + escHtml(url) + '">Read source \u2192</a></p>');
+  const html = h.join('\n');
+
+  return { markdown, html };
+}
+
+// Write both formats to the clipboard in one shot (rich-text editors take the
+// HTML, plain editors take the Markdown), degrading to plain text where the
+// async ClipboardItem API is unavailable. Gives brief visual feedback.
+async function copyStory(story, btn) {
+  const { markdown, html } = storyCopyFormats(story);
+  let ok = false;
+  try {
+    if (navigator.clipboard && typeof ClipboardItem !== 'undefined') {
+      await navigator.clipboard.write([new ClipboardItem({
+        'text/html': new Blob([html], { type: 'text/html' }),
+        'text/plain': new Blob([markdown], { type: 'text/plain' })
+      })]);
+      ok = true;
+    } else if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(markdown);
+      ok = true;
+    }
+  } catch (e) {
+    try { await navigator.clipboard.writeText(markdown); ok = true; } catch (e2) { ok = false; }
+  }
+  if (btn) {
+    btn.classList.remove('copied', 'copy-failed');
+    btn.classList.add(ok ? 'copied' : 'copy-failed');
+    btn.title = ok ? 'Copied!' : 'Copy failed';
+    setTimeout(() => {
+      btn.classList.remove('copied', 'copy-failed');
+      btn.title = 'Copy story (rich text + Markdown)';
+    }, 1400);
+  }
+  return ok;
+}
+
+// One-icon copy affordance in the card's top-right corner.
+function copyButtonHtml() {
+  return '<button type="button" class="card-copy" title="Copy story (rich text + Markdown)" aria-label="Copy story">' +
+    '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<rect x="9" y="9" width="11" height="11" rx="2"></rect>' +
+    '<path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg></button>';
+}
+
+function buildCard(story) {
+  const color = CAT_COLORS[story.catId] || '#888';
+  const div = document.createElement('div');
+  div.className = 'story-card';
+  div.id = 'card-' + story.id;
+  const sigDots = Array.from({length:5},(_,i) => '<div class="sig-dot ' + (i < story.significance ? 'filled' : '') + '"></div>').join('');
+  const tags = story.tags.map(t => '<span class="card-tag">' + t + '</span>').join('');
+  div.innerHTML =
+    '<div class="card-cat-stripe" style="background:' + color + '"></div>' +
+    '<span class="card-cat-badge">' + story.catIcon + '</span>' +
+    copyButtonHtml() +
+    '<div class="card-meta"><span class="card-source">' + story.source + '</span>' + provenanceHtml(story) + '<div class="card-sig">' + sigDots + '</div></div>' +
+    '<div class="card-title">' + story.title + '</div>' +
+    '<div class="card-expand" id="expand-' + story.id + '">' +
+      '<p class="card-summary">' + story.summary + '</p>' +
+      storyLinksHtml(story.links) +
+      '<div class="card-tags">' + tags + '</div>' +
+      sourceLinkHtml(story.url) +
+    '</div>';
+  const info = div.querySelector('.card-info');
+  if (info) info.onclick = (e) => {
+    e.stopPropagation();
+    const trace = div.querySelector('.card-trace');
+    if (trace) trace.hidden = !trace.hidden;
+  };
+  const copyBtn = div.querySelector('.card-copy');
+  if (copyBtn) copyBtn.onclick = (e) => {
+    e.stopPropagation();
+    copyStory(story, copyBtn);
+  };
+  div.onclick = () => toggleCard(story.id, div);
+  return div;
+}
+
+function toggleCard(id, el) {
+  const expand = document.getElementById('expand-' + id);
+  const isExpanded = expand.classList.contains('visible');
+  document.querySelectorAll('.card-expand.visible').forEach(e => e.classList.remove('visible'));
+  document.querySelectorAll('.story-card.expanded').forEach(c => c.classList.remove('expanded'));
+  if (!isExpanded) { expand.classList.add('visible'); el.classList.add('expanded'); }
+}
+
+function scrollToStory(id) {
+  setFilter('all');
+  setTimeout(() => {
+    const el = document.getElementById('card-' + id);
+    if (el) { el.scrollIntoView({ behavior:'smooth', block:'center' }); toggleCard(id, el); }
+  }, 50);
+}
+
+function renderDonut(data) {
+  const counts = data.visualizations.category_counts;
+  const cats = data.categories.filter(c => counts[c.id] > 0);
+  const w = 208, h = 160, r = 60;
+  const svg = d3.select('#donut-chart').attr('width', w).attr('height', h);
+  const g = svg.append('g').attr('transform', 'translate(' + (r+10) + ',' + (h/2) + ')');
+  const pie = d3.pie().value(d => counts[d.id]).sort(null);
+  const arc = d3.arc().innerRadius(r*0.55).outerRadius(r);
+  const arcHover = d3.arc().innerRadius(r*0.55).outerRadius(r+5);
+  const tooltip = document.getElementById('tooltip');
+  const paths = g.selectAll('path').data(pie(cats)).enter().append('path')
+    .attr('fill', d => CAT_COLORS[d.data.id])
+    .attr('stroke', '#0d1117').attr('stroke-width', 2)
+    .attr('d', arc).style('cursor','pointer')
+    .on('mouseover', function(event, d) {
+      d3.select(this).transition().duration(120).attr('d', arcHover);
+      tooltip.style.opacity = '1';
+      tooltip.innerHTML = d.data.icon + ' ' + d.data.label + ': <strong>' + counts[d.data.id] + '</strong>';
+    })
+    .on('mousemove', function(event) {
+      tooltip.style.left = (event.clientX+12)+'px'; tooltip.style.top = (event.clientY-8)+'px';
+    })
+    .on('mouseout', function() {
+      d3.select(this).transition().duration(120).attr('d', arc); tooltip.style.opacity = '0';
+    })
+    .on('click', (event, d) => setFilter(d.data.id));
+  paths.transition().duration(600).attrTween('d', function(d) {
+    const interp = d3.interpolate({startAngle:0,endAngle:0}, d);
+    return t => arc(interp(t));
+  });
+  const legend = svg.append('g').attr('transform', 'translate(' + (r*2+18) + ',10)');
+  cats.forEach((cat, i) => {
+    legend.append('rect').attr('x',0).attr('y',i*18).attr('width',8).attr('height',8).attr('rx',2).attr('fill',CAT_COLORS[cat.id]);
+    legend.append('text').attr('x',12).attr('y',i*18+8).attr('font-size','9').attr('fill','#8b949e')
+      .text(cat.label.split(' ')[0] + ' (' + counts[cat.id] + ')');
+  });
+}
+
+let _sigItems = [], _sigX, _sigG, _sigW;
+
+function renderSigChart(data) {
+  const dist = data.visualizations.significance_distribution;
+  _sigItems = [5,4,3,2,1].map(k => ({ sig:k, count: dist[k]||0 })).filter(d => d.count > 0);
+  const w=208, h=100, ml=24, mr=8, mt=4, mb=4;
+  const svg = d3.select('#sig-chart').attr('width',w).attr('height',h);
+  svg.selectAll('*').remove();
+  if (!_sigItems.length) return;
+  const max = d3.max(_sigItems, d => d.count);
+  _sigW = w-ml-mr;
+  const rowH = (h-mt-mb)/_sigItems.length;
+  _sigG = svg.append('g').attr('transform','translate('+ml+','+mt+')');
+  _sigX = d3.scaleLinear().domain([0,max]).range([0,_sigW]);
+  _sigItems.forEach((d,i) => {
+    const y = i*rowH+2, bh = rowH-6;
+    const row = _sigG.append('g').attr('class','sig-row').style('cursor','pointer');
+    row.append('text').attr('x',-4).attr('y',y+bh/2+4).attr('text-anchor','end').attr('font-size','9').attr('fill','#888').text('★'.repeat(d.sig));
+    row.append('rect').attr('x',0).attr('y',y).attr('height',bh).attr('rx',2).attr('class','sig-bar')
+      .attr('fill', d3.interpolateViridis(d.sig/5)).attr('width',0)
+      .transition().duration(500).delay(i*80).attr('width', _sigX(d.count));
+    row.append('text').attr('x',_sigX(d.count)+4).attr('y',y+bh/2+4).attr('font-size','9').attr('fill','#8b949e').attr('class','sig-count').text(d.count);
+    row.append('rect').attr('x',-ml).attr('y',y-2).attr('width',w).attr('height',bh+4).attr('fill','transparent')
+      .on('click', () => setSig(d.sig));
+  });
+}
+
+function redrawSigChart() {
+  if (!_sigG) return;
+  _sigG.selectAll('.sig-row').each(function(_, i) {
+    const d = _sigItems[i];
+    const isActive = activeSig === d.sig;
+    const inactive = activeSig !== null && !isActive;
+    d3.select(this).select('.sig-bar').attr('opacity', inactive ? 0.25 : 1);
+    d3.select(this).select('.sig-count').attr('fill', isActive ? '#e6edf3' : '#8b949e');
+    d3.select(this).selectAll('text').filter((_, j) => j === 0).attr('fill', isActive ? '#e6edf3' : inactive ? '#555' : '#888');
+  });
+}
+
+let _tagData = [];
+
+function renderTagCloud(data) {
+  _tagData = data.visualizations.top_tags.slice(0, 12);
+  redrawTagCloud();
+}
+
+function redrawTagCloud() {
+  const cloud = document.getElementById('tag-cloud');
+  cloud.innerHTML = '';
+  _tagData.forEach(t => {
+    const span = document.createElement('span');
+    const isActive = activeTag === t.tag;
+    const inactive = activeTag !== null && !isActive;
+    span.className = 'tag-item' + (isActive ? ' tag-active' : '') + (inactive ? ' tag-dim' : '');
+    span.innerHTML = t.tag + '<span class="tag-count">' + t.count + '</span>';
+    span.onclick = () => setTag(t.tag);
+    cloud.appendChild(span);
+  });
+}
+
+
+function resetDigestView() {
+  document.getElementById('top-stories-bar').innerHTML = '<span class="top-stories-label">Top Stories</span>';
+  document.getElementById('filter-bar').innerHTML = '';
+  document.getElementById('story-grid').innerHTML = '';
+  d3.select('#donut-chart').selectAll('*').remove();
+  d3.select('#sig-chart').selectAll('*').remove();
+  document.getElementById('tag-cloud').innerHTML = '';
+  activeFilter = 'all';
+  activeSig = null;
+  activeTag = null;
+  allStories = [];
+  _sigG = null;
+}
+
+const SIDEBAR_WIDTH_KEY = 'aidigest.sidebarWidth';
+
+function initLayoutResizer() {
+  const layout = document.querySelector('.layout');
+  const resizer = document.getElementById('layout-resizer');
+  const sidebar = layout && layout.querySelector('.sidebar');
+  if (!layout || !resizer || !sidebar || resizer.dataset.bound) return;
+  resizer.dataset.bound = '1';
+
+  const saved = parseInt(localStorage.getItem(SIDEBAR_WIDTH_KEY), 10);
+  if (saved >= 160 && saved <= 420) layout.style.setProperty('--sidebar-w', saved + 'px');
+
+  let startX = 0;
+  let startW = 0;
+
+  function applyWidth(w) {
+    const clamped = Math.min(420, Math.max(160, w));
+    layout.style.setProperty('--sidebar-w', clamped + 'px');
+    return clamped;
+  }
+
+  function onMove(e) {
+    applyWidth(startW + (e.clientX - startX));
+  }
+
+  function onUp() {
+    resizer.classList.remove('dragging');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+    const w = parseInt(getComputedStyle(layout).getPropertyValue('--sidebar-w'), 10);
+    if (!isNaN(w)) localStorage.setItem(SIDEBAR_WIDTH_KEY, String(w));
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+  }
+
+  function onDown(e) {
+    if (window.matchMedia('(max-width: 860px)').matches) return;
+    e.preventDefault();
+    startX = e.clientX;
+    startW = sidebar.getBoundingClientRect().width;
+    resizer.classList.add('dragging');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  }
+
+  resizer.addEventListener('mousedown', onDown);
+  resizer.addEventListener('keydown', e => {
+    const step = e.shiftKey ? 40 : 12;
+    const cur = sidebar.getBoundingClientRect().width;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); localStorage.setItem(SIDEBAR_WIDTH_KEY, String(applyWidth(cur - step))); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); localStorage.setItem(SIDEBAR_WIDTH_KEY, String(applyWidth(cur + step))); }
+  });
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { PROVIDER_COLORS, CAT_COLORS, LB_GLOSSARY, lbTooltip, resolveLbColumns, renderLbLinks, sourceLinkHtml, provenanceHtml, escHtml, storyCopyFormats, reportSourceSealMarkup };
+}
+
+
+function loadDigest() {
+  digestData = window.__AIDIGEST_DIGEST__;
+  if (!digestData) {
+    throw new Error('Could not load ' + PAGE_PREFIX + '.json (expected sibling of this page)');
+  }
+  document.title = 'AI Daily | ' + (digestData.generated_at || PAGE_PREFIX).slice(0, 10);
+  render(digestData);
+}
+
+try {
+  loadDigest();
+} catch (err) {
+  document.getElementById('story-grid').innerHTML =
+    '<div class="empty-state">Failed to load digest: ' + err.message + '</div>';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+# Ephemeral fetch cache only
+.cache/
+
+# Agentic Hermes runtime (task board, memory, logs)
+agentic/hermes/.runtime/
+agentic/hermes/.kb/
+agentic/hermes/.generated/
+
+# Secrets (never commit)
+.env
+.env.local
+agentic/hermes/slack_deleteme.md
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.playwright/
+
+# reports/, diagnostics/, and .preflight/ are tracked
+.preflight/
+*.log

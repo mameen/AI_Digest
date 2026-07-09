@@ -1,0 +1,31 @@
+{
+  "deployed_at": "2026-07-09T05:33:11Z",
+  "source": "agentic/hermes",
+  "source_kind": "agentic-hermes",
+  "prefixes": [
+    "20260709051615"
+  ],
+  "dry_run": false,
+  "files": [
+    {
+      "from": "agentic/hermes/reports/20260709051615.json",
+      "to": "app/reports/20260709051615.json"
+    },
+    {
+      "from": "agentic/hermes/reports/20260709051615.html",
+      "to": "app/reports/20260709051615.html"
+    },
+    {
+      "from": "agentic/hermes/diagnostics/20260709051615.diagnostics.json",
+      "to": "app/diagnostics/20260709051615.diagnostics.json"
+    },
+    {
+      "from": "agentic/hermes/diagnostics/20260709051615.diagnostics.html",
+      "to": "app/diagnostics/20260709051615.diagnostics.html"
+    },
+    {
+      "from": "agentic/hermes/diagnostics/20260709051615.run.log",
+      "to": "app/diagnostics/20260709051615.run.log"
+    }
+  ]
+}

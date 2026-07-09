@@ -1,0 +1,39 @@
+# Hermes config snippet — merge into ~/.hermes/config.yaml
+# Secrets stay in ~/.hermes/.env (see hermes.env.example).
+#
+# Full upstream options: https://hermes-agent.nousresearch.com/docs/user-guide/messaging/slack
+
+platforms:
+  slack:
+    # Usually loaded from SLACK_BOT_TOKEN env; uncomment to set in YAML instead:
+    # token: "xoxb-..."
+
+    reply_to_mode: first   # off | first | all
+
+    extra:
+      reply_in_thread: true
+      reply_broadcast: false
+      rich_blocks: false
+
+# Slack-specific gateway behaviour (top-level keys in Hermes config)
+slack:
+  require_mention: true
+  strict_mention: false
+  unauthorized_dm_behavior: pair   # pair | ignore
+
+  # Optional: restrict which channels the bot answers in (IDs from Slack)
+  # allowed_channels:
+  #   - "C0123456789"
+
+  # Optional: per-channel system prompts (channel ID → prompt text)
+  # channel_prompts:
+  #   "C0123456789": |
+  #     You are the AI Digest concierge. Topic list and GO flow only.
+
+# Session isolation in shared channels
+group_sessions_per_user: true
+
+# Tooling — enable kanban if using parallel agent board (Hermes walkthrough)
+# toolsets:
+#   - hermes-cli
+#   - kanban

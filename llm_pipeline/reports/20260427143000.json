@@ -1,0 +1,769 @@
+{
+  "generated_at": "2026-04-27T14:30:00Z",
+  "filename_prefix": "20260427143000",
+  "summary": "A humanoid robot outruns every human in history at the Beijing Half-Marathon, OpenAI kills Sora on April 26, GPT-5.5 launches with autonomous OS control, and Alibaba's Wan 2.7 challenges GPT Image 2 on typography with 50 million font training samples.",
+  "categories": [
+    {
+      "id": "leaderboard",
+      "label": "Leaderboard Rankings",
+      "icon": "🏆",
+      "stories": [
+        {
+          "id": "lb-gpt55-no1",
+          "title": "GPT-5.5 Holds #1 at Intelligence Score 60 — Agentic OS Control at 78.7% Is the Headline",
+          "summary": "GPT-5.5 (xhigh) continues to lead the Artificial Analysis Intelligence Index at score 60, unchanged since its April 23 launch. The model's standout feature is its agentic computing mode: 78.7% on OSWorld-Verified, meaning it can autonomously operate desktop software (Photoshop, browser, terminal) from a natural-language prompt. OpenAI has explicitly positioned GPT-5.5 as a shift from chat-based interaction to full autonomous operation — a model that does things, not just answers things.",
+          "source": "Artificial Analysis / renovateqr.com",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "gpt-5.5",
+            "openai",
+            "agentic",
+            "OS-control",
+            "intelligence-index"
+          ]
+        },
+        {
+          "id": "lb-grok43-no2",
+          "title": "Grok 4.3 Beta Claims #2 at Score 59 — 16-Agent Heavy System, Video Input, Native Slide Output",
+          "summary": "Grok 4.3 Beta (silently released April 17) holds #2 on the Intelligence Index at score 59. Its 16-agent Heavy system coordinates four named parallel reasoning agents (Grok, Harper, Benjamin, Lucas) with live X/Twitter data integration. New in 4.3: native video understanding, downloadable slide decks, PDFs, and spreadsheets generated inside chat. Available only to $300/month SuperGrok Heavy subscribers; broader rollout expected mid-May.",
+          "source": "TechSifted / xAI",
+          "url": "https://techsifted.com/posts/grok-4-3-review-april-2026/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "grok",
+            "xai",
+            "multi-agent",
+            "video-input",
+            "slides"
+          ]
+        },
+        {
+          "id": "lb-open-chinese-sweep",
+          "title": "Open-Weight Top 9: Chinese Labs Sweep the Board — Google's Gemma 4 Is the Lone Western Entry",
+          "summary": "The llm-stats.com open-weight Code Arena leaderboard shows GLM-5 (Zhipu AI) at #1 with 1576 Code Arena points, followed by Kimi K2.5 (1479) and GLM-5.1 (1423). Gemma 4 26B from Google is the only non-Chinese model in the top 10, at #10 with 935 points. Kimi K2.6 (100 t/s, 262k context, $1.71/M tokens) continues to stand out as the best-value open model for production deployment.",
+          "source": "llm-stats.com Open LLM Leaderboard",
+          "url": "https://llm-stats.com/leaderboards/open-llm-leaderboard",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "open-source",
+            "china-ai",
+            "GLM-5",
+            "Kimi",
+            "Gemma4",
+            "open-weight"
+          ]
+        },
+        {
+          "id": "lb-image-gpt2-1507",
+          "title": "GPT Image 2 at 1507 Elo on Arena.ai — Largest Lead in Image Arena History at +236 Points",
+          "summary": "As of April 22, gpt-image-2 (medium) leads Arena.ai's text-to-image leaderboard at 1507±9 Elo — a +236-point gap over #2 (gemini-3.1-flash-image-preview at 1271). This is the widest margin any model has held since Image Arena launched. Google's Gemini models occupy four of the top five slots below GPT Image 2. On Artificial Analysis, GPT Image 2 (high) leads at 1333; among open weights, FLUX.2 [dev] Turbo leads at 1166.",
+          "source": "Arena.ai / Artificial Analysis",
+          "url": "https://arena.ai/leaderboard/text-to-image",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "image-gen",
+            "gpt-image-2",
+            "leaderboard",
+            "arena",
+            "elo",
+            "flux"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aisearch",
+      "label": "AI Search",
+      "icon": "🔍",
+      "stories": [
+        {
+          "id": "ais-sora-down",
+          "title": "Sora Is Gone: OpenAI Shuts Down Video AI on April 26 — 'Costly Limits' Cited",
+          "summary": "OpenAI discontinued its Sora video generation product on April 26, 2026, citing 'the costly limits of AI video generation and creative use.' No deprecation window was given — the shutdown was abrupt. Thousands of creators, studios, and developers with Sora pipelines are now migrating to PixVerse, Kling 3.0, Seedance 2.0, and Tencent HY3. The closure confirms longstanding speculation that Sora's compute costs were structurally unsustainable.",
+          "source": "llm-stats.com / AI News",
+          "url": "https://llm-stats.com/ai-news",
+          "significance": 5,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "sora",
+            "openai",
+            "video-gen",
+            "deprecation",
+            "kling",
+            "pixverse"
+          ]
+        },
+        {
+          "id": "ais-lightning-marathon",
+          "title": "Humanoid 'Lightning' Wins Beijing Half-Marathon in 50:26 — Beats Every Human Who Ever Lived",
+          "summary": "On April 19, the Honor/Monkey King team's autonomous humanoid 'Lightning' won the Beijing E-Town Half-Marathon in 50:26 over 21km — with no human intervention. The human world record is 57:31; Lightning's margin is nearly 7 minutes. theAIsearch called it 'the week embodied AI stopped being a lab demo and started looking like a product.' No rails, no external guidance — a fully autonomous 21km run on a real race course.",
+          "source": "artificialintelligence-news.com",
+          "url": "https://www.artificialintelligence-news.com/news/sony-ai-robot-table-tennis-humanoid-robot-beijing-race/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "humanoid",
+            "robotics",
+            "embodied-ai",
+            "beijing",
+            "world-record",
+            "marathon"
+          ]
+        },
+        {
+          "id": "ais-grok43-silent",
+          "title": "Grok 4.3 Beta Drops Without Announcement — Video, Slides, and PDF Output Now Live",
+          "summary": "xAI shipped Grok 4.3 Beta on April 17 without any announcement — it just appeared in the model selector on grok.com. Confirmed new features: native video understanding, slide deck generation, PDF output, and spreadsheet creation from conversation. The 16-agent Heavy system and 2M token context window carry over from 4.20. Standard $30/month SuperGrok subscribers can see it but not access it yet; full rollout expected mid-to-late May.",
+          "source": "theAIPXel Substack / chatlyai.app",
+          "url": "https://theaipixel.substack.com/p/grok-43-beta-just-dropped-with-video",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "grok",
+            "xai",
+            "video",
+            "multi-agent",
+            "silent-launch",
+            "slides"
+          ]
+        },
+        {
+          "id": "ais-gpt6-pretraining",
+          "title": "GPT-6 'Spud' Finishes Pretraining — Sam Altman Says 'A Few Weeks Away'",
+          "summary": "OpenAI's next flagship model (codenamed 'Spud') finished pretraining on March 24. Sam Altman confirmed it's 'a few weeks away.' Expected headline features: persistent long-term memory (Altman's stated top priority), 2M+ token context, improved personalization, and advanced agentic goal decomposition. TokenMix gave it 78% odds of shipping before April 30 — those odds are now exhausted. May is the new target.",
+          "source": "findskill.ai / tokenmix.ai",
+          "url": "https://findskill.ai/blog/gpt-6-release-date/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "gpt-6",
+            "openai",
+            "frontier",
+            "long-term-memory",
+            "upcoming"
+          ]
+        },
+        {
+          "id": "ais-open-codesign",
+          "title": "Open CoDesign Hits GitHub: MIT-Licensed AI Co-Worker for Design — Local-First, No Cloud Lock-in",
+          "summary": "Open CoDesign (OpenCoworkAI/open-codesign) is an open-source MIT-licensed desktop app that positions AI as a live design co-worker, not an autocomplete. Supports Claude, GPT, Gemini, Kimi, GLM, and Ollama via BYOK. Runs entirely locally. Core workflow: prompt → prototype/slides/PDF. It is the first open-source project to credibly challenge proprietary AI design co-pilot tools in capability and accessibility.",
+          "source": "GitHub / OpenCoworkAI",
+          "url": "https://github.com/OpenCoworkAI/open-codesign",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "codesign",
+            "open-source",
+            "local-first",
+            "collaborative-design",
+            "BYOK",
+            "design-ai"
+          ]
+        },
+        {
+          "id": "ais-wan27-typography",
+          "title": "Alibaba's Wan 2.7: 50M Font Samples Power a New Typography Engine Challenging GPT Image 2",
+          "summary": "Wan 2.7 from Alibaba is the week's notable new image model, featuring a proprietary typography engine trained on over 50 million font samples. It shows competitive text rendering — especially for Simplified Chinese, Traditional Chinese, and Japanese — and Atlas Cloud benchmarks place it near GPT Image 1.5 overall. GPT Image 2 still leads, but Wan 2.7 signals that dedicated font training datasets are becoming a key differentiator.",
+          "source": "Atlas Cloud Blog",
+          "url": "https://www.atlascloud.ai/blog/case-studies/wan-2-7-vs-the-giants-is-this-the-new-king-of-ai-text-to-image-generator",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "alibaba",
+            "wan-2.7",
+            "text-rendering",
+            "image-gen",
+            "CJK",
+            "typography"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "llm",
+      "label": "LLMs & Reasoning",
+      "icon": "🧠",
+      "stories": [
+        {
+          "id": "gpt55-deep-dive",
+          "title": "GPT-5.5 Deep Dive: 88.7% SWE-Bench, Autonomous OS Control at 78.7%, 60% Fewer Hallucinations",
+          "summary": "GPT-5.5 (April 23) is more than a benchmark update — it is a positioning shift. Key scores: 88.7% SWE-bench Verified, 82.7% Terminal-Bench 2.0, 78.7% OSWorld-Verified (autonomous desktop software operation), and 60% fewer hallucinations vs GPT-5.4. API pricing: $5.00/1M input, $11.25/1M output. OpenAI explicitly frames it as an agentic model — one that operates computers, not just responds to prompts.",
+          "source": "renovateqr.com / Artificial Analysis",
+          "url": "https://renovateqr.com/blog/ai-models-april-2026",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "gpt-5.5",
+            "openai",
+            "agentic",
+            "SWE-bench",
+            "OS-control",
+            "hallucinations"
+          ]
+        },
+        {
+          "id": "deepseek-v4-putnam",
+          "title": "DeepSeek V4 Pro Scores 120/120 on Putnam 2025 — First Model to Perfect a Major Math Competition",
+          "summary": "DeepSeek V4 Pro (April 24) achieved a perfect 120/120 on the Putnam 2025 competition benchmark — the first AI model to do so on a major mathematics competition. It runs on Huawei Ascend 950PR chips (not Nvidia), uses a 1.6T-parameter MoE architecture consuming only 27% of the compute of equivalent dense models, and costs $1.74/M tokens — roughly one-seventh of GPT-5.5's output price. Its 1M token context window rivals frontier closed models.",
+          "source": "renovateqr.com / CNN / TechCrunch",
+          "url": "https://techcrunch.com/2026/04/24/deepseek-previews-new-ai-model-that-closes-the-gap-with-frontier-models/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "deepseek",
+            "open-source",
+            "math",
+            "putnam",
+            "MoE",
+            "china-ai",
+            "Huawei"
+          ]
+        },
+        {
+          "id": "gpt6-spud-pretraining",
+          "title": "GPT-6 'Spud' Completes Pretraining — Persistent Memory Is the Headliner",
+          "summary": "OpenAI's next flagship (codenamed 'Spud') finished pretraining March 24. Sam Altman says persistent long-term memory — recall of preferences, projects, and conversations across weeks or months — is its most important feature. Other expected capabilities: 2M+ context window, advanced agentic goal decomposition, personalized worldview. Most forecasters expected a late-April launch; that window has closed and May now looks like the target.",
+          "source": "findskill.ai / tokenmix.ai",
+          "url": "https://findskill.ai/blog/gpt-6-release-date/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "gpt-6",
+            "openai",
+            "long-term-memory",
+            "frontier",
+            "upcoming"
+          ]
+        },
+        {
+          "id": "ineffable-intelligence-funding",
+          "title": "Ineffable Intelligence Raises $1.1B: David Silver's Lab Builds AI That Learns Without Human Data",
+          "summary": "Ineffable Intelligence, founded by DeepMind pioneer David Silver (co-creator of AlphaGo and AlphaZero), secured $1.1 billion at a $5.1B valuation. The lab's goal: AI systems that learn without human-labeled data — pure self-play and world modeling, following the AlphaGo lineage. If successful, this approach would sidestep the data curation bottleneck constraining current LLM scaling. The largest single AI lab investment since the 2024-25 wave of foundational rounds.",
+          "source": "llm-stats.com / AI News",
+          "url": "https://llm-stats.com/ai-news",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "funding",
+            "david-silver",
+            "self-play",
+            "research",
+            "DeepMind-alumni",
+            "Ineffable"
+          ]
+        },
+        {
+          "id": "ms-openai-deal-amended",
+          "title": "Microsoft-OpenAI Partnership Rewritten: OpenAI Goes Multi-Cloud, Revenue Share Ends",
+          "summary": "Microsoft and OpenAI amended their landmark partnership. OpenAI can now serve all products across any cloud provider — not just Azure — and Microsoft will no longer receive a revenue share from OpenAI's consumer and API businesses. Microsoft retains a major equity stake. The change reflects OpenAI's confidence in its standalone revenue base and signals a gradual decoupling from its original benefactor.",
+          "source": "renovateqr.com",
+          "url": "https://renovateqr.com/blog/ai-models-april-2026",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "openai",
+            "microsoft",
+            "partnership",
+            "cloud",
+            "business",
+            "multi-cloud"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "image-gen",
+      "label": "Image Generation & Processing",
+      "icon": "🎨",
+      "stories": [
+        {
+          "id": "sora-shutdown-april26",
+          "title": "OpenAI Kills Sora on April 26 — Abrupt Closure Exposes the Economics of AI Video",
+          "summary": "OpenAI terminated the Sora video generation app and API on April 26 with a statement citing 'the costly limits of AI video generation and creative use.' No wind-down period was offered. The closure validates what insiders had long speculated: Sora's compute costs were unsustainable relative to revenue. Creators and studios are now consolidating on PixVerse, Kling 3.0, Seedance 2.0, and Tencent HY3 — all of which reported user spikes immediately after the announcement.",
+          "source": "llm-stats.com",
+          "url": "https://llm-stats.com/ai-news",
+          "significance": 5,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "sora",
+            "openai",
+            "video-gen",
+            "deprecation",
+            "kling",
+            "pixverse",
+            "HY3"
+          ]
+        },
+        {
+          "id": "gpt-image-2-1507-arena",
+          "title": "GPT Image 2 Extends Elo Lead to 1507 on Arena.ai — +236 Points Over #2 Gemini",
+          "summary": "The latest Arena.ai rankings show gpt-image-2 (medium) at 1507±9 Elo with a +236-point lead over #2 (Gemini 3.1 Flash Image Preview at 1271). Gemini models hold the next four spots: 3 Pro 2K at 1244, GPT Image 1.5 at 1242, Gemini 3 Pro at 1232. On Artificial Analysis, GPT Image 2 (high) leads at 1333; the open-weight leader FLUX.2 [dev] Turbo sits at 1166. Across both arenas, the gap between the leader and the field is wider than at any point in 2026.",
+          "source": "Arena.ai / Artificial Analysis",
+          "url": "https://arena.ai/leaderboard/text-to-image",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "gpt-image-2",
+            "leaderboard",
+            "elo",
+            "openai",
+            "image-gen",
+            "arena"
+          ]
+        },
+        {
+          "id": "wan-27-typography-engine",
+          "title": "Wan 2.7: Alibaba's New Image Model Trained on 50M Font Samples Targets the Typography Crown",
+          "summary": "Alibaba's Wan 2.7 is the most notable new image generation release this week. Its proprietary typography engine was trained on over 50 million font samples — a purposeful counter to GPT Image 2's multilingual text dominance, specifically targeting Simplified Chinese, Traditional Chinese, and Japanese scripts. Atlas Cloud benchmarks place Wan 2.7 close to GPT Image 1.5 on most tasks; GPT Image 2 still leads overall, but the gap on CJK text is narrowing.",
+          "source": "Atlas Cloud Blog",
+          "url": "https://www.atlascloud.ai/blog/case-studies/wan-2-7-vs-the-giants-is-this-the-new-king-of-ai-text-to-image-generator",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "alibaba",
+            "wan-2.7",
+            "typography",
+            "CJK",
+            "image-gen",
+            "font-training"
+          ]
+        },
+        {
+          "id": "flux2-open-weight-leader",
+          "title": "FLUX.2 [dev] Turbo Leads Open-Weight Image Gen at 1166 Elo on Artificial Analysis",
+          "summary": "Among open-weight text-to-image models, FLUX.2 [dev] Turbo (Black Forest Labs) leads the Artificial Analysis arena at 1166 Elo, followed by Qwen Image Max 2512 (1161) and FLUX.2 [dev] (1160). The FLUX.2 family's dual CLIP+T5 encoder architecture — where T5 handles semantic text comprehension separately from visual generation — continues to be the technical foundation for its strong text rendering in the open-weight tier.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "flux",
+            "open-source",
+            "image-gen",
+            "black-forest-labs",
+            "elo",
+            "text-rendering"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design-ai",
+      "label": "Design & Creative AI",
+      "icon": "✏️",
+      "stories": [
+        {
+          "id": "open-codesign-launch",
+          "title": "Open CoDesign: First MIT-Licensed AI Co-Worker for Design — Local-First, Multi-Model, BYOK",
+          "summary": "Open CoDesign (github.com/OpenCoworkAI/open-codesign) is an open-source desktop app positioning an AI agent as a genuine design collaborator — suggesting layouts, generating prototypes, producing slides or PDFs from prompts. Supports Claude, GPT, Gemini, Kimi, GLM, and Ollama via bring-your-own-key. Runs entirely locally, no cloud dependency, MIT licensed. This is the first open-source project to meaningfully challenge proprietary AI design co-pilot products in terms of capability and accessibility.",
+          "source": "GitHub / OpenCoworkAI",
+          "url": "https://github.com/OpenCoworkAI/open-codesign",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "codesign",
+            "open-source",
+            "local-first",
+            "collaborative-design",
+            "BYOK",
+            "MIT"
+          ]
+        },
+        {
+          "id": "miro-mcp-public-beta",
+          "title": "Miro MCP Server Goes Public Beta — AI Agents Can Now Read Your Team's Whiteboards",
+          "summary": "Miro launched its Model Context Protocol (MCP) server in public beta, enabling AI agents (Claude Code, GPT, or any MCP client) to access the shared visual context of live Miro boards. AI agents can now read a sprint board, a design system map, or a user journey diagram and generate context-aware outputs. Immediate use cases: summarize the board, generate code from a design sketch, write copy for wireframe zones.",
+          "source": "CPO Club / Miro",
+          "url": "https://cpoclub.com/tools/best-collaborative-design-software/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "miro",
+            "MCP",
+            "collaborative-design",
+            "AI-workflows",
+            "design-tools",
+            "whiteboard"
+          ]
+        },
+        {
+          "id": "d5-render-april-recap",
+          "title": "D5 Render April Recap: AI Workflows Are the New Normal in Architecture and Design Studios",
+          "summary": "D5 Render's April 2026 industry roundup documents how leading architecture firms (WilkinsonEyre, AODK) have integrated AI into real-time design workflows. The recurring theme: AI doesn't replace the designer — it collapses the iteration cycle. Firms using AI-assisted rendering explore 3x more design variants per project than before. The 'AI workflow' is no longer experimental; it is standard practice in competitive studios.",
+          "source": "D5 Render",
+          "url": "https://www.d5render.com/posts/april-2026-recap",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "architecture",
+            "AI-workflow",
+            "rendering",
+            "design-ai",
+            "real-time",
+            "iteration"
+          ]
+        },
+        {
+          "id": "design-ai-summit-2026",
+          "title": "Design + AI Summit 2026: Industry Shifts from Asset Generation to AI as Design Peer",
+          "summary": "CreativePro's Design + AI Summit 2026 has repositioned its agenda around collaborative design pipelines and CoDesign methodology — reflecting an industry-wide shift from 'how do I use AI to generate assets' to 'how do I build a design process where AI is a peer at the table.' Featured tracks: AI CoDesign practice, typography and text rendering advances, and responsible AI in creative workflows.",
+          "source": "CreativePro",
+          "url": "https://creativepro.com/event/design-ai-summit-2026/",
+          "significance": 2,
+          "novelty": 2,
+          "relevance_design": 5,
+          "tags": [
+            "summit",
+            "codesign",
+            "design-ai",
+            "creative-pro",
+            "methodology",
+            "collaborative"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "typography",
+      "label": "Typography & Text Rendering",
+      "icon": "🔤",
+      "stories": [
+        {
+          "id": "wan27-font-training",
+          "title": "Wan 2.7's 50M Font Dataset: Dedicated Typography Training Is the New Frontier of Model Differentiation",
+          "summary": "Alibaba's Wan 2.7 typography engine was trained on over 50 million font samples — a purpose-built dataset targeting CJK text rendering where GPT Image 2 still has gaps. Reviewers note Wan 2.7 outperforms or matches GPT Image 1.5 specifically on Simplified Chinese, Traditional Chinese, and Japanese. The move signals that specialized font training datasets — rather than general image training at scale — may be the next frontier of typography quality gains.",
+          "source": "Atlas Cloud Blog",
+          "url": "https://www.atlascloud.ai/blog/case-studies/wan-2-7-vs-the-giants-is-this-the-new-king-of-ai-text-to-image-generator",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "wan-2.7",
+            "alibaba",
+            "CJK",
+            "font-training",
+            "typography",
+            "image-gen"
+          ]
+        },
+        {
+          "id": "strict-benchmark-200char",
+          "title": "STRICT Benchmark: AI Text Rendering Collapses Beyond 200 Characters — Even for GPT Image 2",
+          "summary": "The STRICT (Standard Rendering In Context Typography) benchmark reveals that text rendering accuracy collapses significantly beyond 200 characters across all current models — including GPT Image 2. This is critical for designers expecting long-form text in images: product copy, label text, multi-line signage still require post-generation editing. Best practice remains: keep prompt text short and direct; anything longer should still be applied in a design tool.",
+          "source": "ZSky AI / NestContent",
+          "url": "https://zsky.ai/blog/can-ai-generate-text-in-images",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "benchmark",
+            "text-rendering",
+            "limitations",
+            "typography",
+            "STRICT",
+            "design-workflow"
+          ]
+        },
+        {
+          "id": "ideogram30-module",
+          "title": "Ideogram 3.0 Holds 90% Typography Accuracy — Dedicated Rendering Module Still Outperforms Generalists",
+          "summary": "Ideogram 3.0 maintains ~90% text rendering accuracy using a dedicated typography module that treats letterforms as a distinct rendering problem separate from visual generation. Founded by four ex-Google Brain researchers from the original Imagen team, Ideogram was purpose-built to solve the text problem. It ranks second only to GPT Image 2 on typography accuracy; Midjourney v6.1 sits at 30% on the same tests. The gap between dedicated and general architectures remains wide.",
+          "source": "NestContent / Artomate",
+          "url": "https://nestcontent.com/blog/text-to-image-ai",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "ideogram",
+            "typography",
+            "text-rendering",
+            "image-gen",
+            "accuracy",
+            "architecture"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "robotics",
+      "label": "Robotics & Embodied AI",
+      "icon": "🤖",
+      "stories": [
+        {
+          "id": "lightning-beijing-marathon",
+          "title": "'Lightning' Humanoid Wins Beijing Half-Marathon in 50:26 — Beats Every Human Who Ever Raced",
+          "summary": "On April 19, the Honor/Monkey King team's autonomous humanoid 'Lightning' won the Beijing E-Town Half-Marathon in 50:26 over 21km with no human intervention. The human world record is 57:31; Lightning's margin is nearly 7 full minutes. This is the first time an autonomous humanoid robot has outperformed the best human runner in history on a real race course. No rails, no external guidance — a fully autonomous 21km run.",
+          "source": "artificialintelligence-news.com",
+          "url": "https://www.artificialintelligence-news.com/news/sony-ai-robot-table-tennis-humanoid-robot-beijing-race/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "humanoid",
+            "robotics",
+            "marathon",
+            "embodied-ai",
+            "beijing",
+            "world-record",
+            "Lightning"
+          ]
+        },
+        {
+          "id": "figure-bmw-spartanburg",
+          "title": "Figure Robots Complete 30,000+ BMW Vehicles at Spartanburg — Now Expanding to Leipzig",
+          "summary": "Figure humanoid robots have supported production of over 30,000 vehicles at BMW Spartanburg, logging 1,250+ hours and handling 90,000+ parts. BMW is expanding the Figure deployment to Leipzig, Germany. This is among the largest documented real-world humanoid robot deployments in automotive manufacturing to date, marking the shift from pilot to production-scale operation.",
+          "source": "Roland Berger / Accenture Newsroom",
+          "url": "https://www.rolandberger.com/en/Insights/Publications/Humanoid-robots-why-the-convergence-moment-is-now.html",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "figure",
+            "robotics",
+            "BMW",
+            "manufacturing",
+            "humanoid",
+            "production-scale"
+          ]
+        },
+        {
+          "id": "humanoid-4t-market",
+          "title": "Humanoid Robot Market Projected to Reach $4T Long-Term — Unitree Leads After 5,500 Units in 2025",
+          "summary": "A Roland Berger study projects humanoid robot revenues at $300B by 2035, $750B in a best case, with a long-term ceiling of $4 trillion. Unitree leads global mass production after shipping 5,500+ humanoids in 2025 with aggressive 2026 scaling targets. The convergence of mature AI models, cost-reduced actuators, and proven industrial deployments is narrowing the distance between prototype and product — fast.",
+          "source": "Roland Berger / Manila Times",
+          "url": "https://www.manilatimes.net/2026/04/25/business/science-technology/humanoid-robots-are-about-to-move-from-labs-to-factory-floors-poised-to-become-a-4-trillion-market/2327996",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "market",
+            "unitree",
+            "humanoid",
+            "manufacturing",
+            "Roland-Berger"
+          ]
+        },
+        {
+          "id": "hannover-messe-2026",
+          "title": "Hannover Messe 2026: Industrial AI and Humanoid Robots Take Center Stage for the First Time",
+          "summary": "Germany's flagship industrial trade fair Hannover Messe 2026 opened with industrial AI and humanoid robots as the central theme — the first time in the event's history. Accenture, SAP, and Vodafone announced a joint warehouse pilot powered by Accenture's Robot Brain, enabling robots to interact with human operators via voice, gesture, and text. The event marks the moment industrial AI crossed from conference topic to trade show centerpiece.",
+          "source": "Xinhua / Accenture Newsroom",
+          "url": "https://newsroom.accenture.com/news/2026/accenture-vodafone-procure-connect-and-sap-pilot-humanoid-robotics-in-warehouse-operations",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "hannover-messe",
+            "industrial-ai",
+            "humanoid",
+            "warehouse",
+            "Accenture",
+            "SAP"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "label": "Research & Papers",
+      "icon": "📄",
+      "stories": [
+        {
+          "id": "agentic-world-modeling-survey",
+          "title": "Agentic World Modeling Survey: 42 Authors Map Foundations of the Next AI Frontier (55 Upvotes)",
+          "summary": "'Agentic World Modeling: Foundations, Capabilities, Laws, and Beyond' is today's top HuggingFace paper with 55 upvotes. The 42-author collaboration surveys how AI agents construct and use internal world models to plan, reason, and act across extended tasks. Covers model architectures, training methods, benchmark tasks, and theoretical limits. A defining reference paper as GPT-5.5 and Grok 4.3 push agentic capabilities into production.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "agentic-ai",
+            "world-models",
+            "survey",
+            "arxiv",
+            "research",
+            "planning"
+          ]
+        },
+        {
+          "id": "video-semantic-progress",
+          "title": "Semantic Progress Functions for Video Analysis and Generation — Tel Aviv University (32 Upvotes)",
+          "summary": "'Video Analysis and Generation via a Semantic Progress Function' from Tel Aviv University introduces a method for tracking meaningful scene change over time. The approach enables finer-grained temporal control in video editing and more consistent generation across segments — addressing the core weakness of current video models where scene coherence degrades over time.",
+          "source": "HuggingFace Papers / Tel Aviv University",
+          "url": "https://huggingface.co/papers",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "video-gen",
+            "video-editing",
+            "research",
+            "tel-aviv",
+            "temporal-coherence"
+          ]
+        },
+        {
+          "id": "diagrambank-dataset",
+          "title": "DiagramBank: First Large-Scale Dataset for AI-Powered Diagram Design and RAG (7 Upvotes)",
+          "summary": "'DiagramBank: A Large-scale Dataset of Diagram Design Exemplars with Paper Metadata for Retrieval-Augmented Generation' from RPI introduces the first large-scale dataset of diagram exemplars for training and evaluating AI on visual design tasks. It enables RAG-based diagram creation — a direct input to AI tools for scientific visualization, UX diagrams, and technical documentation.",
+          "source": "HuggingFace Papers / RPI",
+          "url": "https://huggingface.co/papers",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "diagram-design",
+            "RAG",
+            "dataset",
+            "design-ai",
+            "research",
+            "visualization"
+          ]
+        },
+        {
+          "id": "llm-safety-internal-reps",
+          "title": "LLM Safety From Within: Internal Representations Can Flag Harmful Content Before Output (21 Upvotes)",
+          "summary": "'LLM Safety From Within: Detecting Harmful Content with Internal Representations' from the University of Toronto CSSLab proposes monitoring a model's internal activation patterns — rather than output text — to catch harmful content earlier in generation. This approach could reduce jailbreaking success rates and lower the cost of content filtering compared to classifier-based methods applied at the output layer.",
+          "source": "HuggingFace Papers / University of Toronto",
+          "url": "https://huggingface.co/papers",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "safety",
+            "harmful-content",
+            "internal-representations",
+            "research",
+            "jailbreak",
+            "alignment"
+          ]
+        }
+      ]
+    }
+  ],
+  "visualizations": {
+    "category_counts": {
+      "leaderboard": 4,
+      "aisearch": 6,
+      "llm": 5,
+      "image-gen": 4,
+      "design-ai": 4,
+      "typography": 3,
+      "robotics": 4,
+      "research": 4
+    },
+    "significance_distribution": {
+      "5": 4,
+      "4": 14,
+      "3": 13,
+      "2": 2,
+      "1": 0
+    },
+    "top_tags": [
+      {
+        "tag": "humanoid",
+        "count": 5
+      },
+      {
+        "tag": "openai",
+        "count": 5
+      },
+      {
+        "tag": "image-gen",
+        "count": 5
+      },
+      {
+        "tag": "open-source",
+        "count": 5
+      },
+      {
+        "tag": "robotics",
+        "count": 4
+      },
+      {
+        "tag": "text-rendering",
+        "count": 4
+      },
+      {
+        "tag": "design-ai",
+        "count": 4
+      },
+      {
+        "tag": "CJK",
+        "count": 4
+      },
+      {
+        "tag": "codesign",
+        "count": 3
+      },
+      {
+        "tag": "agentic",
+        "count": 3
+      }
+    ],
+    "top_stories": [
+      {
+        "id": "lightning-beijing-marathon",
+        "title": "Humanoid 'Lightning' Wins Beijing Half-Marathon — Beats Human World Record",
+        "significance": 5,
+        "category": "robotics"
+      },
+      {
+        "id": "sora-shutdown-april26",
+        "title": "OpenAI Kills Sora on April 26 — Abrupt Closure",
+        "significance": 5,
+        "category": "image-gen"
+      },
+      {
+        "id": "deepseek-v4-putnam",
+        "title": "DeepSeek V4 Pro: Perfect 120/120 Putnam Score",
+        "significance": 5,
+        "category": "llm"
+      },
+      {
+        "id": "ais-sora-down",
+        "title": "Sora Is Gone — OpenAI Cites Costly Limits of AI Video",
+        "significance": 5,
+        "category": "aisearch"
+      },
+      {
+        "id": "ais-open-codesign",
+        "title": "Open CoDesign: MIT-Licensed AI Co-Worker Hits GitHub",
+        "significance": 4,
+        "category": "aisearch"
+      }
+    ]
+  },
+  "report_source": "llm-pipeline",
+  "report_source_badge": "../../docs/img/llm_pipeline/llm_pipeline.png",
+  "report_source_label": "LLM Pipeline"
+}

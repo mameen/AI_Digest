@@ -1,0 +1,28 @@
+# PII audit exemptions — ORIO / AI Digest
+# Gitignore-style. Alias file: .ignorepii (same syntax, merged if present).
+#
+# RULE: paths here MUST be in .gitignore OR be intentional public artifacts.
+# Staged vault/runtime paths are still BLOCKED by check_secrets.py.
+
+# ── Local runtime & caches (gitignored) ──────────────────────────────────────
+agentic/hermes/.kb/
+agentic/hermes/.runtime/
+.cache/
+.preflight/
+llm_pipeline/.cache/
+llm_pipeline/.preflight/
+.venv/
+venv/
+__pycache__/
+
+# ── Fixtures & templates ─────────────────────────────────────────────────────
+tests/fixtures/
+tests/data/
+**/*.example.json
+**/*.example.yaml
+.env.example
+.githooks/
+
+# ── Hermes config examples (documented LAN hosts) ───────────────────────────
+agentic/hermes/admin/config/hermes_roles.yaml
+llm_pipeline/config.yaml

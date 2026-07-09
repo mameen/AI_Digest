@@ -1,0 +1,94 @@
+{
+  "by_channel": {
+    "ibm-technology": "https://www.youtube.com/watch?v=ibm1",
+    "google-cloud-tech": "https://www.youtube.com/watch?v=gcp1",
+    "the-stack-ai": "https://www.youtube.com/watch?v=stack1",
+    "nate-herk": "https://www.youtube.com/watch?v=nate1",
+    "network-chuck": "https://www.youtube.com/watch?v=chuck1",
+    "azisk": "https://www.youtube.com/watch?v=az1",
+    "hugging-face": "https://www.youtube.com/watch?v=hf1",
+    "bytebyteai": "https://www.youtube.com/watch?v=bba1",
+    "bytebytego": "https://www.youtube.com/watch?v=bbg1",
+    "full-stack": "https://www.youtube.com/watch?v=fs1"
+  },
+  "https://www.youtube.com/watch?v=ibm1": {
+    "url": "https://www.youtube.com/watch?v=ibm1",
+    "title": "What Is an API?",
+    "upload_date": "20260702",
+    "description": "Learn more: https://ibm.com/topics/api",
+    "chapters": []
+  },
+  "https://www.youtube.com/watch?v=gcp1": {
+    "url": "https://www.youtube.com/watch?v=gcp1",
+    "title": "MCP vs API",
+    "upload_date": "20260701",
+    "description": "Docs: https://cloud.google.com/mcp\n00:00 Intro\n02:00 How MCP works",
+    "chapters": [
+      {"title": "How MCP works", "start_time": 120}
+    ]
+  },
+  "https://www.youtube.com/watch?v=stack1": {
+    "url": "https://www.youtube.com/watch?v=stack1",
+    "title": "6 FREE Tools",
+    "upload_date": "20260702",
+    "description": "Tool list: https://github.com/example/tools",
+    "chapters": [
+      {"title": "Intro", "start_time": 0},
+      {"title": "Tool one", "start_time": 60}
+    ]
+  },
+  "https://www.youtube.com/watch?v=nate1": {
+    "url": "https://www.youtube.com/watch?v=nate1",
+    "title": "Fable rules",
+    "upload_date": "20260701",
+    "description": "00:00 Rule 1\n05:00 Rule 2",
+    "chapters": []
+  },
+  "https://www.youtube.com/watch?v=chuck1": {
+    "url": "https://www.youtube.com/watch?v=chuck1",
+    "title": "VPN myths",
+    "upload_date": "20260615",
+    "description": "Links: https://networkchuck.com/vpn",
+    "chapters": [
+      {"title": "Myth 1", "start_time": 30},
+      {"title": "Myth 2", "start_time": 180}
+    ]
+  },
+  "https://www.youtube.com/watch?v=az1": {
+    "url": "https://www.youtube.com/watch?v=az1",
+    "title": "Your OS Changes Everything for Local AI",
+    "upload_date": "20260630",
+    "description": "00:00 Windows vs Linux\n08:30 VRAM tuning\nRepo: https://github.com/example/local-ai",
+    "chapters": []
+  },
+  "https://www.youtube.com/watch?v=hf1": {
+    "url": "https://www.youtube.com/watch?v=hf1",
+    "title": "What can you build during 48h Robotics Hackathon?",
+    "upload_date": "20260622",
+    "description": "Resources: https://huggingface.co/robotics",
+    "chapters": []
+  },
+  "https://www.youtube.com/watch?v=bba1": {
+    "url": "https://www.youtube.com/watch?v=bba1",
+    "title": "Claude Fable 5: Everything You Need to Know!",
+    "upload_date": "20260616",
+    "description": "Notes: https://bytebyteai.com/fable",
+    "chapters": []
+  },
+  "https://www.youtube.com/watch?v=bbg1": {
+    "url": "https://www.youtube.com/watch?v=bbg1",
+    "title": "How to Run LLMs Locally (Great For Learning and Privacy)",
+    "upload_date": "20260610",
+    "description": "00:00 Intro\n03:00 Setup\nGuide: https://bytebytego.com/local-llms",
+    "chapters": [
+      {"title": "Setup", "start_time": 180}
+    ]
+  },
+  "https://www.youtube.com/watch?v=fs1": {
+    "url": "https://www.youtube.com/watch?v=fs1",
+    "title": "AI Loop Engineering: The New AI prompting Method Everyone Is Talking About",
+    "upload_date": "20260704",
+    "description": "Resources: https://fullstack.dev/ai-loop",
+    "chapters": []
+  }
+}

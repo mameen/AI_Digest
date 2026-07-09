@@ -1,0 +1,195 @@
+{
+  "schema": "agentic_hermes.diagnostics/v1",
+  "title": "Hermes agent diagnostics",
+  "prefix": "20260708120000",
+  "poc_id": "agentic_hermes",
+  "status": "ok",
+  "started_at": "2026-07-08T23:12:00Z",
+  "finished_at": "2026-07-08T23:27:19Z",
+  "total_duration_ms": 917743.2,
+  "total_cpu_ms": 0.0,
+  "environment": {
+    "schema": "ai_digest.environment/v1",
+    "platform_kind": "mac",
+    "os": "Darwin",
+    "os_release": "25.5.0",
+    "machine": "arm64",
+    "cpu": "Apple M3 Max",
+    "cpu_count": 16,
+    "ram_gb": 48.0,
+    "gpu": {
+      "backend": "metal",
+      "name": "Apple M3 Max"
+    },
+    "python": "3.11.12",
+    "hostname": "Mohameds-MacBook-Pro.local"
+  },
+  "network": {
+    "bytes_downloaded": 434158,
+    "duration_ms": 0.0,
+    "throughput_mbps": null,
+    "inferred": true
+  },
+  "llm": {
+    "enabled": true,
+    "provider": "ollama",
+    "model": "qwen3.6:35b"
+  },
+  "agents": {
+    "graph": "orio_concierge → orio_researcher × N → orio_librarian → orio_synthesizer → render",
+    "profiles": [
+      "orio_concierge",
+      "orio_researcher",
+      "orio_librarian",
+      "orio_synthesizer",
+      "concierge",
+      "researcher",
+      "librarian",
+      "synthesizer"
+    ],
+    "task_count": 8
+  },
+  "stages": [
+    {
+      "id": "go.setup",
+      "label": "Concierge · board setup",
+      "started_at": "2026-07-08T23:12:00Z",
+      "ended_at": "2026-07-08T23:12:02Z",
+      "duration_ms": 2586.7,
+      "cpu_ms": 0.0,
+      "ok": true,
+      "critical": true,
+      "error": null,
+      "meta": {},
+      "children": []
+    },
+    {
+      "id": "go.research",
+      "label": "Research workers",
+      "started_at": "2026-07-08T23:12:03Z",
+      "ended_at": "2026-07-08T23:17:25Z",
+      "duration_ms": 322087.0,
+      "cpu_ms": 0.0,
+      "ok": true,
+      "critical": true,
+      "error": null,
+      "meta": {},
+      "children": [
+        {
+          "id": "task.t_a9e241a3",
+          "label": "Research: aisearch · Researcher",
+          "started_at": "2026-07-08T23:12:06Z",
+          "ended_at": "2026-07-08T23:15:00Z",
+          "duration_ms": 173957.9,
+          "cpu_ms": 0.0,
+          "ok": true,
+          "critical": true,
+          "error": null,
+          "meta": {
+            "profile": "orio_researcher",
+            "task_id": "t_a9e241a3"
+          },
+          "children": []
+        },
+        {
+          "id": "task.t_17e1be1e",
+          "label": "Research: leaderboard · Researcher",
+          "started_at": "2026-07-08T23:15:00Z",
+          "ended_at": "2026-07-08T23:17:25Z",
+          "duration_ms": 144928.4,
+          "cpu_ms": 0.0,
+          "ok": true,
+          "critical": true,
+          "error": null,
+          "meta": {
+            "profile": "orio_researcher",
+            "task_id": "t_17e1be1e"
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "go.librarian",
+      "label": "Librarian · merge & classify",
+      "started_at": "2026-07-08T23:17:26Z",
+      "ended_at": "2026-07-08T23:21:47Z",
+      "duration_ms": 260976.2,
+      "cpu_ms": 0.0,
+      "ok": true,
+      "critical": true,
+      "error": null,
+      "meta": {},
+      "children": [
+        {
+          "id": "task.t_c8cc797c",
+          "label": "Librarian: merge & classify · Librarian",
+          "started_at": "2026-07-08T23:17:26Z",
+          "ended_at": "2026-07-08T23:21:46Z",
+          "duration_ms": 260286.8,
+          "cpu_ms": 0.0,
+          "ok": true,
+          "critical": true,
+          "error": null,
+          "meta": {
+            "profile": "orio_librarian",
+            "task_id": "t_c8cc797c"
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "go.synthesizer",
+      "label": "Synthesizer · digest JSON",
+      "started_at": "2026-07-08T23:21:47Z",
+      "ended_at": "2026-07-08T23:27:19Z",
+      "duration_ms": 332093.3,
+      "cpu_ms": 0.0,
+      "ok": true,
+      "critical": true,
+      "error": null,
+      "meta": {},
+      "children": [
+        {
+          "id": "task.t_a6fcf17d",
+          "label": "Synthesize digest · Synthesizer",
+          "started_at": "2026-07-08T23:21:47Z",
+          "ended_at": "2026-07-08T23:27:19Z",
+          "duration_ms": 331726.4,
+          "cpu_ms": 0.0,
+          "ok": false,
+          "critical": true,
+          "error": "blocked",
+          "meta": {
+            "profile": "orio_synthesizer",
+            "task_id": "t_a6fcf17d"
+          },
+          "children": []
+        }
+      ]
+    }
+  ],
+  "llm_calls": [],
+  "crawls": [],
+  "tool_calls": [],
+  "log": [],
+  "totals": {
+    "stage_count": 4,
+    "task_count": 8,
+    "llm_call_count": 0,
+    "llm_duration_ms": 0,
+    "llm_share_pct": 0.0,
+    "tool_call_count": 0,
+    "tool_calls_ok": 0,
+    "stage_failures": 0,
+    "failed_stages": [],
+    "prompt_tokens": null,
+    "completion_tokens": null,
+    "total_tokens": null,
+    "tokens_estimated": true
+  },
+  "report_source": "agentic-hermes",
+  "report_source_label": "Hermes Agent",
+  "report_source_badge": "../img/report-source/hermes-agent.png"
+}

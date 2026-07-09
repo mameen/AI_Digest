@@ -1,0 +1,1 @@
+../llm_pipeline/editorial_brief.md

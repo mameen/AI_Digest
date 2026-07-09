@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<style>
+__FRAME_STYLES__
+__CONTENT_STYLES__
+</style>
+<script>__THEME_JS__</script>
+</head>
+<body>
+
+<details class="heatmap-details" id="heatmap-details" open>
+  <summary class="heatmap-summary">
+    <span class="heatmap-title">Digest Archive</span>
+    <span class="heatmap-sub">GitHub-style navigator · click a day</span>
+  </summary>
+  <div class="heatmap-body">
+    <div class="archive-charts-row">
+      <div class="chart-panel">
+        <div class="chart-panel-title">Activity heatmap</div>
+        <div class="heatmap-header">
+          <span class="heatmap-sub">Hover for summary · selected day loads below</span>
+        </div>
+        <div id="heatmap-wrap"></div>
+        <div class="heatmap-legend">
+          <span class="hm-leg-label">Less</span>
+          <span class="hm-swatch hm-empty"></span>
+          <span class="hm-swatch hm-1"></span>
+          <span class="hm-swatch hm-2"></span>
+          <span class="hm-swatch hm-3"></span>
+          <span class="hm-swatch hm-4"></span>
+          <span class="hm-leg-label">More</span>
+        </div>
+      </div>
+      <div class="chart-panel">
+        <div class="chart-panel-title">Topics by week</div>
+        <div id="topic-trend-wrap"></div>
+        <div class="trend-legend" id="topic-trend-legend"></div>
+      </div>
+      __AUTHOR_CARD__
+    </div>
+    <div class="year-pills" id="year-pills"></div>
+  </div>
+</details>
+
+__CONTENT_PANEL__
+
+<div class="d3-tooltip" id="tooltip"></div>
+
+__INDEX_SCRIPT__
+__DIGESTS_SCRIPT__
+<script>__HEATMAP_JS__</script>
+<script>__TREND_CHARTS_JS__</script>
+<script>
+let digestData = null;
+const leaderboards = __LEADERBOARDS__;
+let currentPrefix = null;
+let heatmapCells = {};
+let heatmapYear = null;
+
+function heatmapEntries(index) {
+  return index.by_date || index.digests || [];
+}
+
+function yearsFromEntries(entries) {
+  const years = new Set();
+  entries.forEach(e => { if (e.date) years.add(parseInt(e.date.slice(0, 4), 10)); });
+  years.add(new Date().getFullYear());
+  return Array.from(years).sort((a, b) => a - b);
+}
+
+function heatmapRange(viewYear, today) {
+  const start = new Date(viewYear, 0, 1);
+  start.setDate(start.getDate() - start.getDay());
+  let end;
+  if (viewYear === today.getFullYear()) {
+    end = new Date(today);
+    end.setDate(end.getDate() - end.getDay() + 6);
+  } else {
+    end = new Date(viewYear, 11, 31);
+    end.setDate(end.getDate() - end.getDay() + 6);
+  }
+  return { start, end };
+}
+
+function renderYearPills(entries, onYear) {
+  const bar = document.getElementById('year-pills');
+  if (!bar) return;
+  const years = yearsFromEntries(entries);
+  bar.innerHTML = '';
+  bar.style.display = 'flex';
+  years.forEach(y => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'year-pill' + (y === heatmapYear ? ' active' : '');
+    btn.textContent = String(y);
+    btn.onclick = () => { heatmapYear = y; onYear(y); };
+    bar.appendChild(btn);
+  });
+}
+
+function syncYearPills() {
+  document.querySelectorAll('.year-pill').forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.textContent, 10) === heatmapYear);
+  });
+}
+
+function ensureHeatmapYear(index, prefix) {
+  const entries = heatmapEntries(index);
+  const years = yearsFromEntries(entries);
+  if (prefix) {
+    const entry = entries.find(e => e.prefix === prefix);
+    if (entry) {
+      heatmapYear = parseInt(entry.date.slice(0, 4), 10);
+      return;
+    }
+  }
+  if (!heatmapYear || !years.includes(heatmapYear)) {
+    heatmapYear = years[years.length - 1] || new Date().getFullYear();
+  }
+}
+
+const HM_CAT_COLORS = {
+  leaderboard: '#F39C12', aisearch: '#F0883E', 'agentic-ai': '#0EA5E9', llm: '#2C3E50',
+  'image-gen': '#8E44AD', 'design-ai': '#16A085',
+  typography: '#C0392B', robotics: '#E67E22', research: '#2980B9'
+};
+
+__DIGEST_APP__
+
+function renderArchiveTrends(index) {
+  if (!window.AIDigestTrends) return;
+  const meta = window.AIDigestTrends.renderTopicTrend('topic-trend-wrap', index.digests || [], 'tooltip');
+  if (meta) window.AIDigestTrends.renderTrendLegend('topic-trend-legend', meta.categories);
+}
+
+function selectDigest(prefix, opts) {
+  opts = opts || {};
+  const data = window.__AIDIGEST_DIGESTS__ && window.__AIDIGEST_DIGESTS__[prefix];
+  if (!data || prefix === currentPrefix) return;
+  currentPrefix = prefix;
+  digestData = data;
+  resetDigestView();
+  render(data);
+  document.title = 'AI Daily | ' + (data.generated_at || prefix).slice(0, 10);
+  const index = window.__AIDIGEST_INDEX__;
+  const entryYear = parseInt((data.generated_at || prefix).slice(0, 4), 10);
+  if (index && entryYear !== heatmapYear) {
+    heatmapYear = entryYear;
+    renderHeatmap(index);
+    syncYearPills();
+  }
+  highlightHeatmap(prefix);
+  if (opts.updateHash !== false && location.hash !== '#' + prefix) {
+    history.replaceState(null, '', '#' + prefix);
+  }
+}
+
+function initialPrefix(index) {
+  const hash = location.hash.replace(/^#/, '');
+  if (hash && window.__AIDIGEST_DIGESTS__ && window.__AIDIGEST_DIGESTS__[hash]) return hash;
+  return index.latest || (index.digests || []).slice(-1)[0]?.prefix;
+}
+
+function highlightHeatmap(prefix) {
+  const sel = (window.AIDigestHeatmap && window.AIDigestHeatmap.palette().selection) || '#58a6ff';
+  Object.entries(heatmapCells).forEach(([p, cell]) => {
+    cell.attr('stroke', p === prefix ? sel : null).attr('stroke-width', p === prefix ? 2 : null);
+  });
+}
+
+function renderHeatmap(index) {
+  const wrap = document.getElementById('heatmap-wrap');
+  wrap.innerHTML = '';
+  heatmapCells = {};
+  const hm = window.AIDigestHeatmap;
+  const colors = hm ? hm.palette() : { label: '#8b949e', empty: '#21262d' };
+  const byDate = {};
+  (index.by_date || index.digests || []).forEach(d => { byDate[d.date] = d; });
+  const entries = heatmapEntries(index);
+  const latest = (index.digests || []).slice(-1)[0];
+  const today = latest ? new Date(latest.date + 'T12:00:00') : new Date();
+  const viewYear = heatmapYear || today.getFullYear();
+  const CELL = 13, GAP = 3, STEP = CELL + GAP;
+  const DAY_LABELS = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
+  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const { start, end } = heatmapRange(viewYear, today);
+  const weeks = [];
+  const cur = new Date(start);
+  while (cur <= end) {
+    const week = [];
+    for (let d = 0; d < 7; d++) { week.push(new Date(cur)); cur.setDate(cur.getDate() + 1); }
+    weeks.push(week);
+  }
+  const W = weeks.length * STEP + 32, H = 7 * STEP + 24;
+  const tooltip = document.getElementById('tooltip');
+  const svg = d3.select(wrap).append('svg').attr('width', W).attr('height', H).style('overflow', 'visible');
+  DAY_LABELS.forEach((lbl, i) => {
+    if (!lbl) return;
+    svg.append('text').attr('x', 26).attr('y', 18 + i * STEP + CELL * 0.75).attr('text-anchor', 'end').attr('font-size', 9).attr('fill', colors.label).text(lbl);
+  });
+  let lastMonth = -1;
+  weeks.forEach((week, wi) => {
+    const mo = week[0].getMonth();
+    if (mo !== lastMonth) {
+      lastMonth = mo;
+      svg.append('text').attr('x', 30 + wi * STEP).attr('y', 10).attr('font-size', 9).attr('fill', colors.label).text(MONTHS[mo]);
+    }
+  });
+  weeks.forEach((week, wi) => {
+    week.forEach((day, di) => {
+      const dateStr = day.toISOString().slice(0, 10);
+      const entry = byDate[dateStr];
+      const isFuture = day > today;
+      let fill = colors.empty;
+      if (entry && !isFuture) {
+        const sig = entry.avg_significance;
+        fill = hm ? hm.fillForSig(sig) : fill;
+      }
+      const x = 30 + wi * STEP, y = 18 + di * STEP;
+      const cell = svg.append('rect').attr('x', x).attr('y', y).attr('width', CELL).attr('height', CELL).attr('rx', 2).attr('fill', fill)
+        .style('cursor', entry ? 'pointer' : 'default');
+      if (entry) {
+        heatmapCells[entry.prefix] = cell;
+        const topCat = Object.entries(entry.categories || {}).sort((a,b)=>b[1]-a[1])[0]?.[0];
+        const dotColor = HM_CAT_COLORS[topCat] || '#888';
+        svg.append('circle').attr('cx', x + CELL - 3).attr('cy', y + 3).attr('r', 2).attr('fill', dotColor).style('pointer-events', 'none');
+        cell.on('mouseover', function() {
+          if (entry.prefix !== currentPrefix) d3.select(this).attr('stroke', colors.hover).attr('stroke-width', 1);
+          tooltip.style.opacity = '1';
+          const cats = Object.entries(entry.categories || {}).sort((a,b)=>b[1]-a[1]).slice(0,3)
+            .map(([id,n])=>`<span style="color:${HM_CAT_COLORS[id]||'#888'}">●</span> ${id} (${n})`).join('  ');
+          tooltip.innerHTML = `<div style="font-weight:700;margin-bottom:4px">${entry.display_date || entry.date}</div>
+            <div style="color:${colors.label};font-size:10px;margin-bottom:6px;max-width:260px;line-height:1.4">${entry.summary || ''}</div>
+            <div style="font-size:10px">${cats}</div>
+            <div style="font-size:10px;color:${colors.label};margin-top:4px">${entry.story_count} stories · avg sig ${entry.avg_significance}${entry.report_source_label ? ' · ' + entry.report_source_label : ''}</div>`;
+        })
+        .on('mousemove', function(event) { tooltip.style.left = (event.clientX + 14) + 'px'; tooltip.style.top = (event.clientY - 12) + 'px'; })
+        .on('mouseout', function() {
+          if (entry.prefix !== currentPrefix) d3.select(this).attr('stroke', null);
+          tooltip.style.opacity = '0';
+        })
+        .on('click', () => selectDigest(entry.prefix));
+      }
+    });
+  });
+}
+
+function init() {
+  const index = window.__AIDIGEST_INDEX__;
+  if (!index) throw new Error('Could not load index.json (expected sibling of index.html)');
+  if (!window.__AIDIGEST_DIGESTS__) throw new Error('Missing digest data');
+  const prefix = initialPrefix(index);
+  ensureHeatmapYear(index, prefix);
+  renderYearPills(heatmapEntries(index), () => {
+    renderHeatmap(index);
+    highlightHeatmap(currentPrefix);
+    syncYearPills();
+  });
+  renderHeatmap(index);
+  renderArchiveTrends(index);
+  selectDigest(prefix);
+  document.addEventListener('aidigest-theme-change', () => {
+    renderHeatmap(index);
+    highlightHeatmap(currentPrefix);
+  });
+  window.addEventListener('hashchange', () => {
+    const prefix = location.hash.replace(/^#/, '');
+    if (prefix && prefix !== currentPrefix && window.__AIDIGEST_DIGESTS__[prefix]) {
+      selectDigest(prefix, { updateHash: false });
+    }
+  });
+}
+
+init().catch(err => {
+  document.body.insertAdjacentHTML('beforeend', '<div class="frame-error">' + err.message + '</div>');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "prefix": "evaluation",
+  "requires_web_fetch": [],
+  "categories": [
+    {
+      "id": "evaluation_test_topic",
+      "stories": [
+        {
+          "title": "Eval fixture story A",
+          "url": "https://example.com/eval/story-a"
+        },
+        {
+          "title": "Eval fixture story B",
+          "url": "https://example.com/eval/story-b"
+        },
+        {
+          "title": "Eval fixture story C",
+          "url": "https://example.com/eval/story-c"
+        }
+      ]
+    }
+  ]
+}

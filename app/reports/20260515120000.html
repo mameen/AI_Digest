@@ -1,0 +1,2575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily — April 25, 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<style>
+:root {
+    --bg: #0d1117; --card-bg: #161b22; --masthead-bg: #0d1117;
+    --masthead-text: #e6edf3; --accent: #58a6ff;
+    --pill-active-bg: #388bfd26; --pill-active-text: #58a6ff;
+    --pill-inactive-bg: #21262d; --pill-inactive-text: #8b949e;
+    --border: #30363d; --muted: #8b949e; --sig-color: #d29922;
+    --text: #e6edf3;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --cat-llm: #388bfd; --cat-image: #bc8cff; --cat-design: #39d2c0;
+    --cat-typo: #f85149; --cat-robot: #f0883e; --cat-research: #58a6ff;
+    --hm-empty: #21262d; --hm-1: #1a3a5c; --hm-2: #1a4a7a; --hm-3: #1a6fa0; --hm-4: #58a6ff;
+    --hm-label: #8b949e; --hm-selection: #58a6ff; --hm-hover: #8b949e;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .masthead { background: var(--masthead-bg); color: var(--masthead-text); padding: 20px 24px 16px; display: flex; flex-direction: column; gap: 6px; border-bottom: 1px solid var(--border); }
+  .masthead-top { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .report-source-seal {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.14);
+    line-height: 0;
+    padding: 4px 8px;
+    cursor: help;
+  }
+  .report-source-seal img {
+    display: block;
+    height: 40px;
+    width: auto;
+    max-width: 128px;
+    object-fit: contain;
+  }
+  .masthead h1 { font-size: 18px; font-weight: 600; letter-spacing: 0; text-transform: none; }
+  .masthead-date { font-size: 13px; font-weight: 700; letter-spacing: 0.4px; color: var(--text); text-transform: uppercase; }
+  .masthead-summary { font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 920px; padding-top: 8px; }
+
+  .top-stories-bar { background: #161b22; padding: 10px 24px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+  .top-stories-label { font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); white-space: nowrap; font-weight: 500; }
+  .top-story-pill { background: #21262d; color: var(--accent); padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; border: 1px solid var(--border); transition: background 0.15s, border-color 0.15s; white-space: nowrap; }
+  .top-story-pill:hover { background: #388bfd26; border-color: var(--accent); }
+
+  .layout {
+    display: flex; align-items: stretch; min-height: calc(100vh - 120px);
+    --sidebar-w: 220px;
+  }
+
+  .sidebar {
+    width: var(--sidebar-w); min-width: 160px; max-width: 420px; flex-shrink: 0;
+    background: var(--masthead-bg); padding: 20px 16px;
+    position: sticky; top: 0; height: calc(100vh - 120px); overflow-y: auto;
+  }
+  .layout-resizer {
+    flex-shrink: 0; width: 6px; margin: 0 -3px; position: relative; z-index: 2;
+    cursor: col-resize; touch-action: none;
+    background: transparent; border-left: 1px solid var(--border);
+  }
+  .layout-resizer::after {
+    content: ''; position: absolute; top: 0; bottom: 0; left: -3px; right: -3px;
+  }
+  .layout-resizer:hover, .layout-resizer.dragging { background: #388bfd33; border-left-color: var(--accent); }
+
+  .main { flex: 1; min-width: 0; padding: 20px 24px; background: var(--bg); }
+  .sidebar-section { margin-bottom: 24px; }
+  .sidebar-title { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  svg text { font-family: var(--font-sans); }
+  .tag-cloud { display: flex; flex-wrap: wrap; gap: 4px; }
+  .tag-item { font-size: 11px; background: var(--pill-inactive-bg); color: var(--muted); padding: 2px 7px; border-radius: 10px; border: 1px solid var(--border); cursor: pointer; transition: all 0.15s; }
+  .tag-item:hover { border-color: var(--accent); color: var(--text); }
+  .tag-item.tag-active { background: var(--pill-active-bg); color: var(--accent); border-color: var(--accent); }
+  .tag-item.tag-dim { opacity: 0.3; }
+  .tag-count { color: var(--accent); font-size: 10px; margin-left: 3px; }
+  .sig-row:hover .sig-bar { filter: brightness(1.2); }
+  #sig-chart { cursor: pointer; }
+
+  .filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; align-items: center; }
+  .pill { padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); transition: all 0.15s; font-family: var(--font-sans); background: var(--pill-inactive-bg); color: var(--pill-inactive-text); }
+  .pill.active { background: var(--pill-active-bg); color: var(--pill-active-text); border-color: var(--accent); }
+  .pill.inactive:hover { background: #21262d; border-color: #8b949e; color: var(--text); }
+
+  /* AI Search hub view */
+  .aisearch-hub { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 24px; gap: 32px; }
+  .aisearch-hub-title { font-size: 22px; font-weight: 700; color: var(--text); text-align: center; }
+  .aisearch-hub-sub { font-size: 13px; color: var(--muted); text-align: center; max-width: 480px; line-height: 1.6; margin-top: -20px; }
+  .aisearch-hub-links { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .aisearch-hub-link { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 28px 36px; background: #161b22; border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text); transition: border-color 0.15s, background 0.15s; min-width: 180px; }
+  .aisearch-hub-link:hover { border-color: #f0883e; background: #f0883e08; }
+  .aisearch-hub-link-icon { font-size: 36px; }
+  .aisearch-hub-link-label { font-size: 15px; font-weight: 600; }
+  .aisearch-hub-link-url { font-size: 11px; color: var(--muted); }
+
+  .story-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; }
+
+  .story-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px 16px 12px; cursor: pointer; transition: border-color 0.15s; position: relative; overflow: hidden; }
+  .story-card:hover { border-color: #8b949e; }
+  .story-card.expanded { border-color: var(--accent); }
+  .card-cat-badge { position: absolute; top: 12px; right: 12px; font-size: 1rem; }
+  .card-copy { position: absolute; top: 10px; right: 32px; width: 20px; height: 20px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 5px; border: 1px solid var(--border); background: var(--card-bg); color: var(--muted); cursor: pointer; opacity: 0.4; transition: opacity 0.15s, color 0.15s, border-color 0.15s; z-index: 4; }
+  .card-copy:hover { opacity: 1; color: var(--accent); border-color: var(--accent); }
+  .card-copy.copied { opacity: 1; color: #3fb950; border-color: #3fb950; }
+  .card-copy.copy-failed { opacity: 1; color: #f85149; border-color: #f85149; }
+  .card-cat-stripe { position: absolute; top: 0; left: 0; width: 3px; height: 100%; }
+  .card-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .card-source { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; }
+  .card-info { width: 15px; height: 15px; padding: 0; border-radius: 50%; border: 1px solid var(--border); background: transparent; color: var(--muted); font: italic 10px/13px Georgia, serif; text-align: center; cursor: pointer; opacity: 0.45; transition: opacity 0.15s, border-color 0.15s, color 0.15s; }
+  .card-info:hover { opacity: 1; border-color: var(--accent); color: var(--accent); }
+  .card-trace { position: absolute; z-index: 5; top: 34px; left: 16px; right: 16px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; box-shadow: 0 4px 14px rgba(0,0,0,0.4); }
+  .card-trace[hidden] { display: none; }
+  .trace-row { display: flex; gap: 8px; padding: 2px 0; align-items: baseline; }
+  .trace-k { color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-size: 9px; min-width: 46px; flex-shrink: 0; }
+  .trace-v { color: var(--text); font-size: 11px; background: none; word-break: break-all; }
+  .card-sig { display: flex; gap: 2px; margin-left: auto; padding-right: 54px; }
+  .sig-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
+  .sig-dot.filled { background: var(--sig-color); }
+  .card-title { font-size: 13px; font-weight: 600; line-height: 1.4; color: var(--text); }
+  .card-expand { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .card-expand.visible { display: block; }
+  .card-summary { font-size: 12px; line-height: 1.6; color: var(--muted); margin-bottom: 12px; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+  .card-tag { font-size: 11px; background: #21262d; color: var(--muted); padding: 1px 6px; border-radius: 10px; border: 1px solid var(--border); }
+  .card-link { display: inline-flex; align-items: center; gap: 4px; color: var(--accent); font-size: 12px; font-weight: 500; text-decoration: none; }
+  .card-link:hover { text-decoration: underline; }
+  .card-links { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
+  .card-resource-link {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 11px; font-weight: 500; color: var(--accent);
+    text-decoration: none; padding: 3px 8px; border-radius: 999px;
+    border: 1px solid var(--border); background: var(--pill-inactive-bg, #21262d);
+  }
+  .card-resource-link:hover { text-decoration: underline; border-color: var(--accent); }
+  .card-resource-link-primary { border-color: var(--accent); font-weight: 600; }
+
+  .empty-state { text-align: center; padding: 40px; color: var(--muted); }
+
+  .footer { border-top: 1px solid var(--border); padding: 12px 24px; font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; background: var(--masthead-bg); }
+
+  .d3-tooltip { position: fixed; background: #161b22; border: 1px solid var(--border); color: var(--text); padding: 6px 10px; border-radius: 6px; font-size: 12px; font-family: var(--font-sans); pointer-events: none; opacity: 0; transition: opacity 0.15s; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+
+  .masthead-archive { font-size: 12px; margin-left: auto; }
+  .masthead-archive a { color: var(--accent); text-decoration: none; }
+  .masthead-archive a:hover { text-decoration: underline; }
+  .content-loading { padding: 48px 24px; color: var(--muted); text-align: center; }
+
+  /* ── Leaderboard ── */
+  .lb-wrap { grid-column: 1 / -1; width: 100%; }
+  .lb-tabs { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .lb-tab { padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--pill-inactive-bg); color: var(--pill-inactive-text); transition: all 0.15s; }
+  .lb-tab.active { background: var(--pill-active-bg); color: var(--accent); border-color: var(--accent); }
+  .lb-tab:hover:not(.active) { border-color: #8b949e; color: var(--text); }
+  .lb-src { font-size: 11px; color: var(--accent); text-decoration: none; margin-left: auto; }
+  .lb-src:hover { text-decoration: underline; }
+  .lb-updated { font-size: 11px; color: var(--muted); }
+  .lb-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+  .lb-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .lb-table thead { background: #161b22; position: sticky; top: 0; z-index: 1; }
+  .lb-th { padding: 8px 12px; text-align: left; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; white-space: nowrap; user-select: none; border-bottom: 1px solid var(--border); }
+  .lb-th:hover { color: var(--text); }
+    .lb-th-info { cursor: help; }
+    .lb-th-info[title] { border-bottom: 1px dotted var(--border); }
+  .sort-arrow { font-size: 10px; margin-left: 3px; opacity: 0.5; }
+  .lb-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+  .lb-table tbody tr:last-child { border-bottom: none; }
+  .lb-table tbody tr:hover { background: #21262d; }
+  .lb-table td { padding: 8px 12px; color: var(--text); white-space: nowrap; }
+  .lb-table td:first-child { color: var(--muted); font-weight: 600; }
+  .lb-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; flex-shrink: 0; }
+  .lb-bar-cell { display: flex; align-items: center; gap: 8px; min-width: 120px; }
+  .lb-bar-fill { display: inline-block; height: 6px; border-radius: 3px; min-width: 2px; }
+  .lb-bar-val { font-weight: 700; font-size: 13px; color: var(--text); }
+
+  /* ── Benchmark chart grid ── */
+  .lb-charts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .lb-chart-card { background: #161b22; border: 1px solid var(--border); border-radius: 8px; padding: 14px 12px 10px; }
+  .lb-chart-title { margin-bottom: 8px; }
+  .lb-chart-name { display: block; font-size: 13px; font-weight: 600; color: var(--text); }
+  .lb-chart-task { display: block; font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .lb-chart-svg { display: block; width: 100%; overflow: visible; }
+
+  /* ── More leaderboards (links) ── */
+  .lb-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+  .lb-links-group { background: #161b22; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+  .lb-links-head { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  .lb-link-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 6px 0; text-decoration: none; border-bottom: 1px solid transparent; }
+  .lb-link-row:hover { border-bottom-color: var(--border); }
+  .lb-link-name { font-size: 12px; color: var(--text); }
+  .lb-link-src { font-size: 11px; color: var(--accent); white-space: nowrap; flex-shrink: 0; }
+
+  @media (max-width: 1100px) { .lb-charts-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 860px) {
+    .layout { flex-direction: column; }
+    .layout-resizer { display: none; }
+    .sidebar { width: auto; max-width: none; position: static; height: auto; border-bottom: 1px solid var(--border); }
+    .masthead { padding: 16px; }
+    .top-stories-bar { padding: 10px 16px; }
+    .main { padding: 16px; }
+  }
+
+/* Light theme overrides — default is dark.css (:root). Toggle sets data-theme on <html>. */
+
+[data-theme="light"] {
+  --bg: #f6f8fa;
+  --card-bg: #ffffff;
+  --masthead-bg: #ffffff;
+  --masthead-text: #1f2328;
+  --accent: #0969da;
+  --pill-active-bg: #ddf4ff;
+  --pill-active-text: #0969da;
+  --pill-inactive-bg: #f6f8fa;
+  --pill-inactive-text: #656d76;
+  --border: #d0d7de;
+  --muted: #656d76;
+  --sig-color: #bf8700;
+  --text: #1f2328;
+  --cat-llm: #0969da;
+  --cat-image: #8250df;
+  --cat-design: #1a7f37;
+  --cat-typo: #cf222e;
+  --cat-robot: #bc4c00;
+  --cat-research: #0969da;
+  --hm-empty: #ebedf0;
+  --hm-1: #c6e6ff;
+  --hm-2: #79c0ff;
+  --hm-3: #4493f8;
+  --hm-4: #0969da;
+  --hm-label: #656d76;
+  --hm-selection: #0969da;
+  --hm-hover: #656d76;
+}
+
+[data-theme="light"] .top-stories-bar,
+[data-theme="light"] .lb-table thead,
+[data-theme="light"] .lb-chart-card,
+[data-theme="light"] .lb-links-group,
+[data-theme="light"] .aisearch-hub-link,
+[data-theme="light"] .frame-author,
+[data-theme="light"] .archive-charts-row .chart-panel,
+[data-theme="light"] .d3-tooltip {
+  background: #ffffff;
+}
+
+[data-theme="light"] .top-story-pill,
+[data-theme="light"] .tag-item,
+[data-theme="light"] .card-tag,
+[data-theme="light"] .year-pill {
+  background: #f6f8fa;
+}
+
+[data-theme="light"] .lb-table tbody tr:hover,
+[data-theme="light"] .pill.inactive:hover {
+  background: #f6f8fa;
+}
+
+[data-theme="light"] .heatmap-details,
+[data-theme="light"] .archive-details {
+  background: #ffffff;
+}
+
+[data-theme="light"] .diag-panel {
+  background: #f6f8fa;
+}
+
+[data-theme="light"] .d3-tooltip,
+[data-theme="light"] .card-trace {
+  box-shadow: 0 4px 12px rgba(31, 35, 40, 0.12);
+}
+
+</style>
+<script>(function () {
+  var STORAGE_KEY = 'aidigest-theme';
+
+  function preferredTheme() {
+    try {
+      return localStorage.getItem(STORAGE_KEY) || 'dark';
+    } catch (e) {
+      return 'dark';
+    }
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme === 'light' ? 'light' : 'dark');
+  }
+
+  applyTheme(preferredTheme());
+
+  window.addEventListener('storage', function (e) {
+    if (e.key === STORAGE_KEY) {
+      applyTheme(e.newValue || 'dark');
+    }
+  });
+
+  window.addEventListener('message', function (e) {
+    if (e.data && e.data.type === 'aidigest-theme') {
+      applyTheme(e.data.theme);
+    }
+  });
+})();
+</script>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-top">
+    <h1>AI Daily</h1>
+    <span class="report-source-seal" id="report-source-seal" hidden title="" aria-label="Report source"></span>
+    <span class="masthead-date" id="digest-date"></span>
+    <span class="masthead-archive"><a href="index.html#20260515120000">← Archive</a></span>
+  </div>
+  <div class="masthead-summary" id="digest-summary"></div>
+</div>
+
+<div class="top-stories-bar" id="top-stories-bar">
+  <span class="top-stories-label">Top Stories</span>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">By Category</div>
+      <svg id="donut-chart" width="208" height="160"></svg>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Significance</div>
+      <svg id="sig-chart" width="208" height="100"></svg>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Top Tags</div>
+      <div class="tag-cloud" id="tag-cloud"></div>
+    </div>
+  </aside>
+  <div class="layout-resizer" id="layout-resizer" role="separator" aria-orientation="vertical" aria-label="Resize sidebar" tabindex="0"></div>
+  <main class="main">
+    <div class="filter-bar" id="filter-bar"></div>
+    <div class="story-grid" id="story-grid"><div class="content-loading">Loading digest…</div></div>
+  </main>
+</div>
+
+<footer class="footer">
+  <span id="footer-count"></span>
+  <span>AI Daily · Generated by Claude · ai-search.io inspired</span>
+</footer>
+
+<div class="d3-tooltip" id="tooltip"></div>
+
+<script>window.__AIDIGEST_DIGEST__ = {
+  "generated_at": "2026-05-16T01:22:41Z",
+  "filename_prefix": "20260515120000",
+  "summary": "IBM's MAMMAL biology foundation model outperforms AlphaFold 3 on antibody design; SubQ launches the first subquadratic LLM with a 12M-token context; Mercury 2 hits 1,000 tokens/sec via diffusion; Claude Design + Canva AI 2.0 redraw the creative toolchain.",
+  "aisearch_video_url": "https://www.youtube.com/watch?v=s3rNDndvav0",
+  "aisearch_video_label": "May 14 — The biggest AI breakthrough in medicine & drug discovery (MAMMAL)",
+  "categories": [
+    {
+      "id": "leaderboard",
+      "label": "Leaderboard Rankings",
+      "icon": "🏆",
+      "stories": [
+        {
+          "id": "lb-gpt55-aa-rank1",
+          "title": "GPT-5.5 holds #1 on Artificial Analysis at intelligence score 60",
+          "summary": "OpenAI's GPT-5.5 (xhigh) leads the Artificial Analysis intelligence leaderboard at score 60, ahead of GPT-5.5 (high) at 59 and Claude Opus 4.7 (max) at 57. The top-4 is rounded out by Gemini 3.1 Pro Preview, which matches Claude's score but at $4.50/M — less than half the cost. Chinese labs hold five of the top 15 spots, none costing more than $2.20/M.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 2,
+          "tags": [
+            "leaderboard",
+            "openai",
+            "gpt-5.5",
+            "benchmarks",
+            "frontier"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-xiaomi-mimo-top7",
+          "title": "Xiaomi MiMo-V2.5-Pro breaks into global top 7 at $1.50/M — Chinese value squeeze intensifies",
+          "summary": "Xiaomi's MiMo-V2.5-Pro ranks #7 globally on Artificial Analysis with intelligence score 54, matching Kimi K2.6 and undercutting every Western frontier model on price. In May 2026, five of the top 15 globally-ranked models come from Chinese labs — none costing more than $2.20/M tokens vs. $10.94 for Claude Opus 4.7. This is the widest open vs. closed pricing gap in benchmark history.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "leaderboard",
+            "xiaomi",
+            "chinese-ai",
+            "value",
+            "open-weight"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-claude-opus-swe-bench",
+          "title": "Claude Opus 4.7 leads SWE-bench at 87.6% — Anthropic holds all top 3 coding spots",
+          "summary": "Vellum's leaderboard shows Claude Opus 4.7 at 87.6% on SWE-bench (agentic coding), with Claude Sonnet 4.6 at 82% and Claude Opus 4.5 at 80.9% — Anthropic holds all three top spots. Separately, Claude 3 Opus leads GPQA Diamond at 95.4%, and GPT-5.5 leads ARC-AGI 2 visual reasoning at 85%.",
+          "source": "Vellum LLM Leaderboard",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "leaderboard",
+            "anthropic",
+            "swe-bench",
+            "coding",
+            "agents"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-gemini-math-multilingual",
+          "title": "Gemini 3 Pro achieves 100% on AIME and leads Humanity's Last Exam — Google's benchmark dominance",
+          "summary": "Google's Gemini 3 Pro tops both AIME 2025 (100%, tied with GPT 5.2) and Humanity's Last Exam (45.8%), and leads MMMLU multilingual reasoning at 91.8%. This makes Gemini 3 Pro the most broadly dominant model on academic benchmarks even as GPT-5.5 leads the overall intelligence index — suggesting benchmark diversity matters more than ever when choosing a model.",
+          "source": "Vellum LLM Leaderboard",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "leaderboard",
+            "google",
+            "gemini",
+            "math",
+            "multilingual",
+            "benchmarks"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-gpt-image2-arena-leader",
+          "title": "GPT Image 2 leads both image generation leaderboards; Gemini 3.1 Flash Image is strong #2",
+          "summary": "GPT Image 2 (medium) tops Arena.ai's text-to-image leaderboard at 1393 Elo (34,556 votes) and also leads Artificial Analysis's image arena at 1336. Google's Gemini 3.1 Flash Image Preview is a strong second at 1268 on Arena.ai. Luma AI's Uni-1.1-Max enters the top 10 at #7 (1192 Elo), and best open-weight model HiDream-O1 holds 1183 on AA.",
+          "source": "Arena.ai / Artificial Analysis",
+          "url": "https://arena.ai/leaderboard/text-to-image",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 4,
+          "tags": [
+            "leaderboard",
+            "image-generation",
+            "openai",
+            "google",
+            "luma-ai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-open-weight-kimi-leads",
+          "title": "Open-weight leaderboard: Kimi K2.5 leads reasoning at 87.6% GPQA; Llama 4 Behemoth tops multilingual",
+          "summary": "Vellum's open-weight leaderboard (updated March 2026) shows Kimi K2.5 leading GPQA Diamond reasoning at 87.6%, Kimi K2-Thinking near the top of AIME math, and Meta's Llama 4 Behemoth leading multilingual at 85.8%. Open-weight models now surpass closed models from 12 months ago on most benchmarks — the frontier gap is narrowing quarter by quarter.",
+          "source": "Vellum Open LLM Leaderboard",
+          "url": "https://www.vellum.ai/open-llm-leaderboard",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "leaderboard",
+            "open-weight",
+            "kimi",
+            "meta",
+            "llama",
+            "benchmarks"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "aisearch",
+      "label": "AI Search",
+      "icon": "🔍",
+      "stories": [
+        {
+          "id": "mammal-intro",
+          "title": "MAMMAL: IBM's biology foundation model trained on 2 billion biological samples",
+          "summary": "IBM Research published MAMMAL (Molecular Aligned Multi-Modal Architecture and Language) in npj Drug Discovery — a foundation model trained on ~2 billion biological samples spanning protein sequences, antibodies, small molecules, and gene-expression profiles. theAIsearch dedicates its entire May 14 video to MAMMAL, calling it the biggest AI breakthrough in medicine. Available on HuggingFace under IBM's biomedical model family.",
+          "source": "theAIsearch / Nature npj Drug Discovery",
+          "url": "https://www.nature.com/articles/s44386-026-00047-4",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "biology",
+            "ibm",
+            "foundation-model",
+            "drug-discovery",
+            "medicine"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "mammal-drug-problems",
+          "title": "Why drug design has been nearly impossible without AI: the core problem MAMMAL solves",
+          "summary": "Traditional drug discovery takes 10–12 years and fails ~90% of the time in clinical trials, partly because predicting molecular interactions requires simultaneously modeling proteins, small molecules, gene expression, and immune responses — modalities that prior models handled in isolation. MAMMAL is the first model to jointly learn cross-modal alignment across all of them.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=s3rNDndvav0",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "drug-discovery",
+            "medicine",
+            "biology",
+            "multimodal"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "mammal-biology-explainer",
+          "title": "How biology works: genes, proteins, molecules, and gene expression — MAMMAL's training domain",
+          "summary": "The video walks through MAMMAL's training universe: DNA encodes proteins, proteins drive cell behavior, small molecules (drugs) alter protein function, and gene expression profiles reveal which genes are active in a given cell state. MAMMAL is trained to model all four modalities simultaneously — enabling reasoning that crosses biological scales.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=s3rNDndvav0",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "biology",
+            "proteins",
+            "gene-expression",
+            "multimodal",
+            "science"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "mammal-drug-design-process",
+          "title": "The AI drug design pipeline: target identification, hit-finding, lead optimization",
+          "summary": "Drug design starts with target identification (what biological process drives disease?), moves to hit-finding (what molecule binds the target?), then lead optimization (refine the molecule for safety and efficacy). MAMMAL can accelerate all three stages by predicting binding affinity, toxicity, and selectivity from sequence alone — without wet-lab experiments.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=s3rNDndvav0",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "drug-discovery",
+            "pipeline",
+            "biology",
+            "ai",
+            "medicine"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "mammal-why-tech-fails",
+          "title": "Why AlphaFold and single-modality models fail at drug discovery",
+          "summary": "Structure-prediction models like AlphaFold operate in one modality (protein 3D structure) and cannot reason about drug-target binding in the context of gene expression or immune responses. Single-modality models miss the cross-modal interactions that determine whether a drug will work — or cause dangerous side effects — in a real biological system.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=s3rNDndvav0",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "alphafold",
+            "drug-discovery",
+            "multimodal",
+            "limitations"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "mammal-how-it-works",
+          "title": "How MAMMAL works: shared embedding space aligning proteins, molecules, antibodies, and gene expression",
+          "summary": "MAMMAL uses a unified embedding space where proteins, small molecules, antibody sequences, and gene expression vectors are aligned — enabling cross-modal queries like 'does this antibody bind this antigen, given this cell's gene expression profile?' Trained on ~2B biological samples from public databases, it's the most comprehensive biology foundation model available as open weights.",
+          "source": "theAIsearch / IBM Research",
+          "url": "https://www.nature.com/articles/s44386-026-00047-4",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "biology",
+            "ibm",
+            "multimodal",
+            "cross-modal",
+            "alignment",
+            "foundation-model"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "mammal-benchmark-sota",
+          "title": "MAMMAL achieves state-of-the-art on 9 of 11 drug-discovery benchmarks — available open-source",
+          "summary": "Across 11 drug-discovery benchmarks, MAMMAL achieves SOTA on 9 and competitive results on the remaining 2. IBM has released the pretrained model on HuggingFace under a research license, making it the most capable open drug-discovery foundation model available — outperforming AlphaFold 3 on antibody-antigen binding on 5 of 7 antigen targets.",
+          "source": "theAIsearch / IBM Research",
+          "url": "https://huggingface.co/ibm",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "benchmark",
+            "ibm",
+            "drug-discovery",
+            "open-source",
+            "huggingface",
+            "sota"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "mammal-toxicity",
+          "title": "MAMMAL predicts drug toxicity before clinical trials — eliminating a top cause of late-stage failure",
+          "summary": "Toxicity is one of the top reasons drugs fail in Phase II/III clinical trials, costing billions. MAMMAL can predict whether a drug candidate will be toxic before it ever enters human trials, by modeling how the molecule interacts with gene expression profiles across multiple cell types. This could eliminate a major source of late-stage drug development failures.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=s3rNDndvav0",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "drug-discovery",
+            "toxicity",
+            "clinical-trials",
+            "safety",
+            "medicine"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "runway-agent",
+          "title": "Runway Agent: agentic AI video tool for multi-step creative production pipelines",
+          "summary": "Runway Agent is a new product from Runway enabling agentic AI workflows for video creation — automating complex multi-step editing, generation, and composition tasks from a single high-level instruction. Featured as a sponsor in the theAIsearch video, it represents Runway's shift from single-shot generative tools to multi-step agentic creative pipelines suitable for production use.",
+          "source": "Runway / theAIsearch",
+          "url": "https://runwayml.com/aisearch-agent",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "runway",
+            "agents",
+            "video",
+            "creative-ai",
+            "design-tools"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "mammal-cell-labeling",
+          "title": "MAMMAL labels cell types from gene activity — enabling precision medicine and targeted therapy",
+          "summary": "MAMMAL can classify cell types by analyzing gene expression profiles — a task that previously required manual expert annotation or expensive single-cell sequencing analysis. This enables automatic identification of which cells in a tumor are cancerous vs. healthy, a critical input for designing targeted cancer therapies that attack only the right cells.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=s3rNDndvav0",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "biology",
+            "gene-expression",
+            "single-cell",
+            "precision-medicine",
+            "cancer"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "mammal-cancer-drug",
+          "title": "MAMMAL discovers new cancer drug candidates by predicting molecular binding",
+          "summary": "MAMMAL can propose novel cancer drug candidates by predicting which molecular structures will bind specific cancer-related protein targets while avoiding off-target effects. The model can generate and rank candidate molecules in a fraction of traditional screening time — potentially compressing years of wet-lab work into days of compute.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=s3rNDndvav0",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "cancer",
+            "drug-discovery",
+            "molecular-biology",
+            "ibm",
+            "medicine",
+            "generative-ai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "mammal-drug-repurposing",
+          "title": "Drug repurposing: MAMMAL finds new uses for existing approved drugs",
+          "summary": "By mapping existing approved drugs in the same embedding space as disease-related targets, MAMMAL identifies repurposing opportunities — cases where a drug approved for one condition might treat another. Repurposing is the fastest path to new treatments since safety profiles are already established; MAMMAL makes this systematic rather than serendipitous.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=s3rNDndvav0",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "drug-repurposing",
+            "medicine",
+            "ibm",
+            "biology",
+            "efficiency"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "mammal-antibodies",
+          "title": "MAMMAL designs antibody sequences for targeted therapy — months of lab work in hours",
+          "summary": "MAMMAL can generate and rank antibody sequences predicted to bind a given antigen with high specificity and low off-target risk — a key step in developing biologics and cancer immunotherapy. Antibody design traditionally required months of laboratory iteration; MAMMAL's generative capability could reduce this to hours of compute, dramatically accelerating biologics R&D.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=s3rNDndvav0",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "antibodies",
+            "biologics",
+            "drug-discovery",
+            "immunotherapy",
+            "ibm"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "mammal-vs-alphafold",
+          "title": "MAMMAL vs. AlphaFold 3: complementary models — MAMMAL wins antibody-antigen binding 5 of 7",
+          "summary": "In antibody-antigen binding prediction, MAMMAL outperforms AlphaFold 3 on 5 of 7 antigen targets. The two models are complementary: AlphaFold 3 excels at structural biology (3D folding), while MAMMAL excels at cross-modal reasoning from sequence context, gene expression, and fine-tuned task data. Using them together may produce the strongest results.",
+          "source": "theAIsearch / IBM Research",
+          "url": "https://www.nature.com/articles/s44386-026-00047-4",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "alphafold",
+            "comparison",
+            "antibodies",
+            "benchmarks",
+            "ibm"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "mammal-why-alphafold-failed",
+          "title": "Why AlphaFold hasn't produced approved drugs: it predicts structure, not biological function",
+          "summary": "AlphaFold 3 was trained to predict protein 3D structure — but 3D structure alone doesn't predict whether a drug will work in a living cell. You also need gene expression context, metabolic state, and immune environment. This is why AlphaFold's scientific impact hasn't translated into many approved drugs despite a Nobel Prize, and why MAMMAL's cross-modal approach is needed.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=s3rNDndvav0",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "alphafold",
+            "drug-discovery",
+            "limitations",
+            "biology",
+            "science"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "mammal-designing-drugs",
+          "title": "MAMMAL generates novel drug molecules conditioned on a target protein",
+          "summary": "Given a disease target (a specific protein), MAMMAL can generate novel molecular structures predicted to bind it with high affinity and low toxicity — not just ranking existing molecules but creating new ones. This generative capability is what separates MAMMAL from earlier virtual screening approaches and positions it as a true drug design AI.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=s3rNDndvav0",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "generative-ai",
+            "drug-design",
+            "ibm",
+            "molecules",
+            "medicine"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "mammal-antibody-fingers",
+          "title": "Generating antibody CDR loops: MAMMAL designs the 'fingers' that determine binding specificity",
+          "summary": "CDR (complementarity-determining region) loops are the 'fingers' of an antibody that grab an antigen — they determine binding specificity and affinity. MAMMAL can generate optimized CDR sequences for a given antigen, a capability previously requiring months of experimental directed evolution in the wet lab.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=s3rNDndvav0",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "antibodies",
+            "cdr",
+            "biologics",
+            "ibm",
+            "generative-ai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "mammal-medicine-implications",
+          "title": "MAMMAL's implications: compressing drug discovery from 10 years to months — open-sourced",
+          "summary": "If MAMMAL's predictions hold up in wet-lab validation, it could compress early-stage drug discovery from years to months — enabling personalized medicine (drugs tailored to a patient's gene expression profile) and making rare disease treatment economically viable. IBM has open-sourced the pretrained model on HuggingFace, democratizing access to the most capable biology AI available.",
+          "source": "theAIsearch / IBM Research",
+          "url": "https://huggingface.co/ibm",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "medicine",
+            "ibm",
+            "open-source",
+            "drug-discovery",
+            "future",
+            "personalized-medicine"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "agentic-ai",
+      "label": "Agentic AI",
+      "icon": "🤝",
+      "stories": [
+        {
+          "id": "agent-ms-framework-10",
+          "title": "Microsoft Agent Framework 1.0: open-source A2A orchestration for .NET and Python",
+          "summary": "Microsoft released Agent Framework 1.0 on April 3, an open-source multi-agent orchestration library for .NET and Python implementing the Agent-to-Agent (A2A) protocol. It enables agents to discover, negotiate, and collaborate with each other across organizational boundaries — with built-in support for long-running tasks, memory, and tool use. The framework targets enterprise deployments where multiple specialized agents must coordinate toward a shared goal.",
+          "source": "Microsoft",
+          "url": "https://devblogs.microsoft.com/agent-framework/a2a-v1-is-here-cross-platform-agent-communication-in-microsoft-agent-framework-for-net/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "microsoft",
+            "multi-agent",
+            "open-source",
+            "a2a-protocol",
+            "orchestration",
+            "enterprise"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agent-mcp-scale-milestone",
+          "title": "MCP reaches 10,000 enterprise servers and 97M SDK downloads — the agent middleware moment",
+          "summary": "By April 2026, the Model Context Protocol (MCP) has grown to over 10,000 enterprise server implementations and 97 million SDK downloads — crossing from research curiosity to production infrastructure. MCP is now natively supported by Anthropic, OpenAI, Google, and Microsoft, making it the de facto standard for how agents connect to external tools, databases, and APIs. The milestone signals that agentic infrastructure is converging on shared protocols rather than proprietary walled gardens.",
+          "source": "Anthropic / MCP Consortium",
+          "url": "https://modelcontextprotocol.io",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "mcp",
+            "protocol",
+            "standards",
+            "anthropic",
+            "enterprise",
+            "infrastructure",
+            "agents"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agent-openai-sdk-production",
+          "title": "OpenAI Agents SDK April 2026 update: sandboxed execution, harness, TypeScript; ChatGPT Enterprise Workspace Agents ship",
+          "summary": "OpenAI's April 2026 Agents SDK update introduced sandboxed code execution (agents work in isolated compute environments), a model-native harness for long-horizon tasks across files and tools, and TypeScript SDK support. The same month, ChatGPT Enterprise rolled out Workspace Agents — schedule-based agents that monitor Slack channels, act on calendar events, and generate daily reports without manual triggers. Together these make the Agents SDK a production deployment framework, not just a research scaffold.",
+          "source": "OpenAI / TechCrunch",
+          "url": "https://openai.com/index/the-next-evolution-of-the-agents-sdk/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "openai",
+            "agents-sdk",
+            "typescript",
+            "enterprise",
+            "chatgpt",
+            "workflow-automation"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agent-framework-maturity-2026",
+          "title": "LangGraph 1.0 GA and AutoGen 1.0: durable state, human-in-the-loop, event-driven multi-agent hits production",
+          "summary": "LangGraph 1.0 (October 2025) became the first stable durable-agent framework, with automatic state persistence across restarts, human-in-the-loop pause/approve patterns, and production adoption at Uber, LinkedIn, and Klarna. AutoGen 1.0 GA followed with an event-driven core for async multi-agent coordination. CrewAI added enterprise-grade observability and scheduling. By May 2026, multi-agent orchestration has moved firmly from experimental to production software.",
+          "source": "LangChain / Microsoft / CrewAI",
+          "url": "https://www.langchain.com/blog/langchain-langgraph-1dot0",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "langgraph",
+            "autogen",
+            "crewai",
+            "multi-agent",
+            "orchestration",
+            "open-source"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agent-benchmarks-swe-osworld",
+          "title": "Agentic benchmarks 2026: Claude Opus 4.7 leads SWE-bench at 87.6%; OSWorld computer-use SOTA at 38%",
+          "summary": "Claude Opus 4.7 leads SWE-bench Verified at 87.6% (vendor-reported), with Anthropic holding all three coding-agent top spots on Vellum. OSWorld computer-use SOTA sits at ~38% as of April 2026 — higher than a year ago but still far short of human performance. Claude Mythos Preview leads BenchLM's provisional agentic leaderboard, where agentic capability now accounts for 22% of the overall intelligence score — signaling the industry's shift to treating agentic performance as a first-class evaluation criterion.",
+          "source": "Vellum / BenchLM / OSWorld",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "agents",
+            "benchmark",
+            "swe-bench",
+            "computer-use",
+            "anthropic",
+            "osworld"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agent-enterprise-deployments",
+          "title": "Enterprise agentic AI goes live: Broadridge post-trade, IBM watsonx Orchestrate, Cognizant Secure AI",
+          "summary": "Three major enterprise agentic deployments landed in May 2026. Broadridge deployed agentic AI at institutional scale across capital markets and wealth operations on May 11 — live in production across 40+ clients, processing millions of transactions monthly with up to 30% Day 1 cost reduction. IBM announced next-gen watsonx Orchestrate at Think 2026 (May 5) as its agentic control plane, integrating with SAP, Salesforce, and ServiceNow. Cognizant launched Secure AI Services for enterprise scaling with compliance built in. The pattern: agentic AI crossing from pilot to production in heavily regulated industries.",
+          "source": "Broadridge / IBM Think 2026 / Cognizant",
+          "url": "https://www.ibm.com/new/announcements/ibm-announcements-at-think-2026",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "enterprise",
+            "agents",
+            "broadridge",
+            "ibm",
+            "cognizant",
+            "production",
+            "governance"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "llm",
+      "label": "LLMs & Reasoning",
+      "icon": "🧠",
+      "stories": [
+        {
+          "id": "subq-12m-context",
+          "title": "SubQ: first subquadratic frontier LLM with 12M-token context — 52× faster than FlashAttention",
+          "summary": "Subquadratic launched SubQ on May 5 with a 12M-token context window using Sparse Selective Attention (SSA) — a linear-scaling attention that selects a small subset of positions per query based on content, rather than attending to all tokens. It runs 52× faster than FlashAttention at 1M tokens and costs ~1/5th of frontier models. The $29M-backed startup also ships SubQ Code, a CLI agent that loads your whole codebase in a single pass.",
+          "source": "Subquadratic / The New Stack",
+          "url": "https://thenewstack.io/subquadratic-12-million-context-window/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "context-window",
+            "architecture",
+            "subquadratic",
+            "efficiency",
+            "agents",
+            "coding"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "mercury-2-diffusion-llm",
+          "title": "Mercury 2: diffusion-based reasoning LLM hits 1,009 tokens/second — 5× faster than frontier",
+          "summary": "Inception Labs launched Mercury 2, the first commercial-scale diffusion reasoning LLM — generating all tokens in parallel through iterative refinement rather than sequential decoding. Running on NVIDIA Blackwell GPUs, it achieves 1,009 tokens/second, 5× faster than speed-optimized frontier LLMs. At $0.25/$0.75 per million tokens, it undercuts Gemini Flash and Claude Haiku significantly — ideal for agentic loops, real-time voice, and high-throughput coding.",
+          "source": "Inception Labs / The Decoder",
+          "url": "https://www.inceptionlabs.ai/blog/introducing-mercury-2",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "diffusion",
+            "speed",
+            "inference",
+            "reasoning",
+            "architecture",
+            "agentic"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "kame-sakana-speech",
+          "title": "KAME (Sakana AI): near-zero latency speech AI with real-time LLM knowledge injection",
+          "summary": "Sakana AI's KAME (Knowledge-Access Model Extension) is a tandem speech-to-speech architecture: a front-end S2S model handles real-time audio at 80ms cycles while simultaneously streaming transcript to a back-end LLM, whose richer knowledge gets injected back in real time. It achieves MT-Bench score of 6.43 while eliminating the 2.1-second pipeline delay of cascaded systems — and is fully back-end agnostic (swap Claude, GPT, or Gemini without retraining).",
+          "source": "Sakana AI",
+          "url": "https://sakana.ai/kame-icassp-2026/",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "speech",
+            "voice-ai",
+            "architecture",
+            "real-time",
+            "sakana-ai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-032a2-openai-responses",
+          "title": "Simon Willison's llm 0.32a2: OpenAI /v1/responses endpoint + interleaved reasoning across tool calls",
+          "summary": "Simon Willison released llm 0.32a2 adding support for OpenAI's new /v1/responses API endpoint — which enables interleaved reasoning across tool calls, a key capability for building agentic workflows where the model thinks between tool uses. The release also introduces token restriction utilities. A practical building block for agentic development pipelines.",
+          "source": "Simon Willison",
+          "url": "https://github.com/simonw/llm/releases/tag/0.32a2",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "openai",
+            "api",
+            "tooling",
+            "agents",
+            "open-source",
+            "developer-tools"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "not-so-locked-in",
+          "title": "Simon Willison: coding agents eliminate programming language lock-in",
+          "summary": "Simon Willison's May 14 essay 'Not So Locked In' argues that coding agents reduce programming language lock-in by making cross-language rewrites fast and cheap. If an agent can translate a Python codebase to Go in hours, the cost-benefit calculus of being 'stuck' in a language changes fundamentally — with broad implications for software architecture decisions and technology stack choices.",
+          "source": "Simon Willison",
+          "url": "https://simonwillison.net/2026/May/14/not-so-locked-in/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "coding-agents",
+            "software-engineering",
+            "architecture",
+            "llm"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "may-architecture-month",
+          "title": "May 2026: frontier scale goes quiet — architecture takes the stage (SubQ, Mercury 2, KAME)",
+          "summary": "After April's wave of frontier releases (GPT-5.5, Claude Opus 4.7, Gemini 3 Pro), May has gone quiet on scale and loud on architecture. SubQ's subquadratic attention, Mercury 2's diffusion approach, and Sakana AI's KAME hybrid speech system all challenge the transformer's core assumptions — each from a different angle. This may signal that the next efficiency gains come from architecture, not more compute.",
+          "source": "WhatLLM / Air Street Press",
+          "url": "https://whatllm.org/blog/new-ai-models-may-2026",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "architecture",
+            "trends",
+            "transformer",
+            "efficiency",
+            "inference"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "image-gen",
+      "label": "Image Generation & Processing",
+      "icon": "🎨",
+      "stories": [
+        {
+          "id": "img-gpt-image2-dual-leader",
+          "title": "GPT Image 2 leads both Arena.ai and Artificial Analysis image leaderboards",
+          "summary": "GPT Image 2 (medium) holds #1 on Arena.ai at 1393 Elo (34,556 votes) and #1 on Artificial Analysis at 1336 Elo. Google's Gemini 3.1 Flash Image Preview is a strong second at 1268 on Arena.ai. Luma AI's Uni-1.1-Max enters the top 10 at #7 (1192 Elo). Open-weight model HiDream-O1 remains the top open-source contender at 1183 Elo on AA.",
+          "source": "Arena.ai / Artificial Analysis",
+          "url": "https://arena.ai/leaderboard/text-to-image",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 5,
+          "tags": [
+            "image-generation",
+            "leaderboard",
+            "openai",
+            "google",
+            "open-source"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-sana-wm-world-model",
+          "title": "SANA-WM (NVIDIA): hybrid linear diffusion transformer models minute-scale video worlds",
+          "summary": "NVIDIA Research published SANA-WM, a hybrid linear diffusion transformer that generates coherent video world models at minute-scale — far beyond typical video generation durations. It combines linear attention (for efficiency) with diffusion (for quality), enabling consistent world state across extended sequences. 51 upvotes on HuggingFace papers — one of the week's most discussed video research papers.",
+          "source": "NVIDIA / HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2605.15178",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "video-generation",
+            "world-model",
+            "nvidia",
+            "diffusion",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-causal-forcing-video",
+          "title": "Causal Forcing++: few-step diffusion distillation enables real-time interactive video — 75 upvotes",
+          "summary": "Tsinghua's Machine Learning Group released Causal Forcing++, a scalable method for distilling video diffusion models into few-step generators fast enough for real-time interactive use. With 75 HuggingFace upvotes, it's one of the week's most-discussed papers — the technique could enable truly interactive video generation and editing at inference speeds approaching real-time.",
+          "source": "Tsinghua MLG / HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2605.15141",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "video-generation",
+            "diffusion",
+            "real-time",
+            "distillation",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-raven-realtime-video",
+          "title": "RAVEN: real-time video prediction via autoregressive extrapolation + consistency-model GRPO",
+          "summary": "RAVEN (Real-time Autoregressive Video Extrapolation with Consistency-model GRPO) combines autoregressive generation, consistency models, and RL fine-tuning for real-time video prediction and extension. Applications include interactive world simulation, live video-to-video editing, and low-latency video game rendering with AI-generated assets.",
+          "source": "arXiv cs.CV",
+          "url": "https://arxiv.org/abs/2605.15190",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "video-generation",
+            "real-time",
+            "autoregressive",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-realiz3d-meta",
+          "title": "Realiz3D (Meta AI): photorealistic 3D generation via domain-aware learning",
+          "summary": "Meta AI published Realiz3D, a method for generating photorealistic 3D objects through domain-aware learning that bridges the gap between synthetic training data and real-world appearance. The technique addresses the persistent domain gap that makes 3D-generated assets look synthetic — a key barrier for use in games, product visualization, AR, and e-commerce.",
+          "source": "Meta AI / HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2605.13852",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "3d-generation",
+            "meta",
+            "photorealistic",
+            "domain-adaptation",
+            "e-commerce"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "design-ai",
+      "label": "Design & Creative AI",
+      "icon": "✏️",
+      "stories": [
+        {
+          "id": "design-claude-design-anthropic",
+          "title": "Claude Design by Anthropic Labs: text-to-prototype collaborative design, powered by Canva",
+          "summary": "Claude Design, launched April 17 as the first Anthropic Labs incubation product, lets users collaborate with Claude Opus 4.7 to generate interactive prototypes, pitch decks, UI wireframes, one-pagers, and marketing visuals from text prompts. It's powered by Canva's Design Engine, making all outputs directly editable in Canva. Available in research preview for Claude Pro/Max/Team/Enterprise — a landmark CoDesign product from a frontier AI lab.",
+          "source": "Anthropic Labs",
+          "url": "https://www.anthropic.com/news/claude-design-anthropic-labs",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "co-design",
+            "anthropic",
+            "claude",
+            "canva",
+            "prototyping",
+            "collaborative-design"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-canva-ai-20",
+          "title": "Canva AI 2.0: the Creative Operating System — agentic orchestration, object-based intelligence",
+          "summary": "Canva unveiled AI 2.0 at Canva Create, rearchitecting into a 'Creative Operating System.' A single prompt now generates an entire campaign across multiple formats (slides, social posts, videos, documents) through agentic orchestration. Object-based intelligence ensures changes to one element don't cascade through the whole design — the most significant Canva update since launch. 72% of designers now use generative AI, with 91% reporting quality improvements.",
+          "source": "Canva",
+          "url": "https://www.canva.com/newsroom/news/canva-claude-design/",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "canva",
+            "co-design",
+            "agents",
+            "creative-os",
+            "campaign-design"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-canva-smb-campaign",
+          "title": "Canva launches AI Campaign Creation inside Claude for Small Business (May 13)",
+          "summary": "Canva announced May 13 that it's bringing AI Campaign Creation directly into Claude for Small Business users — enabling SMBs to generate complete branded campaigns (ads, social, email, web) from a conversation with Claude, with outputs as editable Canva designs. This deepens the April Anthropic–Canva partnership, extending CoDesign capabilities directly to small business workflows.",
+          "source": "BusinessWire / Canva",
+          "url": "https://www.businesswire.com/news/home/20260513167645/en/Canva-Launches-AI-Campaign-Creation-in-Claude-for-Small-Business",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "canva",
+            "anthropic",
+            "small-business",
+            "campaign",
+            "co-design"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-runway-agent",
+          "title": "Runway Agent: agentic multi-step video creation for professional production pipelines",
+          "summary": "Runway Agent extends Runway's platform to support multi-step agentic video workflows — automating sequences of generation, editing, and composition from a single high-level instruction. It marks a shift from one-shot generative tools to creative AI that plans and executes multi-step production pipelines: the agentic turn for video-native design workflows.",
+          "source": "Runway",
+          "url": "https://runwayml.com/aisearch-agent",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "runway",
+            "video",
+            "agents",
+            "creative-ai",
+            "production"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-ai-adoption-2026",
+          "title": "72% of designers use generative AI; market at $5.38B and growing at 32.3% CAGR",
+          "summary": "A 2026 industry survey finds 72% of designers now use generative AI in their workflows, with 91% reporting quality improvements — not just speed gains. The generative AI creative market is growing at 32.3% CAGR, projected to reach $5.38B in 2026. The key differentiator has shifted from capability to workflow integration: commercial safety, brand consistency, and scalability without creative drift.",
+          "source": "RGD / Flatline Agency",
+          "url": "https://rgd.ca/articles/2026-amplifying-creativity-with-ai-tools-for-designers-in-2026",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 5,
+          "tags": [
+            "design-tools",
+            "adoption",
+            "market",
+            "workflow",
+            "trends"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "typography",
+      "label": "Typography & Text Rendering",
+      "icon": "🔤",
+      "stories": [
+        {
+          "id": "typo-ai-driven-mdpi",
+          "title": "AI-Driven Typography: LLMs as font design collaborators — new human-centered framework",
+          "summary": "A new MDPI Information paper proposes a human-centered framework for generative font design using LLMs — positioning the model as a collaborator that generates type within designer-specified constraints (mood, legibility target, cultural context). The framework separates rule-based tasks (spacing, hierarchy — assign to AI) from judgment-based ones (personality, cultural fit — keep human), providing a principled division of labor.",
+          "source": "MDPI Information",
+          "url": "https://www.mdpi.com/2078-2489/17/2/150",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "font-design",
+            "llm",
+            "human-centered",
+            "generative",
+            "typography",
+            "co-design"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-trends-2026-variable-kinetic",
+          "title": "Typography Trends 2026: variable fonts, kinetic text, and AI-adaptive letterforms",
+          "summary": "Industry forecasts highlight three AI-driven typography trends for 2026: variable fonts that adapt weight/spacing/shape by screen size and language, kinetic text driven by behavioral and emotional data, and AI-generated storytelling type that adjusts to reader context. Designers are moving from static font selection to parameterized type systems that respond to their environment.",
+          "source": "The Inkorporated / DesignMonks",
+          "url": "https://www.theinkorporated.com/insights/future-of-typography/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "variable-fonts",
+            "kinetic-typography",
+            "trends",
+            "design",
+            "adaptive"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-adaptive-biometric",
+          "title": "Responsive letterforms: typography adapting to biometric feedback — heart rate, eye movement",
+          "summary": "Emerging research explores typography that responds to biometric signals — heart rate, eye movement, or voice tone — altering font weight, spacing, and rhythm in real time. Combined with variable font technology, this could produce reading environments that dynamically reduce cognitive load or increase legibility based on reader physiological state — with direct applications to accessibility and adaptive UX.",
+          "source": "Medium / Typographic Intelligence",
+          "url": "https://medium.com/@ekguna029/typographic-intelligence-how-ai-is-redefining-responsive-letterforms-dd61a107166e",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "variable-fonts",
+            "biometric",
+            "adaptive-ui",
+            "accessibility",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-ml-embed-multilingual",
+          "title": "ML-Embed (ICML 2026): inclusive multilingual embeddings across low-resource languages",
+          "summary": "NousResearch's ML-Embed paper, accepted at ICML 2026, develops multilingual embedding systems that achieve strong performance across a much wider range of languages — including low-resource languages underserved by current LLMs. Better multilingual embeddings directly improve text rendering quality, font recommendation accuracy, and language-specific layout in global design tools.",
+          "source": "arXiv / NousResearch",
+          "url": "https://arxiv.org/abs/2605.15081",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "multilingual",
+            "embeddings",
+            "icml",
+            "text-rendering",
+            "research",
+            "low-resource"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-scene-text-recognition",
+          "title": "Masked Next-Scale Prediction: self-supervised scene text recognition without labeled data",
+          "summary": "A new arXiv paper proposes Masked Next-Scale Prediction for scene text recognition — achieving strong results without labeled training data via self-supervised multi-scale prediction. Accurate scene text recognition (reading text in photos, video frames, product images) is foundational to OCR pipelines, brand safety tools, and multilingual layout automation in design workflows.",
+          "source": "arXiv cs.CV",
+          "url": "https://arxiv.org/abs/2605.14885",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "text-recognition",
+            "ocr",
+            "self-supervised",
+            "scene-text",
+            "research"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "robotics",
+      "label": "Robotics & Embodied AI",
+      "icon": "🤖",
+      "stories": [
+        {
+          "id": "rob-egoscale-scaling-laws",
+          "title": "EgoScale: robotics foundation models follow LLM scaling laws — more data = predictably better robots",
+          "summary": "The EgoScale paper provides the first strong empirical evidence that robotics foundation models obey data-driven scaling laws analogous to LLMs — more data and compute predictably improve performance and generalization across environments. NVIDIA Cosmos world models for synthetic robot training data are accelerating this trend, enabling training at scales previously impossible with real-world data alone.",
+          "source": "KraneShares / NVIDIA",
+          "url": "https://blogs.nvidia.com/blog/national-robotics-week-2026/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "scaling-laws",
+            "foundation-model",
+            "nvidia",
+            "embodied-ai",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-boston-dynamics-atlas",
+          "title": "Boston Dynamics electric Atlas enters production — all 2026 units already committed",
+          "summary": "Boston Dynamics' electric Atlas humanoid has entered production, with all 2026 units fully committed to enterprise customers. This marks a transition from research/demo robots to deployed industrial platforms targeting manufacturing, logistics, and hazardous environment tasks. The electric Atlas operates near-silently, has sustained runtime, and learns new tasks from demonstrations in hours rather than weeks.",
+          "source": "KraneShares / Bessemer",
+          "url": "https://kraneshares.com/humanoid-robotics-in-2026-the-race-from-pilot-to-platform/",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "humanoid",
+            "boston-dynamics",
+            "production",
+            "manufacturing",
+            "embodied-ai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-vla-world-models-report",
+          "title": "VLA report (May 13): world models become standard for robotics; $34.5B yuan invested in 2026",
+          "summary": "A major Embodied AI VLA research report published May 13 finds world models transitioning from research tools to production standard in robotics — enabling robots to simulate actions before executing them. The report notes 23 companies have entered the '10-billion-yuan club' and $34.5B yuan was invested in embodied intelligence YTD 2026, with OEMs accelerating mass production.",
+          "source": "GlobeNewswire",
+          "url": "https://www.globenewswire.com/news-release/2026/05/13/3293694/28124/en/Embodied-AI-Robot-Large-Model-Including-VLA-Research-Report-2026-World-Models-Are-About-to-Become-Standard-and-OEMs-Enter-and-Accelerate-Mass-Production-and-Application.html",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "world-models",
+            "vla",
+            "china",
+            "investment",
+            "embodied-ai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-lead-intelligent-beijing",
+          "title": "Lead Intelligent × Beijing Humanoid Robot Innovation Center partnership — factory deployment begins",
+          "summary": "Lead Intelligent and the Beijing Humanoid Robot Innovation Center signed a strategic partnership on May 13 (CIBF 2026, Shenzhen) to deploy humanoid robots from laboratories to real-world industrial production lines. Part of China's national strategy designating AI-powered robots as a core economic priority — accelerating the shift from pilot projects to volume manufacturing deployment.",
+          "source": "Yahoo Finance",
+          "url": "https://finance.yahoo.com/news/lead-intelligent-beijing-humanoid-robot-104700960.html",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "humanoid",
+            "china",
+            "manufacturing",
+            "partnership",
+            "embodied-ai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-tesla-optimus-gen3",
+          "title": "Tesla Optimus Gen 3 targeting summer 2026 production at Fremont",
+          "summary": "Tesla is targeting summer 2026 production start for Optimus Gen 3 at Fremont, with redesigned manipulation capabilities over Gen 2. Unitree (5,500+ units shipped in 2025) and Boston Dynamics lead current volume; Tesla's entry puts three major players approaching volume production simultaneously — the robotics industry is rapidly shifting from prototype to platform.",
+          "source": "KraneShares",
+          "url": "https://kraneshares.com/humanoid-robotics-in-2026-the-race-from-pilot-to-platform/",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "tesla",
+            "optimus",
+            "humanoid",
+            "production",
+            "embodied-ai"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "label": "Research & Papers",
+      "icon": "📄",
+      "stories": [
+        {
+          "id": "res-mammal-nature",
+          "title": "MAMMAL in Nature npj Drug Discovery: IBM's open biology foundation model beats AlphaFold 3 on antibodies",
+          "summary": "IBM Research's MAMMAL paper published in npj Drug Discovery achieves SOTA on 9 of 11 drug-discovery benchmarks, outperforming AlphaFold 3 on antibody-antigen binding prediction (5 of 7 targets). Trained on ~2B biological samples across proteins, small molecules, antibodies, and gene expression, it's now open-sourced on HuggingFace — the most capable open biology foundation model available.",
+          "source": "Nature npj Drug Discovery / IBM",
+          "url": "https://www.nature.com/articles/s44386-026-00047-4",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "biology",
+            "ibm",
+            "drug-discovery",
+            "alphafold",
+            "open-source",
+            "nature"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-wildclawbench",
+          "title": "WildClawBench: long-horizon agent evaluation in real-world scenarios — 368 upvotes, #1 this week",
+          "summary": "WildClawBench is this week's most-upvoted paper on HuggingFace (368 votes), proposing a comprehensive benchmark for AI agents on long-horizon real-world tasks. Unlike existing benchmarks that test narrow capabilities, WildClawBench evaluates whether agents can complete complex multi-step tasks mirroring actual user workflows — the most practically relevant agent evaluation to date.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2605.10912",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "agents",
+            "benchmark",
+            "evaluation",
+            "long-horizon",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-olympiad-math-scaling",
+          "title": "Gold-medal Olympiad reasoning via simple unified scaling — 126 upvotes",
+          "summary": "This week's second-most-upvoted paper (126 votes) achieves gold-medal-level mathematical olympiad performance through scaling unified reasoning models — without specialized math architectures. The result suggests general scaling may be sufficient to reach human expert level on competition math, with implications for automated theorem proving and scientific discovery AI.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2605.13301",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "math",
+            "reasoning",
+            "scaling",
+            "olympiad",
+            "benchmark"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-self-distilled-agentic-rl",
+          "title": "Self-Distilled Agentic RL: agents improve from their own trajectories without human feedback — 66 upvotes",
+          "summary": "This paper proposes a self-distillation approach for agentic RL where agents generate training data from their own trajectories to iteratively improve without external supervision or human preference labels. It bridges the gap between RLHF (requiring human feedback) and fully self-supervised learning — a potential path toward truly self-improving AI agents at deployment scale.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2605.15155",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "reinforcement-learning",
+            "agents",
+            "self-improvement",
+            "research",
+            "agentic"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-darwin-family-merging",
+          "title": "Darwin Family: training-free model merging via evolutionary trust-weighted selection — 42 upvotes",
+          "summary": "Darwin Family introduces MRI-Trust-Weighted Evolutionary Merging — combining multiple language models into a stronger composite by selecting and weighting parameters based on trust scores from benchmark performance, without additional training. The approach achieves stronger reasoning than any individual constituent model, offering a compute-efficient alternative to training new models from scratch.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2605.14386",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "model-merging",
+            "efficiency",
+            "training-free",
+            "reasoning",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-memlens-nvidia",
+          "title": "MemLens (NVIDIA): benchmarking long-term memory in vision-language models — 61 upvotes",
+          "summary": "NVIDIA published MemLens, an evaluation framework for long-term memory in large vision-language models (VLMs). With 61 HuggingFace upvotes, it addresses a critical gap: current VLM benchmarks test within-context understanding but not persistent memory across sessions — increasingly important as multimodal agents operate over extended time horizons in design, research, and creative workflows.",
+          "source": "NVIDIA / HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2605.14906",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "memory",
+            "vision-language",
+            "nvidia",
+            "benchmark",
+            "multimodal"
+          ],
+          "image_url": null
+        }
+      ]
+    }
+  ],
+  "visualizations": {
+    "category_counts": {
+      "leaderboard": 6,
+      "aisearch": 18,
+      "llm": 6,
+      "image-gen": 5,
+      "design-ai": 5,
+      "typography": 5,
+      "robotics": 5,
+      "research": 6,
+      "agentic-ai": 6
+    },
+    "significance_distribution": {
+      "5": 19,
+      "4": 26,
+      "3": 17,
+      "2": 0,
+      "1": 0
+    },
+    "top_tags": [
+      {
+        "tag": "agents",
+        "count": 11
+      },
+      {
+        "tag": "drug-discovery",
+        "count": 11
+      },
+      {
+        "tag": "research",
+        "count": 9
+      },
+      {
+        "tag": "ibm",
+        "count": 9
+      },
+      {
+        "tag": "biology",
+        "count": 8
+      },
+      {
+        "tag": "medicine",
+        "count": 7
+      },
+      {
+        "tag": "leaderboard",
+        "count": 6
+      },
+      {
+        "tag": "enterprise",
+        "count": 4
+      },
+      {
+        "tag": "co-design",
+        "count": 5
+      },
+      {
+        "tag": "embodied-ai",
+        "count": 5
+      }
+    ],
+    "top_stories": [
+      {
+        "id": "mammal-intro",
+        "title": "MAMMAL: IBM's biology foundation model beats AlphaFold 3 — open-sourced",
+        "category": "aisearch",
+        "significance": 5
+      },
+      {
+        "id": "subq-12m-context",
+        "title": "SubQ: first subquadratic LLM — 12M-token context, 52× faster than FlashAttention",
+        "category": "llm",
+        "significance": 5
+      },
+      {
+        "id": "mercury-2-diffusion-llm",
+        "title": "Mercury 2: diffusion LLM hits 1,009 tokens/second — 5× faster than frontier",
+        "category": "llm",
+        "significance": 5
+      },
+      {
+        "id": "design-claude-design-anthropic",
+        "title": "Claude Design by Anthropic Labs: text-to-prototype CoDesign powered by Canva",
+        "category": "design-ai",
+        "significance": 5
+      },
+      {
+        "id": "res-olympiad-math-scaling",
+        "title": "Gold-medal Olympiad reasoning via unified scaling — general scale reaches expert math",
+        "category": "research",
+        "significance": 5
+      }
+    ]
+  },
+  "report_source": "llm-pipeline",
+  "report_source_badge": "../img/report-source/llm_pipeline.png",
+  "report_source_label": "LLM Pipeline"
+};</script>
+<script>
+const PAGE_PREFIX = "20260515120000";
+let digestData = null;
+const leaderboards = {
+  aa: {
+    title: "Intelligence Leaderboard",
+    source: "artificialanalysis.ai",
+    url: "https://artificialanalysis.ai/leaderboards/models",
+    updated: "May 15, 2026",
+    cols: ["#", "Model", "Provider", "Intelligence", "Speed (t/s)", "Context", "Price /1M"],
+    rows: [
+      [1,  "GPT-5.5 (xhigh)",                "OpenAI",    60, 67,  "922k",  "$11.25"],
+      [2,  "GPT-5.5 (high)",                 "OpenAI",    59, 64,  "922k",  "$11.25"],
+      [3,  "Claude Opus 4.7 (max)",           "Anthropic", 57, 58,  "1M",    "$10.94"],
+      [4,  "Gemini 3.1 Pro Preview",          "Google",    57, 132, "1M",    "$4.50"],
+      [5,  "GPT-5.5 (medium)",               "OpenAI",    57, 60,  "922k",  "$11.25"],
+      [6,  "Kimi K2.6",                       "Kimi",      54, 56,  "256k",  "$1.71"],
+      [7,  "MiMo-V2.5-Pro",                  "Xiaomi",    54, 54,  "1M",    "$1.50"],
+      [8,  "GPT-5.3 Codex (xhigh)",          "OpenAI",    54, 79,  "400k",  "$4.81"],
+      [9,  "Grok 4.3 (high)",                "xAI",       53, 79,  "1M",    "$1.56"],
+      [10, "Muse Spark",                      "Meta",      52, 0,   "262k",  "—"],
+      [11, "Claude Opus 4.7 (non-reasoning)", "Anthropic", 52, 52,  "1M",    "$10.94"],
+      [12, "Qwen3.6 Max Preview",             "Alibaba",   52, 37,  "256k",  "$2.92"],
+      [13, "Claude Sonnet 4.6 (max)",         "Anthropic", 52, 71,  "1M",    "$6.56"],
+      [14, "DeepSeek V4 Pro (Max)",           "DeepSeek",  52, 33,  "1M",    "$2.17"],
+      [15, "GLM-5.1",                         "Z AI",      51, 45,  "200k",  "$2.15"],
+      [16, "GPT-5.5 (low)",                  "OpenAI",    51, 65,  "922k",  "$11.25"],
+      [17, "Qwen3.6 Plus",                    "Alibaba",   50, 53,  "1M",    "$1.13"],
+      [18, "DeepSeek V4 Pro (High)",          "DeepSeek",  50, 29,  "1M",    "$2.17"],
+      [19, "GLM-5",                           "Z AI",      50, 78,  "200k",  "$1.55"],
+      [20, "MiniMax-M2.7",                    "MiniMax",   50, 62,  "205k",  "$0.52"]
+    ],
+    numericCols: [0, 3, 4]
+  },
+  vellum: {
+    type: 'charts', title: "Benchmarks — All Models",
+    source: "vellum.ai", url: "https://www.vellum.ai/llm-leaderboard", updated: "May 15, 2026",
+    benchmarks: [
+      { name: "Reasoning", task: "GPQA Diamond", unit: "%", models: [
+        {model:"Claude 3 Opus",   provider:"Anthropic", score:95.4},
+        {model:"Claude Opus 4.7", provider:"Anthropic", score:94.2},
+        {model:"GPT-5.5",         provider:"OpenAI",    score:93.6},
+        {model:"GPT-5.2",         provider:"OpenAI",    score:92.4},
+        {model:"Gemini 3 Pro",    provider:"Google",    score:91.9}
+      ]},
+      { name: "High School Math", task: "AIME 2025", unit: "%", models: [
+        {model:"Gemini 3 Pro",    provider:"Google",    score:100},
+        {model:"GPT 5.2",         provider:"OpenAI",    score:100},
+        {model:"Claude Opus 4.6", provider:"Anthropic", score:99.8},
+        {model:"Kimi K2-Thinking",provider:"Kimi",      score:99.1},
+        {model:"Grok 4.3",        provider:"xAI",       score:98.2}
+      ]},
+      { name: "Agentic Coding", task: "SWE-Bench", unit: "%", models: [
+        {model:"Claude Opus 4.7",  provider:"Anthropic", score:87.6},
+        {model:"GPT-5.5",          provider:"OpenAI",    score:82.7},
+        {model:"Claude Sonnet 4.6",provider:"Anthropic", score:82.0},
+        {model:"Claude Opus 4.5",  provider:"Anthropic", score:80.9},
+        {model:"Mistral Med 3.5",  provider:"Mistral",   score:77.6}
+      ]},
+      { name: "Overall Ability", task: "Humanity's Last Exam", unit: "%", models: [
+        {model:"Gemini 3 Pro",    provider:"Google",    score:45.8},
+        {model:"Kimi K2-Thinking",provider:"Kimi",      score:44.9},
+        {model:"GPT-5.5 Pro",     provider:"OpenAI",    score:43.1},
+        {model:"Claude Opus 4.7", provider:"Anthropic", score:38.5},
+        {model:"DeepSeek V4 Pro", provider:"DeepSeek",  score:35.2}
+      ]},
+      { name: "Visual Reasoning", task: "ARC-AGI 2", unit: "%", models: [
+        {model:"GPT-5.5",         provider:"OpenAI",    score:85.0},
+        {model:"Claude Opus 4.6", provider:"Anthropic", score:68.8},
+        {model:"Claude Sonnet 4.6",provider:"Anthropic",score:58.3},
+        {model:"Gemini 3 Pro",    provider:"Google",    score:74.2},
+        {model:"GPT-5.2",         provider:"OpenAI",    score:65.1}
+      ]},
+      { name: "Multilingual", task: "MMMLU", unit: "%", models: [
+        {model:"Gemini 3 Pro",    provider:"Google",    score:91.8},
+        {model:"Claude Opus 4.6", provider:"Anthropic", score:91.1},
+        {model:"Claude Opus 4.5", provider:"Anthropic", score:90.8},
+        {model:"GPT-5.5",         provider:"OpenAI",    score:91.2},
+        {model:"Kimi K2.6",       provider:"Kimi",      score:86.3}
+      ]}
+    ]
+  },
+  open: {
+    title: "Open-Weight Rankings",
+    source: "vellum.ai/open-llm-leaderboard",
+    url: "https://www.vellum.ai/open-llm-leaderboard",
+    updated: "May 15, 2026",
+    cols: ["#", "Model", "Provider", "🌍", "GPQA %", "SWE %", "AIME %"],
+    rows: [
+      [1,  "Kimi K2.5",           "Kimi",       "🇨🇳", 87.6, 76.8, 99.1],
+      [2,  "Qwen3.5-397B-A17B",   "Alibaba",    "🇨🇳", 88.4, 68.9, 94.2],
+      [3,  "DeepSeek V4 Pro",     "DeepSeek",   "🇨🇳", 83.1, 71.3, 96.4],
+      [4,  "GLM-5",               "Zhipu AI",   "🇨🇳", 76.2, 63.4, 91.5],
+      [5,  "Mistral Med 3.5",     "Mistral",    "🇪🇺", 74.0, 77.6, 88.0],
+      [6,  "Llama 4 Maverick",    "Meta",       "🇺🇸", 78.5, 62.1, 87.3],
+      [7,  "Llama 4 Behemoth",    "Meta",       "🇺🇸", 74.0, 58.0, 85.0],
+      [8,  "Kimi K2.6",           "Kimi",       "🇨🇳", 72.0, 68.5, 88.4],
+      [9,  "DeepSeek-R1",         "DeepSeek",   "🇨🇳", 71.0, 49.2, 92.7],
+      [10, "Gemma 4 26B",         "Google",     "🇺🇸", 65.0, 45.0, 80.0]
+    ],
+    numericCols: [0, 4, 5, 6]
+  },
+  arena_image: {
+    title: "Text-to-Image Arena",
+    source: "arena.ai",
+    url: "https://arena.ai/leaderboard/text-to-image",
+    updated: "May 15, 2026",
+    cols: ["#", "Model", "Provider", "Elo", "±σ", "Votes"],
+    rows: [
+      [1,  "GPT Image 2 (medium)",           "OpenAI",    1393, 7,  "34,556"],
+      [2,  "Gemini 3.1 Flash Image Preview", "Google",    1268, 5,  "64,995"],
+      [3,  "Gemini 3 Pro Image 2K",          "Google",    1242, 4,  "103,873"],
+      [4,  "GPT Image 1.5 (high)",           "OpenAI",    1241, 4,  "108,703"],
+      [5,  "Gemini 3 Pro Image",             "Google",    1232, 5,  "82,641"],
+      [6,  "Grok Imagine (Quality)",         "xAI",       1223, 6,  "11,002"],
+      [7,  "Uni-1.1 Max",                    "Luma AI",   1192, 9,  "4,569"],
+      [8,  "Uni-1.1",                        "Luma AI",   1183, 9,  "5,275"],
+      [9,  "MAI Image 2",                    "Microsoft", 1181, 5,  "43,015"],
+      [10, "Grok Imagine",                   "xAI",       1172, 3,  "155,103"]
+    ],
+    numericCols: [0, 3, 4]
+  },
+  vellum_open: {
+    type: 'charts', title: "Benchmarks — Open-Weight",
+    source: "vellum.ai/open-llm-leaderboard", url: "https://www.vellum.ai/open-llm-leaderboard", updated: "May 15, 2026",
+    benchmarks: [
+      { name: "Reasoning", task: "GPQA Diamond", unit: "%", models: [
+        {model:"Qwen3.5-397B",     provider:"Alibaba",  score:88.4},
+        {model:"Kimi K2.5",        provider:"Kimi",     score:87.6},
+        {model:"DeepSeek V4 Pro",  provider:"DeepSeek", score:83.1},
+        {model:"Llama 4 Maverick", provider:"Meta",     score:78.5},
+        {model:"GLM-5",            provider:"Zhipu AI", score:76.2}
+      ]},
+      { name: "Agentic Coding", task: "SWE-Bench", unit: "%", models: [
+        {model:"Mistral Med 3.5",  provider:"Mistral",  score:77.6},
+        {model:"Kimi K2.5",        provider:"Kimi",     score:76.8},
+        {model:"DeepSeek V4 Pro",  provider:"DeepSeek", score:71.3},
+        {model:"Qwen3.5-397B",     provider:"Alibaba",  score:68.9},
+        {model:"GLM-5",            provider:"Zhipu AI", score:63.4}
+      ]},
+      { name: "High School Math", task: "AIME 2025", unit: "%", models: [
+        {model:"Kimi K2-Thinking", provider:"Kimi",     score:99.1},
+        {model:"DeepSeek V4 Pro",  provider:"DeepSeek", score:96.4},
+        {model:"Qwen3.5-397B",     provider:"Alibaba",  score:94.2},
+        {model:"GLM-5",            provider:"Zhipu AI", score:91.5},
+        {model:"Llama 4 Behemoth", provider:"Meta",     score:87.0}
+      ]},
+      { name: "Multilingual", task: "MMMLU", unit: "%", models: [
+        {model:"Llama 4 Behemoth", provider:"Meta",     score:85.8},
+        {model:"Llama 4 Maverick", provider:"Meta",     score:84.6},
+        {model:"Qwen3.5-397B",     provider:"Alibaba",  score:82.0},
+        {model:"Kimi K2.5",        provider:"Kimi",     score:79.3},
+        {model:"DeepSeek V4 Pro",  provider:"DeepSeek", score:76.8}
+      ]}
+    ]
+  }
+};
+
+const PROVIDER_COLORS = {
+  OpenAI: '#10a37f', Anthropic: '#d4763b', Google: '#4285f4',
+  DeepSeek: '#1a6cf5', Alibaba: '#ff6a00', Meta: '#0866ff',
+  Kimi: '#8b5cf6', Xiaomi: '#ff6900', 'Z AI': '#06b6d4', MiniMax: '#ec4899',
+  Reve: '#7c3aed', 'Microsoft AI': '#00a4ef', xAI: '#e0e0e0',
+  Ideogram: '#ff5c8a', 'Luma AI': '#14b8a6', 'Black Forest Labs': '#16a34a',
+  Bytedance: '#325ab4', 'Alibaba-ATH': '#ff8c42', KlingAI: '#00c2a8',
+  Runway: '#22c55e', Pixverse: '#a855f7', Pruna: '#f59e0b', Kandinsky: '#6366f1',
+  Tencent: '#1e90ff', Lightricks: '#ef4444', 'Genmo AI': '#0ea5e9',
+  HiDream: '#db2777', NVIDIA: '#76b900', Recraft: '#e11d48', Krea: '#fbbf24',
+  'Zhipu AI': '#38bdf8', 'Moonshot AI': '#a78bfa', Qwen: '#f97316', Meituan: '#ffb000'
+};
+
+const CAT_COLORS = {
+  leaderboard: '#F39C12', analytics: '#6366F1', aisearch: '#F0883E', youtube: '#E74C3C',
+  'agentic-ai': '#0EA5E9',
+  llm: '#2C3E50', rag: '#14B8A6', 'image-gen': '#8E44AD', 'design-ai': '#16A085',
+  typography: '#C0392B', robotics: '#E67E22', research: '#2980B9'
+};
+
+// Plain-language explanations for leaderboard column headers, shown on hover.
+// Keyed by the exact label text used in each tab's `cols` array.
+const LB_GLOSSARY = {
+  '#': 'Rank by the leaderboard\u2019s primary metric.',
+  'Model': 'Model being evaluated.',
+  'Model / Agent': 'Model (with its agent/scaffold) being evaluated.',
+  'Provider': 'Organization that develops the model.',
+  'Intelligence': 'Artificial Analysis Intelligence Index \u2014 a composite across reasoning, knowledge, coding and math benchmarks; higher is better.',
+  'Speed (t/s)': 'Output speed in tokens generated per second; higher is faster.',
+  'Latency (s)': 'Time to first token, in seconds; lower is more responsive.',
+  'Context': 'Maximum context window (input + output tokens) the model accepts.',
+  'Price /1M': 'Blended cost per 1 million tokens, in USD.',
+  'Resolved %': 'Share of SWE-bench Verified GitHub issues the agent fully resolved; higher is better.',
+  'Date': 'Date the result was submitted to the leaderboard.',
+  'Params (B)': 'Model size in billions of parameters (\u2014 if undisclosed).',
+  'HumanEval+': 'EvalPlus HumanEval+ pass@1 \u2014 % of Python problems solved against the harder, augmented test suite.',
+  'MBPP+': 'EvalPlus MBPP+ pass@1 \u2014 % solved on the augmented MBPP Python benchmark.',
+  '\uD83C\uDF0D': 'Country/region where the model originates.',
+  'Code Arena': 'Code-focused arena Elo from head-to-head human preference votes.',
+  'Reasoning': 'Reasoning benchmark score; higher is better.',
+  'Math': 'Math benchmark score; higher is better.',
+  'Elo': 'Elo rating from pairwise human preference votes \u2014 users pick the better of two outputs; higher means it wins more head-to-head matchups.',
+  'Score': 'Arena score (Elo-style) from head-to-head human preference votes; higher is better.',
+  'Votes': 'Number of human preference votes collected in the arena for this model.'
+};
+
+function lbTooltip(label) {
+  return LB_GLOSSARY[label] || '';
+}
+
+function resolveLbColumns(lb, activeLb) {
+  return {
+    providerCol: lb.providerCol != null ? lb.providerCol : (activeLb === 'aa' || activeLb === 'open') ? 2 : 1,
+    scoreCol:    lb.scoreCol    != null ? lb.scoreCol    : (activeLb === 'aa') ? 3 : -1,
+    scoreMax:    lb.scoreMax    != null ? lb.scoreMax    : (activeLb === 'aa') ? 60 : 100
+  };
+}
+
+function renderLbLinks(lb) {
+  return lb.groups.map(g => `
+        <div class="lb-links-group">
+          <div class="lb-links-head">${g.label}</div>
+          ${g.items.map(it => `<a class="lb-link-row" href="${it.url}" target="_blank" rel="noopener"><span class="lb-link-name">${it.name}</span><span class="lb-link-src">${it.source} ↗</span></a>`).join('')}
+        </div>`).join('');
+}
+
+let allStories = [];
+let activeFilter = 'all';
+let activeSig = null;
+let activeTag = null;
+
+function applyFilters() {
+  let stories = activeFilter === 'all' ? allStories : allStories.filter(s => s.catId === activeFilter);
+  if (activeSig !== null) stories = stories.filter(s => s.significance === activeSig);
+  if (activeTag !== null) stories = stories.filter(s => s.tags.includes(activeTag));
+  return stories;
+}
+
+function setSig(sig) {
+  activeSig = activeSig === sig ? null : sig;
+  redrawSigChart();
+  renderCards(activeFilter);
+}
+
+function setTag(tag) {
+  activeTag = activeTag === tag ? null : tag;
+  redrawTagCloud();
+  renderCards(activeFilter);
+}
+
+/** Branch badge: LLM Pipeline vs Hermes Agent (see report_source_* in digest JSON). */
+function reportSourceSealMarkup(data) {
+  const href = data && data.report_source_badge;
+  const label = (data && (data.report_source_label || data.report_source)) || 'Digest source';
+  if (!href) return '';
+  const tip = 'Produced by ' + label;
+  return '<img src="' + escHtml(href) + '" alt="' + escHtml(label) + '" title="' + escHtml(tip) + '">';
+}
+
+function renderReportSourceSeal(data) {
+  const el = document.getElementById('report-source-seal');
+  if (!el) return;
+  const label = (data && (data.report_source_label || data.report_source)) || 'Digest source';
+  const markup = reportSourceSealMarkup(data);
+  if (!markup) {
+    el.hidden = true;
+    el.innerHTML = '';
+    el.removeAttribute('title');
+    return;
+  }
+  el.hidden = false;
+  el.title = 'Produced by ' + label;
+  el.setAttribute('aria-label', label + ' report');
+  el.innerHTML = markup;
+}
+
+function render(data) {
+  allStories = [];
+  data.categories.forEach(cat => {
+    cat.stories.forEach(s => allStories.push({ ...s, catId: cat.id, catLabel: cat.label, catIcon: cat.icon }));
+  });
+  renderReportSourceSeal(data);
+  const dt = new Date(data.generated_at);
+  document.getElementById('digest-date').textContent =
+    dt.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' }).toUpperCase();
+  document.getElementById('digest-summary').textContent = data.summary;
+  renderTopStories(data);
+  renderFilterPills(data);
+  renderDonut(data);
+  renderSigChart(data);
+  renderTagCloud(data);
+  renderCards('all');
+  document.getElementById('footer-count').textContent =
+    allStories.length + ' stories · ' + data.categories.length + ' categories';
+  initLayoutResizer();
+}
+
+function renderTopStories(data) {
+  const bar = document.getElementById('top-stories-bar');
+  data.visualizations.top_stories.forEach(ts => {
+    const pill = document.createElement('button');
+    pill.className = 'top-story-pill';
+    pill.textContent = ts.title;
+    pill.onclick = () => scrollToStory(ts.id);
+    bar.appendChild(pill);
+  });
+}
+
+function renderFilterPills(data) {
+  const bar = document.getElementById('filter-bar');
+  bar.innerHTML = '';
+  const allPill = document.createElement('button');
+  allPill.className = 'pill active';
+  allPill.textContent = 'All (' + allStories.length + ')';
+  allPill.dataset.filter = 'all';
+  allPill.onclick = () => setFilter('all');
+  bar.appendChild(allPill);
+  data.categories.forEach(cat => {
+    const pill = document.createElement('button');
+    pill.className = 'pill inactive';
+    if (cat.id === 'leaderboard' || cat.id === 'aisearch' || cat.id === 'youtube') {
+      pill.innerHTML = cat.icon + ' ' + cat.label;
+    } else {
+      if (!cat.stories.length) return;
+      pill.innerHTML = cat.icon + ' ' + cat.label + ' <span style="color:var(--muted);font-size:.7em">(' + cat.stories.length + ')</span>';
+    }
+    pill.dataset.filter = cat.id;
+    pill.onclick = () => setFilter(cat.id);
+    bar.appendChild(pill);
+  });
+}
+
+function setFilter(id) {
+  activeFilter = id;
+  document.querySelectorAll('.pill').forEach(p => {
+    p.className = 'pill ' + (p.dataset.filter === id ? 'active' : 'inactive');
+  });
+  renderCards(id);
+}
+
+function renderAISearch(grid) {
+  const stories = allStories.filter(s => s.catId === 'aisearch');
+  const videoUrl   = digestData.aisearch_video_url   || 'https://www.youtube.com/@theAIsearch';
+  const videoLabel = digestData.aisearch_video_label || 'Latest video';
+  grid.innerHTML = `
+    <div style="grid-column:1/-1;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:4px;">
+      <span style="font-size:12px;font-weight:600;color:var(--text)">🔍 theAIsearch</span>
+      <a href="${videoUrl}" target="_blank" rel="noopener"
+         style="font-size:11px;color:var(--accent);text-decoration:none;display:flex;align-items:center;gap:4px;">
+        ▶ ${videoLabel}
+      </a>
+      <span style="margin-left:auto;display:flex;gap:12px;">
+        <a href="https://ai-search.io" target="_blank" rel="noopener" style="font-size:11px;color:var(--muted);text-decoration:none;">🌐 ai-search.io</a>
+        <a href="https://www.youtube.com/@theAIsearch" target="_blank" rel="noopener" style="font-size:11px;color:var(--muted);text-decoration:none;">▶ @theAIsearch</a>
+      </span>
+    </div>`;
+  stories.forEach(story => grid.appendChild(buildCard(story)));
+}
+
+function renderYouTube(grid) {
+  const cat = (digestData.categories || []).find(c => c.id === 'youtube');
+  const stories = allStories.filter(s => s.catId === 'youtube');
+  const sources = (cat && cat.sources) || [];
+
+  const channels = sources.length
+    ? sources.map(src => ({
+        key: src.channel_key || src.channel_label,
+        label: src.channel_label || src.channel_key,
+      }))
+    : Object.values(
+        stories.reduce((acc, s) => {
+          const key = s.channel_key || s.channel_label || 'youtube';
+          if (!acc[key]) {
+            acc[key] = { key, label: s.channel_label || s.channel_key || 'YouTube' };
+          }
+          return acc;
+        }, {})
+      ).sort((a, b) => a.label.localeCompare(b.label));
+
+  let activeChannel = 'all';
+
+  function channelTabs() {
+    return `
+      <div class="lb-tabs">
+        <button class="lb-tab ${activeChannel === 'all' ? 'active' : ''}" data-ch="all">
+          All (${stories.length})
+        </button>
+        ${channels.map(ch => `
+          <button class="lb-tab ${activeChannel === ch.key ? 'active' : ''}" data-ch="${ch.key}">
+            📺 ${ch.label}
+          </button>`).join('')}
+      </div>`;
+  }
+
+  function storiesForChannel(ch) {
+    return stories.filter(
+      s => s.channel_key === ch.key || s.channel_label === ch.label
+    );
+  }
+
+  function visibleStories() {
+    if (activeChannel === 'all') return stories;
+    const ch = channels.find(c => c.key === activeChannel);
+    return ch ? storiesForChannel(ch) : stories;
+  }
+
+  function draw() {
+    grid.innerHTML = '';
+    const wrap = document.createElement('div');
+    wrap.className = 'lb-wrap';
+    wrap.style.gridColumn = '1 / -1';
+    wrap.innerHTML = channelTabs();
+    wrap.querySelectorAll('.lb-tab').forEach(btn => {
+      btn.onclick = () => { activeChannel = btn.dataset.ch; draw(); };
+    });
+    grid.appendChild(wrap);
+    visibleStories().forEach(story => grid.appendChild(buildCard(story)));
+  }
+
+  draw();
+}
+
+function renderCards(filter) {
+  const grid = document.getElementById('story-grid');
+  if (filter === 'leaderboard') { renderLeaderboard(grid); return; }
+  if (filter === 'aisearch') { renderAISearch(grid); return; }
+  if (filter === 'youtube') { renderYouTube(grid); return; }
+  const stories = applyFilters();
+  if (!stories.length) { grid.innerHTML = '<div class="empty-state">No stories match the current filters.</div>'; return; }
+  grid.innerHTML = '';
+  stories.forEach(story => grid.appendChild(buildCard(story)));
+}
+
+function renderLeaderboard(grid) {
+  let activeLb = 'aa';
+  function tabs(lb) {
+    return `
+      <div class="lb-tabs">
+        <button class="lb-tab ${activeLb==='aa'?'active':''}"           data-lb="aa">🏅 AA: All Models</button>
+        <button class="lb-tab ${activeLb==='open'?'active':''}"         data-lb="open">🔓 Open-Weight</button>
+        <button class="lb-tab ${activeLb==='swe'?'active':''}"          data-lb="swe">🐛 SWE-bench</button>
+        <button class="lb-tab ${activeLb==='coding'?'active':''}"       data-lb="coding">⌨️ EvalPlus</button>
+        <button class="lb-tab ${activeLb==='arena_image'?'active':''}"  data-lb="arena_image">🎨 Image Arena</button>
+        <button class="lb-tab ${activeLb==='arena_t2i'?'active':''}"    data-lb="arena_t2i">🖼️ T2I: AA</button>
+        <button class="lb-tab ${activeLb==='arena_video'?'active':''}"  data-lb="arena_video">🎬 T2V: Arena</button>
+        <button class="lb-tab ${activeLb==='vellum'?'active':''}"       data-lb="vellum">📊 Vellum: All</button>
+        <button class="lb-tab ${activeLb==='vellum_open'?'active':''}"  data-lb="vellum_open">📊 Vellum: Open</button>
+        <button class="lb-tab ${activeLb==='links'?'active':''}"        data-lb="links">🔗 More</button>
+        ${lb.url ? `<a class="lb-src" href="${lb.url}" target="_blank" rel="noopener">↗ ${lb.source}</a>` : ''}
+        ${lb.updated ? `<span class="lb-updated">Updated ${lb.updated}</span>` : ''}
+      </div>`;
+  }
+  function buildTable(lb) {
+    let sortCol = null, sortDir = 1;
+    grid.innerHTML = `<div class="lb-wrap">${tabs(lb)}
+      <div class="lb-table-wrap">
+        <table class="lb-table" id="lb-table">
+          <thead><tr>${lb.cols.map((c,i)=>{const tip=lbTooltip(c);return `<th class="lb-th${tip?' lb-th-info':''}" data-col="${i}"${tip?` title="${tip.replace(/"/g,'&quot;')}"`:''}>${c} <span class="sort-arrow">↕</span></th>`;}).join('')}</tr></thead>
+          <tbody id="lb-body"></tbody>
+        </table>
+      </div></div>`;
+    grid.querySelectorAll('.lb-tab').forEach(btn => { btn.onclick = () => { activeLb = btn.dataset.lb; build(); }; });
+    function scoreColor(val, max) {
+      const t = val/max;
+      return t > 0.9 ? '#3fb950' : t > 0.75 ? '#58a6ff' : t > 0.6 ? '#d29922' : '#8b949e';
+    }
+    function drawRows(rows) {
+      const { providerCol, scoreCol, scoreMax } = resolveLbColumns(lb, activeLb);
+      document.getElementById('lb-body').innerHTML = rows.map(row => {
+        const provider = row[providerCol];
+        const dot = `<span class="lb-dot" style="background:${PROVIDER_COLORS[provider]||'#555'}"></span>`;
+        return '<tr>' + row.map((cell, i) => {
+          if (i === providerCol) return `<td>${dot}${cell}</td>`;
+          if (i === scoreCol && typeof cell === 'number' && cell > 0) {
+            const pct = Math.round((cell/scoreMax)*100);
+            return `<td><div class="lb-bar-cell"><span class="lb-bar-fill" style="width:${Math.min(pct,100)}%;background:${scoreColor(cell,scoreMax)}"></span><span class="lb-bar-val">${cell}</span></div></td>`;
+          }
+          return `<td>${cell === 0 ? '—' : cell}</td>`;
+        }).join('') + '</tr>';
+      }).join('');
+    }
+    drawRows(lb.rows);
+    grid.querySelectorAll('.lb-th').forEach(th => {
+      th.onclick = () => {
+        const col = +th.dataset.col;
+        sortDir = sortCol === col ? -sortDir : 1; sortCol = col;
+        grid.querySelectorAll('.lb-th .sort-arrow').forEach(a => a.textContent='↕');
+        th.querySelector('.sort-arrow').textContent = sortDir===1?'↑':'↓';
+        drawRows([...lb.rows].sort((a,b) => {
+          const va=a[col], vb=b[col];
+          if (va==='—'||va===null||va===0) return 1; if (vb==='—'||vb===null||vb===0) return -1;
+          return typeof va==='number'&&typeof vb==='number' ? (va-vb)*sortDir : String(va).localeCompare(String(vb))*sortDir;
+        }));
+      };
+    });
+  }
+  function buildCharts(lb) {
+    grid.innerHTML = `<div class="lb-wrap">${tabs(lb)}<div class="lb-charts-grid" id="lb-charts"></div></div>`;
+    grid.querySelectorAll('.lb-tab').forEach(btn => { btn.onclick = () => { activeLb = btn.dataset.lb; build(); }; });
+    const container = document.getElementById('lb-charts');
+    lb.benchmarks.forEach(bm => {
+      const card = document.createElement('div');
+      card.className = 'lb-chart-card';
+      card.innerHTML = `<div class="lb-chart-title"><span class="lb-chart-name">${bm.name}</span><span class="lb-chart-task">${bm.task}</span></div><svg class="lb-chart-svg"></svg>`;
+      container.appendChild(card);
+      const svg = card.querySelector('svg');
+      const W = card.clientWidth || 280, H = 180;
+      const ml = 8, mr = 8, mt = 28, mb = 52;
+      const w = W - ml - mr, h = H - mt - mb;
+      const models = bm.models;
+      const maxVal = Math.max(...models.map(m => m.score));
+      const minVal = Math.min(...models.map(m => m.score));
+      const yMin = Math.max(0, minVal - (maxVal - minVal) * 0.3);
+      const x = d3.scaleBand().domain(models.map((_,i)=>i)).range([0,w]).padding(0.25);
+      const y = d3.scaleLinear().domain([yMin, maxVal * 1.08]).range([h, 0]);
+      const s = d3.select(svg).attr('width','100%').attr('height', H).attr('viewBox',`0 0 ${W} ${H}`);
+      const g = s.append('g').attr('transform',`translate(${ml},${mt})`);
+      [0.25,0.5,0.75,1].forEach(t => {
+        const yv = yMin + (maxVal*1.08 - yMin)*t;
+        g.append('line').attr('x1',0).attr('x2',w).attr('y1',y(yv)).attr('y2',y(yv)).attr('stroke','#30363d').attr('stroke-width',1);
+        g.append('text').attr('x',-2).attr('y',y(yv)+3).attr('text-anchor','end').attr('font-size',8).attr('fill','#8b949e')
+          .text(bm.unit==='%' ? Math.round(yv)+'%' : Math.round(yv));
+      });
+      models.forEach((m, i) => {
+        const color = PROVIDER_COLORS[m.provider] || '#58a6ff';
+        const bx = x(i), bw = x.bandwidth();
+        const bar = g.append('rect').attr('x', bx).attr('y', h).attr('width', bw).attr('height', 0).attr('rx', 3).attr('fill', color).attr('opacity', 0.85);
+        bar.transition().duration(500).delay(i*80).attr('y', y(m.score)).attr('height', h - y(m.score));
+        g.append('text').attr('x', bx+bw/2).attr('y', y(m.score)-4).attr('text-anchor','middle').attr('font-size',9).attr('font-weight','700').attr('fill','#e6edf3')
+          .attr('opacity',0).text(m.score + (bm.unit==='%'?'%':''))
+          .transition().duration(400).delay(i*80+300).attr('opacity',1);
+        g.append('text').attr('transform',`translate(${bx+bw/2},${h+6}) rotate(35)`).attr('text-anchor','start').attr('font-size',9).attr('fill','#8b949e')
+          .text(m.model.length>14 ? m.model.slice(0,13)+'…' : m.model);
+      });
+    });
+  }
+  function buildLinks(lb) {
+    grid.innerHTML = `<div class="lb-wrap">${tabs(lb)}<div class="lb-links">${renderLbLinks(lb)}</div></div>`;
+    grid.querySelectorAll('.lb-tab').forEach(btn => { btn.onclick = () => { activeLb = btn.dataset.lb; build(); }; });
+  }
+  function build() {
+    const lb = leaderboards[activeLb];
+    if (lb.type === 'links') buildLinks(lb);
+    else if (lb.type === 'charts') buildCharts(lb);
+    else buildTable(lb);
+  }
+  build();
+}
+
+// Story link: real article -> "Read source"; ungrounded/demoted -> neutral
+// "Source pending" affordance (the topic is kept, we just have no verified URL).
+function sourceLinkHtml(url) {
+  return url
+    ? '<a class="card-link" href="' + url + '" target="_blank" rel="noopener">Read source →</a>'
+    : '<span class="card-link card-link-pending" title="No verified source link yet">Source pending</span>';
+}
+
+function storyLinksHtml(links) {
+  if (!links || !links.length) return '';
+  function label(link) {
+    const name = link.name || link.url || 'Link';
+    const kind = link.kind || '';
+    if (kind === 'github') return 'GitHub · ' + name;
+    if (kind === 'x') return 'X · ' + name;
+    if (kind === 'linkedin') return 'LinkedIn · ' + name;
+    if (kind === 'huggingface') return 'HF · ' + name;
+    if (kind === 'arxiv') return 'arXiv · ' + name;
+    return name;
+  }
+  return '<div class="card-links">' + links.map(function (link, i) {
+    const url = escHtml(link.url || '');
+    if (!url) return '';
+    const primary = i === 0 ? ' card-resource-link-primary' : '';
+    return '<a class="card-resource-link' + primary + '" href="' + url + '" target="_blank" rel="noopener">' + escHtml(label(link)) + ' ↗</a>';
+  }).join('') + '</div>';
+}
+
+// Minimal HTML escaping for values shown inside the provenance trace popover.
+function escHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// Provenance affordance: a light "(i)" that, on click, reveals how a story
+// entered the digest (its trace id + origin stage) so a mismatch between a
+// claim and its cited source can be traced back. Hidden by default.
+function provenanceHtml(story) {
+  const rows = [['id', story.id], ['via', story.provenance || 'unknown'], ['source', story.source]];
+  if (story.url) rows.push(['url', story.url]);
+  if (story.carried_forward) rows.push(['carried', 'yes']);
+  const items = rows.map(([k, v]) =>
+    '<div class="trace-row"><span class="trace-k">' + k + '</span><code class="trace-v">' + escHtml(v) + '</code></div>'
+  ).join('');
+  return '<button type="button" class="card-info" title="Show provenance trace" aria-label="Show provenance trace">i</button>' +
+    '<div class="card-trace" id="trace-' + escHtml(story.id) + '" hidden>' + items + '</div>';
+}
+
+// Shareable representations of a story for the clipboard: a rich-text HTML
+// fragment (links + emphasis preserved) and a Markdown/plain-text fallback.
+// Kept pure so it can be unit-tested without a DOM or a real clipboard.
+function storyCopyFormats(story) {
+  const title = String(story.title == null ? '' : story.title).trim();
+  const summary = String(story.summary == null ? '' : story.summary).trim();
+  const source = String(story.source == null ? '' : story.source).trim();
+  const url = story.url ? String(story.url).trim() : '';
+  const cat = String(story.catLabel || story.catId || '').trim();
+  const tags = Array.isArray(story.tags) ? story.tags : [];
+  const links = Array.isArray(story.links) ? story.links : [];
+
+  const meta = [source, cat].filter(Boolean).join(' \u00b7 ');
+  const tagLine = tags.length ? tags.map(t => '#' + String(t).trim().replace(/\s+/g, '')).join(' ') : '';
+  const linkLines = links.filter(l => l && l.url).map(l => '- [' + (l.name || l.url) + '](' + l.url + ')');
+
+  const md = [];
+  md.push('## ' + title);
+  if (meta) md.push('_' + meta + '_');
+  if (summary) md.push(summary);
+  if (linkLines.length) md.push(linkLines.join('\n'));
+  if (tagLine) md.push(tagLine);
+  if (url) md.push('[Read source \u2192](' + url + ')');
+  const markdown = md.join('\n\n');
+
+  const h = [];
+  h.push('<h3>' + (url ? '<a href="' + escHtml(url) + '">' + escHtml(title) + '</a>' : escHtml(title)) + '</h3>');
+  if (meta) h.push('<p><em>' + escHtml(meta) + '</em></p>');
+  if (summary) h.push('<p>' + escHtml(summary) + '</p>');
+  if (tagLine) h.push('<p>' + escHtml(tagLine) + '</p>');
+  if (url) h.push('<p><a href="' + escHtml(url) + '">Read source \u2192</a></p>');
+  const html = h.join('\n');
+
+  return { markdown, html };
+}
+
+// Write both formats to the clipboard in one shot (rich-text editors take the
+// HTML, plain editors take the Markdown), degrading to plain text where the
+// async ClipboardItem API is unavailable. Gives brief visual feedback.
+async function copyStory(story, btn) {
+  const { markdown, html } = storyCopyFormats(story);
+  let ok = false;
+  try {
+    if (navigator.clipboard && typeof ClipboardItem !== 'undefined') {
+      await navigator.clipboard.write([new ClipboardItem({
+        'text/html': new Blob([html], { type: 'text/html' }),
+        'text/plain': new Blob([markdown], { type: 'text/plain' })
+      })]);
+      ok = true;
+    } else if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(markdown);
+      ok = true;
+    }
+  } catch (e) {
+    try { await navigator.clipboard.writeText(markdown); ok = true; } catch (e2) { ok = false; }
+  }
+  if (btn) {
+    btn.classList.remove('copied', 'copy-failed');
+    btn.classList.add(ok ? 'copied' : 'copy-failed');
+    btn.title = ok ? 'Copied!' : 'Copy failed';
+    setTimeout(() => {
+      btn.classList.remove('copied', 'copy-failed');
+      btn.title = 'Copy story (rich text + Markdown)';
+    }, 1400);
+  }
+  return ok;
+}
+
+// One-icon copy affordance in the card's top-right corner.
+function copyButtonHtml() {
+  return '<button type="button" class="card-copy" title="Copy story (rich text + Markdown)" aria-label="Copy story">' +
+    '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<rect x="9" y="9" width="11" height="11" rx="2"></rect>' +
+    '<path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg></button>';
+}
+
+function buildCard(story) {
+  const color = CAT_COLORS[story.catId] || '#888';
+  const div = document.createElement('div');
+  div.className = 'story-card';
+  div.id = 'card-' + story.id;
+  const sigDots = Array.from({length:5},(_,i) => '<div class="sig-dot ' + (i < story.significance ? 'filled' : '') + '"></div>').join('');
+  const tags = story.tags.map(t => '<span class="card-tag">' + t + '</span>').join('');
+  div.innerHTML =
+    '<div class="card-cat-stripe" style="background:' + color + '"></div>' +
+    '<span class="card-cat-badge">' + story.catIcon + '</span>' +
+    copyButtonHtml() +
+    '<div class="card-meta"><span class="card-source">' + story.source + '</span>' + provenanceHtml(story) + '<div class="card-sig">' + sigDots + '</div></div>' +
+    '<div class="card-title">' + story.title + '</div>' +
+    '<div class="card-expand" id="expand-' + story.id + '">' +
+      '<p class="card-summary">' + story.summary + '</p>' +
+      storyLinksHtml(story.links) +
+      '<div class="card-tags">' + tags + '</div>' +
+      sourceLinkHtml(story.url) +
+    '</div>';
+  const info = div.querySelector('.card-info');
+  if (info) info.onclick = (e) => {
+    e.stopPropagation();
+    const trace = div.querySelector('.card-trace');
+    if (trace) trace.hidden = !trace.hidden;
+  };
+  const copyBtn = div.querySelector('.card-copy');
+  if (copyBtn) copyBtn.onclick = (e) => {
+    e.stopPropagation();
+    copyStory(story, copyBtn);
+  };
+  div.onclick = () => toggleCard(story.id, div);
+  return div;
+}
+
+function toggleCard(id, el) {
+  const expand = document.getElementById('expand-' + id);
+  const isExpanded = expand.classList.contains('visible');
+  document.querySelectorAll('.card-expand.visible').forEach(e => e.classList.remove('visible'));
+  document.querySelectorAll('.story-card.expanded').forEach(c => c.classList.remove('expanded'));
+  if (!isExpanded) { expand.classList.add('visible'); el.classList.add('expanded'); }
+}
+
+function scrollToStory(id) {
+  setFilter('all');
+  setTimeout(() => {
+    const el = document.getElementById('card-' + id);
+    if (el) { el.scrollIntoView({ behavior:'smooth', block:'center' }); toggleCard(id, el); }
+  }, 50);
+}
+
+function renderDonut(data) {
+  const counts = data.visualizations.category_counts;
+  const cats = data.categories.filter(c => counts[c.id] > 0);
+  const w = 208, h = 160, r = 60;
+  const svg = d3.select('#donut-chart').attr('width', w).attr('height', h);
+  const g = svg.append('g').attr('transform', 'translate(' + (r+10) + ',' + (h/2) + ')');
+  const pie = d3.pie().value(d => counts[d.id]).sort(null);
+  const arc = d3.arc().innerRadius(r*0.55).outerRadius(r);
+  const arcHover = d3.arc().innerRadius(r*0.55).outerRadius(r+5);
+  const tooltip = document.getElementById('tooltip');
+  const paths = g.selectAll('path').data(pie(cats)).enter().append('path')
+    .attr('fill', d => CAT_COLORS[d.data.id])
+    .attr('stroke', '#0d1117').attr('stroke-width', 2)
+    .attr('d', arc).style('cursor','pointer')
+    .on('mouseover', function(event, d) {
+      d3.select(this).transition().duration(120).attr('d', arcHover);
+      tooltip.style.opacity = '1';
+      tooltip.innerHTML = d.data.icon + ' ' + d.data.label + ': <strong>' + counts[d.data.id] + '</strong>';
+    })
+    .on('mousemove', function(event) {
+      tooltip.style.left = (event.clientX+12)+'px'; tooltip.style.top = (event.clientY-8)+'px';
+    })
+    .on('mouseout', function() {
+      d3.select(this).transition().duration(120).attr('d', arc); tooltip.style.opacity = '0';
+    })
+    .on('click', (event, d) => setFilter(d.data.id));
+  paths.transition().duration(600).attrTween('d', function(d) {
+    const interp = d3.interpolate({startAngle:0,endAngle:0}, d);
+    return t => arc(interp(t));
+  });
+  const legend = svg.append('g').attr('transform', 'translate(' + (r*2+18) + ',10)');
+  cats.forEach((cat, i) => {
+    legend.append('rect').attr('x',0).attr('y',i*18).attr('width',8).attr('height',8).attr('rx',2).attr('fill',CAT_COLORS[cat.id]);
+    legend.append('text').attr('x',12).attr('y',i*18+8).attr('font-size','9').attr('fill','#8b949e')
+      .text(cat.label.split(' ')[0] + ' (' + counts[cat.id] + ')');
+  });
+}
+
+let _sigItems = [], _sigX, _sigG, _sigW;
+
+function renderSigChart(data) {
+  const dist = data.visualizations.significance_distribution;
+  _sigItems = [5,4,3,2,1].map(k => ({ sig:k, count: dist[k]||0 })).filter(d => d.count > 0);
+  const w=208, h=100, ml=24, mr=8, mt=4, mb=4;
+  const svg = d3.select('#sig-chart').attr('width',w).attr('height',h);
+  svg.selectAll('*').remove();
+  if (!_sigItems.length) return;
+  const max = d3.max(_sigItems, d => d.count);
+  _sigW = w-ml-mr;
+  const rowH = (h-mt-mb)/_sigItems.length;
+  _sigG = svg.append('g').attr('transform','translate('+ml+','+mt+')');
+  _sigX = d3.scaleLinear().domain([0,max]).range([0,_sigW]);
+  _sigItems.forEach((d,i) => {
+    const y = i*rowH+2, bh = rowH-6;
+    const row = _sigG.append('g').attr('class','sig-row').style('cursor','pointer');
+    row.append('text').attr('x',-4).attr('y',y+bh/2+4).attr('text-anchor','end').attr('font-size','9').attr('fill','#888').text('★'.repeat(d.sig));
+    row.append('rect').attr('x',0).attr('y',y).attr('height',bh).attr('rx',2).attr('class','sig-bar')
+      .attr('fill', d3.interpolateViridis(d.sig/5)).attr('width',0)
+      .transition().duration(500).delay(i*80).attr('width', _sigX(d.count));
+    row.append('text').attr('x',_sigX(d.count)+4).attr('y',y+bh/2+4).attr('font-size','9').attr('fill','#8b949e').attr('class','sig-count').text(d.count);
+    row.append('rect').attr('x',-ml).attr('y',y-2).attr('width',w).attr('height',bh+4).attr('fill','transparent')
+      .on('click', () => setSig(d.sig));
+  });
+}
+
+function redrawSigChart() {
+  if (!_sigG) return;
+  _sigG.selectAll('.sig-row').each(function(_, i) {
+    const d = _sigItems[i];
+    const isActive = activeSig === d.sig;
+    const inactive = activeSig !== null && !isActive;
+    d3.select(this).select('.sig-bar').attr('opacity', inactive ? 0.25 : 1);
+    d3.select(this).select('.sig-count').attr('fill', isActive ? '#e6edf3' : '#8b949e');
+    d3.select(this).selectAll('text').filter((_, j) => j === 0).attr('fill', isActive ? '#e6edf3' : inactive ? '#555' : '#888');
+  });
+}
+
+let _tagData = [];
+
+function renderTagCloud(data) {
+  _tagData = data.visualizations.top_tags.slice(0, 12);
+  redrawTagCloud();
+}
+
+function redrawTagCloud() {
+  const cloud = document.getElementById('tag-cloud');
+  cloud.innerHTML = '';
+  _tagData.forEach(t => {
+    const span = document.createElement('span');
+    const isActive = activeTag === t.tag;
+    const inactive = activeTag !== null && !isActive;
+    span.className = 'tag-item' + (isActive ? ' tag-active' : '') + (inactive ? ' tag-dim' : '');
+    span.innerHTML = t.tag + '<span class="tag-count">' + t.count + '</span>';
+    span.onclick = () => setTag(t.tag);
+    cloud.appendChild(span);
+  });
+}
+
+
+function resetDigestView() {
+  document.getElementById('top-stories-bar').innerHTML = '<span class="top-stories-label">Top Stories</span>';
+  document.getElementById('filter-bar').innerHTML = '';
+  document.getElementById('story-grid').innerHTML = '';
+  d3.select('#donut-chart').selectAll('*').remove();
+  d3.select('#sig-chart').selectAll('*').remove();
+  document.getElementById('tag-cloud').innerHTML = '';
+  activeFilter = 'all';
+  activeSig = null;
+  activeTag = null;
+  allStories = [];
+  _sigG = null;
+}
+
+const SIDEBAR_WIDTH_KEY = 'aidigest.sidebarWidth';
+
+function initLayoutResizer() {
+  const layout = document.querySelector('.layout');
+  const resizer = document.getElementById('layout-resizer');
+  const sidebar = layout && layout.querySelector('.sidebar');
+  if (!layout || !resizer || !sidebar || resizer.dataset.bound) return;
+  resizer.dataset.bound = '1';
+
+  const saved = parseInt(localStorage.getItem(SIDEBAR_WIDTH_KEY), 10);
+  if (saved >= 160 && saved <= 420) layout.style.setProperty('--sidebar-w', saved + 'px');
+
+  let startX = 0;
+  let startW = 0;
+
+  function applyWidth(w) {
+    const clamped = Math.min(420, Math.max(160, w));
+    layout.style.setProperty('--sidebar-w', clamped + 'px');
+    return clamped;
+  }
+
+  function onMove(e) {
+    applyWidth(startW + (e.clientX - startX));
+  }
+
+  function onUp() {
+    resizer.classList.remove('dragging');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+    const w = parseInt(getComputedStyle(layout).getPropertyValue('--sidebar-w'), 10);
+    if (!isNaN(w)) localStorage.setItem(SIDEBAR_WIDTH_KEY, String(w));
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+  }
+
+  function onDown(e) {
+    if (window.matchMedia('(max-width: 860px)').matches) return;
+    e.preventDefault();
+    startX = e.clientX;
+    startW = sidebar.getBoundingClientRect().width;
+    resizer.classList.add('dragging');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  }
+
+  resizer.addEventListener('mousedown', onDown);
+  resizer.addEventListener('keydown', e => {
+    const step = e.shiftKey ? 40 : 12;
+    const cur = sidebar.getBoundingClientRect().width;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); localStorage.setItem(SIDEBAR_WIDTH_KEY, String(applyWidth(cur - step))); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); localStorage.setItem(SIDEBAR_WIDTH_KEY, String(applyWidth(cur + step))); }
+  });
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { PROVIDER_COLORS, CAT_COLORS, LB_GLOSSARY, lbTooltip, resolveLbColumns, renderLbLinks, sourceLinkHtml, provenanceHtml, escHtml, storyCopyFormats, reportSourceSealMarkup };
+}
+
+
+function loadDigest() {
+  digestData = window.__AIDIGEST_DIGEST__;
+  if (!digestData) {
+    throw new Error('Could not load ' + PAGE_PREFIX + '.json (expected sibling of this page)');
+  }
+  document.title = 'AI Daily | ' + (digestData.generated_at || PAGE_PREFIX).slice(0, 10);
+  render(digestData);
+}
+
+try {
+  loadDigest();
+} catch (err) {
+  document.getElementById('story-grid').innerHTML =
+    '<div class="empty-state">Failed to load digest: ' + err.message + '</div>';
+}
+</script>
+</body>
+</html>

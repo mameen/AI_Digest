@@ -1,0 +1,1108 @@
+{
+  "generated_at": "2026-05-09T12:00:00Z",
+  "filename_prefix": "20260509120000",
+  "summary": "Claude Opus 4.7 sets a new SWE-bench record at 87.6% as Anthropic embeds AI natively into Adobe CC, Blender, and SketchUp via Claude Connectors — while Monotype's natural-language font search and Figma's MCP server signal a new era of AI-native design tooling.",
+  "aisearch_video_url": "https://www.youtube.com/watch?v=7r_WJ9xpne0",
+  "aisearch_video_label": "May 3 — Robot girlfriends, recursive AI agents, SenseNova U1, Happy Horse",
+  "categories": [
+    {
+      "id": "leaderboard",
+      "label": "Leaderboard Rankings",
+      "icon": "🏆",
+      "stories": [
+        {
+          "id": "lb-gpt55-top",
+          "title": "GPT-5.5 Holds Intelligence #1 at Score 60 — OpenAI Claims Three of Top Five Spots",
+          "summary": "GPT-5.5 (xhigh) continues to lead the Artificial Analysis Intelligence Index with a score of 60, with GPT-5.5 (high) close behind at 59. Three of the top five slots belong to OpenAI variants. Gemini 3.1 Pro Preview remains the strongest non-OpenAI model in the top tier at score 57, and is significantly cheaper at $4.50/M vs OpenAI's $11.25/M — making it the value play for high-capability work.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 2,
+          "relevance_design": 2,
+          "tags": [
+            "openai",
+            "benchmark",
+            "intelligence-index",
+            "leaderboard"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-claude-opus-47",
+          "title": "Claude Opus 4.7 Debuts at #3 — SWE-bench Record 87.6% and 3× Vision Resolution",
+          "summary": "Anthropic's newly released Claude Opus 4.7 enters the AA Intelligence Index at rank #3 with score 57, matching Gemini 3.1 Pro. It sets a new SWE-bench Verified record at 87.6% — nearly 6 points above Sonnet 4.5's 82%. Vision resolution triples to ~3.75 megapixels, enabling pixel-perfect diagram analysis. Pricing unchanged from Opus 4.6 at $5/$25 per million tokens.",
+          "source": "Artificial Analysis / Anthropic",
+          "url": "https://www.anthropic.com/news/claude-opus-4-7",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "anthropic",
+            "claude",
+            "benchmark",
+            "SWE-bench",
+            "vision"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-chinese-top10",
+          "title": "Chinese Models Hold Top-10 Slots at Half the Price — Kimi K2.6 (#6), MiMo-V2.5-Pro (#7)",
+          "summary": "Kimi K2.6 holds rank #6 (score 54, $1.71/M) and Xiaomi's MiMo-V2.5-Pro holds rank #7 (score 54, $1.50/M) — both matching GPT-5.3 Codex in intelligence at roughly one-seventh the OpenAI price. The value gap between Eastern and Western frontier models continues to widen, with Chinese labs now placing confidently in the top 10.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 1,
+          "tags": [
+            "kimi",
+            "xiaomi",
+            "value",
+            "china-ai",
+            "leaderboard"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-image-arena",
+          "title": "GPT Image 2 Holds Image Arena Crown at Elo 1338 — FLUX.2 Leads Open-Weight at 1164",
+          "summary": "GPT Image 2 (high) remains the top text-to-image model with an Elo of 1338, followed by GPT Image 1.5 at 1270 and Nano Banana 2 (Gemini 3.1 Flash Image) at 1262. Among open-weight models, FLUX.2 [dev] Turbo leads at Elo 1164. Seedream 4.0 breaks into the overall top 5 at Elo 1201, the first non-Google/OpenAI model in the top 5.",
+          "source": "Artificial Analysis Image Arena",
+          "url": "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 4,
+          "tags": [
+            "image-gen",
+            "leaderboard",
+            "elo",
+            "FLUX",
+            "open-weight"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-vellum-leaders",
+          "title": "Benchmark Snapshot: Claude Opus 4.7 Dominates Coding, Gemini 3 Pro Leads Humanity's Last Exam",
+          "summary": "Latest Vellum leaderboard: Claude Opus 4.7 leads SWE-bench at 87.6%, well ahead of Sonnet 4.5 (82%) and GPT-5.2 (80%). On Humanity's Last Exam, Gemini 3 Pro leads at 45.8% followed by Kimi K2-Thinking at 44.9% and GPT-5.5 at 42.1%. On AIME math, both Gemini 3 Pro and GPT-5.2 hit 100%. Claude Opus 4.7 scores 94.2% on GPQA Diamond.",
+          "source": "Vellum AI Leaderboard",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "benchmark",
+            "SWE-bench",
+            "GPQA",
+            "AIME",
+            "anthropic",
+            "google"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "aisearch",
+      "label": "AI Search",
+      "icon": "🔍",
+      "stories": [
+        {
+          "id": "ais-omnishot",
+          "title": "OmniShotCut: One-Shot Video Editing and Intelligent Scene Cutting",
+          "summary": "OmniShotCut from the UVA Computer Vision Lab enables one-shot video editing and automatic scene segmentation using a single reference frame. It intelligently identifies shot boundaries and applies consistent style edits across segments — useful for film, social media, and design presentations requiring rapid visual iteration.",
+          "source": "theAIsearch / UVA Computer Vision Lab",
+          "url": "https://uva-computer-vision-lab.github.io/OmniShotCut_website/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "video-editing",
+            "shot-segmentation",
+            "research",
+            "computer-vision"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-happyhorse",
+          "title": "HappyHorse: AI-Powered Creative Productivity Platform",
+          "summary": "HappyHorse is a creative productivity platform powered by AI, featured prominently by theAIsearch this week. Aimed at creative teams and individual designers, it streamlines workflows for content creation, ideation, and visual production. The platform earned notable coverage for its approachable design-focused UI and practical output quality.",
+          "source": "theAIsearch / HappyHorse",
+          "url": "https://www.happyhorse.com/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "creative-ai",
+            "productivity",
+            "design-tools"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-mocap-v2",
+          "title": "Mocap Anything v2: Video-Based Motion Capture for Any Character or Object",
+          "summary": "Mocap Anything v2 from AnimotionLab extracts motion data from any video — not just humans, but animals, objects, and fantasy characters — making production-quality motion capture accessible without specialized suits or sensors. v2 improves accuracy on non-human subjects and adds real-time preview. High value for animation, game design, and visual effects workflows.",
+          "source": "theAIsearch / AnimotionLab",
+          "url": "https://animotionlab.github.io/MoCapAnythingV2/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "motion-capture",
+            "animation",
+            "video-AI",
+            "research",
+            "design-tools"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-ling26flash",
+          "title": "Ling 2.6 Flash: InclusionAI's Lightweight Open-Source LLM",
+          "summary": "InclusionAI released Ling 2.6 Flash on HuggingFace, a lightweight open-source language model optimized for efficiency and accessibility. Positioned as a fast inference option for resource-constrained deployments, it continues the trend of smaller models reaching competitive capability relative to their size.",
+          "source": "theAIsearch / InclusionAI",
+          "url": "https://huggingface.co/inclusionAI/Ling-2.6-flash",
+          "significance": 2,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "open-source",
+            "LLM",
+            "lightweight",
+            "huggingface"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-zanime",
+          "title": "Z-Anime: Open-Weight Anime-Optimized Image Generation Model",
+          "summary": "Z-Anime is an open-weight model on HuggingFace fine-tuned specifically for high-quality anime-style image generation. It delivers consistent character designs, vibrant color palettes, and stylized line art — making it a strong tool for illustrators, game designers, and VTuber creators working in anime aesthetics.",
+          "source": "theAIsearch / SeeSee21",
+          "url": "https://huggingface.co/SeeSee21/Z-Anime",
+          "significance": 2,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "open-source",
+            "image-gen",
+            "anime",
+            "huggingface",
+            "fine-tuned"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-recursive-mas",
+          "title": "Recursive Multi-Agent Systems: 2.4× Faster via Latent Space Collaboration",
+          "summary": "RecursiveMAS extends recursive reasoning from single agents to multi-agent pipelines operating entirely in latent space — agents pass continuous hidden representations via a lightweight RecursiveLink module instead of text tokens. Result: 8.3% accuracy gain, 2.4× speedup, 75.6% fewer tokens, and stable gradients during training. Only 0.31% of parameters need to be trained to add the capability.",
+          "source": "theAIsearch / RecursiveMAS",
+          "url": "https://recursivemas.github.io/",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "multi-agent",
+            "latent-space",
+            "efficiency",
+            "research",
+            "reasoning"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-vista4d",
+          "title": "Vista4D: Photorealistic 4D Scene Reconstruction from Monocular Video",
+          "summary": "Vista4D from Eyeline Labs reconstructs dynamic 4D scenes (3D + time) from regular monocular video footage. It captures moving objects, scene deformations, and lighting changes across time without depth sensors or multi-camera setups. Strong applications in VFX, product visualization, architectural animation, and spatial design review.",
+          "source": "theAIsearch / Eyeline Labs",
+          "url": "https://eyeline-labs.github.io/Vista4D/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "4D-reconstruction",
+            "video-AI",
+            "VFX",
+            "spatial-AI",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-tuna2",
+          "title": "Tuna-2 (Facebook Research): Pixel Embeddings Beat Vision Encoders for Multimodal Models",
+          "summary": "Tuna-2 from Facebook Research proves that vision encoders (VE) and VAEs are unnecessary for high-quality multimodal generation. By learning directly from pixel embeddings end-to-end, Tuna-2 achieves state-of-the-art performance on both image understanding and generation benchmarks — matching latent-space models while opening a simpler unified architecture path. Weights released on GitHub.",
+          "source": "theAIsearch / Facebook Research",
+          "url": "https://tuna-ai.org/tuna-2/",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "multimodal",
+            "research",
+            "open-source",
+            "architecture",
+            "pixel-embeddings"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-anyrecon",
+          "title": "AnyRecon: Text-Prompted 3D Reconstruction of Any Object from Images",
+          "summary": "AnyRecon generates 3D reconstructions of arbitrary objects from images using natural language prompts to guide the process. Users describe what they want reconstructed and the model isolates and reconstructs that object — no segmentation masks or manual selection needed. Useful for product design, e-commerce visualization, and rapid 3D asset creation.",
+          "source": "theAIsearch / AnyRecon",
+          "url": "https://yutian10.github.io/AnyRecon/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "3D-reconstruction",
+            "text-to-3D",
+            "research",
+            "design-tools"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-merlin",
+          "title": "Merlin AI: Cross-Browser AI Assistant with Web Research Superpowers",
+          "summary": "Merlin is an AI assistant that works across all browsers and websites, supporting ChatGPT, Claude, Gemini, and more. It enables in-page chat, document summarization, YouTube transcript analysis, and web research — all without switching tabs. Highlighted by theAIsearch as a top daily productivity tool for knowledge workers.",
+          "source": "theAIsearch / Merlin",
+          "url": "https://www.getmerlin.in/pricing",
+          "significance": 2,
+          "novelty": 2,
+          "relevance_design": 2,
+          "tags": [
+            "productivity",
+            "AI-assistant",
+            "browser-extension",
+            "research-tool"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-ara",
+          "title": "ARA by Orchestra Research: Autonomous AI Research Agent",
+          "summary": "ARA (Autonomous Research Agent) from Orchestra Research is designed to conduct long-horizon research tasks — gathering sources, synthesizing findings, generating structured reports — with minimal human intervention. theAIsearch highlights it as a step toward AI that genuinely replaces research assistant workflows rather than just augmenting them.",
+          "source": "theAIsearch / Orchestra Research",
+          "url": "https://www.orchestra-research.com/ara",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "agentic-AI",
+            "research-automation",
+            "autonomous-agents"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-kai",
+          "title": "KAI: New AI-Powered Humanoid Assistant Robot",
+          "summary": "KAI is a new humanoid AI assistant robot featured by theAIsearch this week. Designed for service and interaction tasks, KAI represents the continued expansion of humanoid robot form factors moving from factory settings toward public-facing environments. Details on manufacturer and availability are emerging.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7r_WJ9xpne0",
+          "significance": 2,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "humanoid",
+            "AI-assistant"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-robotera",
+          "title": "Robotera Factory Robots Begin Commercial Manufacturing Deployments",
+          "summary": "Robotera is deploying its factory robots in commercial manufacturing environments, moving from prototype demonstrations to production lines. The robots handle assembly, material transport, and inspection tasks. This represents another datapoint in the accelerating shift from humanoid robotics as R&D projects to operational factory assets.",
+          "source": "theAIsearch / Robotera",
+          "url": "https://www.youtube.com/watch?v=7r_WJ9xpne0",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "manufacturing",
+            "factory-automation",
+            "commercial"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-neotix",
+          "title": "Neotix Robotic Head: Expressive AI-Controlled Robotic Face",
+          "summary": "Neotix showcased its AI-controlled robotic head capable of highly expressive facial movements and real-time emotional response generation. The system uses AI to translate conversational context into natural facial expressions, enabling more human-like interaction in service robots and social robotics applications.",
+          "source": "theAIsearch / Neotix",
+          "url": "https://www.youtube.com/watch?v=7r_WJ9xpne0",
+          "significance": 2,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "social-robotics",
+            "expressive-AI",
+            "humanoid"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-tfbot",
+          "title": "TFBOT Ella: New Full-Body Humanoid Robot Prototype Revealed",
+          "summary": "TFBOT unveiled Ella, a new full-body humanoid robot prototype with fluid motion and an articulated upper body designed for human-environment interaction. Ella joins a growing field of humanoid prototypes racing toward commercial viability, with theAIsearch noting the improving mechanical quality across new entrants.",
+          "source": "theAIsearch / TFBOT",
+          "url": "https://www.youtube.com/watch?v=7r_WJ9xpne0",
+          "significance": 2,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "humanoid",
+            "prototype"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-sensenova",
+          "title": "SenseNova U1: SenseTime's VE+VAE-Free Unified Multimodal Model Goes Open-Source",
+          "summary": "SenseTime fully open-sourced SenseNova U1, built on its NEO-Unify architecture that eliminates both the visual encoder (VE) and the VAE — processing images and text in a unified representation space. Available in two sizes (8B dense and ~3B MoE) under Apache 2.0. May 8 update added GGUF quantized checkpoints for low-VRAM single-GPU inference, making it highly accessible for local deployment.",
+          "source": "theAIsearch / SenseTime",
+          "url": "https://github.com/OpenSenseNova/SenseNova-U1",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "open-source",
+            "multimodal",
+            "architecture",
+            "VE-free",
+            "apache-2.0"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-nemotron",
+          "title": "Nemotron 3 Nano Omni: NVIDIA's Efficient Open Multimodal Agent Model",
+          "summary": "NVIDIA released Nemotron 3 Nano Omni, a fully open-source multimodal model that reasons across video, audio, images, and text in a single efficient architecture. Available on OCI Enterprise AI. Despite 'Nano' in the name, it handles complex multi-step agent tasks — NVIDIA positions it for edge deployment where full frontier model compute isn't viable.",
+          "source": "theAIsearch / NVIDIA",
+          "url": "https://developer.nvidia.com/blog/nvidia-nemotron-3-nano-omni-powers-multimodal-agent-reasoning-in-a-single-efficient-open-model/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "nvidia",
+            "multimodal",
+            "open-source",
+            "edge-AI",
+            "agentic"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-claude-connectors",
+          "title": "Claude Connectors: AI Embedded Natively in Adobe CC, Blender, SketchUp, Ableton and More",
+          "summary": "Anthropic launched Claude Connectors, enabling Claude to operate as a native embedded assistant inside major creative tools: Adobe Creative Cloud (Photoshop, Premiere, Express), Affinity by Canva, Autodesk Fusion, Blender, Resolume Arena, SketchUp, Ableton, and Splice. Claude explains features in context, automates repetitive tasks, generates scripts and plugins, and translates assets across tools. This is the most significant integration of an AI assistant into professional creative software suites to date.",
+          "source": "theAIsearch / Anthropic",
+          "url": "https://www.anthropic.com/news/claude-for-creative-work",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "anthropic",
+            "claude",
+            "design-tools",
+            "adobe",
+            "blender",
+            "creative-workflow",
+            "codesign"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-moonlake",
+          "title": "Moonlake: 3D AI Agent That Designs and Animates Scenes from Text Prompts",
+          "summary": "Moonlake is a 3D AI agent that generates fully animated 3D scenes from natural language descriptions. It handles scene composition, object placement, lighting, and animation sequences — acting as an AI collaborator for 3D design rather than just a generator. Demonstrated use cases include interior design visualization, game level prototyping, and architectural walkthroughs.",
+          "source": "theAIsearch / Moonlake",
+          "url": "https://moonlakeai.com/blog/3d-agent",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "3D-design",
+            "agentic-AI",
+            "animation",
+            "design-tools",
+            "codesign"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-talkie",
+          "title": "Talkie: 13B Language Model Trained Exclusively on Pre-1931 Text",
+          "summary": "Talkie is a 13B parameter language model trained on 260B tokens of pre-1931 English text (books, newspapers, patents, legal documents), developed by Alec Radford, Nick Levine, and David Duvenaud with Anthropic support. It simulates conversation with a historical perspective, unaware of any post-1930 developments. Despite its unusual training corpus, it shows unexpected competency on in-context learning tasks. A GPT-3-level historical model is planned for summer release.",
+          "source": "theAIsearch / Talkie",
+          "url": "https://talkie-lm.com/introducing-talkie",
+          "significance": 3,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "research",
+            "historical-AI",
+            "LLM",
+            "open-source",
+            "anthropic"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-grok43",
+          "title": "Grok 4.3 Enters Top 10 at Score 53 — xAI's Latest Production Model",
+          "summary": "xAI's Grok 4.3 enters the AA Intelligence Index at rank #9 with a score of 53 and 7.5 t/s throughput at $1.56/M tokens. It sits between GPT-5.3 Codex (54) and Muse Spark (52), holding a competitive price point for a top-10 model. theAIsearch notes Grok 4.3 as notable for its speed of iteration — xAI has shipped multiple model versions in rapid succession.",
+          "source": "theAIsearch / xAI",
+          "url": "https://docs.x.ai/developers/models/grok-4.3",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "xai",
+            "grok",
+            "benchmark",
+            "frontier-model"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-mistral35",
+          "title": "Mistral Medium 3.5: 128B Open Weights, 256k Context, Cloud Remote Agents",
+          "summary": "Mistral released Mistral Medium 3.5 — a dense 128B model with a 256k context window, scoring 77.6% on SWE-Bench Verified. Available as open weights on HuggingFace under a modified MIT license and via API at $1.5/$7.5 per million tokens. The launch includes Vibe Remote Agents: async cloud-based coding sessions that open GitHub pull requests independently, running in isolated sandboxes without human review of intermediate steps.",
+          "source": "theAIsearch / Mistral",
+          "url": "https://mistral.ai/news/vibe-remote-agents-mistral-medium-3-5",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "mistral",
+            "open-source",
+            "agentic-coding",
+            "256k-context",
+            "remote-agents"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "llm",
+      "label": "LLMs & Reasoning",
+      "icon": "🧠",
+      "stories": [
+        {
+          "id": "llm-claude-opus-47",
+          "title": "Claude Opus 4.7 Launches: SWE-bench Record 87.6%, 3× Vision, Same Price as 4.6",
+          "summary": "Anthropic released Claude Opus 4.7, the most capable Claude model yet. It sets a new SWE-bench Verified record at 87.6% — nearly 6 points ahead of Sonnet 4.5. Vision resolution triples to ~3.75 megapixels (2,576px on the long edge), enabling pixel-level diagram analysis and computer-use tasks at 98.5% visual acuity vs 54.5% for prior versions. Coding task resolution improves 13% vs Opus 4.6. A new `xhigh` effort level allows finer reasoning depth control. Priced identically to 4.6 at $5/$25 per million tokens. Available on Claude API, Bedrock, Vertex, and Foundry.",
+          "source": "Anthropic",
+          "url": "https://www.anthropic.com/news/claude-opus-4-7",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "anthropic",
+            "claude",
+            "SWE-bench",
+            "vision",
+            "coding",
+            "agentic"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-mistral35",
+          "title": "Mistral Medium 3.5: Dense 128B, 256k Context, Vibe Remote Agents at $1.5/M",
+          "summary": "Mistral AI released Medium 3.5 — a dense 128B model with 256k context window and a custom vision encoder for variable image sizes. It scores 77.6% on SWE-Bench and 91.4 on τ³-Telecom agentic benchmarks. Open weights released on HuggingFace under a modified MIT license. The headline feature is Vibe Remote Agents: cloud coding sessions that run asynchronously, execute in parallel, and autonomously open GitHub PRs without requiring review of every step.",
+          "source": "Mistral AI",
+          "url": "https://mistral.ai/news/vibe-remote-agents-mistral-medium-3-5",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "mistral",
+            "open-source",
+            "256k-context",
+            "agentic-coding",
+            "remote-agents"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-grok43",
+          "title": "Grok 4.3 Joins xAI Production Lineup — Score 53, Fast Iteration Cadence",
+          "summary": "xAI shipped Grok 4.3 to production, landing at rank #9 on the AA Intelligence Index with a score of 53 ($1.56/M). xAI continues its rapid model release cadence with multiple major versions since early 2026. Grok 4.3 occupies the competitive mid-tier of frontier models — below the GPT-5.5/Claude Opus 4.7 ceiling but ahead of most open-source options on reasoning tasks.",
+          "source": "xAI",
+          "url": "https://docs.x.ai/developers/models/grok-4.3",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "xai",
+            "grok",
+            "frontier-model",
+            "benchmark"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-gpt55-instant",
+          "title": "GPT-5.5 Instant: OpenAI's Lightweight Fast Variant for High-Throughput Deployments",
+          "summary": "OpenAI released GPT-5.5 Instant on May 5, a lightweight, lower-latency variant of the GPT-5.5 family optimized for high-throughput applications where top-tier reasoning depth isn't required. It follows GPT-5.5's April 23 launch and extends OpenAI's model family tiering strategy, giving developers a faster, cheaper option while preserving the GPT-5.5 brand.",
+          "source": "LLM Stats / OpenAI",
+          "url": "https://llm-stats.com/llm-updates",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "openai",
+            "GPT-5.5",
+            "inference",
+            "efficiency",
+            "latency"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-muse-spark",
+          "title": "Meta's Muse Spark Debuts at #10 on AA Intelligence Index — New AI Brand from Meta",
+          "summary": "Meta introduced Muse Spark, a new AI model that debuted at rank #10 on the Artificial Analysis Intelligence Index (score 52). The model appears to be a flagship consumer-facing AI product from Meta, separate from the Llama open-weight research line. Details on architecture and access are limited, but the leaderboard appearance signals Meta is moving to compete directly in the proprietary frontier model market.",
+          "source": "Artificial Analysis / Meta",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "meta",
+            "frontier-model",
+            "proprietary",
+            "benchmark"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "image-gen",
+      "label": "Image Generation & Processing",
+      "icon": "🎨",
+      "stories": [
+        {
+          "id": "img-gpt2-dominates",
+          "title": "GPT Image 2 Maintains Commanding Lead at Elo 1338 — 76-Point Gap to #2",
+          "summary": "GPT Image 2 (high) remains the dominant text-to-image model with an Elo of 1338, maintaining a 68-point lead over GPT Image 1.5 in second place (Elo 1270). The model's lead in text rendering accuracy, compositional control, and photorealism remains unchallenged at the top. The gap between GPT Image 2 and the field is the widest since GPT Image 2 launched in April 2026.",
+          "source": "Artificial Analysis Image Arena",
+          "url": "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 4,
+          "tags": [
+            "openai",
+            "image-gen",
+            "elo",
+            "text-rendering",
+            "leaderboard"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-seedream",
+          "title": "Seedream 4.0 Breaks Into Top 5 at Elo 1201 — First Non-Google/OpenAI Model in Top 5",
+          "summary": "Seedream 4.0 enters the top 5 on the AA Image Arena at Elo 1201, the first model from neither Google nor OpenAI to reach the top 5 since GPT Image 2 launched. It ranks above all open-weight models by a significant margin. Seedream 4.0 delivers strong photorealism and prompt adherence, and its presence signals a third competitor emerging in the top-tier image generation space.",
+          "source": "Artificial Analysis Image Arena",
+          "url": "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "image-gen",
+            "leaderboard",
+            "elo",
+            "seedream",
+            "photorealism"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-flux2-open",
+          "title": "FLUX.2 Leads Open-Weight Image Arena at Elo 1164 — Qwen Image Max Close Behind",
+          "summary": "Among open-weight image generation models, FLUX.2 [dev] Turbo (Elo 1164) and FLUX.2 [dev] (Elo 1162) continue to lead, with Qwen Image Max 2512 at Elo 1158 closing the gap. The open-weight tier remains competitive and practically useful for production image workflows that require local deployment or IP control.",
+          "source": "Artificial Analysis Image Arena",
+          "url": "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 4,
+          "tags": [
+            "FLUX",
+            "open-weight",
+            "image-gen",
+            "qwen",
+            "leaderboard"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-nano-banana",
+          "title": "Nano Banana 2 (Gemini 3.1 Flash Image) Holds #3 at Elo 1262 Across Google Products",
+          "summary": "Nano Banana 2 — the production name for Gemini 3.1 Flash Image Preview — holds rank #3 at Elo 1262 and serves as the default image model across Google Search, Lens, Gemini Pro, and Google Flow. Known for stylized editorial illustration, SynthID watermarking, and C2PA credentials, it remains Google's primary image generation product and a strong #2 ecosystem choice behind GPT Image 2.",
+          "source": "Artificial Analysis / Google",
+          "url": "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 3,
+          "tags": [
+            "google",
+            "gemini",
+            "image-gen",
+            "watermarking",
+            "C2PA"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "design-ai",
+      "label": "Design & Creative AI",
+      "icon": "✏️",
+      "stories": [
+        {
+          "id": "design-claude-connectors",
+          "title": "Claude Connectors: AI Becomes Native Co-Worker in Adobe CC, Blender, SketchUp, Ableton",
+          "summary": "Anthropic's Claude Connectors launch is the most significant embedding of an AI assistant into professional creative software to date. Claude now operates natively inside Adobe Creative Cloud (50+ tools including Photoshop, Premiere, Express), Affinity by Canva, Autodesk Fusion, Blender, Resolume Arena/Wire, SketchUp, Ableton, and Splice. In each tool, Claude can explain features in context, automate repetitive tasks, generate custom scripts and plugins, manage batch operations, and translate assets across tools. This is the co-design future arriving in production software.",
+          "source": "Anthropic",
+          "url": "https://www.anthropic.com/news/claude-for-creative-work",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "anthropic",
+            "claude",
+            "codesign",
+            "adobe",
+            "blender",
+            "sketchup",
+            "creative-workflow",
+            "design-tools"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-figma-mcp",
+          "title": "Figma MCP Server: Code-to-Canvas Agentic Workflows Bridge Design and Development",
+          "summary": "Figma's May 2026 release adds a Model Context Protocol (MCP) server enabling AI agents to translate between code and Figma designs bidirectionally. Key skills: `/prototype-to-figma` converts vibe-coded prototypes into editable frames; `/figma-generate-design` imports code-based designs and variables; `/figma-use` lets agents write directly to the canvas using production components. The release explicitly positions Figma as the design layer in agentic pipelines, with 'the agent handles the scaffolding' while designers focus on craft decisions.",
+          "source": "Figma",
+          "url": "https://help.figma.com/hc/en-us/articles/40219873508247-Release-notes-roundup-May-2026",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "figma",
+            "MCP",
+            "agentic-AI",
+            "design-to-code",
+            "codesign",
+            "design-tools"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-claude-opus-47",
+          "title": "Claude Opus 4.7 Delivers Better UI, Slides, and Docs via Improved Aesthetic Judgment",
+          "summary": "Beyond coding benchmarks, Claude Opus 4.7 shows notable improvement in design-adjacent tasks: higher-quality interface generation, slide deck composition, and document layout with improved aesthetic judgment. Testing partners specifically call out the quality of multi-step design deliverables. For design-adjacent AI workflows — generating specs, mocks, or component documentation — Opus 4.7 is the current best option.",
+          "source": "Anthropic",
+          "url": "https://www.anthropic.com/news/claude-opus-4-7",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "anthropic",
+            "claude",
+            "UI-generation",
+            "design-workflow",
+            "aesthetic"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-adobe-pressure",
+          "title": "Adobe Faces Growing AI Pressure from Figma, Canva, and Now Anthropic's Design Tools",
+          "summary": "A wave of AI-native design tools is challenging Adobe's creative software dominance. Figma's AI features target UI/UX professionals with native agent support. Canva's Magic Write and AI image generation target marketing teams. And Anthropic's Claude Design — announced last week — generates websites, landing pages, and presentations from natural language. Adobe Firefly remains commercially indemnified (up to $3M/asset on enterprise), which is its strongest differentiator, but subscriber growth has stalled as competitors offer compelling AI alternatives.",
+          "source": "VentureBeat / PYMNTS / GenesysGrowth",
+          "url": "https://venturebeat.com/ai/figma-unveils-ai-powered-design-tools-to-rival-adobe",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "adobe",
+            "figma",
+            "canva",
+            "anthropic",
+            "design-tools",
+            "market",
+            "firefly"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-moonlake-3d",
+          "title": "Moonlake 3D Agent: Conversational Text-to-3D Scene Design and Animation",
+          "summary": "Moonlake is an AI agent for 3D design that takes natural language descriptions and produces fully composed, lit, and animated 3D scenes. Unlike static text-to-3D generators, Moonlake supports iterative design conversation — 'make the lighting warmer', 'add a second chair facing left' — making it a genuine AI co-pilot for spatial design, architectural visualization, and game environment prototyping.",
+          "source": "theAIsearch / Moonlake",
+          "url": "https://moonlakeai.com/blog/3d-agent",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "3D-design",
+            "codesign",
+            "agentic-AI",
+            "architectural-visualization",
+            "animation"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "typography",
+      "label": "Typography & Text Rendering",
+      "icon": "🔤",
+      "stories": [
+        {
+          "id": "typo-monotype-ai-search",
+          "title": "Monotype AI Search: Natural Language Font Discovery Across 250,000+ Fonts",
+          "summary": "Monotype launched AI Search in February 2026, replacing traditional filter/scroll font discovery with conversational natural language prompts. Designers describe the font they need by mood, brand traits, style, or use case — 'something bold and friendly for a children's tech brand' — and receive instant, contextually explained recommendations. Available on MyFonts (US/UK) and Monotype Fonts in five languages. Research shows organizations reclaim up to 35% of creative time previously spent on font search. A live on-demand webinar demonstrates practical workflow techniques.",
+          "source": "Monotype / Creative Bloq / WhatFontIs",
+          "url": "https://www.monotype.com/company/press-release/monotype-launches-ai-search-transforming-font-search-and-discovery-conversational-ai",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "typography",
+            "font-search",
+            "monotype",
+            "natural-language",
+            "design-workflow",
+            "AI-typography"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-monotype-webinar",
+          "title": "Monotype AI Search Webinar On-Demand: Live Workflow Demos for Designers",
+          "summary": "Monotype's on-demand webinar walks designers through practical applications of AI Search: describing font moods, discovering cohesive pairings, and building from concept to execution more efficiently. The Q&A section addresses real-world challenges including brand consistency across large font libraries and collaborative team alignment on typography choices. Free to watch at the Monotype website.",
+          "source": "Monotype",
+          "url": "https://www.monotype.com/resources/webinars/ai-search-webinar-on-demand",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "typography",
+            "monotype",
+            "font-search",
+            "workflow",
+            "webinar"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-gpt2-standard",
+          "title": "GPT Image 2's Elo 1338 Score Anchors the AI Typography Standard for Multilingual Design",
+          "summary": "With GPT Image 2 firmly holding #1 in the Image Arena at Elo 1338, it continues to define the practical standard for AI-rendered typography in images. Its 99% accuracy across Latin, CJK, Devanagari, Arabic, Hangul, and Tamil means designers can rely on it for multilingual campaign assets without post-production text corrections. For design teams needing localized imagery with accurate text rendering, GPT Image 2 remains the go-to.",
+          "source": "Artificial Analysis Image Arena",
+          "url": "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 5,
+          "tags": [
+            "typography",
+            "text-rendering",
+            "multilingual",
+            "image-gen",
+            "CJK",
+            "arabic"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-figma-image-tools",
+          "title": "Figma May 2026: AI Image Tools Add Object Isolation and Format Expansion for Typography Assets",
+          "summary": "Figma's May 2026 release adds AI-powered image editing tools including object isolation (remove backgrounds or specific elements), object expansion (extend images to fill new aspect ratios), and format adaptation. For typography workflows, these tools streamline creating type-safe zones, adapting advertising assets across formats, and generating lockup variations without leaving Figma.",
+          "source": "Figma / ContentGrip",
+          "url": "https://www.contentgrip.com/figma-ai-image-editing-tools-update/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "figma",
+            "typography",
+            "image-editing",
+            "design-tools",
+            "workflow"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "robotics",
+      "label": "Robotics & Embodied AI",
+      "icon": "🤖",
+      "stories": [
+        {
+          "id": "robot-robotera-commercial",
+          "title": "Robotera Factory Robots Enter Commercial Manufacturing — Production Lines Going Live",
+          "summary": "Robotera is transitioning from demos to commercial production deployments, with its factory robots beginning work on actual manufacturing lines. The robots handle assembly operations, material transport, and quality inspection. This is part of the broader 2026 wave where multiple humanoid and semi-humanoid robots cross the threshold from R&D to operational commercial assets.",
+          "source": "theAIsearch / Robotera",
+          "url": "https://www.youtube.com/watch?v=7r_WJ9xpne0",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "manufacturing",
+            "commercial",
+            "factory-automation"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "robot-boston-dynamics",
+          "title": "Boston Dynamics Atlas 2026: All Units Committed, Google DeepMind Partnership Active",
+          "summary": "Boston Dynamics has committed all 2026 Atlas production units to Hyundai's Robotics Metaplant Application Center and Google DeepMind. No additional 2026 units are available. The combination of Boston Dynamics' hardware reliability and Google DeepMind's AI research creates a compelling frontier robotics partnership, with first results from the collaboration expected in H2 2026.",
+          "source": "humanoidroboticstechnology.com / Standard Bots",
+          "url": "https://humanoidroboticstechnology.com/articles/top-12-humanoid-robots-of-2026/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "boston-dynamics",
+            "atlas",
+            "humanoid",
+            "google-deepmind"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "robot-figure03",
+          "title": "Figure 03 Milestone: 90,000+ Parts Moved at BMW Spartanburg in Commercial Pilot",
+          "summary": "Figure AI's Figure 03 robot has moved more than 90,000 parts across 1,250+ hours of operation at BMW's Spartanburg manufacturing plant. This is one of the largest and most sustained commercial humanoid robot deployments documented to date, and provides real-world performance data at industrial scale. Figure is now scaling production toward broader manufacturing deployments.",
+          "source": "vfuturemedia.com / Standard Bots",
+          "url": "https://vfuturemedia.com/future-tech/humanoid-robots-enter-the-workforce-figure-boston-dynamics-and-tesla-optimus-2026/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "figure-ai",
+            "humanoid",
+            "manufacturing",
+            "commercial"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "robot-new-prototypes",
+          "title": "TFBOT Ella and Neotix Head Reveal: Humanoid Form Factor Competition Intensifies",
+          "summary": "Two new humanoid robot prototypes emerged this week: TFBOT Ella, a full-body humanoid with fluid upper-body motion designed for service environments, and the Neotix robotic head, an AI-controlled expressive face capable of real-time emotional response generation. Both represent the continued expansion of humanoid robot form factors beyond factories, targeting social and service interaction contexts.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=7r_WJ9xpne0",
+          "significance": 2,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "humanoid",
+            "prototype",
+            "social-robotics"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "label": "Research & Papers",
+      "icon": "📄",
+      "stories": [
+        {
+          "id": "research-tuna2",
+          "title": "Tuna-2 (Facebook Research): Pixel Embeddings Beat Vision Encoders for Multimodal AI",
+          "summary": "Facebook Research's Tuna-2 demonstrates that dedicated vision encoders (like CLIP) and VAEs are not needed for high-quality multimodal AI. Training end-to-end on pixel embeddings, Tuna-2 achieves state-of-the-art multimodal understanding and image generation — proving that the standard encoder-decoder pipeline can be replaced with a simpler unified architecture. This architectural simplification has major implications for scaling and deployment of multimodal models. Weights released on GitHub under Facebook Research.",
+          "source": "Facebook Research / HuggingFace Papers",
+          "url": "https://tuna-ai.org/tuna-2/",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "research",
+            "multimodal",
+            "architecture",
+            "open-source",
+            "pixel-embeddings",
+            "facebook"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "research-recursive-mas",
+          "title": "RecursiveMAS: Latent Space Multi-Agent Collaboration Is 2.4× Faster than Text-Based",
+          "summary": "RecursiveMAS from the RecursiveMAS research group proposes multi-agent systems that operate in continuous latent space instead of passing text tokens between agents. A lightweight RecursiveLink module chains agents via inner (within-agent) and outer (cross-agent) connections. Results: 8.3% accuracy improvement, 2.4× speedup, 75.6% token reduction, and stable training gradients. Only 0.31% of parameters need updating to add the capability to existing models.",
+          "source": "RecursiveMAS / HuggingFace Papers",
+          "url": "https://recursivemas.github.io/",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "research",
+            "multi-agent",
+            "latent-space",
+            "efficiency",
+            "agentic-AI"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "research-continuous-diffusion",
+          "title": "Continuous Latent Diffusion Language Model: New Architecture Trending on HuggingFace",
+          "summary": "A new architecture paper proposes a language model that operates in continuous latent space using diffusion-based generation rather than autoregressive token prediction. The model shows strong performance on generation tasks while enabling different quality-speed tradeoffs not available in standard autoregressive models. It is one of the top-trending papers on HuggingFace Papers this week.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "research",
+            "diffusion",
+            "language-model",
+            "architecture",
+            "continuous-latent"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "research-skill-os",
+          "title": "SkillOS: Self-Evolving AI Agents Learn to Curate Their Own Skills",
+          "summary": "SkillOS presents a framework where AI agents autonomously develop, test, and curate skills over time through reinforcement learning — effectively learning which tools and strategies to call on for which tasks. Rather than a fixed toolbox, SkillOS agents maintain an evolving skill library that improves with use. The paper is trending on HuggingFace and has implications for long-horizon agentic systems in design and research workflows.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "research",
+            "agentic-AI",
+            "skill-learning",
+            "reinforcement-learning",
+            "self-evolving"
+          ],
+          "image_url": null
+        }
+      ]
+    }
+  ],
+  "visualizations": {
+    "category_counts": {
+      "leaderboard": 5,
+      "aisearch": 22,
+      "llm": 5,
+      "image-gen": 4,
+      "design-ai": 5,
+      "typography": 4,
+      "robotics": 4,
+      "research": 4
+    },
+    "significance_distribution": {
+      "5": 5,
+      "4": 14,
+      "3": 24,
+      "2": 5,
+      "1": 0
+    },
+    "top_tags": [
+      {
+        "tag": "open-source",
+        "count": 9
+      },
+      {
+        "tag": "robotics",
+        "count": 7
+      },
+      {
+        "tag": "anthropic",
+        "count": 6
+      },
+      {
+        "tag": "design-tools",
+        "count": 6
+      },
+      {
+        "tag": "multimodal",
+        "count": 5
+      },
+      {
+        "tag": "benchmark",
+        "count": 5
+      },
+      {
+        "tag": "typography",
+        "count": 5
+      },
+      {
+        "tag": "claude",
+        "count": 5
+      },
+      {
+        "tag": "image-gen",
+        "count": 5
+      },
+      {
+        "tag": "research",
+        "count": 5
+      }
+    ],
+    "top_stories": [
+      {
+        "id": "llm-claude-opus-47",
+        "title": "Claude Opus 4.7: SWE-bench Record 87.6%, 3× Vision",
+        "significance": 5,
+        "category": "llm"
+      },
+      {
+        "id": "design-claude-connectors",
+        "title": "Claude Connectors: AI Native in Adobe CC, Blender, SketchUp",
+        "significance": 5,
+        "category": "design-ai"
+      },
+      {
+        "id": "lb-claude-opus-47",
+        "title": "Claude Opus 4.7 Debuts at #3, SWE-bench Record",
+        "significance": 5,
+        "category": "leaderboard"
+      },
+      {
+        "id": "typo-monotype-ai-search",
+        "title": "Monotype AI Search: Natural Language Font Discovery",
+        "significance": 5,
+        "category": "typography"
+      },
+      {
+        "id": "ais-recursive-mas",
+        "title": "Recursive Multi-Agents: 2.4× Faster in Latent Space",
+        "significance": 4,
+        "category": "aisearch"
+      }
+    ]
+  },
+  "report_source": "llm-pipeline",
+  "report_source_badge": "../../docs/img/llm_pipeline/llm_pipeline.png",
+  "report_source_label": "LLM Pipeline"
+}

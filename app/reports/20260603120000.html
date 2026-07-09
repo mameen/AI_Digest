@@ -1,0 +1,2197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily — April 25, 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<style>
+:root {
+    --bg: #0d1117; --card-bg: #161b22; --masthead-bg: #0d1117;
+    --masthead-text: #e6edf3; --accent: #58a6ff;
+    --pill-active-bg: #388bfd26; --pill-active-text: #58a6ff;
+    --pill-inactive-bg: #21262d; --pill-inactive-text: #8b949e;
+    --border: #30363d; --muted: #8b949e; --sig-color: #d29922;
+    --text: #e6edf3;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --cat-llm: #388bfd; --cat-image: #bc8cff; --cat-design: #39d2c0;
+    --cat-typo: #f85149; --cat-robot: #f0883e; --cat-research: #58a6ff;
+    --hm-empty: #21262d; --hm-1: #1a3a5c; --hm-2: #1a4a7a; --hm-3: #1a6fa0; --hm-4: #58a6ff;
+    --hm-label: #8b949e; --hm-selection: #58a6ff; --hm-hover: #8b949e;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .masthead { background: var(--masthead-bg); color: var(--masthead-text); padding: 20px 24px 16px; display: flex; flex-direction: column; gap: 6px; border-bottom: 1px solid var(--border); }
+  .masthead-top { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .report-source-seal {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.14);
+    line-height: 0;
+    padding: 4px 8px;
+    cursor: help;
+  }
+  .report-source-seal img {
+    display: block;
+    height: 40px;
+    width: auto;
+    max-width: 128px;
+    object-fit: contain;
+  }
+  .masthead h1 { font-size: 18px; font-weight: 600; letter-spacing: 0; text-transform: none; }
+  .masthead-date { font-size: 13px; font-weight: 700; letter-spacing: 0.4px; color: var(--text); text-transform: uppercase; }
+  .masthead-summary { font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 920px; padding-top: 8px; }
+
+  .top-stories-bar { background: #161b22; padding: 10px 24px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+  .top-stories-label { font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); white-space: nowrap; font-weight: 500; }
+  .top-story-pill { background: #21262d; color: var(--accent); padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; border: 1px solid var(--border); transition: background 0.15s, border-color 0.15s; white-space: nowrap; }
+  .top-story-pill:hover { background: #388bfd26; border-color: var(--accent); }
+
+  .layout {
+    display: flex; align-items: stretch; min-height: calc(100vh - 120px);
+    --sidebar-w: 220px;
+  }
+
+  .sidebar {
+    width: var(--sidebar-w); min-width: 160px; max-width: 420px; flex-shrink: 0;
+    background: var(--masthead-bg); padding: 20px 16px;
+    position: sticky; top: 0; height: calc(100vh - 120px); overflow-y: auto;
+  }
+  .layout-resizer {
+    flex-shrink: 0; width: 6px; margin: 0 -3px; position: relative; z-index: 2;
+    cursor: col-resize; touch-action: none;
+    background: transparent; border-left: 1px solid var(--border);
+  }
+  .layout-resizer::after {
+    content: ''; position: absolute; top: 0; bottom: 0; left: -3px; right: -3px;
+  }
+  .layout-resizer:hover, .layout-resizer.dragging { background: #388bfd33; border-left-color: var(--accent); }
+
+  .main { flex: 1; min-width: 0; padding: 20px 24px; background: var(--bg); }
+  .sidebar-section { margin-bottom: 24px; }
+  .sidebar-title { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  svg text { font-family: var(--font-sans); }
+  .tag-cloud { display: flex; flex-wrap: wrap; gap: 4px; }
+  .tag-item { font-size: 11px; background: var(--pill-inactive-bg); color: var(--muted); padding: 2px 7px; border-radius: 10px; border: 1px solid var(--border); cursor: pointer; transition: all 0.15s; }
+  .tag-item:hover { border-color: var(--accent); color: var(--text); }
+  .tag-item.tag-active { background: var(--pill-active-bg); color: var(--accent); border-color: var(--accent); }
+  .tag-item.tag-dim { opacity: 0.3; }
+  .tag-count { color: var(--accent); font-size: 10px; margin-left: 3px; }
+  .sig-row:hover .sig-bar { filter: brightness(1.2); }
+  #sig-chart { cursor: pointer; }
+
+  .filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; align-items: center; }
+  .pill { padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); transition: all 0.15s; font-family: var(--font-sans); background: var(--pill-inactive-bg); color: var(--pill-inactive-text); }
+  .pill.active { background: var(--pill-active-bg); color: var(--pill-active-text); border-color: var(--accent); }
+  .pill.inactive:hover { background: #21262d; border-color: #8b949e; color: var(--text); }
+
+  /* AI Search hub view */
+  .aisearch-hub { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 24px; gap: 32px; }
+  .aisearch-hub-title { font-size: 22px; font-weight: 700; color: var(--text); text-align: center; }
+  .aisearch-hub-sub { font-size: 13px; color: var(--muted); text-align: center; max-width: 480px; line-height: 1.6; margin-top: -20px; }
+  .aisearch-hub-links { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .aisearch-hub-link { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 28px 36px; background: #161b22; border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--text); transition: border-color 0.15s, background 0.15s; min-width: 180px; }
+  .aisearch-hub-link:hover { border-color: #f0883e; background: #f0883e08; }
+  .aisearch-hub-link-icon { font-size: 36px; }
+  .aisearch-hub-link-label { font-size: 15px; font-weight: 600; }
+  .aisearch-hub-link-url { font-size: 11px; color: var(--muted); }
+
+  .story-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; }
+
+  .story-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px 16px 12px; cursor: pointer; transition: border-color 0.15s; position: relative; overflow: hidden; }
+  .story-card:hover { border-color: #8b949e; }
+  .story-card.expanded { border-color: var(--accent); }
+  .card-cat-badge { position: absolute; top: 12px; right: 12px; font-size: 1rem; }
+  .card-copy { position: absolute; top: 10px; right: 32px; width: 20px; height: 20px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 5px; border: 1px solid var(--border); background: var(--card-bg); color: var(--muted); cursor: pointer; opacity: 0.4; transition: opacity 0.15s, color 0.15s, border-color 0.15s; z-index: 4; }
+  .card-copy:hover { opacity: 1; color: var(--accent); border-color: var(--accent); }
+  .card-copy.copied { opacity: 1; color: #3fb950; border-color: #3fb950; }
+  .card-copy.copy-failed { opacity: 1; color: #f85149; border-color: #f85149; }
+  .card-cat-stripe { position: absolute; top: 0; left: 0; width: 3px; height: 100%; }
+  .card-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .card-source { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; }
+  .card-info { width: 15px; height: 15px; padding: 0; border-radius: 50%; border: 1px solid var(--border); background: transparent; color: var(--muted); font: italic 10px/13px Georgia, serif; text-align: center; cursor: pointer; opacity: 0.45; transition: opacity 0.15s, border-color 0.15s, color 0.15s; }
+  .card-info:hover { opacity: 1; border-color: var(--accent); color: var(--accent); }
+  .card-trace { position: absolute; z-index: 5; top: 34px; left: 16px; right: 16px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; box-shadow: 0 4px 14px rgba(0,0,0,0.4); }
+  .card-trace[hidden] { display: none; }
+  .trace-row { display: flex; gap: 8px; padding: 2px 0; align-items: baseline; }
+  .trace-k { color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-size: 9px; min-width: 46px; flex-shrink: 0; }
+  .trace-v { color: var(--text); font-size: 11px; background: none; word-break: break-all; }
+  .card-sig { display: flex; gap: 2px; margin-left: auto; padding-right: 54px; }
+  .sig-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
+  .sig-dot.filled { background: var(--sig-color); }
+  .card-title { font-size: 13px; font-weight: 600; line-height: 1.4; color: var(--text); }
+  .card-expand { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .card-expand.visible { display: block; }
+  .card-summary { font-size: 12px; line-height: 1.6; color: var(--muted); margin-bottom: 12px; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+  .card-tag { font-size: 11px; background: #21262d; color: var(--muted); padding: 1px 6px; border-radius: 10px; border: 1px solid var(--border); }
+  .card-link { display: inline-flex; align-items: center; gap: 4px; color: var(--accent); font-size: 12px; font-weight: 500; text-decoration: none; }
+  .card-link:hover { text-decoration: underline; }
+  .card-links { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
+  .card-resource-link {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 11px; font-weight: 500; color: var(--accent);
+    text-decoration: none; padding: 3px 8px; border-radius: 999px;
+    border: 1px solid var(--border); background: var(--pill-inactive-bg, #21262d);
+  }
+  .card-resource-link:hover { text-decoration: underline; border-color: var(--accent); }
+  .card-resource-link-primary { border-color: var(--accent); font-weight: 600; }
+
+  .empty-state { text-align: center; padding: 40px; color: var(--muted); }
+
+  .footer { border-top: 1px solid var(--border); padding: 12px 24px; font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; background: var(--masthead-bg); }
+
+  .d3-tooltip { position: fixed; background: #161b22; border: 1px solid var(--border); color: var(--text); padding: 6px 10px; border-radius: 6px; font-size: 12px; font-family: var(--font-sans); pointer-events: none; opacity: 0; transition: opacity 0.15s; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+
+  .masthead-archive { font-size: 12px; margin-left: auto; }
+  .masthead-archive a { color: var(--accent); text-decoration: none; }
+  .masthead-archive a:hover { text-decoration: underline; }
+  .content-loading { padding: 48px 24px; color: var(--muted); text-align: center; }
+
+  /* ── Leaderboard ── */
+  .lb-wrap { grid-column: 1 / -1; width: 100%; }
+  .lb-tabs { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .lb-tab { padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--pill-inactive-bg); color: var(--pill-inactive-text); transition: all 0.15s; }
+  .lb-tab.active { background: var(--pill-active-bg); color: var(--accent); border-color: var(--accent); }
+  .lb-tab:hover:not(.active) { border-color: #8b949e; color: var(--text); }
+  .lb-src { font-size: 11px; color: var(--accent); text-decoration: none; margin-left: auto; }
+  .lb-src:hover { text-decoration: underline; }
+  .lb-updated { font-size: 11px; color: var(--muted); }
+  .lb-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+  .lb-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .lb-table thead { background: #161b22; position: sticky; top: 0; z-index: 1; }
+  .lb-th { padding: 8px 12px; text-align: left; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; white-space: nowrap; user-select: none; border-bottom: 1px solid var(--border); }
+  .lb-th:hover { color: var(--text); }
+    .lb-th-info { cursor: help; }
+    .lb-th-info[title] { border-bottom: 1px dotted var(--border); }
+  .sort-arrow { font-size: 10px; margin-left: 3px; opacity: 0.5; }
+  .lb-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+  .lb-table tbody tr:last-child { border-bottom: none; }
+  .lb-table tbody tr:hover { background: #21262d; }
+  .lb-table td { padding: 8px 12px; color: var(--text); white-space: nowrap; }
+  .lb-table td:first-child { color: var(--muted); font-weight: 600; }
+  .lb-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; flex-shrink: 0; }
+  .lb-bar-cell { display: flex; align-items: center; gap: 8px; min-width: 120px; }
+  .lb-bar-fill { display: inline-block; height: 6px; border-radius: 3px; min-width: 2px; }
+  .lb-bar-val { font-weight: 700; font-size: 13px; color: var(--text); }
+
+  /* ── Benchmark chart grid ── */
+  .lb-charts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .lb-chart-card { background: #161b22; border: 1px solid var(--border); border-radius: 8px; padding: 14px 12px 10px; }
+  .lb-chart-title { margin-bottom: 8px; }
+  .lb-chart-name { display: block; font-size: 13px; font-weight: 600; color: var(--text); }
+  .lb-chart-task { display: block; font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .lb-chart-svg { display: block; width: 100%; overflow: visible; }
+
+  /* ── More leaderboards (links) ── */
+  .lb-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+  .lb-links-group { background: #161b22; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+  .lb-links-head { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  .lb-link-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 6px 0; text-decoration: none; border-bottom: 1px solid transparent; }
+  .lb-link-row:hover { border-bottom-color: var(--border); }
+  .lb-link-name { font-size: 12px; color: var(--text); }
+  .lb-link-src { font-size: 11px; color: var(--accent); white-space: nowrap; flex-shrink: 0; }
+
+  @media (max-width: 1100px) { .lb-charts-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 860px) {
+    .layout { flex-direction: column; }
+    .layout-resizer { display: none; }
+    .sidebar { width: auto; max-width: none; position: static; height: auto; border-bottom: 1px solid var(--border); }
+    .masthead { padding: 16px; }
+    .top-stories-bar { padding: 10px 16px; }
+    .main { padding: 16px; }
+  }
+
+/* Light theme overrides — default is dark.css (:root). Toggle sets data-theme on <html>. */
+
+[data-theme="light"] {
+  --bg: #f6f8fa;
+  --card-bg: #ffffff;
+  --masthead-bg: #ffffff;
+  --masthead-text: #1f2328;
+  --accent: #0969da;
+  --pill-active-bg: #ddf4ff;
+  --pill-active-text: #0969da;
+  --pill-inactive-bg: #f6f8fa;
+  --pill-inactive-text: #656d76;
+  --border: #d0d7de;
+  --muted: #656d76;
+  --sig-color: #bf8700;
+  --text: #1f2328;
+  --cat-llm: #0969da;
+  --cat-image: #8250df;
+  --cat-design: #1a7f37;
+  --cat-typo: #cf222e;
+  --cat-robot: #bc4c00;
+  --cat-research: #0969da;
+  --hm-empty: #ebedf0;
+  --hm-1: #c6e6ff;
+  --hm-2: #79c0ff;
+  --hm-3: #4493f8;
+  --hm-4: #0969da;
+  --hm-label: #656d76;
+  --hm-selection: #0969da;
+  --hm-hover: #656d76;
+}
+
+[data-theme="light"] .top-stories-bar,
+[data-theme="light"] .lb-table thead,
+[data-theme="light"] .lb-chart-card,
+[data-theme="light"] .lb-links-group,
+[data-theme="light"] .aisearch-hub-link,
+[data-theme="light"] .frame-author,
+[data-theme="light"] .archive-charts-row .chart-panel,
+[data-theme="light"] .d3-tooltip {
+  background: #ffffff;
+}
+
+[data-theme="light"] .top-story-pill,
+[data-theme="light"] .tag-item,
+[data-theme="light"] .card-tag,
+[data-theme="light"] .year-pill {
+  background: #f6f8fa;
+}
+
+[data-theme="light"] .lb-table tbody tr:hover,
+[data-theme="light"] .pill.inactive:hover {
+  background: #f6f8fa;
+}
+
+[data-theme="light"] .heatmap-details,
+[data-theme="light"] .archive-details {
+  background: #ffffff;
+}
+
+[data-theme="light"] .diag-panel {
+  background: #f6f8fa;
+}
+
+[data-theme="light"] .d3-tooltip,
+[data-theme="light"] .card-trace {
+  box-shadow: 0 4px 12px rgba(31, 35, 40, 0.12);
+}
+
+</style>
+<script>(function () {
+  var STORAGE_KEY = 'aidigest-theme';
+
+  function preferredTheme() {
+    try {
+      return localStorage.getItem(STORAGE_KEY) || 'dark';
+    } catch (e) {
+      return 'dark';
+    }
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme === 'light' ? 'light' : 'dark');
+  }
+
+  applyTheme(preferredTheme());
+
+  window.addEventListener('storage', function (e) {
+    if (e.key === STORAGE_KEY) {
+      applyTheme(e.newValue || 'dark');
+    }
+  });
+
+  window.addEventListener('message', function (e) {
+    if (e.data && e.data.type === 'aidigest-theme') {
+      applyTheme(e.data.theme);
+    }
+  });
+})();
+</script>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-top">
+    <h1>AI Daily</h1>
+    <span class="report-source-seal" id="report-source-seal" hidden title="" aria-label="Report source"></span>
+    <span class="masthead-date" id="digest-date"></span>
+    <span class="masthead-archive"><a href="index.html#20260603120000">← Archive</a></span>
+  </div>
+  <div class="masthead-summary" id="digest-summary"></div>
+</div>
+
+<div class="top-stories-bar" id="top-stories-bar">
+  <span class="top-stories-label">Top Stories</span>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">By Category</div>
+      <svg id="donut-chart" width="208" height="160"></svg>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Significance</div>
+      <svg id="sig-chart" width="208" height="100"></svg>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Top Tags</div>
+      <div class="tag-cloud" id="tag-cloud"></div>
+    </div>
+  </aside>
+  <div class="layout-resizer" id="layout-resizer" role="separator" aria-orientation="vertical" aria-label="Resize sidebar" tabindex="0"></div>
+  <main class="main">
+    <div class="filter-bar" id="filter-bar"></div>
+    <div class="story-grid" id="story-grid"><div class="content-loading">Loading digest…</div></div>
+  </main>
+</div>
+
+<footer class="footer">
+  <span id="footer-count"></span>
+  <span>AI Daily · Generated by Claude · ai-search.io inspired</span>
+</footer>
+
+<div class="d3-tooltip" id="tooltip"></div>
+
+<script>window.__AIDIGEST_DIGEST__ = {
+  "generated_at": "2026-06-03T12:00:00Z",
+  "filename_prefix": "20260603120000",
+  "summary": "NVIDIA Cosmos 3 sweeps every open-source leaderboard (T2I, I2V, robot policy) with 8,680 HuggingFace stars on debut; Microsoft Build 2026 ships a family of 7 in-house MAI models plus a 1-petaflop dev box; Anthropic confidentially files S-1 for a potential trillion-dollar IPO; and MiniMax M3 lands with 1M-context native multimodality.",
+  "aisearch_video_url": "https://www.youtube.com/watch?v=DlvhlQOBHBw",
+  "aisearch_video_label": "Jun 2 — NVIDIA PiD 4K images, Higgsfield, Z-image workflows",
+  "categories": [
+    {
+      "id": "leaderboard",
+      "label": "Leaderboard Rankings",
+      "icon": "🏆",
+      "stories": [
+        {
+          "id": "lb-opus48-stable1",
+          "title": "Claude Opus 4.8 holds #1 (score 61) as MiniMax M3 enters AA top 10",
+          "summary": "Claude Opus 4.8 (max) remains the Artificial Analysis #1 with an intelligence score of 61, unchanged since its May 28 debut. New entrant MiniMax M3 lands at #10 with a score of 55 on its first day of API availability (June 1), joining Gemini 3.5 Flash (#8, score 55) and Gemini 3.5 Flash Medium (#9, score 55) as fresh faces in the top 10. Qwen3.7 Max climbed from score 55 to 57, now at #7.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "leaderboard",
+            "minimax",
+            "anthropic",
+            "google",
+            "alibaba"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-price-wave",
+          "title": "Frontier price collapse continues: Gemini 3.1 Pro drops from $4.50 to $1.74/M",
+          "summary": "This week's AA snapshot reveals continued aggressive price compression. Gemini 3.1 Pro Preview (score 57, #5) fell from $4.50 to $1.74/M — a 61% reduction. Kimi K2.6 dropped from $1.71 to $0.70/M; Grok 4.3 (high) from $1.56 to $0.64/M; MiMo-V2.5-Pro holds at $0.18/M with a score-54 intelligence. GPT-5.3 Codex (xhigh) fell from $4.81 to $1.87/M. The gap between #1 and mid-tier pricing is collapsing rapidly.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "pricing",
+            "leaderboard",
+            "google",
+            "kimi",
+            "frontier"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-mythos-sweb",
+          "title": "Claude Mythos Preview: 93.9% SWE-bench Verified — 13 points above any public model",
+          "summary": "Claude Mythos Preview, released April 7 but not made generally available due to cybersecurity risks, holds 93.9% on SWE-bench Verified (next best: 88.6% by Opus 4.8). It also scores 77.8% on the harder SWE-bench Pro and 97.6% on USAMO 2026. The model powers Project Glasswing — a closed coalition of Apple, Google, Microsoft, and Amazon — rather than being sold as an API product. The benchmark gap raises the question of whether frontier AI is being withheld from developers for safety rather than commercial reasons.",
+          "source": "BenchLM.ai / Anthropic",
+          "url": "https://benchlm.ai/models/claude-mythos-preview",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "benchmark",
+            "anthropic",
+            "swe-bench",
+            "safety",
+            "frontier"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-opus48-hle",
+          "title": "Claude Opus 4.8 leads Humanity's Last Exam at 57.9% — new high watermark",
+          "summary": "Vellum's latest HLE tracking shows Claude Opus 4.8 at 57.9%, well ahead of Gemini 3 Pro (45.8%) and Kimi K2 Thinking (44.9%). This is significantly higher than the 48.2% figure from the prior week's tracking, suggesting continued scoring improvements as the model is refined post-launch. On SWE-bench Verified, Opus 4.8 sits at 88.6% — second only to the restricted Mythos Preview.",
+          "source": "Vellum AI",
+          "url": "https://www.vellum.ai/llm-leaderboard",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "benchmark",
+            "anthropic",
+            "hle",
+            "reasoning"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-kimi-open-leader",
+          "title": "Kimi K2.5 leads open-weight benchmarks across GPQA, SWE-bench, and AIME",
+          "summary": "Vellum's open-weight leaderboard shows Kimi K2.5 (Moonshot AI) at the top of three categories: GPQA Diamond (87.6%), SWE-bench Verified (76.8%), and AIME 2025 (96.1%). Kimi K2 Thinking leads HLE at 44.9%. The Kimi family now dominates open reasoning benchmarks more decisively than any single provider, surpassing GPT-oss-120b (80.1% GPQA) and DeepSeek across coding. Open-weight performance is now 4–6 percentage points behind closed models on most benchmarks.",
+          "source": "Vellum AI",
+          "url": "https://www.vellum.ai/open-llm-leaderboard",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "open-source",
+            "kimi",
+            "leaderboard",
+            "benchmark"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "lb-image-arena-reve",
+          "title": "Reve 2.0 jumps to #2 on Image Arena (Elo 1280), displacing MAI-Image and Gemini models",
+          "summary": "Arena.ai's text-to-image leaderboard shows GPT Image 2 (medium) still at #1 (Elo 1384), but Reve 2.0 — a model from a relatively unknown lab — has rocketed to #2 (1280), ahead of Gemini 3.1 Flash Image Preview (#3, 1269), MAI-Image-2.5 (#4, 1254), and Gemini 3 Pro Image (#5, 1245). Grok Imagine and Luma AI Uni 1.1 Max also appear in the top 10. NVIDIA Cosmos 3 is separately ranked as the best open-source T2I on Artificial Analysis.",
+          "source": "Arena.ai / Artificial Analysis",
+          "url": "https://arena.ai/leaderboard/text-to-image",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "image-gen",
+            "leaderboard",
+            "reve",
+            "arena"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "aisearch",
+      "label": "AI Search",
+      "icon": "🔍",
+      "stories": [
+        {
+          "id": "ais-pid-intro",
+          "title": "theAIsearch deep-dive: NVIDIA PiD (Pixel Diffusion) — open-source 4K image decoder",
+          "summary": "theAIsearch's June 2 video focuses entirely on NVIDIA's PiD (Pixel Diffusion Decoder), a free open-source replacement for the VAE decoder in diffusion pipelines. PiD runs as a plug-and-play upgrade: it replaces only the decoder stage, leaving UNet and conditioning untouched, and supports FLUX.1, FLUX.2, SD3, Z-Image, and RAE latent spaces. Personal demos in the video show dramatic detail recovery at 4K resolution compared to standard VAE output.",
+          "source": "theAIsearch / NVIDIA",
+          "url": "https://www.youtube.com/watch?v=DlvhlQOBHBw",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "nvidia",
+            "open-source",
+            "image-gen",
+            "4K",
+            "comfyui"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-pid-demos",
+          "title": "PiD personal demos: skin pores, fabric threads, text details that VAE destroys",
+          "summary": "The video's personal demo section shows side-by-side comparisons of PiD output versus standard VAE decoding. PiD recovers fine skin texture, fabric weave, and typographic detail that the VAE compresses away. The demos were run live on an NVIDIA RTX 5000 Ada GPU using ComfyUI, demonstrating that the quality improvement is accessible on prosumer hardware — not just data-center GPUs.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=DlvhlQOBHBw&t=19",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "pid",
+            "demo",
+            "quality",
+            "typography",
+            "comfyui"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-pid-how-it-works",
+          "title": "How PiD works: denoising in pixel space rather than latent space",
+          "summary": "PiD reformulates the final decoder as a conditional pixel-space diffusion model. Instead of a single deterministic pass (VAE), it denoises in high-resolution pixel space, sharpening fine details in one learned pass. The 4-step distilled variant makes 4K decoding practical without the multi-second latency of cascade methods. Compared to SeedVR2 (a prior high-res cascade), PiD is 5.9× faster: 211ms vs 1,237ms at 2K output.",
+          "source": "theAIsearch / NVIDIA Research",
+          "url": "https://research.nvidia.com/labs/sil/projects/pid/",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "pid",
+            "diffusion",
+            "architecture",
+            "nvidia",
+            "research"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-pid-vs-seedvr2",
+          "title": "PiD vs SeedVR2: 5.9× speed advantage at equivalent 2K quality",
+          "summary": "The video's head-to-head section shows PiD (211ms/image) vs SeedVR2 (1,237ms/image) at identical 2K output resolution on the same hardware, with comparable or better detail retention. SeedVR2 is a cascaded approach that runs a full new diffusion pass; PiD adds only the decoder. For workflows that generate many images, the speed difference is decisive — a 100-image batch drops from ~2 minutes to ~21 seconds.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=DlvhlQOBHBw&t=172",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "pid",
+            "seedvr2",
+            "benchmark",
+            "speed",
+            "comparison"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-pid-install",
+          "title": "PiD installation via ComfyUI — models on HuggingFace, no separate training needed",
+          "summary": "The installation section shows PiD being added to existing ComfyUI setups. Model weights are hosted on HuggingFace (Comfy-Org/PixelDiT) and require downloading a Gemma 2B text encoder and the PiD diffusion models. No fine-tuning is needed; PiD works with any compatible latent space immediately. The ComfyUI pull request (#14103) adds native PiD nodes, making it beginner-accessible.",
+          "source": "theAIsearch",
+          "url": "https://github.com/Comfy-Org/ComfyUI/pull/14103",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "pid",
+            "comfyui",
+            "open-source",
+            "install",
+            "huggingface"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-pid-workflows",
+          "title": "ComfyUI PiD workflow templates: standardized high-res pipelines for creators",
+          "summary": "Pre-built ComfyUI workflow files for PiD are available at the GitHub PR. The video shows the standard workflow: generate at base resolution (e.g. 1K), then feed the latent directly to PiD for 4K decode without a separate upscale step. The workflow is modular — PiD slots in after any FLUX.1, FLUX.2, or SD3 generation node with no rewiring of the generation graph.",
+          "source": "theAIsearch",
+          "url": "https://github.com/Comfy-Org/ComfyUI/pull/14103",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "comfyui",
+            "workflow",
+            "pid",
+            "open-source"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-pid-upscaler",
+          "title": "PiD upscaler workflow: 4K image decode in one step on a consumer GPU",
+          "summary": "The upscaler workflow section demonstrates generating at 1K and decoding to 4K using PiD's 4× and 8× upscaling modes. The result is true 4K detail — not bicubic interpolation — achieved in a single diffusion pass on an RTX 5000. The presenter emphasizes this makes 4K image generation practical for individual creators for the first time, without requiring A100-class hardware or multi-step workflows.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=DlvhlQOBHBw&t=384",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "4K",
+            "upscale",
+            "pid",
+            "consumer-gpu",
+            "workflow"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-higgsfield",
+          "title": "Higgsfield Supercomputer: cloud-based video AI rendering platform",
+          "summary": "The video's Higgsfield segment (sponsor section) covers Higgsfield's cloud rendering platform for AI-generated video. Higgsfield Supercomputer offers batch video rendering with managed GPU queues and is positioned as a complement to local ComfyUI workflows — useful when local VRAM is insufficient for long video sequences or multi-pass pipelines. The platform integrates with popular generation models.",
+          "source": "theAIsearch / Higgsfield",
+          "url": "https://higgsfield.ai/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "higgsfield",
+            "video-gen",
+            "cloud",
+            "rendering"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-before-after",
+          "title": "Before/after slider tool for image comparison in ComfyUI presentations",
+          "summary": "The video demonstrates a before/after image comparison slider node in ComfyUI, useful for showcasing the difference between VAE-decoded and PiD-decoded outputs. The slider is a presentation utility but also a practical QA tool — letting creators quickly verify that PiD is actually improving detail before committing to a full batch. The tool is available as a ComfyUI custom node.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=DlvhlQOBHBw&t=796",
+          "significance": 2,
+          "novelty": 2,
+          "relevance_design": 3,
+          "tags": [
+            "comfyui",
+            "tool",
+            "comparison",
+            "qa"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-zimage-pid",
+          "title": "Z-Image + PiD workflow: combining two NVIDIA open-source models for extreme detail",
+          "summary": "The final workflow section shows chaining Z-Image (Comfy-Org/z_image_turbo) — a fast Qwen3-4B-based latent generator — with PiD as the decoder. Z-Image generates at 512px latent resolution in seconds; PiD then decodes to 4K with sharp detail. Both models are fully open-source and run locally. The presenter calls this the most practical high-quality local pipeline available in mid-2026.",
+          "source": "theAIsearch / NVIDIA",
+          "url": "https://huggingface.co/Comfy-Org/z_image_turbo",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "z-image",
+            "pid",
+            "open-source",
+            "workflow",
+            "nvidia"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "ais-pid-t2i",
+          "title": "PiD text-to-image mode: direct T2I generation with the Pixel Diffusion model",
+          "summary": "The closing segment shows PiD used directly in text-to-image mode — not just as a decoder upgrade — using the Gemma 2B text encoder. Results are compared to FLUX.2 Standard at the same prompt. PiD T2I produces notably sharper fine text and fabric detail, though FLUX.2 has stronger stylistic variety. For designers needing accurate typography or material rendering in generated images, PiD T2I is a compelling option.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=DlvhlQOBHBw&t=1195",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "pid",
+            "text-to-image",
+            "typography",
+            "open-source"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "agentic-ai",
+      "label": "Agentic AI",
+      "icon": "🤖",
+      "stories": [
+        {
+          "id": "agent-anthropic-ipo",
+          "title": "Anthropic confidentially files S-1 with SEC — potential trillion-dollar IPO",
+          "summary": "Anthropic submitted a draft Form S-1 registration statement to the SEC on June 1, 2026, for a proposed IPO of its common stock. The company's revenue run rate has grown from $10B annually last year to $47B as of May 2026 — a nearly 5× jump. The filing comes ahead of rival OpenAI, which is also preparing a confidential IPO submission. At its $965B last-round valuation, a public offering could surpass any prior tech IPO. Market conditions and SEC review remain the gating factors.",
+          "source": "CNBC / Anthropic / TechCrunch",
+          "url": "https://techcrunch.com/2026/06/01/anthropic-files-to-go-public/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "anthropic",
+            "ipo",
+            "finance",
+            "openai",
+            "frontier"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agent-msft-iq-platform",
+          "title": "Microsoft Build 2026: IQ platform makes every Microsoft surface agent-native",
+          "summary": "Microsoft announced a unified \"IQ\" intelligence layer across its product suite at Build 2026 (June 2). Microsoft IQ grounds agents in world and enterprise knowledge; Work IQ captures organizational data (APIs available June 16); Web IQ returns passages at 2.5× standard search speed; Foundry IQ enables cross-enterprise retrieval planning; Fabric IQ provides a semantic layer over structured data. The Foundry Agent Service adds instant-on sandboxed agent hosting, and OpenClaw enables multi-step workflow execution on Windows.",
+          "source": "Microsoft Blog",
+          "url": "https://blogs.microsoft.com/blog/2026/06/02/microsoft-build-2026-be-yourself-at-work/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "microsoft",
+            "agents",
+            "build-2026",
+            "enterprise",
+            "platform"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agent-msft-scout",
+          "title": "Microsoft Scout: personal agent for meetings, scheduling, and routine work tasks",
+          "summary": "Microsoft Scout, announced at Build 2026, is a personal agent that handles meeting prep, scheduling, and routine task execution within the Microsoft 365 ecosystem. It runs on top of the Work IQ context layer, meaning it has access to organizational knowledge, email context, and calendar data. Scout is positioned as a direct alternative to OpenAI's operator-class agents but within a managed enterprise compliance envelope.",
+          "source": "Microsoft Blog",
+          "url": "https://blogs.microsoft.com/blog/2026/06/02/microsoft-build-2026-be-yourself-at-work/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "microsoft",
+            "agents",
+            "m365",
+            "build-2026",
+            "productivity"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agent-mythos-glasswing",
+          "title": "Claude Mythos powers Project Glasswing: the model too capable to sell",
+          "summary": "Anthropic's Claude Mythos Preview (93.9% SWE-bench, 97.6% USAMO 2026) will not be released as a general API product due to its autonomous cybersecurity capabilities, including the ability to discover zero-day exploits. Instead, it powers Project Glasswing — a coalition of 12 major tech and finance firms including Apple, Google, Microsoft, and Amazon — for controlled, high-stakes agentic deployments. This is the first case of a frontier AI model being intentionally kept off the public market due to capability concerns rather than unreadiness.",
+          "source": "NxCode / BenchLM",
+          "url": "https://www.nxcode.io/resources/news/claude-mythos-preview-anthropic-most-powerful-model-2026",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "anthropic",
+            "safety",
+            "agent",
+            "glasswing",
+            "frontier"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "agent-surface-rtx-spark",
+          "title": "Microsoft Surface RTX Spark Dev Box: 1 petaflop of AI compute on a desktop",
+          "summary": "Microsoft announced the Surface RTX Spark Dev Box at Build 2026 — a workstation packing up to 1 petaflop of AI compute and 128 GB of unified memory. It is the first Microsoft-branded PC targeting AI model inference and local agent execution as its primary use case. The device is designed to run MAI-Code-1-Flash, local Copilot agents, and upcoming Windows AI APIs without cloud round-trips, directly addressing developer demand for low-latency agentic workflows.",
+          "source": "Microsoft Blog",
+          "url": "https://blogs.microsoft.com/blog/2026/06/02/microsoft-build-2026-be-yourself-at-work/",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "microsoft",
+            "hardware",
+            "local-ai",
+            "build-2026",
+            "developer"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "llm",
+      "label": "LLMs & Reasoning",
+      "icon": "🧠",
+      "stories": [
+        {
+          "id": "llm-minimax-m3",
+          "title": "MiniMax M3: 1M-context multimodal frontier model — 59% SWE-Bench Pro, weights coming",
+          "summary": "MiniMax officially launched M3 on June 1, 2026, with API availability from May 31. M3 is a natively multimodal model supporting image and video input and computer use, with a 1-million-token context window using its new MSA (MiniMax Sparse Attention) architecture — 15× faster decoding and 9× faster prefill vs the prior generation at 1M tokens. On SWE-Bench Pro, M3 scores 59.0%, surpassing GPT-5.5 and Gemini 3.1 Pro and approaching Opus 4.7. Model weights and the technical report will be published on HuggingFace within 10 days (targeting June 11).",
+          "source": "MiniMax / VentureBeat",
+          "url": "https://www.minimax.io/blog/minimax-m3",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "minimax",
+            "open-weight",
+            "multimodal",
+            "1M-context",
+            "coding"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-mai-thinking1",
+          "title": "MAI-Thinking-1: Microsoft's first in-house reasoning model, trained without OpenAI data",
+          "summary": "Microsoft launched MAI-Thinking-1 at Build 2026 — a 35B active-parameter reasoning model with 256K context, trained from scratch on commercially licensed data with zero distillation from OpenAI or Anthropic models. In blind evaluations, independent raters prefer it over Claude Sonnet 4.6, and it matches Claude Opus 4.6 on SWE Bench Pro. Available in private preview on Microsoft Foundry. It signals Microsoft's strategic intent to reduce its OpenAI dependency for core reasoning capabilities.",
+          "source": "Microsoft / TechTimes",
+          "url": "http://www.techtimes.com/articles/317631/20260602/microsoft-build-2026-mai-thinking-1-first-house-reasoning-model-trained-without-openai-data.htm",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "microsoft",
+            "reasoning",
+            "mai",
+            "build-2026",
+            "open-weight"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-mai-code1",
+          "title": "MAI-Code-1-Flash: 5B-parameter coding model now in GitHub Copilot and VS Code",
+          "summary": "MAI-Code-1-Flash, a 5-billion-parameter inference-efficient coding model, was also shipped at Microsoft Build 2026. Unlike MAI-Thinking-1 (preview-only), MAI-Code-1-Flash is already deployed in Visual Studio Code and GitHub Copilot as of June 2. The model is tuned specifically for GitHub task formats and is available on Fireworks AI, Baseten, and OpenRouter. It represents Microsoft's first self-sufficient production coding model replacing OpenAI completions in its own developer tools.",
+          "source": "Microsoft / WindowsReport",
+          "url": "https://windowsreport.com/microsoft-expands-mai-ai-models-with-new-reasoning-and-coding-systems-at-build-2026/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "microsoft",
+            "coding",
+            "github",
+            "mai",
+            "vscode"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "llm-qwen37-climb",
+          "title": "Qwen3.7 Max climbs to AA score 57 (#7) with 169 tokens/s — fastest frontier model",
+          "summary": "The latest Artificial Analysis snapshot shows Qwen3.7 Max (Alibaba) has improved its intelligence score from 55 to 57, now ranking #7 globally — tied with Gemini 3.1 Pro Preview and GPT-5.5 Medium. At 169 tokens/second and $1.43/M, it offers the best price-to-intelligence-to-speed ratio of any frontier model. The upgrade makes it a strong default for throughput-sensitive applications like real-time design generation and batch document processing.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "qwen",
+            "alibaba",
+            "leaderboard",
+            "speed",
+            "frontier"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "image-gen",
+      "label": "Image Generation & Processing",
+      "icon": "🎨",
+      "stories": [
+        {
+          "id": "img-pid-nvidia",
+          "title": "NVIDIA PiD: open-source 4K decoder that makes consumer-GPU 4K generation practical",
+          "summary": "NVIDIA Research's PiD (Pixel Diffusion Decoder) replaces the VAE decoder in any FLUX.1, FLUX.2, SD3, or Z-Image pipeline with a learned pixel-space diffusion step. PiD runs 5.9× faster than SeedVR2 at equivalent 2K quality (211ms vs 1,237ms) and enables true 4K decoding — not bicubic upscaling — on a single RTX 5000 Ada. Code and model weights are on GitHub (nv-tlabs/PiD) and HuggingFace. The ComfyUI PR (#14103) adds native nodes, making it immediately usable without custom scripting.",
+          "source": "NVIDIA Research / GIGAZINE",
+          "url": "https://github.com/nv-tlabs/PiD",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "nvidia",
+            "open-source",
+            "4K",
+            "image-gen",
+            "decoder"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-cosmos3-open",
+          "title": "NVIDIA Cosmos 3: best open-source T2I and I2V model, also top robot policy",
+          "summary": "Cosmos 3 is NVIDIA's omnimodal world model unifying language, image, video, audio, and action sequences in a single mixture-of-transformers architecture. On Artificial Analysis rankings, it holds the top spot for both open-source text-to-image and image-to-video generation. It also tops RoboArena's robot policy model rankings. Available under OpenMDW-1.1 license on HuggingFace (nvidia/cosmos3) and GitHub, with 8,680 stars on debut day — the largest single-day HuggingFace paper engagement this year.",
+          "source": "NVIDIA / HuggingFace",
+          "url": "https://research.nvidia.com/labs/cosmos-lab/cosmos3/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "nvidia",
+            "open-source",
+            "world-model",
+            "image-gen",
+            "video-gen"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-reve2-arena",
+          "title": "Reve 2.0 surges to #2 on Image Arena (Elo 1280), beating Gemini and MAI",
+          "summary": "Reve 2.0, from a relatively low-profile image generation lab, has climbed to #2 on Arena.ai's blind-comparison image leaderboard with an Elo of 1280 — behind only GPT Image 2 medium (1384). It surpasses Gemini 3.1 Flash Image Preview (#3, 1269), MAI-Image-2.5 (#4, 1254), Gemini 3 Pro Image (#5, 1245), and GPT Image 1.5 (#6, 1242). The model's style and prompt adherence appear to be strengths in blind user tests.",
+          "source": "Arena.ai",
+          "url": "https://arena.ai/leaderboard/text-to-image",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "reve",
+            "arena",
+            "image-gen",
+            "leaderboard"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-firefly-models",
+          "title": "Adobe Firefly expands to 30+ AI models including Kling 3.0 Omni, Veo 3.1, and Runway Gen-4.5",
+          "summary": "Adobe Firefly's model roster now includes Kling 3.0 and Kling 3.0 Omni (video), Google's Nano Banana 2 and Veo 3.1, Runway's Gen-4.5, and ElevenLabs Multilingual v2 for voice — more than 30 models total. Adobe simultaneously removed monthly credit limits, allowing unlimited AI image and video generation for all paid Creative Cloud subscribers. Firefly Video Editor also received studio-quality sound, advanced color adjustments, and Adobe Stock integration.",
+          "source": "Adobe / The Shortcut",
+          "url": "https://helpx.adobe.com/firefly/web/whats-new/new-features/whats-new.html",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "adobe",
+            "firefly",
+            "creative-cloud",
+            "video-gen",
+            "unlimited"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "img-zimage-turbo",
+          "title": "Z-Image Turbo: Qwen3-4B-based open-source fast image generator for ComfyUI",
+          "summary": "Z-Image Turbo (Comfy-Org/z_image_turbo) is an open-source fast image generator using a Qwen3 4B text encoder. It generates at 512px latent resolution in seconds and is designed to be paired with PiD for 4K output — creating an all-open-source T2I pipeline that rivals closed models. Both models are available on HuggingFace and work natively in ComfyUI. The pairing was demonstrated in the theAIsearch June 2 video as the recommended workflow for local high-resolution generation.",
+          "source": "Comfy-Org / theAIsearch",
+          "url": "https://huggingface.co/Comfy-Org/z_image_turbo",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "z-image",
+            "open-source",
+            "comfyui",
+            "qwen",
+            "fast"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "design-ai",
+      "label": "Design & Creative AI",
+      "icon": "✏️",
+      "stories": [
+        {
+          "id": "design-firefly-assistant",
+          "title": "Adobe Firefly AI Assistant (public beta): orchestrates multi-step workflows across all CC apps",
+          "summary": "Adobe's Firefly AI Assistant entered public beta on April 27 and is now broadly available. Creators describe their desired outcome in plain language, and the assistant orchestrates and executes complex multi-step workflows across Firefly, Photoshop, Premiere, Lightroom, Illustrator, and Express. It uses Precision Flow for image editing (AI-guided adjustment paths) and AI Markup for annotating edits with intent. This is Adobe's first AI product that works across the entire Creative Cloud rather than within a single app.",
+          "source": "Adobe Blog / The Shortcut",
+          "url": "https://blog.adobe.com/en/publish/2026/04/15/introducing-firefly-ai-assistant-new-way-create-with-our-creative-agent",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "adobe",
+            "firefly",
+            "codesign",
+            "workflow",
+            "creative-cloud"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-msft-copilot-app",
+          "title": "Microsoft GitHub Copilot agent-native desktop app: full-stack creative dev workflows",
+          "summary": "Microsoft Build 2026 included the launch of a new agent-native GitHub Copilot desktop app, enabling multi-step workflow execution directly in the development environment. For designers who code, the combination of MAI-Code-1-Flash (in Copilot) and MAI-Image-2.5 (in the generation API) creates a unified AI design-to-code pipeline. The app also supports Frontier Tuning — reinforcement learning customization within compliance boundaries — allowing teams to fine-tune Copilot for brand-specific output.",
+          "source": "Microsoft Blog",
+          "url": "https://blogs.microsoft.com/blog/2026/06/02/microsoft-build-2026-be-yourself-at-work/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "microsoft",
+            "github",
+            "copilot",
+            "design-to-code",
+            "agent"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-ai-summit-2026",
+          "title": "Design + AI Summit 2026: June 9–10 online conference on real-world AI in design workflows",
+          "summary": "CreativePro's Design + AI Summit 2026 runs June 9–10 as a live virtual conference, focusing on practical case studies from UX teams navigating AI in design and production — not theory. Sessions cover AI-assisted moodboarding, generative UI systems, AI co-pilot tooling in Figma and Illustrator, and the ethics of AI in brand identity. Registration is open. The summit reflects a broader shift: 2026 designers are using double the number of AI tools vs 2025, and building custom AI workflows tailored to their practice.",
+          "source": "CreativePro",
+          "url": "https://creativepro.com/event/design-ai-summit-2026/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "design",
+            "conference",
+            "ai-tools",
+            "workflow",
+            "codesign"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-msft-mai-image",
+          "title": "MAI-Image-2.5: Microsoft's T2I + I2I model now at #4 on Arena, live in Bing and Designer",
+          "summary": "MAI-Image-2.5 was announced as part of the Microsoft Build 2026 MAI family. It handles both text-to-image and image-to-image tasks and is now integrated into Microsoft Designer and Bing Image Creator. On Arena.ai's blind-comparison leaderboard, it sits at #4 overall (Elo 1254), ahead of all Gemini 3 Pro variants and GPT Image 1.5. For design teams using Microsoft's ecosystem, it offers an enterprise-licensed generation pipeline with Azure data residency.",
+          "source": "Microsoft / Arena.ai",
+          "url": "https://windowsreport.com/microsoft-expands-mai-ai-models-with-new-reasoning-and-coding-systems-at-build-2026/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "microsoft",
+            "image-gen",
+            "design",
+            "enterprise",
+            "mai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "design-state-of-ai-report",
+          "title": "State of AI in Design 2026 report: designers now use 2× as many AI tools as in 2025",
+          "summary": "The AI in Design Report 2026 (stateofaidesign.com) finds that designers are using double the number of off-the-shelf AI tools compared to 2025, and a growing fraction are building custom AI workflows tailored to how they work. The shift is from AI as a novelty to AI as infrastructure: moodboarding, layout iteration, UI component generation, and brand consistency checks are now the primary AI-assisted tasks. Co-design (human-AI collaborative workflows) is called out as the fastest-growing practice area.",
+          "source": "State of AI Design",
+          "url": "https://stateofaidesign.com/",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "codesign",
+            "design",
+            "report",
+            "workflow",
+            "industry"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "typography",
+      "label": "Typography & Text Rendering",
+      "icon": "🔤",
+      "stories": [
+        {
+          "id": "typo-monotype-myfonts-chatgpt",
+          "title": "Monotype MyFonts ChatGPT App beta launches June 1 — @MyFonts covers 250K fonts in 300 languages",
+          "summary": "Monotype Labs launched the MyFonts ChatGPT app in beta on June 1, 2026. Designers can type @MyFonts within any ChatGPT conversation to get font recommendations matched to creative intent — covering Monotype's library of over 250,000 fonts across more than 300 languages. The integration means font discovery is now a natural-language conversational act within the world's most-used AI assistant. The app builds on Monotype's February AI Search launch, extending it into the ChatGPT plugin ecosystem.",
+          "source": "Monotype / Transform Magazine",
+          "url": "https://www.prnewswire.com/news-releases/monotype-launches-ai-search-transforming-font-search-and-discovery-with-natural-language-and-conversational-ai-302698367.html",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "monotype",
+            "typography",
+            "font-discovery",
+            "chatgpt",
+            "nlp"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-monotype-ai-search",
+          "title": "Monotype AI Search: describe a mood, get a font — now live in 5 languages",
+          "summary": "Monotype's AI Search (launched Feb 25, 2026) enables designers to find fonts by describing brand traits, moods, or use cases in natural language: \"warm but authoritative,\" \"playful without being childish.\" It is available on MyFonts (US, UK) and on the Monotype Fonts platform in English, French, German, Spanish, and Portuguese. Creative Bloq describes it as solving what designers called 'a creativity killer' — hours of manual browsing to find the right typeface. The tool represents a model shift from keyword-based to intent-based font discovery.",
+          "source": "Monotype / Creative Bloq",
+          "url": "https://www.monotype.com/company/press-release/monotype-launches-ai-search-transforming-font-search-and-discovery-conversational-ai",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "monotype",
+            "typography",
+            "font-discovery",
+            "nlp",
+            "workflow"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-pid-text-rendering",
+          "title": "NVIDIA PiD improves AI text rendering: sharper glyphs at 4K where VAE smears details",
+          "summary": "A key use case for NVIDIA's PiD decoder identified in the theAIsearch demo is text rendering in generated images. Standard VAE decoders smear fine glyph details at 512px latent, producing blurry or incorrectly reconstructed letters. PiD's pixel-space diffusion step recovers sharp glyph edges and serifs at 4K output, making it significantly more useful for packaging, poster, and editorial design workflows where legible AI-generated type is required.",
+          "source": "theAIsearch / NVIDIA Research",
+          "url": "https://research.nvidia.com/labs/sil/projects/pid/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "typography",
+            "text-rendering",
+            "pid",
+            "nvidia",
+            "image-gen"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "typo-ilt-fonts-ai",
+          "title": "I Love Typography Trust: \"Fonts and AI\" — positioning piece on the future of type in the AI era",
+          "summary": "The ILT Trust (I Love Typography's nonprofit arm) published a substantive piece titled \"Fonts and AI\" examining where the typography community stands in the generative AI era. The piece covers AI's growing role in font discovery, variable font generation, and cross-lingual type design — while raising concerns about the erasure of type designers' livelihoods and the cultural homogenization that comes from training on dominant scripts. It positions AI as a tool that must be steered by typographers, not one that replaces them.",
+          "source": "I Love Typography Trust",
+          "url": "https://trust.ilovetypography.com/fonts-and-ai/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "typography",
+            "ilt",
+            "ethics",
+            "font-design",
+            "ai-culture"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "robotics",
+      "label": "Robotics & Embodied AI",
+      "icon": "🦾",
+      "stories": [
+        {
+          "id": "rob-nvidia-unitree",
+          "title": "NVIDIA picks Unitree for first public humanoid research platform — Unitree seeks $620M IPO",
+          "summary": "NVIDIA selected Chinese humanoid maker Unitree Robotics to power the first commercially available humanoid robot research system the chip company will sell to academic and industrial researchers. The partnership makes NVIDIA's Isaac GR00T N1 universal robot brain available on Unitree hardware out of the box. Simultaneously, Unitree is preparing to raise 4.2 billion yuan (~$620M) through a listing on Shanghai's STAR board, making it one of the first humanoid robot companies to go public.",
+          "source": "CNBC",
+          "url": "https://www.cnbc.com/2026/06/01/nvidia-unitree-humanoid-robotics-system-researchers.html",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "nvidia",
+            "unitree",
+            "humanoid",
+            "ipo",
+            "research-platform"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-nvidia-icra",
+          "title": "NVIDIA presents 8 research papers at ICRA 2026 — sim-to-real transfer is the central challenge",
+          "summary": "At ICRA 2026 (Vienna, June 1–5), NVIDIA presented 8 research papers tackling the key barrier in humanoid deployment: ensuring skills learned in simulation work in the unpredictable real world. Isaac GR00T N1 is positioned as a universal brain that handles household and industrial tasks without per-robot custom solutions. The papers cover perception, policy learning, and physical interaction — showing NVIDIA's ambition to provide the full software stack for the robotics industry, not just the GPU hardware.",
+          "source": "NVIDIA Blog / RoboticsTomorrow",
+          "url": "https://blogs.nvidia.com/blog/national-robotics-week-2026/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "nvidia",
+            "icra",
+            "research",
+            "sim-to-real",
+            "humanoid"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-cosmos3-physical-ai",
+          "title": "NVIDIA Cosmos 3: top-ranked robot policy model (RoboArena) and open Physical AI backbone",
+          "summary": "Beyond T2I and I2V, NVIDIA Cosmos 3 is ranked #1 on RoboArena's robot policy model benchmark. Its omnimodal architecture — processing language, images, video, audio, and action sequences in a single model — makes it uniquely suited as a unified perception-and-planning backbone for embodied agents. NVIDIA is promoting Cosmos 3 as the open-source alternative to proprietary robot foundation models, available under OpenMDW-1.1 for commercial deployment.",
+          "source": "NVIDIA / HuggingFace",
+          "url": "https://huggingface.co/papers/2606.02800",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "nvidia",
+            "cosmos",
+            "physical-ai",
+            "robotics",
+            "open-source"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-vindynamics-dyno",
+          "title": "VinDynamics Dyno: Vingroup's first humanoid robot debuts at ICRA and Computex",
+          "summary": "VinDynamics (a Vingroup subsidiary) officially unveiled Dyno, its first humanoid robot, simultaneously at ICRA 2026 (Vienna, June 1–5) and Computex Taipei 2026 (June 2–5). Dyno is a general-purpose humanoid targeting caregiving, industrial automation, and education environments. The dual simultaneous debut at two of the world's major tech events positions VinDynamics as an emerging player alongside Boston Dynamics, Unitree, and 1X Technologies.",
+          "source": "Slovenia Times",
+          "url": "https://sloveniatimes.com/47795/vindynamics-debuts-its-first-humanoid-robot-at-two-of-the-worlds-leading-technology-events",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "vindynamics",
+            "humanoid",
+            "icra",
+            "computex",
+            "vingroup"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "rob-grail-paper",
+          "title": "GRAIL: generating humanoid loco-manipulation from 3D assets and video priors",
+          "summary": "The GRAIL paper (HuggingFace: 2606.05160) proposes a method for synthesizing humanoid locomotion and manipulation behaviors directly from 3D object assets and video demonstrations, without requiring large motion-capture datasets. The approach combines video priors (learned from internet video) with physics-based simulation to produce generalizable loco-manipulation policies. Published by researchers at UC Berkeley and aligned institutions, it addresses a key bottleneck in getting humanoids to work with novel objects.",
+          "source": "HuggingFace Papers / GRAIL",
+          "url": "https://huggingface.co/papers/2606.05160",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "robotics",
+            "manipulation",
+            "video-priors",
+            "research",
+            "loco"
+          ],
+          "image_url": null
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "label": "Research & Papers",
+      "icon": "📄",
+      "stories": [
+        {
+          "id": "res-cosmos3",
+          "title": "Cosmos 3: NVIDIA's omnimodal world model — 8,680 HuggingFace stars on launch day",
+          "summary": "NVIDIA's Cosmos 3 paper (arXiv 2606.02800) introduces a unified mixture-of-transformers model processing language, images, video, audio, and action sequences. A single model replaces the pipeline of vision-language models, video generators, world simulators, and action policy models previously needed for physical AI. Cosmos 3 ranked #1 on Artificial Analysis for open-source T2I and I2V, and #1 on RoboArena for robot policy. Available under OpenMDW-1.1 with 8,680 HuggingFace paper upvotes — the largest single-day score this year.",
+          "source": "NVIDIA / HuggingFace",
+          "url": "https://huggingface.co/papers/2606.02800",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "nvidia",
+            "world-model",
+            "multimodal",
+            "open-source",
+            "physical-ai"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-echo-infinity",
+          "title": "Echo-Infinity: real-time infinite video generation via evolving memory",
+          "summary": "Echo-Infinity (arXiv 2606.04527) proposes a learning framework for real-time infinite video generation using an evolving memory mechanism — the model maintains a compressed memory of past frames rather than regenerating everything from a fixed context window. This allows indefinite temporal extension of generated video without quality degradation or context overflow. Key applications include interactive simulation, game environments, and endless procedural video backgrounds for design work.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.04527",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "video-gen",
+            "research",
+            "infinite",
+            "memory",
+            "real-time"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-deep-research-errors",
+          "title": "Where do deep-research agents go wrong? Span-level error localization in agent trajectories",
+          "summary": "This paper (arXiv 2606.02060) provides the first systematic analysis of failure modes in deep-research AI agents — the kind that autonomously browse, read, and synthesize information across multiple sources. The authors identify a taxonomy of error types (factual confabulation, source misattribution, reasoning chain breaks) and introduce a span-level annotation method to localize where in a long trajectory an agent first goes wrong. Directly useful for improving agentic coding and research workflows.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.02060",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "agents",
+            "research",
+            "error-analysis",
+            "reliability",
+            "rag"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-qwen-image-flash",
+          "title": "Qwen-Image-Flash: Alibaba's efficient image understanding model beyond standard objectives",
+          "summary": "Alibaba's Qwen-Image-Flash paper (arXiv 2606.03746) introduces design choices that go beyond standard image-language pretraining objectives. The paper reports strong performance on visual reasoning, OCR, and document understanding benchmarks while being optimized for inference efficiency — making it suitable for production deployment in cost-sensitive scenarios. Given Qwen's track record of rapid open-weight releases, model weights may follow the paper within days.",
+          "source": "HuggingFace Papers / Alibaba",
+          "url": "https://huggingface.co/papers/2606.03746",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "qwen",
+            "alibaba",
+            "image-understanding",
+            "ocr",
+            "efficient"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-benchevolver",
+          "title": "BenchEvolver: AI that writes its own frontier benchmarks via solution-centric evolution",
+          "summary": "BenchEvolver (arXiv 2606.01286) addresses the problem of benchmark saturation — when current models score near-ceiling on existing tests. The paper proposes a method where a \"teacher\" model generates novel task instances that expose weaknesses in a \"student\" model, evolving the benchmark to always remain at the frontier of what current systems can barely solve. This has major implications for how we evaluate and push the capabilities of future models, particularly in coding and reasoning.",
+          "source": "HuggingFace Papers",
+          "url": "https://huggingface.co/papers/2606.01286",
+          "significance": 3,
+          "novelty": 5,
+          "relevance_design": 1,
+          "tags": [
+            "benchmark",
+            "research",
+            "evaluation",
+            "reasoning",
+            "saturation"
+          ],
+          "image_url": null
+        },
+        {
+          "id": "res-msft-discovery",
+          "title": "Microsoft Discovery: enterprise agentic AI platform for scientific workflows",
+          "summary": "Microsoft announced Discovery at Build 2026, described as an enterprise-grade agentic AI platform for scientific research workflows. The system orchestrates multi-step hypothesis generation, literature synthesis, and experimental design across internal databases and external sources. It builds on the same Foundry Agent Service infrastructure as other Microsoft agents but is vertically specialized for research and development teams in pharma, materials science, and engineering — directly competing with Google's Co-scientist (published in Nature, May 2026).",
+          "source": "Microsoft Blog",
+          "url": "https://blogs.microsoft.com/blog/2026/06/02/microsoft-build-2026-be-yourself-at-work/",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 1,
+          "tags": [
+            "microsoft",
+            "science",
+            "agents",
+            "research",
+            "enterprise"
+          ],
+          "image_url": null
+        }
+      ]
+    }
+  ],
+  "visualizations": {
+    "category_counts": {
+      "leaderboard": 6,
+      "aisearch": 11,
+      "agentic-ai": 5,
+      "llm": 4,
+      "image-gen": 5,
+      "design-ai": 5,
+      "typography": 4,
+      "robotics": 5,
+      "research": 6
+    },
+    "significance_distribution": {
+      "5": 16,
+      "4": 28,
+      "3": 7,
+      "2": 1,
+      "1": 0
+    },
+    "top_tags": [
+      {
+        "tag": "nvidia",
+        "count": 9
+      },
+      {
+        "tag": "open-source",
+        "count": 8
+      },
+      {
+        "tag": "microsoft",
+        "count": 8
+      },
+      {
+        "tag": "pid",
+        "count": 7
+      },
+      {
+        "tag": "anthropic",
+        "count": 6
+      },
+      {
+        "tag": "leaderboard",
+        "count": 6
+      },
+      {
+        "tag": "image-gen",
+        "count": 6
+      },
+      {
+        "tag": "comfyui",
+        "count": 5
+      },
+      {
+        "tag": "build-2026",
+        "count": 5
+      },
+      {
+        "tag": "typography",
+        "count": 5
+      }
+    ],
+    "top_stories": [
+      {
+        "id": "res-cosmos3",
+        "title": "Cosmos 3: NVIDIA's omnimodal world model — 8,680 HuggingFace stars on launch day",
+        "category": "research",
+        "significance": 5
+      },
+      {
+        "id": "agent-anthropic-ipo",
+        "title": "Anthropic confidentially files S-1 with SEC — potential trillion-dollar IPO",
+        "category": "agentic-ai",
+        "significance": 5
+      },
+      {
+        "id": "img-pid-nvidia",
+        "title": "NVIDIA PiD: open-source 4K decoder that makes consumer-GPU 4K generation practical",
+        "category": "image-gen",
+        "significance": 5
+      },
+      {
+        "id": "lb-mythos-sweb",
+        "title": "Claude Mythos Preview: 93.9% SWE-bench Verified — 13 points above any public model",
+        "category": "leaderboard",
+        "significance": 5
+      },
+      {
+        "id": "llm-minimax-m3",
+        "title": "MiniMax M3: 1M-context multimodal frontier model — 59% SWE-Bench Pro, weights coming",
+        "category": "llm",
+        "significance": 5
+      }
+    ]
+  },
+  "report_source": "llm-pipeline",
+  "report_source_badge": "../img/report-source/llm_pipeline.png",
+  "report_source_label": "LLM Pipeline"
+};</script>
+<script>
+const PAGE_PREFIX = "20260603120000";
+let digestData = null;
+const leaderboards = {"aa":{"title":"Intelligence Leaderboard","source":"artificialanalysis.ai","url":"https://artificialanalysis.ai/leaderboards/models","updated":"Jun 3, 2026","cols":["#","Model","Provider","Intelligence","Speed (t/s)","Context","Price /1M"],"rows":[[1,"Claude Opus 4.8 (max)","Anthropic",61,64,"1M","$4.10"],[2,"GPT-5.5 (xhigh)","OpenAI",60,68,"922k","$4.35"],[3,"GPT-5.5 (high)","OpenAI",59,71,"922k","$4.35"],[4,"Claude Opus 4.7 (max)","Anthropic",57,53,"1M","$4.10"],[5,"Gemini 3.1 Pro Preview","Google",57,138,"1M","$1.74"],[6,"GPT-5.5 (medium)","OpenAI",57,66,"922k","$4.35"],[7,"Qwen3.7 Max","Alibaba",57,169,"1M","$1.43"],[8,"Gemini 3.5 Flash","Google",55,187,"1M","$1.31"],[9,"Gemini 3.5 Flash (medium)","Google",55,205,"1M","$1.31"],[10,"MiniMax-M3","MiniMax",55,0,"1M","—"],[11,"Kimi K2.6","Kimi",54,44,"256k","$0.70"],[12,"MiMo-V2.5-Pro","Xiaomi",54,43,"1M","$0.18"],[13,"GPT-5.3 Codex (xhigh)","OpenAI",54,81,"400k","$1.87"],[14,"Qwen3.7 Plus","Alibaba",53,53,"1M","$0.25"],[15,"Grok 4.3 (high)","xAI",53,158,"1M","$0.64"],[16,"Muse Spark","Meta",52,0,"262k","—"],[17,"Claude Opus 4.7 (non-reasoning)","Anthropic",52,50,"1M","$4.10"],[18,"Claude Sonnet 4.6 (max)","Anthropic",52,54,"1M","$2.46"],[19,"DeepSeek V4 Pro (Max)","DeepSeek",52,54,"1M","$0.18"],[20,"GLM-5.1","Z AI",51,52,"200k","$0.90"]],"numericCols":[0,3,4]},"vellum":{"type":"charts","title":"Benchmarks — All Models","source":"vellum.ai","url":"https://www.vellum.ai/llm-leaderboard","updated":"Jun 3, 2026","benchmarks":[{"name":"Reasoning","task":"GPQA Diamond","unit":"%","models":[{"model":"Claude 3 Opus","provider":"Anthropic","score":95.4},{"model":"Claude Opus 4.7","provider":"Anthropic","score":94.2},{"model":"Claude Opus 4.8","provider":"Anthropic","score":93.6},{"model":"GPT-5.5","provider":"OpenAI","score":93.6},{"model":"GPT-5.2","provider":"OpenAI","score":92.4}]},{"name":"High School Math","task":"AIME 2025","unit":"%","models":[{"model":"Gemini 3 Pro","provider":"Google","score":100},{"model":"GPT-5.2","provider":"OpenAI","score":100},{"model":"Claude Opus 4.6","provider":"Anthropic","score":99.8},{"model":"Kimi K2 Thinking","provider":"Kimi","score":99.1},{"model":"GPT oss 20b","provider":"OpenAI","score":98.7}]},{"name":"Agentic Coding","task":"SWE-Bench Verified","unit":"%","models":[{"model":"Claude Opus 4.8","provider":"Anthropic","score":88.6},{"model":"Claude Opus 4.7","provider":"Anthropic","score":87.6},{"model":"Claude Sonnet 4.5","provider":"Anthropic","score":82.0},{"model":"Claude Opus 4.5","provider":"Anthropic","score":80.9},{"model":"Claude Opus 4.6","provider":"Anthropic","score":80.8}]},{"name":"Overall Ability","task":"Humanity's Last Exam","unit":"%","models":[{"model":"Claude Opus 4.8","provider":"Anthropic","score":57.9},{"model":"Gemini 3 Pro","provider":"Google","score":45.8},{"model":"Kimi K2 Thinking","provider":"Kimi","score":44.9},{"model":"GPT-5.5 Pro","provider":"OpenAI","score":43.1},{"model":"GPT-5.5","provider":"OpenAI","score":41.4}]},{"name":"Visual Reasoning","task":"ARC-AGI 2","unit":"%","models":[{"model":"GPT-5.5","provider":"OpenAI","score":85.0},{"model":"Claude Opus 4.6","provider":"Anthropic","score":68.8},{"model":"Claude Sonnet 4.6","provider":"Anthropic","score":58.3},{"model":"GPT-5.2","provider":"OpenAI","score":52.9},{"model":"Claude Opus 4.5","provider":"Anthropic","score":37.6}]},{"name":"Frontier Coding","task":"SWE-bench Pro","unit":"%","models":[{"model":"Claude Mythos Preview","provider":"Anthropic","score":77.8},{"model":"MiniMax M3","provider":"MiniMax","score":59.0},{"model":"GPT-5.5","provider":"OpenAI","score":57.7},{"model":"Claude Opus 4.6","provider":"Anthropic","score":53.4},{"model":"MAI-Thinking-1","provider":"Microsoft","score":52.0}]}]},"open":{"title":"Open-Weight Rankings","source":"vellum.ai","url":"https://www.vellum.ai/open-llm-leaderboard","updated":"Jun 3, 2026","cols":["#","Model","Provider","GPQA %","SWE-Bench %","AIME %","HLE %"],"rows":[[1,"Kimi K2.5","Moonshot AI",87.6,76.8,96.1,30.1],[2,"Kimi K2 Thinking","Moonshot AI",84.5,71.3,99.1,44.9],[3,"GPT oss 120b","OpenAI",80.1,0,97.9,14.9],[4,"Nemotron Ultra 253B","NVIDIA",76.0,0,0,0],[5,"Llama 4 Behemoth","Meta",73.7,0,0,0],[6,"DeepSeek V4 Pro","DeepSeek",0,49.2,0,8.6],[7,"Qwen3.7 Max","Alibaba",0,63.4,0,0],[8,"MiniMax M3","MiniMax",0,59.0,0,0],[9,"GPT oss 20b","OpenAI",0,0,98.7,10.9],[10,"DeepSeek-R1","DeepSeek",0,0,74.0,8.6]],"numericCols":[0,3,4,5,6]},"image":{"title":"Image Arena Leaderboard","source":"arena.ai","url":"https://arena.ai/leaderboard/text-to-image","updated":"Jun 3, 2026","cols":["#","Model","Provider","Arena Elo"],"rows":[[1,"GPT Image 2 (medium)","OpenAI",1384],[2,"Reve 2.0","Reve",1280],[3,"Gemini 3.1 Flash Image Preview","Google",1269],[4,"MAI-Image-2.5","Microsoft",1254],[5,"Gemini 3 Pro Image Preview 2k","Google",1245],[6,"GPT Image 1.5 (high fidelity)","OpenAI",1242],[7,"Grok Imagine (quality)","xAI",1232],[8,"Gemini 3 Pro Image Preview","Google",1232],[9,"Ideogram 4.0 (quality)","Ideogram",1204],[10,"Uni 1.1 Max","Luma AI",1191]],"numericCols":[0,3]},"open_img":{"title":"Best Open-Source Image Models","source":"artificialanalysis.ai","url":"https://artificialanalysis.ai/image/leaderboard/text-to-image","updated":"Jun 3, 2026","cols":["#","Model","Provider","AA Ranking","Notes"],"rows":[[1,"Cosmos 3 (T2I)","NVIDIA","#1 open T2I","OpenMDW-1.1, 8.68k HF stars"],[2,"Cosmos 3 (I2V)","NVIDIA","#1 open I2V","Omnimodal, physical AI backbone"],[3,"FLUX.2 Ultra","Black Forest","Top FLUX","Elo 1389 on AA"],[4,"NVIDIA PiD","NVIDIA","Best decoder","5.9× faster than SeedVR2 at 2K"],[5,"Z-Image Turbo","Comfy-Org","Fast T2I","Qwen3-4B encoder, open-source"]],"numericCols":[0]}};
+
+const PROVIDER_COLORS = {
+  OpenAI: '#10a37f', Anthropic: '#d4763b', Google: '#4285f4',
+  DeepSeek: '#1a6cf5', Alibaba: '#ff6a00', Meta: '#0866ff',
+  Kimi: '#8b5cf6', Xiaomi: '#ff6900', 'Z AI': '#06b6d4', MiniMax: '#ec4899',
+  Reve: '#7c3aed', 'Microsoft AI': '#00a4ef', xAI: '#e0e0e0',
+  Ideogram: '#ff5c8a', 'Luma AI': '#14b8a6', 'Black Forest Labs': '#16a34a',
+  Bytedance: '#325ab4', 'Alibaba-ATH': '#ff8c42', KlingAI: '#00c2a8',
+  Runway: '#22c55e', Pixverse: '#a855f7', Pruna: '#f59e0b', Kandinsky: '#6366f1',
+  Tencent: '#1e90ff', Lightricks: '#ef4444', 'Genmo AI': '#0ea5e9',
+  HiDream: '#db2777', NVIDIA: '#76b900', Recraft: '#e11d48', Krea: '#fbbf24',
+  'Zhipu AI': '#38bdf8', 'Moonshot AI': '#a78bfa', Qwen: '#f97316', Meituan: '#ffb000'
+};
+
+const CAT_COLORS = {
+  leaderboard: '#F39C12', analytics: '#6366F1', aisearch: '#F0883E', youtube: '#E74C3C',
+  'agentic-ai': '#0EA5E9',
+  llm: '#2C3E50', rag: '#14B8A6', 'image-gen': '#8E44AD', 'design-ai': '#16A085',
+  typography: '#C0392B', robotics: '#E67E22', research: '#2980B9'
+};
+
+// Plain-language explanations for leaderboard column headers, shown on hover.
+// Keyed by the exact label text used in each tab's `cols` array.
+const LB_GLOSSARY = {
+  '#': 'Rank by the leaderboard\u2019s primary metric.',
+  'Model': 'Model being evaluated.',
+  'Model / Agent': 'Model (with its agent/scaffold) being evaluated.',
+  'Provider': 'Organization that develops the model.',
+  'Intelligence': 'Artificial Analysis Intelligence Index \u2014 a composite across reasoning, knowledge, coding and math benchmarks; higher is better.',
+  'Speed (t/s)': 'Output speed in tokens generated per second; higher is faster.',
+  'Latency (s)': 'Time to first token, in seconds; lower is more responsive.',
+  'Context': 'Maximum context window (input + output tokens) the model accepts.',
+  'Price /1M': 'Blended cost per 1 million tokens, in USD.',
+  'Resolved %': 'Share of SWE-bench Verified GitHub issues the agent fully resolved; higher is better.',
+  'Date': 'Date the result was submitted to the leaderboard.',
+  'Params (B)': 'Model size in billions of parameters (\u2014 if undisclosed).',
+  'HumanEval+': 'EvalPlus HumanEval+ pass@1 \u2014 % of Python problems solved against the harder, augmented test suite.',
+  'MBPP+': 'EvalPlus MBPP+ pass@1 \u2014 % solved on the augmented MBPP Python benchmark.',
+  '\uD83C\uDF0D': 'Country/region where the model originates.',
+  'Code Arena': 'Code-focused arena Elo from head-to-head human preference votes.',
+  'Reasoning': 'Reasoning benchmark score; higher is better.',
+  'Math': 'Math benchmark score; higher is better.',
+  'Elo': 'Elo rating from pairwise human preference votes \u2014 users pick the better of two outputs; higher means it wins more head-to-head matchups.',
+  'Score': 'Arena score (Elo-style) from head-to-head human preference votes; higher is better.',
+  'Votes': 'Number of human preference votes collected in the arena for this model.'
+};
+
+function lbTooltip(label) {
+  return LB_GLOSSARY[label] || '';
+}
+
+function resolveLbColumns(lb, activeLb) {
+  return {
+    providerCol: lb.providerCol != null ? lb.providerCol : (activeLb === 'aa' || activeLb === 'open') ? 2 : 1,
+    scoreCol:    lb.scoreCol    != null ? lb.scoreCol    : (activeLb === 'aa') ? 3 : -1,
+    scoreMax:    lb.scoreMax    != null ? lb.scoreMax    : (activeLb === 'aa') ? 60 : 100
+  };
+}
+
+function renderLbLinks(lb) {
+  return lb.groups.map(g => `
+        <div class="lb-links-group">
+          <div class="lb-links-head">${g.label}</div>
+          ${g.items.map(it => `<a class="lb-link-row" href="${it.url}" target="_blank" rel="noopener"><span class="lb-link-name">${it.name}</span><span class="lb-link-src">${it.source} ↗</span></a>`).join('')}
+        </div>`).join('');
+}
+
+let allStories = [];
+let activeFilter = 'all';
+let activeSig = null;
+let activeTag = null;
+
+function applyFilters() {
+  let stories = activeFilter === 'all' ? allStories : allStories.filter(s => s.catId === activeFilter);
+  if (activeSig !== null) stories = stories.filter(s => s.significance === activeSig);
+  if (activeTag !== null) stories = stories.filter(s => s.tags.includes(activeTag));
+  return stories;
+}
+
+function setSig(sig) {
+  activeSig = activeSig === sig ? null : sig;
+  redrawSigChart();
+  renderCards(activeFilter);
+}
+
+function setTag(tag) {
+  activeTag = activeTag === tag ? null : tag;
+  redrawTagCloud();
+  renderCards(activeFilter);
+}
+
+/** Branch badge: LLM Pipeline vs Hermes Agent (see report_source_* in digest JSON). */
+function reportSourceSealMarkup(data) {
+  const href = data && data.report_source_badge;
+  const label = (data && (data.report_source_label || data.report_source)) || 'Digest source';
+  if (!href) return '';
+  const tip = 'Produced by ' + label;
+  return '<img src="' + escHtml(href) + '" alt="' + escHtml(label) + '" title="' + escHtml(tip) + '">';
+}
+
+function renderReportSourceSeal(data) {
+  const el = document.getElementById('report-source-seal');
+  if (!el) return;
+  const label = (data && (data.report_source_label || data.report_source)) || 'Digest source';
+  const markup = reportSourceSealMarkup(data);
+  if (!markup) {
+    el.hidden = true;
+    el.innerHTML = '';
+    el.removeAttribute('title');
+    return;
+  }
+  el.hidden = false;
+  el.title = 'Produced by ' + label;
+  el.setAttribute('aria-label', label + ' report');
+  el.innerHTML = markup;
+}
+
+function render(data) {
+  allStories = [];
+  data.categories.forEach(cat => {
+    cat.stories.forEach(s => allStories.push({ ...s, catId: cat.id, catLabel: cat.label, catIcon: cat.icon }));
+  });
+  renderReportSourceSeal(data);
+  const dt = new Date(data.generated_at);
+  document.getElementById('digest-date').textContent =
+    dt.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' }).toUpperCase();
+  document.getElementById('digest-summary').textContent = data.summary;
+  renderTopStories(data);
+  renderFilterPills(data);
+  renderDonut(data);
+  renderSigChart(data);
+  renderTagCloud(data);
+  renderCards('all');
+  document.getElementById('footer-count').textContent =
+    allStories.length + ' stories · ' + data.categories.length + ' categories';
+  initLayoutResizer();
+}
+
+function renderTopStories(data) {
+  const bar = document.getElementById('top-stories-bar');
+  data.visualizations.top_stories.forEach(ts => {
+    const pill = document.createElement('button');
+    pill.className = 'top-story-pill';
+    pill.textContent = ts.title;
+    pill.onclick = () => scrollToStory(ts.id);
+    bar.appendChild(pill);
+  });
+}
+
+function renderFilterPills(data) {
+  const bar = document.getElementById('filter-bar');
+  bar.innerHTML = '';
+  const allPill = document.createElement('button');
+  allPill.className = 'pill active';
+  allPill.textContent = 'All (' + allStories.length + ')';
+  allPill.dataset.filter = 'all';
+  allPill.onclick = () => setFilter('all');
+  bar.appendChild(allPill);
+  data.categories.forEach(cat => {
+    const pill = document.createElement('button');
+    pill.className = 'pill inactive';
+    if (cat.id === 'leaderboard' || cat.id === 'aisearch' || cat.id === 'youtube') {
+      pill.innerHTML = cat.icon + ' ' + cat.label;
+    } else {
+      if (!cat.stories.length) return;
+      pill.innerHTML = cat.icon + ' ' + cat.label + ' <span style="color:var(--muted);font-size:.7em">(' + cat.stories.length + ')</span>';
+    }
+    pill.dataset.filter = cat.id;
+    pill.onclick = () => setFilter(cat.id);
+    bar.appendChild(pill);
+  });
+}
+
+function setFilter(id) {
+  activeFilter = id;
+  document.querySelectorAll('.pill').forEach(p => {
+    p.className = 'pill ' + (p.dataset.filter === id ? 'active' : 'inactive');
+  });
+  renderCards(id);
+}
+
+function renderAISearch(grid) {
+  const stories = allStories.filter(s => s.catId === 'aisearch');
+  const videoUrl   = digestData.aisearch_video_url   || 'https://www.youtube.com/@theAIsearch';
+  const videoLabel = digestData.aisearch_video_label || 'Latest video';
+  grid.innerHTML = `
+    <div style="grid-column:1/-1;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:4px;">
+      <span style="font-size:12px;font-weight:600;color:var(--text)">🔍 theAIsearch</span>
+      <a href="${videoUrl}" target="_blank" rel="noopener"
+         style="font-size:11px;color:var(--accent);text-decoration:none;display:flex;align-items:center;gap:4px;">
+        ▶ ${videoLabel}
+      </a>
+      <span style="margin-left:auto;display:flex;gap:12px;">
+        <a href="https://ai-search.io" target="_blank" rel="noopener" style="font-size:11px;color:var(--muted);text-decoration:none;">🌐 ai-search.io</a>
+        <a href="https://www.youtube.com/@theAIsearch" target="_blank" rel="noopener" style="font-size:11px;color:var(--muted);text-decoration:none;">▶ @theAIsearch</a>
+      </span>
+    </div>`;
+  stories.forEach(story => grid.appendChild(buildCard(story)));
+}
+
+function renderYouTube(grid) {
+  const cat = (digestData.categories || []).find(c => c.id === 'youtube');
+  const stories = allStories.filter(s => s.catId === 'youtube');
+  const sources = (cat && cat.sources) || [];
+
+  const channels = sources.length
+    ? sources.map(src => ({
+        key: src.channel_key || src.channel_label,
+        label: src.channel_label || src.channel_key,
+      }))
+    : Object.values(
+        stories.reduce((acc, s) => {
+          const key = s.channel_key || s.channel_label || 'youtube';
+          if (!acc[key]) {
+            acc[key] = { key, label: s.channel_label || s.channel_key || 'YouTube' };
+          }
+          return acc;
+        }, {})
+      ).sort((a, b) => a.label.localeCompare(b.label));
+
+  let activeChannel = 'all';
+
+  function channelTabs() {
+    return `
+      <div class="lb-tabs">
+        <button class="lb-tab ${activeChannel === 'all' ? 'active' : ''}" data-ch="all">
+          All (${stories.length})
+        </button>
+        ${channels.map(ch => `
+          <button class="lb-tab ${activeChannel === ch.key ? 'active' : ''}" data-ch="${ch.key}">
+            📺 ${ch.label}
+          </button>`).join('')}
+      </div>`;
+  }
+
+  function storiesForChannel(ch) {
+    return stories.filter(
+      s => s.channel_key === ch.key || s.channel_label === ch.label
+    );
+  }
+
+  function visibleStories() {
+    if (activeChannel === 'all') return stories;
+    const ch = channels.find(c => c.key === activeChannel);
+    return ch ? storiesForChannel(ch) : stories;
+  }
+
+  function draw() {
+    grid.innerHTML = '';
+    const wrap = document.createElement('div');
+    wrap.className = 'lb-wrap';
+    wrap.style.gridColumn = '1 / -1';
+    wrap.innerHTML = channelTabs();
+    wrap.querySelectorAll('.lb-tab').forEach(btn => {
+      btn.onclick = () => { activeChannel = btn.dataset.ch; draw(); };
+    });
+    grid.appendChild(wrap);
+    visibleStories().forEach(story => grid.appendChild(buildCard(story)));
+  }
+
+  draw();
+}
+
+function renderCards(filter) {
+  const grid = document.getElementById('story-grid');
+  if (filter === 'leaderboard') { renderLeaderboard(grid); return; }
+  if (filter === 'aisearch') { renderAISearch(grid); return; }
+  if (filter === 'youtube') { renderYouTube(grid); return; }
+  const stories = applyFilters();
+  if (!stories.length) { grid.innerHTML = '<div class="empty-state">No stories match the current filters.</div>'; return; }
+  grid.innerHTML = '';
+  stories.forEach(story => grid.appendChild(buildCard(story)));
+}
+
+function renderLeaderboard(grid) {
+  let activeLb = 'aa';
+  function tabs(lb) {
+    return `
+      <div class="lb-tabs">
+        <button class="lb-tab ${activeLb==='aa'?'active':''}"           data-lb="aa">🏅 AA: All Models</button>
+        <button class="lb-tab ${activeLb==='open'?'active':''}"         data-lb="open">🔓 Open-Weight</button>
+        <button class="lb-tab ${activeLb==='swe'?'active':''}"          data-lb="swe">🐛 SWE-bench</button>
+        <button class="lb-tab ${activeLb==='coding'?'active':''}"       data-lb="coding">⌨️ EvalPlus</button>
+        <button class="lb-tab ${activeLb==='arena_image'?'active':''}"  data-lb="arena_image">🎨 Image Arena</button>
+        <button class="lb-tab ${activeLb==='arena_t2i'?'active':''}"    data-lb="arena_t2i">🖼️ T2I: AA</button>
+        <button class="lb-tab ${activeLb==='arena_video'?'active':''}"  data-lb="arena_video">🎬 T2V: Arena</button>
+        <button class="lb-tab ${activeLb==='vellum'?'active':''}"       data-lb="vellum">📊 Vellum: All</button>
+        <button class="lb-tab ${activeLb==='vellum_open'?'active':''}"  data-lb="vellum_open">📊 Vellum: Open</button>
+        <button class="lb-tab ${activeLb==='links'?'active':''}"        data-lb="links">🔗 More</button>
+        ${lb.url ? `<a class="lb-src" href="${lb.url}" target="_blank" rel="noopener">↗ ${lb.source}</a>` : ''}
+        ${lb.updated ? `<span class="lb-updated">Updated ${lb.updated}</span>` : ''}
+      </div>`;
+  }
+  function buildTable(lb) {
+    let sortCol = null, sortDir = 1;
+    grid.innerHTML = `<div class="lb-wrap">${tabs(lb)}
+      <div class="lb-table-wrap">
+        <table class="lb-table" id="lb-table">
+          <thead><tr>${lb.cols.map((c,i)=>{const tip=lbTooltip(c);return `<th class="lb-th${tip?' lb-th-info':''}" data-col="${i}"${tip?` title="${tip.replace(/"/g,'&quot;')}"`:''}>${c} <span class="sort-arrow">↕</span></th>`;}).join('')}</tr></thead>
+          <tbody id="lb-body"></tbody>
+        </table>
+      </div></div>`;
+    grid.querySelectorAll('.lb-tab').forEach(btn => { btn.onclick = () => { activeLb = btn.dataset.lb; build(); }; });
+    function scoreColor(val, max) {
+      const t = val/max;
+      return t > 0.9 ? '#3fb950' : t > 0.75 ? '#58a6ff' : t > 0.6 ? '#d29922' : '#8b949e';
+    }
+    function drawRows(rows) {
+      const { providerCol, scoreCol, scoreMax } = resolveLbColumns(lb, activeLb);
+      document.getElementById('lb-body').innerHTML = rows.map(row => {
+        const provider = row[providerCol];
+        const dot = `<span class="lb-dot" style="background:${PROVIDER_COLORS[provider]||'#555'}"></span>`;
+        return '<tr>' + row.map((cell, i) => {
+          if (i === providerCol) return `<td>${dot}${cell}</td>`;
+          if (i === scoreCol && typeof cell === 'number' && cell > 0) {
+            const pct = Math.round((cell/scoreMax)*100);
+            return `<td><div class="lb-bar-cell"><span class="lb-bar-fill" style="width:${Math.min(pct,100)}%;background:${scoreColor(cell,scoreMax)}"></span><span class="lb-bar-val">${cell}</span></div></td>`;
+          }
+          return `<td>${cell === 0 ? '—' : cell}</td>`;
+        }).join('') + '</tr>';
+      }).join('');
+    }
+    drawRows(lb.rows);
+    grid.querySelectorAll('.lb-th').forEach(th => {
+      th.onclick = () => {
+        const col = +th.dataset.col;
+        sortDir = sortCol === col ? -sortDir : 1; sortCol = col;
+        grid.querySelectorAll('.lb-th .sort-arrow').forEach(a => a.textContent='↕');
+        th.querySelector('.sort-arrow').textContent = sortDir===1?'↑':'↓';
+        drawRows([...lb.rows].sort((a,b) => {
+          const va=a[col], vb=b[col];
+          if (va==='—'||va===null||va===0) return 1; if (vb==='—'||vb===null||vb===0) return -1;
+          return typeof va==='number'&&typeof vb==='number' ? (va-vb)*sortDir : String(va).localeCompare(String(vb))*sortDir;
+        }));
+      };
+    });
+  }
+  function buildCharts(lb) {
+    grid.innerHTML = `<div class="lb-wrap">${tabs(lb)}<div class="lb-charts-grid" id="lb-charts"></div></div>`;
+    grid.querySelectorAll('.lb-tab').forEach(btn => { btn.onclick = () => { activeLb = btn.dataset.lb; build(); }; });
+    const container = document.getElementById('lb-charts');
+    lb.benchmarks.forEach(bm => {
+      const card = document.createElement('div');
+      card.className = 'lb-chart-card';
+      card.innerHTML = `<div class="lb-chart-title"><span class="lb-chart-name">${bm.name}</span><span class="lb-chart-task">${bm.task}</span></div><svg class="lb-chart-svg"></svg>`;
+      container.appendChild(card);
+      const svg = card.querySelector('svg');
+      const W = card.clientWidth || 280, H = 180;
+      const ml = 8, mr = 8, mt = 28, mb = 52;
+      const w = W - ml - mr, h = H - mt - mb;
+      const models = bm.models;
+      const maxVal = Math.max(...models.map(m => m.score));
+      const minVal = Math.min(...models.map(m => m.score));
+      const yMin = Math.max(0, minVal - (maxVal - minVal) * 0.3);
+      const x = d3.scaleBand().domain(models.map((_,i)=>i)).range([0,w]).padding(0.25);
+      const y = d3.scaleLinear().domain([yMin, maxVal * 1.08]).range([h, 0]);
+      const s = d3.select(svg).attr('width','100%').attr('height', H).attr('viewBox',`0 0 ${W} ${H}`);
+      const g = s.append('g').attr('transform',`translate(${ml},${mt})`);
+      [0.25,0.5,0.75,1].forEach(t => {
+        const yv = yMin + (maxVal*1.08 - yMin)*t;
+        g.append('line').attr('x1',0).attr('x2',w).attr('y1',y(yv)).attr('y2',y(yv)).attr('stroke','#30363d').attr('stroke-width',1);
+        g.append('text').attr('x',-2).attr('y',y(yv)+3).attr('text-anchor','end').attr('font-size',8).attr('fill','#8b949e')
+          .text(bm.unit==='%' ? Math.round(yv)+'%' : Math.round(yv));
+      });
+      models.forEach((m, i) => {
+        const color = PROVIDER_COLORS[m.provider] || '#58a6ff';
+        const bx = x(i), bw = x.bandwidth();
+        const bar = g.append('rect').attr('x', bx).attr('y', h).attr('width', bw).attr('height', 0).attr('rx', 3).attr('fill', color).attr('opacity', 0.85);
+        bar.transition().duration(500).delay(i*80).attr('y', y(m.score)).attr('height', h - y(m.score));
+        g.append('text').attr('x', bx+bw/2).attr('y', y(m.score)-4).attr('text-anchor','middle').attr('font-size',9).attr('font-weight','700').attr('fill','#e6edf3')
+          .attr('opacity',0).text(m.score + (bm.unit==='%'?'%':''))
+          .transition().duration(400).delay(i*80+300).attr('opacity',1);
+        g.append('text').attr('transform',`translate(${bx+bw/2},${h+6}) rotate(35)`).attr('text-anchor','start').attr('font-size',9).attr('fill','#8b949e')
+          .text(m.model.length>14 ? m.model.slice(0,13)+'…' : m.model);
+      });
+    });
+  }
+  function buildLinks(lb) {
+    grid.innerHTML = `<div class="lb-wrap">${tabs(lb)}<div class="lb-links">${renderLbLinks(lb)}</div></div>`;
+    grid.querySelectorAll('.lb-tab').forEach(btn => { btn.onclick = () => { activeLb = btn.dataset.lb; build(); }; });
+  }
+  function build() {
+    const lb = leaderboards[activeLb];
+    if (lb.type === 'links') buildLinks(lb);
+    else if (lb.type === 'charts') buildCharts(lb);
+    else buildTable(lb);
+  }
+  build();
+}
+
+// Story link: real article -> "Read source"; ungrounded/demoted -> neutral
+// "Source pending" affordance (the topic is kept, we just have no verified URL).
+function sourceLinkHtml(url) {
+  return url
+    ? '<a class="card-link" href="' + url + '" target="_blank" rel="noopener">Read source →</a>'
+    : '<span class="card-link card-link-pending" title="No verified source link yet">Source pending</span>';
+}
+
+function storyLinksHtml(links) {
+  if (!links || !links.length) return '';
+  function label(link) {
+    const name = link.name || link.url || 'Link';
+    const kind = link.kind || '';
+    if (kind === 'github') return 'GitHub · ' + name;
+    if (kind === 'x') return 'X · ' + name;
+    if (kind === 'linkedin') return 'LinkedIn · ' + name;
+    if (kind === 'huggingface') return 'HF · ' + name;
+    if (kind === 'arxiv') return 'arXiv · ' + name;
+    return name;
+  }
+  return '<div class="card-links">' + links.map(function (link, i) {
+    const url = escHtml(link.url || '');
+    if (!url) return '';
+    const primary = i === 0 ? ' card-resource-link-primary' : '';
+    return '<a class="card-resource-link' + primary + '" href="' + url + '" target="_blank" rel="noopener">' + escHtml(label(link)) + ' ↗</a>';
+  }).join('') + '</div>';
+}
+
+// Minimal HTML escaping for values shown inside the provenance trace popover.
+function escHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// Provenance affordance: a light "(i)" that, on click, reveals how a story
+// entered the digest (its trace id + origin stage) so a mismatch between a
+// claim and its cited source can be traced back. Hidden by default.
+function provenanceHtml(story) {
+  const rows = [['id', story.id], ['via', story.provenance || 'unknown'], ['source', story.source]];
+  if (story.url) rows.push(['url', story.url]);
+  if (story.carried_forward) rows.push(['carried', 'yes']);
+  const items = rows.map(([k, v]) =>
+    '<div class="trace-row"><span class="trace-k">' + k + '</span><code class="trace-v">' + escHtml(v) + '</code></div>'
+  ).join('');
+  return '<button type="button" class="card-info" title="Show provenance trace" aria-label="Show provenance trace">i</button>' +
+    '<div class="card-trace" id="trace-' + escHtml(story.id) + '" hidden>' + items + '</div>';
+}
+
+// Shareable representations of a story for the clipboard: a rich-text HTML
+// fragment (links + emphasis preserved) and a Markdown/plain-text fallback.
+// Kept pure so it can be unit-tested without a DOM or a real clipboard.
+function storyCopyFormats(story) {
+  const title = String(story.title == null ? '' : story.title).trim();
+  const summary = String(story.summary == null ? '' : story.summary).trim();
+  const source = String(story.source == null ? '' : story.source).trim();
+  const url = story.url ? String(story.url).trim() : '';
+  const cat = String(story.catLabel || story.catId || '').trim();
+  const tags = Array.isArray(story.tags) ? story.tags : [];
+  const links = Array.isArray(story.links) ? story.links : [];
+
+  const meta = [source, cat].filter(Boolean).join(' \u00b7 ');
+  const tagLine = tags.length ? tags.map(t => '#' + String(t).trim().replace(/\s+/g, '')).join(' ') : '';
+  const linkLines = links.filter(l => l && l.url).map(l => '- [' + (l.name || l.url) + '](' + l.url + ')');
+
+  const md = [];
+  md.push('## ' + title);
+  if (meta) md.push('_' + meta + '_');
+  if (summary) md.push(summary);
+  if (linkLines.length) md.push(linkLines.join('\n'));
+  if (tagLine) md.push(tagLine);
+  if (url) md.push('[Read source \u2192](' + url + ')');
+  const markdown = md.join('\n\n');
+
+  const h = [];
+  h.push('<h3>' + (url ? '<a href="' + escHtml(url) + '">' + escHtml(title) + '</a>' : escHtml(title)) + '</h3>');
+  if (meta) h.push('<p><em>' + escHtml(meta) + '</em></p>');
+  if (summary) h.push('<p>' + escHtml(summary) + '</p>');
+  if (tagLine) h.push('<p>' + escHtml(tagLine) + '</p>');
+  if (url) h.push('<p><a href="' + escHtml(url) + '">Read source \u2192</a></p>');
+  const html = h.join('\n');
+
+  return { markdown, html };
+}
+
+// Write both formats to the clipboard in one shot (rich-text editors take the
+// HTML, plain editors take the Markdown), degrading to plain text where the
+// async ClipboardItem API is unavailable. Gives brief visual feedback.
+async function copyStory(story, btn) {
+  const { markdown, html } = storyCopyFormats(story);
+  let ok = false;
+  try {
+    if (navigator.clipboard && typeof ClipboardItem !== 'undefined') {
+      await navigator.clipboard.write([new ClipboardItem({
+        'text/html': new Blob([html], { type: 'text/html' }),
+        'text/plain': new Blob([markdown], { type: 'text/plain' })
+      })]);
+      ok = true;
+    } else if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(markdown);
+      ok = true;
+    }
+  } catch (e) {
+    try { await navigator.clipboard.writeText(markdown); ok = true; } catch (e2) { ok = false; }
+  }
+  if (btn) {
+    btn.classList.remove('copied', 'copy-failed');
+    btn.classList.add(ok ? 'copied' : 'copy-failed');
+    btn.title = ok ? 'Copied!' : 'Copy failed';
+    setTimeout(() => {
+      btn.classList.remove('copied', 'copy-failed');
+      btn.title = 'Copy story (rich text + Markdown)';
+    }, 1400);
+  }
+  return ok;
+}
+
+// One-icon copy affordance in the card's top-right corner.
+function copyButtonHtml() {
+  return '<button type="button" class="card-copy" title="Copy story (rich text + Markdown)" aria-label="Copy story">' +
+    '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<rect x="9" y="9" width="11" height="11" rx="2"></rect>' +
+    '<path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg></button>';
+}
+
+function buildCard(story) {
+  const color = CAT_COLORS[story.catId] || '#888';
+  const div = document.createElement('div');
+  div.className = 'story-card';
+  div.id = 'card-' + story.id;
+  const sigDots = Array.from({length:5},(_,i) => '<div class="sig-dot ' + (i < story.significance ? 'filled' : '') + '"></div>').join('');
+  const tags = story.tags.map(t => '<span class="card-tag">' + t + '</span>').join('');
+  div.innerHTML =
+    '<div class="card-cat-stripe" style="background:' + color + '"></div>' +
+    '<span class="card-cat-badge">' + story.catIcon + '</span>' +
+    copyButtonHtml() +
+    '<div class="card-meta"><span class="card-source">' + story.source + '</span>' + provenanceHtml(story) + '<div class="card-sig">' + sigDots + '</div></div>' +
+    '<div class="card-title">' + story.title + '</div>' +
+    '<div class="card-expand" id="expand-' + story.id + '">' +
+      '<p class="card-summary">' + story.summary + '</p>' +
+      storyLinksHtml(story.links) +
+      '<div class="card-tags">' + tags + '</div>' +
+      sourceLinkHtml(story.url) +
+    '</div>';
+  const info = div.querySelector('.card-info');
+  if (info) info.onclick = (e) => {
+    e.stopPropagation();
+    const trace = div.querySelector('.card-trace');
+    if (trace) trace.hidden = !trace.hidden;
+  };
+  const copyBtn = div.querySelector('.card-copy');
+  if (copyBtn) copyBtn.onclick = (e) => {
+    e.stopPropagation();
+    copyStory(story, copyBtn);
+  };
+  div.onclick = () => toggleCard(story.id, div);
+  return div;
+}
+
+function toggleCard(id, el) {
+  const expand = document.getElementById('expand-' + id);
+  const isExpanded = expand.classList.contains('visible');
+  document.querySelectorAll('.card-expand.visible').forEach(e => e.classList.remove('visible'));
+  document.querySelectorAll('.story-card.expanded').forEach(c => c.classList.remove('expanded'));
+  if (!isExpanded) { expand.classList.add('visible'); el.classList.add('expanded'); }
+}
+
+function scrollToStory(id) {
+  setFilter('all');
+  setTimeout(() => {
+    const el = document.getElementById('card-' + id);
+    if (el) { el.scrollIntoView({ behavior:'smooth', block:'center' }); toggleCard(id, el); }
+  }, 50);
+}
+
+function renderDonut(data) {
+  const counts = data.visualizations.category_counts;
+  const cats = data.categories.filter(c => counts[c.id] > 0);
+  const w = 208, h = 160, r = 60;
+  const svg = d3.select('#donut-chart').attr('width', w).attr('height', h);
+  const g = svg.append('g').attr('transform', 'translate(' + (r+10) + ',' + (h/2) + ')');
+  const pie = d3.pie().value(d => counts[d.id]).sort(null);
+  const arc = d3.arc().innerRadius(r*0.55).outerRadius(r);
+  const arcHover = d3.arc().innerRadius(r*0.55).outerRadius(r+5);
+  const tooltip = document.getElementById('tooltip');
+  const paths = g.selectAll('path').data(pie(cats)).enter().append('path')
+    .attr('fill', d => CAT_COLORS[d.data.id])
+    .attr('stroke', '#0d1117').attr('stroke-width', 2)
+    .attr('d', arc).style('cursor','pointer')
+    .on('mouseover', function(event, d) {
+      d3.select(this).transition().duration(120).attr('d', arcHover);
+      tooltip.style.opacity = '1';
+      tooltip.innerHTML = d.data.icon + ' ' + d.data.label + ': <strong>' + counts[d.data.id] + '</strong>';
+    })
+    .on('mousemove', function(event) {
+      tooltip.style.left = (event.clientX+12)+'px'; tooltip.style.top = (event.clientY-8)+'px';
+    })
+    .on('mouseout', function() {
+      d3.select(this).transition().duration(120).attr('d', arc); tooltip.style.opacity = '0';
+    })
+    .on('click', (event, d) => setFilter(d.data.id));
+  paths.transition().duration(600).attrTween('d', function(d) {
+    const interp = d3.interpolate({startAngle:0,endAngle:0}, d);
+    return t => arc(interp(t));
+  });
+  const legend = svg.append('g').attr('transform', 'translate(' + (r*2+18) + ',10)');
+  cats.forEach((cat, i) => {
+    legend.append('rect').attr('x',0).attr('y',i*18).attr('width',8).attr('height',8).attr('rx',2).attr('fill',CAT_COLORS[cat.id]);
+    legend.append('text').attr('x',12).attr('y',i*18+8).attr('font-size','9').attr('fill','#8b949e')
+      .text(cat.label.split(' ')[0] + ' (' + counts[cat.id] + ')');
+  });
+}
+
+let _sigItems = [], _sigX, _sigG, _sigW;
+
+function renderSigChart(data) {
+  const dist = data.visualizations.significance_distribution;
+  _sigItems = [5,4,3,2,1].map(k => ({ sig:k, count: dist[k]||0 })).filter(d => d.count > 0);
+  const w=208, h=100, ml=24, mr=8, mt=4, mb=4;
+  const svg = d3.select('#sig-chart').attr('width',w).attr('height',h);
+  svg.selectAll('*').remove();
+  if (!_sigItems.length) return;
+  const max = d3.max(_sigItems, d => d.count);
+  _sigW = w-ml-mr;
+  const rowH = (h-mt-mb)/_sigItems.length;
+  _sigG = svg.append('g').attr('transform','translate('+ml+','+mt+')');
+  _sigX = d3.scaleLinear().domain([0,max]).range([0,_sigW]);
+  _sigItems.forEach((d,i) => {
+    const y = i*rowH+2, bh = rowH-6;
+    const row = _sigG.append('g').attr('class','sig-row').style('cursor','pointer');
+    row.append('text').attr('x',-4).attr('y',y+bh/2+4).attr('text-anchor','end').attr('font-size','9').attr('fill','#888').text('★'.repeat(d.sig));
+    row.append('rect').attr('x',0).attr('y',y).attr('height',bh).attr('rx',2).attr('class','sig-bar')
+      .attr('fill', d3.interpolateViridis(d.sig/5)).attr('width',0)
+      .transition().duration(500).delay(i*80).attr('width', _sigX(d.count));
+    row.append('text').attr('x',_sigX(d.count)+4).attr('y',y+bh/2+4).attr('font-size','9').attr('fill','#8b949e').attr('class','sig-count').text(d.count);
+    row.append('rect').attr('x',-ml).attr('y',y-2).attr('width',w).attr('height',bh+4).attr('fill','transparent')
+      .on('click', () => setSig(d.sig));
+  });
+}
+
+function redrawSigChart() {
+  if (!_sigG) return;
+  _sigG.selectAll('.sig-row').each(function(_, i) {
+    const d = _sigItems[i];
+    const isActive = activeSig === d.sig;
+    const inactive = activeSig !== null && !isActive;
+    d3.select(this).select('.sig-bar').attr('opacity', inactive ? 0.25 : 1);
+    d3.select(this).select('.sig-count').attr('fill', isActive ? '#e6edf3' : '#8b949e');
+    d3.select(this).selectAll('text').filter((_, j) => j === 0).attr('fill', isActive ? '#e6edf3' : inactive ? '#555' : '#888');
+  });
+}
+
+let _tagData = [];
+
+function renderTagCloud(data) {
+  _tagData = data.visualizations.top_tags.slice(0, 12);
+  redrawTagCloud();
+}
+
+function redrawTagCloud() {
+  const cloud = document.getElementById('tag-cloud');
+  cloud.innerHTML = '';
+  _tagData.forEach(t => {
+    const span = document.createElement('span');
+    const isActive = activeTag === t.tag;
+    const inactive = activeTag !== null && !isActive;
+    span.className = 'tag-item' + (isActive ? ' tag-active' : '') + (inactive ? ' tag-dim' : '');
+    span.innerHTML = t.tag + '<span class="tag-count">' + t.count + '</span>';
+    span.onclick = () => setTag(t.tag);
+    cloud.appendChild(span);
+  });
+}
+
+
+function resetDigestView() {
+  document.getElementById('top-stories-bar').innerHTML = '<span class="top-stories-label">Top Stories</span>';
+  document.getElementById('filter-bar').innerHTML = '';
+  document.getElementById('story-grid').innerHTML = '';
+  d3.select('#donut-chart').selectAll('*').remove();
+  d3.select('#sig-chart').selectAll('*').remove();
+  document.getElementById('tag-cloud').innerHTML = '';
+  activeFilter = 'all';
+  activeSig = null;
+  activeTag = null;
+  allStories = [];
+  _sigG = null;
+}
+
+const SIDEBAR_WIDTH_KEY = 'aidigest.sidebarWidth';
+
+function initLayoutResizer() {
+  const layout = document.querySelector('.layout');
+  const resizer = document.getElementById('layout-resizer');
+  const sidebar = layout && layout.querySelector('.sidebar');
+  if (!layout || !resizer || !sidebar || resizer.dataset.bound) return;
+  resizer.dataset.bound = '1';
+
+  const saved = parseInt(localStorage.getItem(SIDEBAR_WIDTH_KEY), 10);
+  if (saved >= 160 && saved <= 420) layout.style.setProperty('--sidebar-w', saved + 'px');
+
+  let startX = 0;
+  let startW = 0;
+
+  function applyWidth(w) {
+    const clamped = Math.min(420, Math.max(160, w));
+    layout.style.setProperty('--sidebar-w', clamped + 'px');
+    return clamped;
+  }
+
+  function onMove(e) {
+    applyWidth(startW + (e.clientX - startX));
+  }
+
+  function onUp() {
+    resizer.classList.remove('dragging');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+    const w = parseInt(getComputedStyle(layout).getPropertyValue('--sidebar-w'), 10);
+    if (!isNaN(w)) localStorage.setItem(SIDEBAR_WIDTH_KEY, String(w));
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+  }
+
+  function onDown(e) {
+    if (window.matchMedia('(max-width: 860px)').matches) return;
+    e.preventDefault();
+    startX = e.clientX;
+    startW = sidebar.getBoundingClientRect().width;
+    resizer.classList.add('dragging');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  }
+
+  resizer.addEventListener('mousedown', onDown);
+  resizer.addEventListener('keydown', e => {
+    const step = e.shiftKey ? 40 : 12;
+    const cur = sidebar.getBoundingClientRect().width;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); localStorage.setItem(SIDEBAR_WIDTH_KEY, String(applyWidth(cur - step))); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); localStorage.setItem(SIDEBAR_WIDTH_KEY, String(applyWidth(cur + step))); }
+  });
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { PROVIDER_COLORS, CAT_COLORS, LB_GLOSSARY, lbTooltip, resolveLbColumns, renderLbLinks, sourceLinkHtml, provenanceHtml, escHtml, storyCopyFormats, reportSourceSealMarkup };
+}
+
+
+function loadDigest() {
+  digestData = window.__AIDIGEST_DIGEST__;
+  if (!digestData) {
+    throw new Error('Could not load ' + PAGE_PREFIX + '.json (expected sibling of this page)');
+  }
+  document.title = 'AI Daily | ' + (digestData.generated_at || PAGE_PREFIX).slice(0, 10);
+  render(digestData);
+}
+
+try {
+  loadDigest();
+} catch (err) {
+  document.getElementById('story-grid').innerHTML =
+    '<div class="empty-state">Failed to load digest: ' + err.message + '</div>';
+}
+</script>
+</body>
+</html>
