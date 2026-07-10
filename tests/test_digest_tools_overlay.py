@@ -52,9 +52,15 @@ class DigestToolsOverlayTest(unittest.TestCase):
             "tools.profiles": sys.modules.get("tools.profiles"),
             "tools.orchestration": sys.modules.get("tools.orchestration"),
             "tools.artifacts": sys.modules.get("tools.artifacts"),
+            "tools.runtime_store": sys.modules.get("tools.runtime_store"),
         }
         sys.modules["tools"] = fake_tools
-        for key in ("tools.profiles", "tools.orchestration", "tools.artifacts"):
+        for key in (
+            "tools.profiles",
+            "tools.orchestration",
+            "tools.artifacts",
+            "tools.runtime_store",
+        ):
             sys.modules.pop(key, None)
 
         try:
@@ -66,6 +72,20 @@ class DigestToolsOverlayTest(unittest.TestCase):
                 str(getattr(profiles, "__file__", "")),
                 str(HERMES_PKG / "tools/profiles.py"),
             )
+            runtime_store = sys.modules.get("tools.runtime_store")
+            self.assertIsNotNone(runtime_store)
+            self.assertEqual(
+                str(getattr(runtime_store, "__file__", "")),
+                str(HERMES_PKG / "tools/runtime_store.py"),
+            )
+            # orchestration lazy-imports runtime_store when checking .runtime fallback
+            gate = mod._artifact_gate_with_runtime(
+                "librarian",
+                Path("/nonexistent/workspace"),
+                "20260709120000",
+                {"gate_ok": False, "errors": ["missing"]},
+            )
+            self.assertIn("gate_ok", gate)
         finally:
             for key, val in saved.items():
                 if val is not None:
