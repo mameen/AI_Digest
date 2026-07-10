@@ -65,6 +65,18 @@ class HermesManageCliTest(unittest.TestCase):
         self.assertIn("orio_synthesizer", proc.stdout)
         self.assertIn("research × N", proc.stdout)
 
+    def test_demo_board_dry_run_start_date_prefix(self) -> None:
+        if not shutil.which("hermes"):
+            self.skipTest("hermes not on PATH")
+        proc = subprocess.run(
+            HERMES_MANAGE + ["demo-board", "--dry-run", "--start", "2026-07-09"],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(proc.returncode, 0, proc.stderr or proc.stdout)
+        self.assertIn("20260709120000", proc.stdout)
+
     def test_generate_report_help(self) -> None:
         proc = subprocess.run(
             HERMES_MANAGE + ["generate-report", "-h"],

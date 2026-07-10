@@ -1474,6 +1474,25 @@ def cmd_go_pipeline(args: argparse.Namespace) -> int:
     return 0
 
 
+def _resolve_go_prefix(args: argparse.Namespace) -> str:
+    """Run prefix from --prefix, or --start noon UTC, or now."""
+    explicit = getattr(args, "prefix", None)
+    start = getattr(args, "start", None)
+    history = getattr(args, "history", None)
+    if explicit or start or history is not None:
+        if str(REPO) not in sys.path:
+            sys.path.insert(0, str(REPO))
+        from tools.pipeline_go import resolve_go_window
+
+        _, run_prefix = resolve_go_window(
+            start=start,
+            history=history,
+            prefix=explicit,
+        )
+        return run_prefix
+    return _resolve_run_prefix(explicit)
+
+
 def cmd_go_agents(args: argparse.Namespace) -> int:
     """Production GO — kanban crew: research × N → librarian → synthesizer → render."""
     global _agentic_run_prefix
@@ -1482,7 +1501,7 @@ def cmd_go_agents(args: argparse.Namespace) -> int:
         print("hermes not on PATH.")
         return 1
 
-    run_prefix = _resolve_run_prefix(args.prefix)
+    run_prefix = _resolve_go_prefix(args)
     _agentic_run_prefix = run_prefix
     _init_run_telemetry(run_prefix)
 
@@ -1586,7 +1605,9 @@ def cmd_go_agents(args: argparse.Namespace) -> int:
             return 1
         print("\n✓ Phase B (synthesizer): digest.json passed artifact gate")
     else:
-        print("\n-- skip-dispatch: using existing board artifacts")
+        print("\n-- skip-dispatch: board ready (no worker dispatch)")
+        _finish_run_telemetry()
+        return 0
 
     handover_only = bool(getattr(args, "handover_only", False))
     if handover_only:
@@ -2100,9 +2121,18 @@ def cmd_dispatch_research(args: argparse.Namespace) -> int:
 
 
 def cmd_demo_board(args: argparse.Namespace) -> int:
+    global _agentic_run_prefix
+
     if not _hermes_bin():
         print("hermes not on PATH.")
         return 1
+
+    if getattr(args, "fresh", False):
+        print("== demo-board: archive existing digest tasks ==")
+        _archive_digest_board()
+
+    if not _agentic_run_prefix:
+        _agentic_run_prefix = _resolve_go_prefix(args)
 
     spec = _load_roles()
     from tools.topics import resolve_board_topics
@@ -2117,6 +2147,7 @@ def cmd_demo_board(args: argparse.Namespace) -> int:
         goal_max_turns = int(goal_max_turns)
 
     print("== demo-board: AI Digest Phase 2 POC ==")
+    print(f"  run prefix: {_agentic_run_prefix}")
     print("  Graph: research × N → librarian → synthesizer")
     print(f"  Topics ({len(topics)}): {', '.join(topics)}")
     if board.get("source_prefix"):
@@ -2276,6 +2307,25 @@ def main() -> int:
         help="create Phase 2 POC kanban graph (research × N → librarian → synthesizer)",
     )
     p_board.add_argument("--dry-run", action="store_true")
+    p_board.add_argument(
+        "--fresh",
+        action="store_true",
+        help="archive existing digest board tasks before creating new ones",
+    )
+    p_board.add_argument(
+        "--start",
+        metavar="DATE",
+        default=None,
+        help="digest date YYYY-MM-DD (sets run prefix noon UTC on that day)",
+    )
+    p_board.add_argument(
+        "--history",
+        type=int,
+        metavar="N",
+        default=None,
+        help="editorial lookback days (with --start)",
+    )
+    p_board.add_argument("--prefix", default=None, help="run prefix YYYYMMDDHHMMSS")
     p_board.set_defaults(func=cmd_demo_board)
 
     p_dispatch = sub.add_parser(
@@ -2354,7 +2404,7 @@ def main() -> int:
     p_go.add_argument(
         "--skip-dispatch",
         action="store_true",
-        help="skip worker dispatch; render existing board artifacts",
+        help="create/reuse board only — no worker dispatch or render (use render-from-board after)",
     )
     p_go.set_defaults(func=cmd_go)
 
