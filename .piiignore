@@ -1,8 +1,12 @@
 # PII audit exemptions — ORIO / AI Digest
 # Gitignore-style. Alias file: .ignorepii (same syntax, merged if present).
 #
+# IMPORTANT: .piiignore is OPT-IN only. Scanners ignore it by default.
+# Pass --observe-piiignore to audit_pii.py / audit_secrets.py / check_secrets.py
+# to honor these exemptions. Pre-commit never passes that flag — commit content
+# is always scanned. Forbidden paths (.kb/, .venv/) always alarm if staged.
+#
 # RULE: paths here MUST be in .gitignore OR be intentional public artifacts.
-# Staged vault/runtime paths are still BLOCKED by check_secrets.py.
 
 # ── Local runtime & caches (gitignored) ──────────────────────────────────────
 agentic/hermes/.kb/

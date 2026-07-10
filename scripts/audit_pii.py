@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
-"""Presidio PII/PHI scan with .piiignore / .ignorepii exemptions.
+"""Presidio PII/PHI scan.
 
   python scripts/audit_pii.py --staged
   python scripts/audit_pii.py --all
+  python scripts/audit_pii.py --all --observe-piiignore   # opt-in .piiignore exemptions
+
+Policy:
+- Staged / tracked: scan all commit content (``.piiignore`` off unless ``--observe-piiignore``).
+- ``--all``: also warn about local gitignored sensitive trees on disk.
 """
 
 from __future__ import annotations
@@ -17,9 +22,14 @@ _SCRIPTS = Path(__file__).resolve().parent
 if str(_SCRIPTS) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS))
 
-from scan_ignore import is_ignored, load_patterns  # noqa: E402
+from scan_ignore import (  # noqa: E402
+    alarm_commit_paths,
+    format_local_warnings,
+    load_patterns,
+    local_sensitive_warnings,
+    should_skip_audit_path,
+)
 
-# High-signal entities for pre-commit (skip noisy ORG/LOCATION in docs).
 _FLAG_ENTITIES = frozenset(
     {
         "EMAIL_ADDRESS",
@@ -105,6 +115,10 @@ def _rel(path: Path) -> str:
     return path.resolve().relative_to(REPO.resolve()).as_posix()
 
 
+def _alarm_forbidden(paths: list[Path]) -> None:
+    alarm_commit_paths([_rel(p) for p in paths])
+
+
 def _is_text_candidate(path: Path) -> bool:
     if not path.is_file():
         return False
@@ -159,7 +173,6 @@ _ALLOWLISTED_EMAIL_DOMAINS = frozenset(
 
 
 def _entities_for_path(rel: str) -> frozenset[str]:
-    """Python/docs: skip noisy PERSON NER (product names, identifiers)."""
     ents: set[str] = set(_FLAG_ENTITIES)
     if rel.endswith(".py") or rel.endswith(".md") or rel.endswith(".yaml") or rel.endswith(".yml"):
         ents.discard("PERSON")
@@ -191,12 +204,17 @@ def _scan_text(rel: str, text: str, analyzer) -> list[tuple[int, str, float]]:
     return hits
 
 
-def scan_paths(paths: list[Path], patterns: tuple[str, ...]) -> list[str]:
+def scan_paths(
+    paths: list[Path],
+    patterns: tuple[str, ...],
+    *,
+    observe_piiignore: bool,
+) -> list[str]:
     analyzer = _get_analyzer()
     errors: list[str] = []
     for path in paths:
         rel = _rel(path)
-        if is_ignored(rel, patterns):
+        if should_skip_audit_path(rel, patterns, observe_piiignore=observe_piiignore):
             continue
         if not _is_text_candidate(path):
             continue
@@ -217,16 +235,28 @@ def scan_paths(paths: list[Path], patterns: tuple[str, ...]) -> list[str]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Presidio PII audit (.piiignore aware).")
+    parser = argparse.ArgumentParser(description="Presidio PII audit.")
     parser.add_argument("--staged", action="store_true")
     parser.add_argument("--all", action="store_true")
+    parser.add_argument(
+        "--observe-piiignore",
+        action="store_true",
+        help="opt-in: honor .piiignore exemptions (default: scan commit content fully)",
+    )
     args = parser.parse_args(argv)
 
     patterns = load_patterns(REPO)
     if args.staged:
         paths = _staged_paths()
+        _alarm_forbidden(paths)
     elif args.all:
         paths = _tracked_paths()
+        _alarm_forbidden(paths)
+        msg = format_local_warnings(
+            local_sensitive_warnings(REPO, patterns, observe_piiignore=args.observe_piiignore)
+        )
+        if msg:
+            print(msg, file=sys.stderr)
     else:
         parser.print_help()
         return 0
@@ -234,7 +264,7 @@ def main(argv: list[str] | None = None) -> int:
     if not paths:
         return 0
 
-    errors = scan_paths(paths, patterns)
+    errors = scan_paths(paths, patterns, observe_piiignore=args.observe_piiignore)
     if not errors:
         return 0
 
@@ -244,8 +274,8 @@ def main(argv: list[str] | None = None) -> int:
     if len(errors) > 50:
         print(f"  … and {len(errors) - 50} more", file=sys.stderr)
     print(
-        "\nExempt paths via .piiignore / .ignorepii (gitignore syntax)."
-        " Vault paths must stay in .gitignore.",
+        "\nCommit content is scanned by default."
+        " Use --observe-piiignore only to apply .piiignore exemptions.",
         file=sys.stderr,
     )
     return 1

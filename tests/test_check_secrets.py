@@ -69,7 +69,7 @@ class CheckSecretsTest(unittest.TestCase):
             path = Path(tmp) / ".env"
             path.write_text(f"OPENAI_API_KEY={_fake_openai_key()}\n", encoding="utf-8")
             findings = check_secrets.scan_paths([path])
-            self.assertTrue(any("blocked sensitive filename" in f.detail for f in findings))
+            self.assertTrue(any("forbidden sensitive file" in f.detail for f in findings))
 
     def test_blocks_json_client_secret(self) -> None:
         line = '"client_secret": "super-real-azure-secret-not-placeholder"'
