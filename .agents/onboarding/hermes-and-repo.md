@@ -55,7 +55,13 @@ python agentic/hermes/admin/manage.py setup
 hermes gateway restart
 ```
 
-Re-open the dashboard tab if it was already open.
+Re-open the dashboard tab if it was already open. **Send a new Concierge message**
+after restart — a long chat turn may remember an old tool error.
+
+**SOUL vs plugin code:** `setup` copies SOULs to `~/.hermes/profiles/`. The
+`digest-tools` plugin is symlinked from the repo — Python still **caches imported
+modules in the gateway process** until restart. Fixing `tools.runtime_store` on disk
+does nothing for Concierge until the gateway reimports the plugin.
 
 ---
 
