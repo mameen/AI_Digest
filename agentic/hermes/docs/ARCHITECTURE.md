@@ -71,8 +71,9 @@ flowchart TB
 
 Render requires a valid `digest.json` — no showcase render fallback.
 
-**Flags:** `--fresh` archives and recreates the board. `--skip-dispatch` renders from
-existing artifacts. `--rounds` caps research dispatch retries.
+**Flags:** `--fresh` archives and recreates the board. `--skip-dispatch` stops after
+board setup (no workers, no render — use `render-from-board` later). `--rounds` caps
+research dispatch retries.
 
 **Eval-only exception:** `evaluation_test_topic` may use committed fixtures under
 `tests/data/evaluation/`.

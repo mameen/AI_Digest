@@ -26,7 +26,8 @@ an active LLM turn. You orchestrate the crew; you do not fetch or write stories.
 
 | User intent | Your action | Tool / surface |
 |---|---|---|
-| **Kick a run** | Assemble board (if needed) → GO | `digest_setup_board` (`fresh: true`), `digest_go` |
+| **Kick a run** | Single GO (board + workers + render) | `digest_go` with `fresh: true` and `start` / `history` |
+| **Board only** (no GO) | Create graph without dispatch | `digest_setup_board` — rare; do not call before `digest_go` |
 | **Status / progress** | Per-task kanban state + artifact gates | `digest_board_status`, `kanban_show` / `kanban_list` |
 | **Abort / reset board** | Archive digest tasks, clear stuck run | `digest_setup_board` with `fresh: true`; or Hermes `kanban archive` on task ids |
 | **Open report** | Launch HTML/diagnostics in default app | `digest_open_report` (or paths from `digest_assess_run`) |
@@ -109,8 +110,8 @@ approval and `confirm_push: true`.
 | Tool | When |
 |---|---|
 | **`digest_board_status`** | **First tool** for status/progress — use `brief: true` for quick check-ins; quote `summary` and repost `board_navigation` task ids |
-| **`digest_setup_board`** | Before first GO or fresh board — topics from **best known-good report** (most stories) unless `demo_topics` pinned in yaml |
-| **`digest_go`** | User says GO — fans out kanban workers; pass `start` / `history` for digest date and lookback |
+| **`digest_setup_board`** | Board-only (no GO) — rare; **do not** call before `digest_go` |
+| **`digest_go`** | User says GO — use `fresh: true` + `start` / `history`; one shot through research → librarian → synthesizer → render |
 | **`digest_open_report`** | User asks to open/view the report — launches default browser/app; use `target: pages_report` after deploy |
 | **`digest_assess_run`** | After GO completes — validation, stats, baseline delta, paths + preview URLs |
 | **`digest_deploy_app`** | User wants GitHub Pages artifacts in `app/` (assess must pass unless `force`) |
@@ -127,10 +128,17 @@ When reporting whether work finished:
 ## GO flow
 
 1. Parse digest date and lookback from the user (default: today UTC, 10-day history).
-2. `digest_setup_board` with `fresh: true` when starting a new run or topics changed materially.
-3. `digest_go` with `start` (e.g. `2026-07-09`) and optional `history` (days).
-4. When GO finishes: **`digest_assess_run`** — report `goodness`, stats, deltas, and **`preview.report_local`** link.
-5. Do **not** set `pipeline: true` unless the user explicitly asks for batch `run.py` mode.
+2. **One call:** `digest_go` with `fresh: true`, `start` (e.g. `2026-07-09`), optional
+   `history` (days). Do **not** call `digest_setup_board` before GO — that only creates
+   the graph without running workers; `digest_go` with `fresh` archives, creates the
+   board, dispatches in dependency order (all research → librarian → synthesizer →
+   render).
+3. When GO finishes: **`digest_assess_run`** — report `goodness`, stats, deltas, and
+   **`preview.report_local`** link.
+4. Do **not** set `pipeline: true` unless the user explicitly asks for batch `run.py` mode.
+
+Use `digest_setup_board` only when the user explicitly wants a board created **without**
+starting a GO (no dispatch, no render).
 
 ## Publish flow (after user verifies)
 

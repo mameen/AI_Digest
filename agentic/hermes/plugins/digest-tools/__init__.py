@@ -237,14 +237,29 @@ def digest_board_status_json(args: dict, **kwargs) -> str:
 
 def digest_setup_board_json(args: dict, **kwargs) -> str:
     fresh = bool(args.get("fresh", False))
+    start = str(args.get("start") or "").strip() or None
+    history_raw = args.get("history")
+    history: int | None = None
+    if history_raw is not None and str(history_raw).strip() != "":
+        try:
+            history = int(history_raw)
+        except (TypeError, ValueError):
+            return json.dumps(
+                {"ok": False, "error": f"invalid history: {history_raw!r}"},
+            )
+    prefix = str(args.get("prefix") or "").strip() or None
     venv_py = _REPO_ROOT / ".venv" / "bin" / "python"
     py = str(venv_py if venv_py.is_file() else Path(sys.executable))
     manage = _REPO_ROOT / "agentic" / "hermes" / "admin" / "manage.py"
-    cmd = [py, str(manage)]
+    cmd = [py, str(manage), "demo-board"]
     if fresh:
-        cmd.extend(["go", "--fresh", "--skip-dispatch"])
-    else:
-        cmd.append("demo-board")
+        cmd.append("--fresh")
+    if prefix:
+        cmd.extend(["--prefix", prefix])
+    if start:
+        cmd.extend(["--start", start])
+    if history is not None:
+        cmd.extend(["--history", str(history)])
     try:
         proc = subprocess.run(cmd, capture_output=True, text=True, cwd=str(_REPO_ROOT), timeout=120)
     except subprocess.TimeoutExpired:

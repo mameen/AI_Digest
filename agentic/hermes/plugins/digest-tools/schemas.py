@@ -186,8 +186,9 @@ DIGEST_BOARD_STATUS = {
 DIGEST_SETUP_BOARD = {
     "name": "digest_setup_board",
     "description": (
-        "Create the AI Digest kanban graph: research × N → librarian → synthesizer. "
-        "Assigns orio_researcher, orio_librarian, orio_synthesizer."
+        "Create the kanban graph only (research × N → librarian → synthesizer). "
+        "Does not dispatch workers or render — use digest_go for a full GO. "
+        "Prefer digest_go with fresh=true instead of setup+go as two steps."
     ),
     "parameters": {
         "type": "object",
@@ -196,6 +197,18 @@ DIGEST_SETUP_BOARD = {
                 "type": "boolean",
                 "description": "Archive existing digest board tasks first (default false)",
             },
+            "start": {
+                "type": "string",
+                "description": "Digest date YYYY-MM-DD (run prefix noon UTC on that day)",
+            },
+            "history": {
+                "type": "integer",
+                "description": "Editorial lookback days (with start)",
+            },
+            "prefix": {
+                "type": "string",
+                "description": "Run prefix YYYYMMDDHHMMSS (overrides start noon)",
+            },
         },
     },
 }
@@ -203,9 +216,9 @@ DIGEST_SETUP_BOARD = {
 DIGEST_GO = {
     "name": "digest_go",
     "description": (
-        "Run AI Digest GO: Concierge fans out kanban workers (research × N → "
-        "librarian → synthesizer → validate → render). Takes several minutes. "
-        "Set pipeline=true only for batch run.py parity (escape hatch)."
+        "Run full AI Digest GO: optional fresh board, then research × N → librarian "
+        "→ synthesizer → validate → render (respects kanban parent deps). "
+        "Takes a long time. Set pipeline=true only for batch run.py (escape hatch)."
     ),
     "parameters": {
         "type": "object",
