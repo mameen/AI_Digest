@@ -13,6 +13,28 @@
   `qwen3.6:35b`). No cloud keys needed.
 - Hermes on PATH for production GO (`python agentic/hermes/admin/manage.py bootstrap`).
 
+## Hermes gateway and redeploy
+
+**First-time:** after `agentic/hermes/admin/manage.py bootstrap`, start the gateway
+and open chat:
+
+```bash
+hermes gateway start
+python agentic/hermes/admin/manage.py hermes dashboard
+```
+
+**After SOUL, role, tool, or kanban-patch changes**, redeploy profiles and restart
+long-lived Hermes processes:
+
+```bash
+python agentic/hermes/admin/manage.py setup
+hermes gateway restart
+python agentic/hermes/admin/manage.py hermes dashboard   # reopen if already open
+```
+
+See [`agentic/hermes/admin/README.md`](../../agentic/hermes/admin/README.md) and
+[`agentic/hermes/POC.md`](../../agentic/hermes/POC.md).
+
 ## Production GO (default)
 
 ```bash
