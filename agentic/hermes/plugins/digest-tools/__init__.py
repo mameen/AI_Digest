@@ -446,7 +446,7 @@ def synthesize_digest_json(args: dict, **kwargs) -> str:
             capture_output=True,
             text=True,
             cwd=str(_REPO_ROOT),
-            timeout=900,
+            timeout=3600,
         )
     except subprocess.TimeoutExpired:
         return json.dumps({"ok": False, "error": "synthesize_digest timed out after 900s"})

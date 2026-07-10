@@ -122,6 +122,29 @@ def _artifact_gate(assignee: str, workspace: Path) -> dict[str, Any]:
     }
 
 
+def _artifact_gate_with_runtime(
+    role: str,
+    workspace: Path,
+    prefix: str,
+    workspace_gate: dict[str, Any],
+) -> dict[str, Any]:
+    """If Hermes wiped scratch workspace, fall back to .runtime/artifacts cache."""
+    if workspace_gate.get("gate_ok"):
+        return workspace_gate
+    from tools.runtime_store import run_dir
+
+    run_path = run_dir(prefix)
+    if role == LIBRARIAN:
+        cached = run_path / "librarian.md"
+        if cached.is_file():
+            return _artifact_gate(role, run_path)
+    elif role == SYNTHESIZER:
+        cached = run_path / "digest.json"
+        if cached.is_file():
+            return _artifact_gate(role, run_path)
+    return workspace_gate
+
+
 def digest_board_rows(rows: list[dict[str, Any]] | None = None) -> list[dict[str, Any]]:
     rows = rows if rows is not None else kanban_list()
     titles = {LIBRARIAN_TITLE, SYNTHESIZER_TITLE}
@@ -161,8 +184,12 @@ def infer_pipeline_phase(
     librarian: dict[str, Any] | None,
     synthesizer: dict[str, Any] | None,
     report_ready: bool,
+    pipeline_artifacts_ok: bool = False,
 ) -> str:
-    """Coarse pipeline phase for Concierge STATUS (not LLM judgment)."""
+    """Coarse pipeline phase for Concierge STATUS (not LLM judgment).
+
+    Kanban ``done`` is not success — artifact gates decide readiness for render.
+    """
     if board_empty:
         return "idle"
     if report_ready:
@@ -173,10 +200,18 @@ def infer_pipeline_phase(
         return "research"
     lib_done = bool((librarian or {}).get("kanban_done"))
     syn_done = bool((synthesizer or {}).get("kanban_done"))
+    lib_gate = (librarian or {}).get("gate_ok")
+    syn_gate = (synthesizer or {}).get("gate_ok")
+    if lib_done and lib_gate is False:
+        return "blocked"
+    if syn_done and syn_gate is False:
+        return "blocked"
     if not lib_done:
         return "librarian"
     if not syn_done:
         return "synthesizer"
+    if not pipeline_artifacts_ok:
+        return "blocked"
     return "render"
 
 
@@ -299,14 +334,33 @@ def format_status_summary(payload: dict[str, Any]) -> list[str]:
         "research": "research fan-out",
         "librarian": "librarian merge",
         "synthesizer": "synthesizer JSON",
+        "blocked": "BLOCKED — artifact gate failed (not ready for render)",
         "render": "awaiting validate/render",
         "complete": "report ready",
     }
     lines.append(f"Pipeline phase: {phase_labels.get(phase, phase)}")
 
+    if not payload.get("pipeline_artifacts_ok") and not payload.get("report_ready"):
+        lines.append(
+            "NOT ready for render — kanban done ≠ pipeline success; fix artifact gates first."
+        )
+        for role_key, label in (("librarian", "Librarian"), ("synthesizer", "Synthesizer")):
+            role = payload.get(role_key) or {}
+            if role.get("count") and not role.get("all_pass"):
+                for task in payload.get("tasks") or []:
+                    title = str(task.get("title") or "").lower()
+                    if role_key == "librarian" and "librarian" not in title:
+                        continue
+                    if role_key == "synthesizer" and "synthesize" not in title:
+                        continue
+                    errs = task.get("errors") or []
+                    if errs:
+                        lines.append(f"  {label} gate: {'; '.join(errs[:2])}")
+                    break
+
     if payload.get("report_ready"):
         lines.append(f"Report HTML: {payload.get('report_html')}")
-    elif prefix and phase == "render":
+    elif prefix and phase == "render" and payload.get("pipeline_artifacts_ok"):
         lines.append("Workers finished — GO may still be rendering or assess not run yet.")
 
     active = payload.get("active_tasks") or []
@@ -394,6 +448,33 @@ def board_status(*, include_workspace: bool = True, brief: bool = False) -> dict
     tasks: list[dict[str, Any]] = []
     inspect_gates = include_workspace and not brief
 
+    def _enrich_gate(entry: dict[str, Any], row: dict[str, Any]) -> None:
+        """Attach artifact gate for downstream roles (always for lib/synth)."""
+        task_id = str(entry.get("id") or "")
+        if not task_id:
+            return
+        assignee = normalize(str(row.get("assignee") or ""))
+        if assignee not in (LIBRARIAN, SYNTHESIZER) and not inspect_gates:
+            return
+        if assignee == RESEARCHER and not inspect_gates:
+            return
+        try:
+            shown = kanban_show(task_id)
+            task = shown.get("task") or {}
+            ws = _task_workspace(task)
+            entry["workspace"] = str(ws)
+            summary = str(shown.get("latest_summary") or "").strip()
+            if summary:
+                entry["latest_summary"] = summary[:400]
+            role = normalize(assignee)
+            if role in (RESEARCHER, LIBRARIAN, SYNTHESIZER):
+                gate = _artifact_gate(role, ws)
+                if role in (LIBRARIAN, SYNTHESIZER) and run_prefix:
+                    gate = _artifact_gate_with_runtime(role, ws, run_prefix, gate)
+                entry.update(gate)
+        except (RuntimeError, KeyError, json.JSONDecodeError) as exc:
+            entry["workspace_error"] = str(exc)
+
     for row in digest_rows:
         assignee = normalize(str(row.get("assignee") or ""))
         status = str(row.get("status") or "")
@@ -407,20 +488,7 @@ def board_status(*, include_workspace: bool = True, brief: bool = False) -> dict
             "status": status,
             "kanban_done": status == "done",
         }
-        if inspect_gates and task_id:
-            try:
-                shown = kanban_show(task_id)
-                task = shown.get("task") or {}
-                ws = _task_workspace(task)
-                entry["workspace"] = str(ws)
-                summary = str(shown.get("latest_summary") or "").strip()
-                if summary:
-                    entry["latest_summary"] = summary[:400]
-                role = normalize(assignee)
-                if role in (RESEARCHER, LIBRARIAN, SYNTHESIZER):
-                    entry.update(_artifact_gate(role, ws))
-            except (RuntimeError, KeyError, json.JSONDecodeError) as exc:
-                entry["workspace_error"] = str(exc)
+        _enrich_gate(entry, row)
         tasks.append(entry)
 
     research_tasks = [t for t in tasks if t["title"].startswith("Research:")]
@@ -439,18 +507,20 @@ def board_status(*, include_workspace: bool = True, brief: bool = False) -> dict
             "all_pass": False,
         }
         if librarian:
+            lib_gate = librarian.get("gate_ok")
             librarian_summary = {
                 "count": 1,
                 "done": int(librarian.get("kanban_done") or False),
-                "artifact_pass": 0,
-                "all_pass": False,
+                "artifact_pass": 1 if lib_gate is True else 0,
+                "all_pass": lib_gate is True,
             }
         if synthesizer:
+            syn_gate = synthesizer.get("gate_ok")
             synthesizer_summary = {
                 "count": 1,
                 "done": int(synthesizer.get("kanban_done") or False),
-                "artifact_pass": 0,
-                "all_pass": False,
+                "artifact_pass": 1 if syn_gate is True else 0,
+                "all_pass": syn_gate is True,
             }
 
     pipeline_ready = (
@@ -465,6 +535,7 @@ def board_status(*, include_workspace: bool = True, brief: bool = False) -> dict
         librarian=librarian,
         synthesizer=synthesizer,
         report_ready=report_ready,
+        pipeline_artifacts_ok=pipeline_ready,
     )
 
     board_navigation = build_board_navigation(digest_rows)

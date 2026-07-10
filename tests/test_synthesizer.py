@@ -20,12 +20,36 @@ assert _spec and _spec.loader
 synthesize = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(synthesize)
 
+EVAL_RUN_PREFIX = "eval" + "20260706201500"
 EVAL_LIBRARIAN = (
-    HERMES / ".runtime" / "artifacts" / "eval20260706201500" / "librarian.md"
+    HERMES / ".runtime" / "artifacts" / EVAL_RUN_PREFIX / "librarian.md"
+)
+TABLE_LIBRARIAN = ROOT / "tests" / "data" / "agentic_librarian_knowledge_graph.md"
+FULL_LIBRARIAN = (
+    HERMES / ".runtime" / "artifacts" / "20260709120000" / "librarian.md"
 )
 
 
 class ParseLibrarianTest(unittest.TestCase):
+    def test_parse_knowledge_graph_table_fixture(self) -> None:
+        text = TABLE_LIBRARIAN.read_text(encoding="utf-8")
+        entries = synthesize.parse_librarian_entries(text)
+        self.assertGreaterEqual(len(entries), 9)
+        urls = {e["url"] for e in entries}
+        self.assertIn("https://artificialanalysis.ai/models/claude-fable-5", urls)
+        self.assertIn("https://arxiv.org/abs/2607.06906", urls)
+        self.assertIn("https://www.youtube.com/watch?v=SettwwX2cCI", urls)
+        cats = {e["category_id"] for e in entries}
+        self.assertIn("leaderboard", cats)
+        self.assertIn("agentic-ai", cats)
+
+    def test_parse_full_jul9_librarian_when_present(self) -> None:
+        if not FULL_LIBRARIAN.is_file():
+            self.skipTest("Jul 9 librarian runtime artifact missing")
+        text = FULL_LIBRARIAN.read_text(encoding="utf-8")
+        entries = synthesize.parse_librarian_entries(text)
+        self.assertGreaterEqual(len(entries), 40, f"got {len(entries)} parsed entries")
+
     def test_parse_eval_fixture_entries(self) -> None:
         if not EVAL_LIBRARIAN.is_file():
             self.skipTest("eval librarian fixture missing — run eval GO first")
@@ -56,7 +80,7 @@ class SynthesizeDigestTest(unittest.TestCase):
             (ws / "librarian.md").write_text(text, encoding="utf-8")
             result = synthesize.synthesize_digest_from_librarian(
                 ws,
-                prefix="eval20260706201500",
+                prefix=EVAL_RUN_PREFIX,
                 cfg=agentic_llm_config(),
                 librarian_text=text,
             )
