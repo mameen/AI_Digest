@@ -45,10 +45,10 @@ demo_topics: auto
 roles:
   - name: orio_concierge
     description: >-
-      Concierge — single point of contact and ORIO control plane. Standing topic
-      list, schedule, GO vs add-topic, board status, open report, assess,
-      deploy, publish (push only after approval). Assembles kanban — never
-      fetches sources or writes stories.
+      Concierge — ORIO control plane (not a kanban worker). Kicks digest_go
+      (manage.py go: ingest → research × N → librarian → synthesizer → Phase C
+      render), reports digest_board_status (phase + artifact gates), assess,
+      deploy, publish. Knows full pipeline_process; never fetches or writes stories.
 
   - name: orio_researcher
     description: >-
@@ -66,10 +66,9 @@ roles:
 
   - name: orio_synthesizer
     description: >-
-      Synthesizer — reads librarian.md only (overlap and topics already settled).
-      Format, schema, and writing: takeaway, summary, narratives → digest.json.
-      Does not resolve overlap, remap topics, re-fetch, or read raw researcher
-      artifacts. Grounding · validate · render run downstream — not this role.
+      Synthesizer — reads librarian.md only. Calls synthesize_digest → digest.json.
+      Does not render, validate, or ground (Phase C manage.py go after kanban).
+      Does not resolve overlap, remap topics, or read raw researcher artifacts.
 
 agentic_enrich:
   enabled: false

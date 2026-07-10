@@ -168,9 +168,12 @@ DIGEST_BOARD_STATUS = {
     "description": (
         "MANDATORY for status/progress check-ins ('how are things going', 'status', "
         "'what's running', 'did they finish'). Returns kanban phase, run prefix, "
-        "board_navigation (primary_anchor + root_tasks + librarian/synthesizer ids "
-        "for finding tasks in Kanban), per-task state, artifact gates, active/next "
-        "tasks, and summary[] — call before answering; never guess board state."
+        "phase_guide (what each phase means), pipeline_process (full GO steps), "
+        "concierge_note, board_navigation (primary_anchor + root_tasks + "
+        "librarian/synthesizer ids), per-task state, artifact gates (gate_ok), "
+        "pipeline_artifacts_ok, active/next tasks, and summary[] — call before "
+        "answering; never guess board state. Kanban done ≠ success — trust gates. "
+        "Use brief=false when render readiness or blocked runs matter."
     ),
     "parameters": {
         "type": "object",

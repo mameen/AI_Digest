@@ -66,6 +66,76 @@ DEPRECATED_PROFILES = LEGACY_HERMES_PROFILES
 # Logical roles for STATUS / orchestration summaries (not Hermes profile names).
 LOGICAL_ROLES = (CONCIERGE, RESEARCHER, LIBRARIAN, SYNTHESIZER)
 
+# Canonical GO lifecycle for Concierge STATUS — kanban workers are only the middle.
+GO_PIPELINE_PROCESS: tuple[dict[str, str], ...] = (
+    {
+        "id": "kick",
+        "label": "Kick GO",
+        "actor": "Concierge digest_go → manage.py go subprocess",
+        "kanban": "no",
+        "deliverable": "kanban graph + run prefix",
+    },
+    {
+        "id": "ingest",
+        "label": "Ingest warm-up",
+        "actor": "manage.py go (deterministic)",
+        "kanban": "no",
+        "deliverable": ".cache/<prefix>/ preflight + crawl + structured",
+    },
+    {
+        "id": "research",
+        "label": "Research × N",
+        "actor": "orio_researcher kanban workers",
+        "kanban": "yes",
+        "deliverable": "output.md per task (+ .runtime/artifacts/<prefix>/research/)",
+    },
+    {
+        "id": "librarian",
+        "label": "Librarian fan-in",
+        "actor": "orio_librarian kanban worker",
+        "kanban": "yes",
+        "deliverable": "librarian.md (+ .runtime/artifacts/<prefix>/librarian.md)",
+    },
+    {
+        "id": "synthesizer",
+        "label": "Synthesizer JSON",
+        "actor": "orio_synthesizer kanban worker (synthesize_digest tool only)",
+        "kanban": "yes",
+        "deliverable": "digest.json in workspace (persisted under .runtime/artifacts/<prefix>/)",
+    },
+    {
+        "id": "render",
+        "label": "Ground · validate · render",
+        "actor": "manage.py go Phase C — render-from-board (not an agent, not pipeline/render.py CLI)",
+        "kanban": "no",
+        "deliverable": "agentic/hermes/reports/<prefix>.html + .json",
+    },
+    {
+        "id": "handover",
+        "label": "Handover + board cleanup",
+        "actor": "manage.py go (end of subprocess)",
+        "kanban": "no",
+        "deliverable": ".runtime/artifacts/<prefix>/handover.json; digest tasks archived",
+    },
+    {
+        "id": "assess",
+        "label": "Assess · deploy · publish",
+        "actor": "Concierge digest_assess_run / digest_deploy_app / digest_publish",
+        "kanban": "no",
+        "deliverable": "app/reports/<prefix>.html after deploy (human-gated push)",
+    },
+)
+
+PHASE_GUIDE: dict[str, str] = {
+    "idle": "No digest kanban tasks — last report prefix may still exist under agentic/hermes/reports/.",
+    "research": "Research workers running or pending — check per-task output.md gates.",
+    "librarian": "Librarian merge running or pending — needs all research gates passed.",
+    "synthesizer": "Synthesizer running or pending — reads librarian.md, writes digest.json via synthesize_digest.",
+    "blocked": "Kanban marked done but artifact gate failed — NOT ready for render. Re-dispatch failed role (digest_go --prefix, no --fresh) or inspect gate errors.",
+    "render": "All worker gates passed — GO subprocess should run Phase C (validate + render) or report may be missing if GO exited early.",
+    "complete": "Report HTML exists for run prefix — run digest_assess_run before deploy/publish.",
+}
+
 _ASSIGNEE_ALIASES: dict[str, str] = {
     RESEARCHER: RESEARCHER,
     LIBRARIAN: LIBRARIAN,

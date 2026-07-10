@@ -54,3 +54,10 @@ Calling `kanban_complete` without a real `digest.json` on disk will be **rejecte
 | Wait for `synthesize_digest` to finish | Use terminal/shell to run Python |
 | Complete with the real artifact path | Resolve overlap, remap topics, or re-fetch |
 | Read **`librarian.md` only** | Read raw researcher `output.md` files |
+
+## Downstream (not your job)
+
+After you `kanban_complete` with a valid `digest.json`, **`manage.py go` Phase C**
+runs deterministic ground · validate · render (`render-from-board`). That produces
+`agentic/hermes/reports/<prefix>.html` — no kanban task, not Concierge LLM, not
+`synthesize_digest`. Do not call render tools or `pipeline/render.py`.
