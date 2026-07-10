@@ -71,6 +71,24 @@ def run_staged_enrich(
     return enrich_digest(cfg, window, preflight_path, crawl_md, prior_digests)
 
 
+def validation_roots(cfg: dict[str, Any], prefix: str | None = None) -> set[str]:
+    """Grounding allow-roots from preflight skeleton when available."""
+    import json
+
+    from llm_pipeline.paths import preflight_dir
+
+    pfx = (prefix or "").strip()
+    if pfx:
+        path = preflight_dir(cfg) / f"preflight_{pfx}.json"
+        if path.is_file():
+            try:
+                skeleton = json.loads(path.read_text(encoding="utf-8"))
+                return collect_roots(skeleton.get("requires_web_fetch"))
+            except (OSError, json.JSONDecodeError):
+                pass
+    return collect_roots(None)
+
+
 def validate_and_render(
     cfg: dict[str, Any],
     prefix: str,
@@ -79,7 +97,7 @@ def validate_and_render(
     roots: set[str] | None = None,
 ) -> list[str]:
     """Validate, optionally fail, and render HTML — shared output path with run.py."""
-    check_roots = roots if roots is not None else collect_roots(None)
+    check_roots = roots if roots is not None else validation_roots(cfg, prefix)
     errors = validate_digest(cfg, digest, check_roots)
     apply_validation(cfg, errors)
     render(cfg, prefix, digest)

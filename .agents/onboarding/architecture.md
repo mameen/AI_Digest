@@ -1,18 +1,55 @@
 # Architecture & Design Summary
 
-AI Digest is a **local-first, staged pipeline** that ingests public AI-news
-sources, enriches them with a local LLM, guards their accuracy, and publishes an
-interactive HTML archive with per-run diagnostics. Everything runs on one
-workstation (Ollama + Instructor); no cloud keys are required.
+> **Canonical narrative:** [`README.md`](../../README.md) at the repo root. **If this
+> doc conflicts with README, README wins.**
 
-## The four stages
+AI Digest is a **local-first ORIO agent crew** (Concierge → Researcher × N →
+Librarian → Synthesizer) on Hermes kanban, then deterministic grounding,
+validate, and render. **Production GO** is `manage.py go` / Concierge `digest_go`.
+Everything runs on one workstation (Ollama + Instructor); no cloud keys are required.
 
-`run.py` orchestrates a strict `ingest → enrich → validate → render` flow. Each
-stage is wrapped in a diagnostics `collector.stage(...)` context so timings,
+The sections below on **ingest → enrich → validate → render** describe the
+**shared library stages** inside `llm_pipeline/` — used by both the agentic path
+(deterministic tail + warm cache) and the **batch escape hatch** (`go --pipeline`
+/ deprecated `run.py`). They are not the product orchestration story.
+
+## Production GO (agentic)
+
+See root README and [`system_roles.md`](../../agentic/hermes/system_roles.md).
+
+```mermaid
+flowchart TB
+    GO[Concierge GO] --> R[Researcher × N]
+    R --> L[Librarian]
+    L --> S[Synthesizer]
+    S --> V[grounding + validate]
+    V --> OUT[render → agentic/hermes/reports/]
+```
+
+| Stage | Default GO | Batch `--pipeline` |
+|---|---|---|
+| Orchestration | Hermes kanban workers | `pipeline_go.run_production_pipeline` |
+| Ingest | Warm cache + lazy worker tools | `lib.ingest.stage1` batch |
+| Enrich | Role LLMs (research / librarian / synthesizer) | `enrich_digest` |
+| Invariants | grounding + validate | **Same code paths** |
+| Output | `agentic/hermes/reports/` | `agentic/hermes/reports/` |
+
+The staged batch CLI (`run.py`) is **deprecated orchestration**;
+`llm_pipeline/` remains as shared libraries until fully inlined.
+
+Deep dive: [`agentic/hermes/docs/ARCHITECTURE.md`](../../agentic/hermes/docs/ARCHITECTURE.md).
+Runbook: [`agentic/hermes/POC.md`](../../agentic/hermes/POC.md).
+
+---
+
+## Shared stages (libraries + batch escape hatch)
+
+`run.py` (and `go --pipeline`) orchestrates a strict `ingest → enrich → validate → render`
+flow. Each stage is wrapped in a diagnostics `collector.stage(...)` context so timings,
 token counts, and failures are captured for the waterfall.
 
 ```
-run.py
+run.py / go --pipeline
  ├─ [1] Ingest    preflight skeleton (curated feeds) + Crawl4AI leaderboards
  │                + structured-API leaderboards (SWE-bench, EvalPlus)
  ├─ [2] Enrich    multi-pass local LLM: summarize, score, gap-fill, curate,
@@ -110,35 +147,3 @@ If `llm.enabled` is false, `_promote_skeleton` publishes the unscored skeleton.
   report is never risked for a cosmetic change.
 - **Provenance as pipeline metadata, not model output:** guarantees the trace is
   trustworthy and can't be hallucinated.
-
-## Agentic Hermes (`agentic/hermes/`)
-
-A second orchestration path reuses the same schemas, grounding, validate, and
-render modules — but fans work across Hermes kanban workers instead of sequential
-`run.py` stages.
-
-```mermaid
-flowchart LR
-    subgraph batch [llm_pipeline run.py]
-        I1[ingest] --> E1[enrich] --> V1[validate] --> R1[render]
-    end
-
-    subgraph agentic [agentic/hermes manage.py go]
-        R2[researcher × N] --> L2[librarian] --> S2[synthesizer]
-        S2 --> V2[validate] --> R2b[render]
-    end
-
-    OUT[(llm_pipeline/reports/)]
-    R1 --> OUT
-    R2b --> OUT
-```
-
-| Stage | `run.py` | Agentic workers |
-|---|---|---|
-| Ingest | Batch preflight + crawl + structured | Per-topic lazy tools on cache miss |
-| Enrich / merge | In-process Instructor passes | Librarian + `synthesize_digest` workers |
-| Invariants | grounding + validate | Same code paths |
-| Output | `reports/<prefix>.html` | Same |
-
-Deep dive: [`agentic/hermes/docs/ARCHITECTURE.md`](../../agentic/hermes/docs/ARCHITECTURE.md).
-E2E runbook: [`agentic/hermes/HANDOFF.md`](../../agentic/hermes/HANDOFF.md).

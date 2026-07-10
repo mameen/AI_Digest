@@ -193,23 +193,153 @@ DIGEST_SETUP_BOARD = {
 DIGEST_GO = {
     "name": "digest_go",
     "description": (
-        "Run the full AI Digest agent pipeline: dispatch workers, artifact gates, "
-        "render HTML+JSON report. Takes several minutes. Optional fresh board first."
+        "Run AI Digest GO: Concierge fans out kanban workers (research × N → "
+        "librarian → synthesizer → validate → render). Takes several minutes. "
+        "Set pipeline=true only for batch run.py parity (escape hatch)."
     ),
     "parameters": {
         "type": "object",
         "properties": {
-            "fresh": {
-                "type": "boolean",
-                "description": "Archive board and recreate before run (default true)",
+            "start": {
+                "type": "string",
+                "description": "Digest date YYYY-MM-DD or YYYYMMDD (default: today UTC)",
+            },
+            "history": {
+                "type": "integer",
+                "description": "Editorial lookback days (default: config history_days, usually 10)",
             },
             "prefix": {
                 "type": "string",
-                "description": "Run prefix YYYYMMDDHHMMSS (omit for auto UTC timestamp)",
+                "description": "Run prefix YYYYMMDDHHMMSS (omit for noon UTC on start date)",
+            },
+            "pipeline": {
+                "type": "boolean",
+                "description": "Batch run.py parity via pipeline_go (skips kanban workers)",
+            },
+            "fresh": {
+                "type": "boolean",
+                "description": "Archive board and recreate before GO (default false)",
             },
             "rounds": {
                 "type": "integer",
                 "description": "Max research dispatch rounds (default 2)",
+            },
+            "agents": {
+                "type": "boolean",
+                "description": "Deprecated — agent GO is default; agents:false selects batch pipeline",
+            },
+        },
+    },
+}
+
+DIGEST_OPEN_REPORT = {
+    "name": "digest_open_report",
+    "description": (
+        "Open a digest report or diagnostics file in the default desktop app "
+        "(macOS open / Linux xdg-open). Resolves prefix from reports/index.json "
+        "when omitted. Returns absolute path and file:// URI."
+    ),
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "prefix": {
+                "type": "string",
+                "description": "Run prefix (omit for latest in reports/index.json)",
+            },
+            "target": {
+                "type": "string",
+                "description": (
+                    "Which artifact: report (HTML, default), report_json, "
+                    "diagnostics, diagnostics_json, pages_report (app/ after deploy)"
+                ),
+            },
+            "dry_run": {
+                "type": "boolean",
+                "description": "Return path and command without opening (default false)",
+            },
+        },
+    },
+}
+
+DIGEST_PUBLISH = {
+    "name": "digest_publish",
+    "description": (
+        "Stage app/ + hermes report artifacts, commit (pre-commit hooks run), "
+        "and optionally push to origin/main. Requires confirm_push=true to push."
+    ),
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "prefix": {
+                "type": "string",
+                "description": "Run prefix (omit for latest in reports/index.json)",
+            },
+            "commit_message": {
+                "type": "string",
+                "description": "Optional git commit subject/body",
+            },
+            "confirm_push": {
+                "type": "boolean",
+                "description": "Push to origin/main after commit (default false)",
+            },
+            "dry_run": {
+                "type": "boolean",
+                "description": "Show planned git actions without committing",
+            },
+            "force": {
+                "type": "boolean",
+                "description": "Publish even when assess_run goodness is warn/fail",
+            },
+        },
+    },
+}
+
+DIGEST_DEPLOY_APP = {
+    "name": "digest_deploy_app",
+    "description": (
+        "Copy agentic/hermes report + diagnostics for a prefix into app/ "
+        "(GitHub Pages). Runs assess gate unless force=true."
+    ),
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "prefix": {
+                "type": "string",
+                "description": "Run prefix (omit for latest)",
+            },
+            "dry_run": {
+                "type": "boolean",
+                "description": "Plan copies only, do not write app/",
+            },
+            "force": {
+                "type": "boolean",
+                "description": "Deploy even when assess_run goodness is fail",
+            },
+        },
+    },
+}
+
+DIGEST_ASSESS_RUN = {
+    "name": "digest_assess_run",
+    "description": (
+        "Assess digest goodness: validation gates, story/category stats, "
+        "delta vs baseline, file:// preview links, and absolute filesystem paths "
+        "(paths.report_html, open_hint_macos) for local review."
+    ),
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "prefix": {
+                "type": "string",
+                "description": "Run prefix (omit for latest in reports/index.json)",
+            },
+            "compare_prefix": {
+                "type": "string",
+                "description": "Baseline prefix for comparison (default: index latest)",
+            },
+            "force": {
+                "type": "boolean",
+                "description": "Treat as warn-only (never fail goodness)",
             },
         },
     },

@@ -1,5 +1,9 @@
 # AI Agent Configuration
 
+> **Canonical narrative for the product story:** [`README.md`](../README.md) at the
+> repo root. This directory is contributor onboarding; if anything here conflicts
+> with README, **README wins**.
+
 This directory is the **source of truth** for contributor onboarding on the AI Digest
 project. It is committed to Git and read by both humans and automation. The
 rulebook, editor rules, and deeper narrative all live here.
@@ -48,12 +52,13 @@ consistent: a rule is stated once in `AGENTS.md` and expanded here.
 
 ## Reading order for a new agent
 
-1. `README.md` — this file (layout and symlinks).
-2. `AGENTS.md` — day-to-day rules.
-3. `onboarding/principles-and-workflow.md` — rules of engagement (read before coding).
-4. `onboarding/architecture.md` — how the pipeline is put together.
-5. `onboarding/running-and-tooling.md` — how to run and what each piece does.
-6. `onboarding/debugging-and-pitfalls.md` — when (not if) something breaks.
+1. [`README.md`](../README.md) — showcase story, ORIO roles, production GO (canonical).
+2. `.agents/README.md` — this file (layout and symlinks).
+3. `AGENTS.md` — day-to-day rules.
+4. `onboarding/principles-and-workflow.md` — rules of engagement (read before coding).
+5. `onboarding/architecture.md` — agentic GO + shared library stages.
+6. `onboarding/running-and-tooling.md` — how to run and what each piece does.
+7. `onboarding/debugging-and-pitfalls.md` — when (not if) something breaks.
 
 ## Maintenance
 

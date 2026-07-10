@@ -130,12 +130,13 @@ class LibrarianSynthesizerArtifactTest(unittest.TestCase):
                 "- A https://example.com/one\n- B https://example.com/two\n- C https://example.com/three\n",
                 encoding="utf-8",
             )
-            research = [{"id": "t1", "title": "Research: llm", "workspace_path": str(ws)}]
+            research = [{"id": "t1", "title": "Research: aisearch", "workspace_path": str(ws)}]
             digest = assemble_showcase_digest(research, prefix="20260706120000")
             self.assertEqual(len(digest.get("categories") or []), 12)
-            self.assertGreaterEqual(
-                sum(len(c.get("stories") or []) for c in digest["categories"]), 20
-            )
+            aisearch = next(c for c in digest["categories"] if c["id"] == "aisearch")
+            self.assertGreaterEqual(len(aisearch.get("stories") or []), 3)
+            youtube = next(c for c in digest["categories"] if c["id"] == "youtube")
+            self.assertEqual(len(youtube.get("stories") or []), 0)
 
     def test_librarian_valid(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

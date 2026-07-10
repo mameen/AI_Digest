@@ -12,3 +12,7 @@ provides_tools:
   - digest_board_status
   - digest_setup_board
   - digest_go
+  - digest_assess_run
+  - digest_deploy_app
+  - digest_publish
+  - digest_open_report

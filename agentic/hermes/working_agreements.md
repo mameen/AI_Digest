@@ -1,15 +1,14 @@
 # Hermes working agreements
 
-Contracts, tools, and pipeline invariants for the agentic digest. This doc
-captures design decisions from the role-model discussions — what each agent
-produces, what it may call, and what the pipeline enforces regardless of agent
-behavior.
+> **Canonical narrative:** [`README.md`](../../README.md) at the repo root. **If this
+> doc conflicts with README, README wins.**
+
+Contracts, tools, and pipeline invariants for the agentic digest.
 
 **Related:**
 
 - [`system_roles.md`](system_roles.md) — **who** does what (roles, orchestration, task graph)
-- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — system diagram vs `llm_pipeline`
-- [`docs/202607_research/hermes-parallel-agents-walkthrough.md`](docs/202607_research/hermes-parallel-agents-walkthrough.md) — Hermes parallel-agents research
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — system diagram + approved design
 
 ---
 
@@ -158,8 +157,16 @@ topics_guideline/v1:
 | Due diligence — primary URLs, facts | Final topic placement (Librarian) |
 | Configurable depth — stop at threshold | Author provenance tokens |
 | Extract keywords, entities, links, tags | Skip contract fields |
-| Call `verify_url` on cited links | Rely on verify alone — pipeline re-checks |
+| Call `verify_url` on cited links | Rely on verify alone — pipeline re-checks at publish |
+| **Reflect + ground this target** before handoff | Expect Librarian to re-fetch or re-verify your links |
 | **Local dedup** within this target only | Merge with other researchers' output |
+
+### Trust boundary (downstream)
+
+Each researcher owns reflection and grounding for **its task artifact**. Librarian
+reads researcher outputs and assumes that diligence is complete. Synthesizer reads
+**`librarian.md` only** — overlap and topics already settled. Deterministic
+grounding after synthesis is the final publish gate.
 
 ### Configurable thresholds (from Concierge / config)
 
@@ -226,18 +233,25 @@ for agent handoff metadata.
 | Do | Do not |
 |---|---|
 | Sort by significance, recency, novelty | Fetch new URLs |
-| Classify stories → canonical topic IDs | Change standing topic list |
+| **Resolve overlap** across researchers (canonical story per event) | Leave duplicate stories for Synthesizer to merge |
+| **Map** every article and data point → canonical topic IDs | Change standing topic list |
 | Regroup — merge cross-feed duplicates | Write final narrative (Author) |
-| Build knowledge graph (nodes + edges) | Apply final grounding (pipeline) |
-| Flag gaps and carry-forward candidates | Drop discovered topics silently |
-| Package appendix material for Author | |
+| Build knowledge graph (nodes + edges) | Reclassify or remap at synthesis time |
+| Flag gaps and carry-forward candidates | Read raw researcher artifacts in Synthesizer |
+| Package appendix material for Author | Apply final grounding (pipeline) |
+| Package structure so Synthesizer only writes | Drop discovered topics silently |
+
+**Handoff rule:** when `librarian.md` ships, overlap is resolved and topic mapping
+is complete. Synthesizer focuses on **format, schema, and prose** — not curatorial
+rework.
 
 ### Two-layer dedup
 
 1. **Researcher** — local, within one target (parallel-safe)
 2. **Librarian** — global, cross-researcher (canonical merge semantics)
 
-Researchers stay independent; Librarian owns merge decisions.
+Researchers stay independent; Librarian owns merge decisions and **trusts**
+researcher artifacts as already grounded per target.
 
 ### Knowledge graph relations
 
@@ -290,10 +304,14 @@ Also called **Synthesizer** in profiles and task board.
 
 | Do | Do not |
 |---|---|
-| Read `librarian.md` (staged into workspace) | Read raw researcher artifacts directly |
-| Call **`synthesize_digest`** with workspace + run prefix | Hand-author full `digest.json` |
-| Verify `digest.json` exists before `kanban_complete` | Re-fetch or reclassify |
+| Read **`librarian.md` only** (overlap + topics already settled) | Read raw researcher artifacts directly |
+| Call **`synthesize_digest`** — format, schema, editorial pass → `digest.json` | Resolve overlap or remap topics (Librarian) |
+| Verify `digest.json` exists before `kanban_complete` | Re-fetch, reclassify, or redo merge work |
 | Complete with real artifact paths | Emit stub JSON or narrate completion |
+
+**Focus:** writing and artifact shape. Librarian already deduped and mapped every
+story to topics; you compose takeaway, summary, and category narratives into
+valid digest JSON.
 
 ### Tool surface
 

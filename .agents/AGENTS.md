@@ -5,7 +5,8 @@ conservative and in keeping with the surrounding code.
 
 > **Single entry point.** This file lives at `.agents/AGENTS.md` (source of truth);
 > repo-root `AGENTS.md` is a symlink for tools that only read the root. The deeper
-> onboarding narrative lives under `.agents/onboarding/`.
+> onboarding narrative lives under `.agents/onboarding/`. **Product narrative:**
+> [`README.md`](../README.md) at the repo root — if anything conflicts, README wins.
 
 ## Principles
 
@@ -102,9 +103,10 @@ realistic fallback for when no fetch is available.
 After any **major change** (pipeline logic, a parser, the widget, schema, or a
 source), run this loop in order — no shortcuts:
 
-1. **Regenerate** the latest report (`python run.py --start <date>`). Confirm it
-   is *not* degraded (story count and per-category coverage hold up); never
-   publish a degraded showcase report.
+1. **Regenerate** the latest report — production path:
+   `python agentic/hermes/admin/manage.py go --start <date> --fresh`. Batch escape
+   hatch only: `python run.py --start <date>`. Confirm it is *not* degraded (story
+   count and per-category coverage hold up); never publish a degraded showcase report.
 2. **Lint + test** — `python run_tests.py` must be green (Python + Node).
 3. **Push to a relevant branch, never `main`.** Reuse an existing topic branch
    where it fits, otherwise cut a fresh one (`chore/…`, `fix/…`, `feat/…`).

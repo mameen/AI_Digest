@@ -1,9 +1,16 @@
-# llm_pipeline — staged LLM-enhanced digest generator
+# llm_pipeline — shared digest libraries (+ batch escape hatch)
 
-This package is the **current production pipeline**: a local-first,
+> **Canonical narrative:** [`README.md`](../README.md) at the repo root. **Production GO**
+> is the four-role ORIO kanban crew under `agentic/hermes/` — not this package's
+> batch orchestration.
+
+This package holds **shared** ingest/enrich/validate/render code: a local-first,
 deterministic four-stage flow (`ingest → enrich → validate → render`) that uses
 a local LLM (Ollama + Instructor) to score, summarize, and gap-fill stories,
 with a grounding guard and auditable provenance.
+
+**Orchestration:** deprecated batch CLI (`run.py`) and `manage.py go --pipeline`
+call into here. Agentic GO reuses grounding, validate, and render from this tree.
 
 ## Relationship to `pipeline/`
 
@@ -21,12 +28,12 @@ unchanged. New code — especially under `agentic/hermes/` — should import
 | Fixed enrich passes (skeleton → gap → carry) | Dynamic task boards driven by chat |
 | One report per scheduled run | Per-target parallel workers + synthesizer |
 
-The agentic alternative lives in [`../agentic/hermes/`](../agentic/hermes/).
+The agentic **product** lives in [`../agentic/hermes/`](../agentic/hermes/).
 
 ## Entry points
 
 ```bash
-python run.py                    # full pipeline (imports pipeline → llm_pipeline)
+python run.py                    # batch escape hatch (deprecated orchestration)
 python run.py --skeleton-only    # skip LLM enrich
 python run_tests.py              # unit tests (import pipeline shims)
 ```

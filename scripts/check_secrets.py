@@ -50,7 +50,6 @@ BLOCKED_PATH_PREFIXES: tuple[str, ...] = (
 _LAN_ALLOWLIST: tuple[str, ...] = (
     "llm_pipeline/config.yaml",
     "agentic/hermes/admin/config/hermes_roles.yaml",
-    "agentic/hermes/HANDOFF.md",
     "agentic/hermes/docs/ARCHITECTURE.md",
     ".agents/onboarding/running-and-tooling.md",
 )

@@ -1,8 +1,18 @@
 # Hermes system roles (ORIO crew)
 
+> **Canonical narrative:** [`README.md`](../../README.md) at the repo root. **If this
+> doc conflicts with README, README wins.**
+
 Canonical role model for the agentic digest pipeline. Each row is **one profile**
 (reusable across many tasks). An agent is a **role**, not a subject — never fork
 a profile per category, company, or feed.
+
+**Board topics on GO:** By default, Concierge assembles one research task per
+non-empty category from the **best known-good report** (highest story count that
+passes validation). Override by pinning `demo_topics` in `hermes_roles.yaml`.
+
+**Production GO** (`manage.py go` / Concierge `digest_go`) runs this graph.
+Batch `run.py` parity is `go --pipeline` only (deprecated batch orchestration).
 
 **ORIO** — *Open Research Intelligence Observatory* — is the internal codename for
 AI Digest. Hermes profile names use the `orio_*` prefix; human-facing labels stay
@@ -16,8 +26,7 @@ Concierge → Researcher × N (parallel) → Librarian → Synthesizer → groun
 
 See also: [`working_agreements.md`](working_agreements.md) (artifact contracts,
 tools vs pipeline invariants),
-[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md),
-[`docs/202607_research/hermes-parallel-agents-walkthrough.md`](docs/202607_research/hermes-parallel-agents-walkthrough.md).
+[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ---
 
@@ -68,12 +77,18 @@ implies quality policing by LLM, which conflicts with the deterministic guard.
 
 | | |
 |---|---|
-| **Purpose** | Single point of contact for humans: standing topic list, schedule, intent routing, task-graph assembly. |
-| **You ask them to…** | Add/remove a standing topic, change the digest schedule, say `GO`, edit the builder prompt, check board status. |
+| **Purpose** | Single point of contact **and ORIO control plane**: standing topic list, schedule, intent routing, task-graph assembly, run lifecycle (kick/abort/status), report paths, assess/deploy/publish after maintainer approval. |
+| **You ask them to…** | Add/remove a standing topic, change schedule, say `GO`, abort/reset the board, check status, open report paths, assess a run, deploy, commit/push (after you approve). |
 | **Model tier** | Smart — must parse intent and never confuse “update list” with “run now”. |
 | **Inputs** | Chat/admin messages, cron trigger, memory (topic list, builder prompt, schedule). |
-| **Outputs** | Kanban tasks; confirmation counts (“N research + 1 librarian + 1 synthesizer”). |
-| **Does not** | Fetch sources, classify stories, write the digest, bypass config or grounding. |
+| **Outputs** | Kanban tasks; confirmation counts (“N research + 1 librarian + 1 synthesizer”); assess JSON with absolute report paths; deploy/publish receipts. |
+| **Does not** | Fetch sources, classify stories, write the digest, bypass config or grounding, push without explicit user approval. |
+
+**Control plane tools (`digest_admin` + `kanban`):** `digest_go`, `digest_board_status`,
+`digest_setup_board`, `digest_assess_run`, `digest_deploy_app`, `digest_publish`.
+Assess returns `paths.report_html` (absolute) and `preview.report_local` (`file://`).
+Publish commits staged `app/` + hermes artifacts; **`confirm_push: true`** only after
+you explicitly approve push.
 
 **Intent taxonomy (planned):**
 
@@ -103,6 +118,18 @@ in normal chat. Scheduled jobs cannot block waiting for an answer.
 | **Outputs** | Task artifact: raw story stubs, summaries, links, source notes — see `researcher_artifact/v1` in [`working_agreements.md`](working_agreements.md). |
 | **Does not** | Dedupe across topics, remap to standing topic list, merge categories, render the digest. |
 
+**Reflect and ground (researcher's job):** before `kanban_complete`, each researcher
+self-checks coverage and gaps, calls `verify_url` on every cited link, and ships an
+honest `output.md` for **this target only**. That artifact is the researcher's
+grounded view of its task.
+
+**Trust boundary:** Librarian **assumes you did your job** for this target.
+Synthesizer reads **`librarian.md` only** — neither re-fetches nor re-verifies your
+links. Overlap across researchers is resolved by Librarian, not by you.
+
+Publish-time grounding · validate · render runs **after Synthesizer** in deterministic
+code — separate from your task-level diligence.
+
 One profile handles every research task; only the **task body** changes per target.
 
 ---
@@ -118,13 +145,18 @@ One profile handles every research task; only the **task body** changes per targ
 | **Model tier** | Smart — needs cross-document reasoning, taxonomy alignment, and merge decisions; cheaper than full report design. |
 | **Inputs** | All researcher artifacts; standing topics list from Concierge memory / `config.yaml`; optional prior-run graph for continuity. |
 | **Outputs** | **Curated digest skeleton** — see `librarian_artifact/v1` in [`working_agreements.md`](working_agreements.md): topic-aligned categories, deduped stories, knowledge graph, discovered topics with appendix hints. |
-| **Does not** | Fetch new URLs, change the standing topic list, apply grounding (downstream), or produce final HTML/PDF. |
+| **Does not** | Fetch new URLs, re-verify researcher links, change the standing topic list, apply publish-time grounding (downstream), or produce final HTML/PDF. |
+
+**Trust boundary:** treat each researcher artifact as **already reflected and grounded**
+for its target. Your job is curatorial merge — **resolve overlap**, map every article
+and data point to the standing topic list, dedupe, regroup — so the Synthesizer
+never has to redo classification or merge work.
 
 **Why between researchers and synthesizer**
 
-Researchers optimize for **coverage and speed** per target. Left alone, the
-Synthesizer inherits overlap, category drift, and weak cross-topic structure.
-The Librarian is the **single fan-in before the final fan-out-to-deliverable**:
+Researchers optimize for **coverage and speed** per target. The Synthesizer should
+**not** inherit overlap disputes, category drift, or orphan data points. The
+Librarian is the **single fan-in** that finishes all curatorial work before synthesis:
 
 1. **Sort** — order by significance, recency, novelty within each topic.
 2. **Classify** — assign each story to canonical topic IDs from the standing list.
@@ -158,8 +190,8 @@ overflow:
     note: "Below significance threshold; available if Synthesizer needs filler"
 ```
 
-The Synthesizer reads this graph plus regrouped categories — not raw researcher
-comments.
+The Synthesizer reads this graph plus regrouped categories — **not** raw researcher
+comments. Overlap and topic placement are **settled here**; Synthesizer writes.
 
 ---
 
@@ -169,12 +201,15 @@ comments.
 
 | | |
 |---|---|
-| **Purpose** | Compose the **finished digest**: executive takeaway, daily summary, visual narrative, and deliverable (HTML archive; optional PDF/Telegram). |
+| **Purpose** | Compose the **finished digest** from the Librarian skeleton: executive takeaway, daily summary, category narratives, and schema-valid **`digest.json`**. |
 | **You ask them to…** | Nothing directly — Concierge seeds the builder prompt in memory; one synthesizer task per run. |
 | **Model tier** | Smart — positioning, prose, layout, chart design. |
-| **Inputs** | Librarian curated skeleton + knowledge graph; builder prompt from memory; brand/style guide. |
+| **Inputs** | Librarian curated skeleton + knowledge graph (overlap and topic mapping **already done**); builder prompt from memory; brand/style guide. |
 | **Outputs** | Digest JSON via `synthesize_digest`; compatible with `llm_pipeline` render path. |
-| **Does not** | Re-fetch sources, reclassify topics (Librarian’s job), hand-author full JSON, or skip downstream grounding/validation. |
+| **Does not** | Re-fetch sources, resolve overlap, reclassify or remap topics (Librarian's job), read raw researcher artifacts, hand-author full JSON, or skip downstream grounding/validation. |
+
+**Focus:** format, data shape, and writing — turn `librarian.md` into publishable
+`digest.json`. Do **not** redo curatorial merge, dedupe, or topic assignment.
 
 Prompt style: **goal and output**, not install steps — hand a style guide and
 section list; let the agent solve rendering setup.
@@ -226,14 +261,17 @@ Concierge confirms: **“4 research + 1 librarian + 1 synthesizer.”**
 
 ---
 
-## Comparison to `llm_pipeline` today
+## Comparison to deprecated batch path (`run.py` / `--pipeline`)
 
-| Agentic role | Rough `llm_pipeline` equivalent |
+Historical mapping only — **production uses the agentic roles below**, not
+sequential `enrich_digest` passes.
+
+| Agentic role | Rough batch-path equivalent |
 |---|---|
-| Concierge | `run.py` + admin + `config.yaml` (human-facing ops) |
-| Researcher | Preflight + per-category enrich passes (parallelized) |
-| Librarian | *New* — curation, dedupe, cross-category merge, topic graph |
-| Synthesizer | Daily summary pass + `render.py` narrative/visual layer |
+| Concierge | Human ops + trigger (now: control plane tools) |
+| Researcher | Per-category enrich / preflight passes (parallelized) |
+| Librarian | *Explicit* — curation, dedupe, cross-category merge, topic graph |
+| Synthesizer | Daily summary + narrative compose + render input |
 | Grounding guard | `grounding.py` + `validate.py` (unchanged, post-agent) |
 
 The Librarian replaces implicit sorting that today happens inside sequential
@@ -257,7 +295,7 @@ models (e.g. flash researchers, pro synthesizer).
 ## Rules of engagement
 
 1. **One profile per role** — scale by adding tasks, not cloning agents.
-2. **Concierge owns the standing topics list** — Librarian maps *into* it, does not mutate it.
+2. **Concierge owns the standing topic list** — board tasks derive from it (default: best report); Librarian maps *into* it, does not mutate it.
 3. **Librarian is the only fan-in before synthesis** — Synthesizer never reads raw researcher output directly.
 4. **Provenance is stamped by the pipeline**, not authored by any role.
 5. **Grounding runs after Synthesizer** — deterministic demotion of bad links.

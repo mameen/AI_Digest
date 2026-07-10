@@ -1,5 +1,9 @@
 # Slack + Hermes — setup steps
 
+> **Canonical narrative:** [`README.md`](../../README.md) at the repo root. Concierge
+> is the Slack front desk for AI Digest GO and status — not story fetching.
+> **If this doc conflicts with README, README wins.**
+
 > **Scratch notes:** [`slack_deleteme.md`](slack_deleteme.md) (gitignored — **only** place for secrets while experimenting; never commit).
 >
 > **Canonical upstream doc:** [Hermes — Slack (Socket Mode)](https://hermes-agent.nousresearch.com/docs/user-guide/messaging/slack)
@@ -43,7 +47,16 @@ SLACK_HOME_CHANNEL=C0123456789
 SLACK_HOME_CHANNEL_NAME=digest-bot
 ```
 
-Templates (placeholders, safe to commit): [`config/hermes.env.example`](config/hermes.env.example), [`config/hermes.config.example.yaml`](config/hermes.config.example.yaml) — see [`config/README.md`](config/README.md).
+Templates (placeholders, safe to commit):
+
+| Template | Copy to | Purpose |
+|---|---|---|
+| [`config/hermes.env.example`](config/hermes.env.example) | `~/.hermes/.env` | Slack tokens, allowlist |
+| [`config/hermes.config.example.yaml`](config/hermes.config.example.yaml) | merge into `~/.hermes/config.yaml` | Slack platform behaviour |
+| [`config/digest.agentic.example.yaml`](config/digest.agentic.example.yaml) | merge into repo `config.yaml` | In-repo model routing (future) |
+
+Secrets never go in the repo. Scratch notes while experimenting:
+[`slack_deleteme.md`](slack_deleteme.md) (gitignored).
 
 ---
 

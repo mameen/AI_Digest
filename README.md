@@ -18,14 +18,18 @@
 
 Four roles. One digest. Each agent has a job — and a mascot.
 
+<a id="four-roles-one-digest-each-agent-has-a-job--and-a-mascot"></a>
+
 <table>
 <tr>
 <td align="center" width="25%">
   <img src="docs/img/agentic/hermes/Concierge.png" alt="Concierge" width="160"><br>
   <strong>Concierge</strong><br>
   <small>Your single point of contact.<br>
-  Keeps the standing topic list and schedule; tells <code>GO</code> from “add a topic.”<br>
-  Assembles the kanban board — never fetches sources or writes stories.</small>
+  Keeps the standing topic list and schedule; tells GO from “add a topic.”<br>
+  Assembles the kanban board — never fetches sources or writes stories.</small><br>
+  <small><a href="agentic/hermes/admin/config/souls/orio_concierge.md">SOUL</a> ·
+  <a href="agentic/hermes/system_roles.md#concierge">Roles &amp; responsibilities</a></small>
 </td>
 <td align="center" width="25%">
   <img src="docs/img/agentic/hermes/Researcher.png" alt="Researcher" width="160"><br>
@@ -33,27 +37,34 @@ Four roles. One digest. Each agent has a job — and a mascot.
   <small>Parallel worker — one target per task<br>
   (category, feed cluster, or source bundle).<br>
   Fetches pages, extracts facts, returns structured notes with URLs.<br>
-  Does not merge across topics or write the digest.</small>
+  Reflects and grounds its own artifact — downstream agents trust that work.<br>
+  Does not merge across topics or write the digest.</small><br>
+  <small><a href="agentic/hermes/admin/config/souls/orio_researcher.md">SOUL</a> ·
+  <a href="agentic/hermes/system_roles.md#researcher">Roles &amp; responsibilities</a></small>
 </td>
 <td align="center" width="25%">
   <img src="docs/img/agentic/hermes/Librarian.png" alt="Librarian" width="160"><br>
   <strong>Librarian</strong><br>
   <small>Fan-in after all researchers finish.<br>
-  Dedupes overlap, classifies stories into topics, regroups categories,<br>
-  and maps a knowledge graph onto the standing topic list.<br>
-  Outputs a curated skeleton — not final prose.</small>
+  Resolves overlap and maps every article/data point to topics.<br>
+  Outputs a curated skeleton + knowledge graph — not final prose.<br>
+  Synthesizer should not redo this curatorial work.</small><br>
+  <small><a href="agentic/hermes/admin/config/souls/orio_librarian.md">SOUL</a> ·
+  <a href="agentic/hermes/system_roles.md#librarian">Roles &amp; responsibilities</a></small>
 </td>
 <td align="center" width="25%">
   <img src="docs/img/agentic/hermes/Synthesizer.png" alt="Synthesizer" width="160"><br>
   <strong>Synthesizer</strong><br>
-  <small>Reads the librarian graph and composes the finished briefing.<br>
-  Executive takeaway, daily summary, category narratives → digest JSON.<br>
-  Does not re-fetch or reclassify; grounding runs downstream.</small>
+  <small>Reads the librarian skeleton — overlap and topic mapping are done.<br>
+  Focuses on format, schema, and writing: takeaway, summary, narratives → digest JSON.<br>
+  Does not re-fetch, reclassify, or resolve overlap; grounding runs downstream.</small><br>
+  <small><a href="agentic/hermes/admin/config/souls/orio_synthesizer.md">SOUL</a> ·
+  <a href="agentic/hermes/system_roles.md#synthesizer">Roles &amp; responsibilities</a></small>
 </td>
 </tr>
 </table>
 
-**AI Digest** (codename **ORIO** — *Open Research Intelligence Observatory*) turns noisy AI news into a polished daily briefing — HTML archive, heatmaps, leaderboards, and per-run diagnostics. Hermes profiles use `orio_*` code names (**Concierge**, **Researcher**, **Librarian**, **Synthesizer** in the UI). A concierge fans out parallel researchers; a librarian merges and classifies findings; a synthesizer writes the report. Deterministic code verifies every link before anything publishes.
+**AI Digest** (codename **ORIO** — *Open Research Intelligence Observatory*) turns noisy AI news into a polished daily briefing — HTML archive, heatmaps, leaderboards, and per-run diagnostics. Hermes profiles use `orio_*` code names. **Default GO** (`manage.py go` / Concierge `digest_go`) runs the four-role kanban graph above, then deterministic grounding and render. The old batch CLI (`run.py`) remains as a **`--pipeline` escape hatch** only. Deterministic code verifies every link before anything publishes.
 
 Built on [**Hermes Agent**](https://hermes-agent.nousresearch.com/) (Nous Research). Local LLMs via [Ollama](https://ollama.com/) — no cloud API keys. Every story traceable to its source.
 
@@ -69,11 +80,12 @@ enrich, validate, render — which proved the digest format and grounding model.
 At scale, though, sequential runs became hard to **debug and extend**: one long
 batch job, opaque failures, and every new source meant more pipeline wiring.
 
-The **agentic** cutover was the natural next step. Role-based workers can retry,
-adapt, and fan out in parallel; the concierge handles intent (`GO` vs “add a
-topic”); researchers call lazy ingest tools only when cache misses. Agents
-**self-heal** around flaky sources instead of aborting the whole run. The
-deterministic guard still has the last word on links and provenance.
+The **agentic** cutover replaced the opaque batch job with a **four-role crew**
+on Hermes kanban: Concierge assembles the board; researchers work in parallel;
+Librarian fan-in; Synthesizer composes; deterministic grounding still has the
+last word on links and provenance. The staged batch CLI (`llm_pipeline/` +
+`run.py`) proved the digest format first — it remains as shared libraries and a
+`--pipeline` escape hatch while batch orchestration is deprecated.
 
 What you see in this repo — `agentic/hermes/` — is a **bootstrap snapshot**: enough
 to reproduce the architecture, run E2E locally, and publish showcase reports to
@@ -93,7 +105,7 @@ repository is the reference implementation and portfolio demo.
   <a href="https://mameen.github.io/AI_Digest/diagnostics/20260707182407.diagnostics.html">
     <img src="docs/img/agentic/hermes/diagnostics.png" alt="Hermes agent diagnostics — stage waterfall" width="720">
   </a>
-  <br><sub>Agent diagnostics — concierge → research → librarian → synthesizer → render</sub>
+  <br><sub>Agent diagnostics — kanban crew waterfall (research → librarian → synthesizer → render)</sub>
 </p>
 
 <p align="center">
@@ -105,31 +117,94 @@ repository is the reference implementation and portfolio demo.
 
 ---
 
-### Agent flow
+## ORIO workflow (source of truth)
+
+> **Do not change this graph, role split, or four-output contract without explicit
+> maintainer approval.** The diagram below matches
+> [`agentic/hermes/docs/ARCHITECTURE.md`](agentic/hermes/docs/ARCHITECTURE.md) — keep
+> them in sync.
+
+### Production end-to-end flow (default GO)
 
 ```mermaid
 flowchart TB
-    GO["manage.py go"] --> C[Concierge]
-    C --> R1["Researcher · topic A"]
-    C --> R2["Researcher · topic B"]
-    C --> RN["Researcher · topic N"]
-    R1 & R2 & RN --> L[Librarian]
-    L --> S[Synthesizer]
-    S --> G[grounding + validate]
-    G --> R[render.py]
-    R --> OUT["reports/*.html + diagnostics"]
+    GO["GO — Concierge"] --> C["Kanban board"]
+    C --> R1["Researcher"]
+    C --> R2["Researcher"]
+    C --> R3["Researcher"]
+    R1 & R2 & R3 --> L["Librarian"]
+    L --> S["Synthesizer"]
+    S --> P["grounding · validate · render"]
+    P --> HTML["reports/&lt;prefix&gt;.html"]
+    P --> JSON["reports/&lt;prefix&gt;.json"]
+    P --> DH["diagnostics/&lt;prefix&gt;.diagnostics.html"]
+    P --> DJ["diagnostics/&lt;prefix&gt;.diagnostics.json"]
 ```
+
+**What happens on GO:**
+
+1. **Concierge** kicks off the run (`digest_go` / `manage.py go`) and assembles the
+   kanban board — one **Researcher** task per topic (default: categories from the
+   best known-good report; override via `demo_topics` in yaml).
+2. **Ingest warm-up** (deterministic) fills `.preflight/` and `.cache/<prefix>/`.
+3. **Researcher × N** work in parallel — one topic each → `output.md` per task.
+   Each researcher reflects and grounds its own artifact; downstream roles trust that work.
+4. **Librarian** waits for all researchers — **resolves overlap**, maps articles
+   and data points to standing topics, dedupes/regroups → `librarian.md`.
+5. **Synthesizer** reads that skeleton — format, schema, and prose → `digest.json`.
+6. **Grounding · validate · render** — deterministic pipeline (not agent roles) → four files below.
+7. **Diagnostics** waterfall written for the run.
+
+**Four published files** (example prefix `20260709120000`):
+
+| File | Path |
+|------|------|
+| Report HTML | `agentic/hermes/reports/<prefix>.html` |
+| Report JSON | `agentic/hermes/reports/<prefix>.json` |
+| Diagnostics HTML | `agentic/hermes/diagnostics/<prefix>.diagnostics.html` |
+| Diagnostics JSON | `agentic/hermes/diagnostics/<prefix>.diagnostics.json` |
 
 | Layer | What happens |
 |-------|----------------|
-| **Orchestration** | Hermes kanban — tasks, profiles, `manage.py` hooks |
-| **Research** | Parallel researcher workers, lazy ingest tools on cache miss |
-| **Curation** | Librarian artifact — dedupe, classify, knowledge graph |
-| **Authoring** | Synthesizer → `synthesize_digest` (Instructor structured output) |
-| **Invariants** | `grounding.py` + `validate.py` — same modules, not agent-judged |
-| **Output** | Digest JSON → HTML widget, archive index, diagnostics waterfall |
+| **Orchestration** | Concierge kanban — research × N → librarian → synthesizer |
+| **Concierge control plane** | GO, board status/abort, assess, `digest_open_report`, deploy, publish (push only after you approve) |
+| **Board topics** | Auto from **best known-good report** (most stories); override via `demo_topics` in yaml |
+| **Ingest** | Warm cache (preflight, Crawl4AI, structured APIs) before researchers run |
+| **Workers** | Hermes LLM profiles with artifact gates per role |
+| **Invariants** | `grounding.py` + `validate.py` — deterministic, not agent-judged |
+| **Output** | Four files above + archive index updates on publish |
 
-Agents propose; the pipeline disposes. Links, categories, and provenance tokens are stamped by deterministic code after synthesis — never trusted from model output alone.
+**Batch escape hatch** (`go --pipeline`): same `enrich_digest` as `run.py` — debug/A/B
+only. Skips kanban workers entirely.
+
+Agents propose; the pipeline disposes. Links, categories, and provenance tokens are
+stamped by deterministic code — never trusted from model output alone.
+
+### Where to read — role details (who does what)
+
+| What you want | Where to read |
+|---------------|---------------|
+| **Full role definitions** — purpose, responsibilities, tools, what each profile must *not* do | [`agentic/hermes/system_roles.md`](agentic/hermes/system_roles.md) |
+| **Artifact shapes & handoffs** — `output.md`, `librarian.md`, `digest.json`, gates | [`agentic/hermes/working_agreements.md`](agentic/hermes/working_agreements.md) |
+| **Concierge control plane** (GO, status, publish) | [`agentic/hermes/admin/config/souls/orio_concierge.md`](agentic/hermes/admin/config/souls/orio_concierge.md) |
+| **Worker behavior in kanban** | SOUL files: [`orio_researcher.md`](agentic/hermes/admin/config/souls/orio_researcher.md), [`orio_librarian.md`](agentic/hermes/admin/config/souls/orio_librarian.md), [`orio_synthesizer.md`](agentic/hermes/admin/config/souls/orio_synthesizer.md) |
+| **Showcase one-liner per role** (mascot table) | This file — [four roles](#four-roles-one-digest-each-agent-has-a-job--and-a-mascot) above |
+
+**Split:** `system_roles.md` = **who** and orchestration.
+`working_agreements.md` = **what** each role produces and which tools it may call.
+
+### Where to read — flow chart & runbook
+
+| What you want | Where to read |
+|---------------|---------------|
+| **High-level agent flow** (this page) | [Production end-to-end flow](#production-end-to-end-flow-default-go) above |
+| **Detailed E2E** — numbered steps, ingest, kanban artifacts, approved design | [`agentic/hermes/docs/ARCHITECTURE.md`](agentic/hermes/docs/ARCHITECTURE.md) |
+| **How to run it** | [`agentic/hermes/POC.md`](agentic/hermes/POC.md) |
+| **Admin commands + digest-tools** | [`agentic/hermes/admin/README.md`](agentic/hermes/admin/README.md) |
+
+**Fastest path:** this README (story + diagram) →
+[`system_roles.md`](agentic/hermes/system_roles.md) (each profile) →
+[`ARCHITECTURE.md`](agentic/hermes/docs/ARCHITECTURE.md) (full pipeline + paths).
 
 ### Quick commands
 
@@ -137,8 +212,11 @@ Agents propose; the pipeline disposes. Links, categories, and provenance tokens 
 # Bootstrap (once)
 python agentic/hermes/admin/manage.py bootstrap
 
-# Full E2E run
-python agentic/hermes/admin/manage.py go --fresh
+# Full production run (agentic kanban — default)
+python agentic/hermes/admin/manage.py go --start 2026-07-09 --history 10 --fresh
+
+# Batch run.py parity (escape hatch only)
+python agentic/hermes/admin/manage.py go --pipeline --start 2026-07-09
 
 # Diagnostics waterfall for a run
 python agentic/hermes/admin/manage.py diagnostics --prefix 20260707182407
@@ -151,21 +229,24 @@ Tests: `python run_tests.py` — real fixtures, no mocks (see [AGENTS.md](AGENTS
 
 ---
 
-## Deep dives
+## Documentation canon
+
+**Single source of truth:** this file ([`README.md`](README.md)) — especially
+[ORIO workflow](#orio-workflow-source-of-truth) (diagram, four outputs, role split).
+
+Everything under [`agentic/hermes/`](agentic/hermes/) extends it. If anything conflicts,
+**README wins**. Legacy staged-pipeline notes live under [`docs/LLM_PIPELINE.md`](docs/LLM_PIPELINE.md)
+and `llm_pipeline/` — not the product story.
+
+## More docs
 
 | Topic | Doc |
 |-------|-----|
-| **Run it locally** | [`agentic/hermes/POC.md`](agentic/hermes/POC.md) |
-| **Architecture** | [`agentic/hermes/docs/ARCHITECTURE.md`](agentic/hermes/docs/ARCHITECTURE.md) |
-| **Role definitions** | [`agentic/hermes/system_roles.md`](agentic/hermes/system_roles.md) |
-| **Artifact contracts** | [`agentic/hermes/working_agreements.md`](agentic/hermes/working_agreements.md) |
-| **E2E runbook & handover** | [`agentic/hermes/HANDOFF.md`](agentic/hermes/HANDOFF.md) |
-| **Architecture decisions (ADRs)** | [`agentic/hermes/docs/adr/`](agentic/hermes/docs/adr/) |
-| **Hermes parallel-agents research** | [`agentic/hermes/docs/202607_research/hermes-parallel-agents-walkthrough.md`](agentic/hermes/docs/202607_research/hermes-parallel-agents-walkthrough.md) |
-| **Digest tools plugin** | [`agentic/hermes/plugins/digest-tools/README.md`](agentic/hermes/plugins/digest-tools/README.md) |
-| **Pipeline tuning** | [`docs/TUNING.md`](docs/TUNING.md) |
-| **Early staged pipeline** | [`docs/LLM_PIPELINE.md`](docs/LLM_PIPELINE.md) |
+| **Slack front desk** | [`agentic/hermes/slack.md`](agentic/hermes/slack.md) |
+| **Early staged pipeline (legacy)** | [`docs/LLM_PIPELINE.md`](docs/LLM_PIPELINE.md) |
 | **Agent onboarding (contributors)** | [`.agents/onboarding/`](.agents/onboarding/) |
+
+Role, workflow, and architecture pointers are in [Where to read](#where-to-read--role-details-who-does-what) above.
 
 ### Hermes profiles
 

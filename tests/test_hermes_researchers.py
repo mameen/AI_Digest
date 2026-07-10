@@ -23,12 +23,13 @@ from tools.topics import load_demo_topics, research_category_ids  # noqa: E402
 
 
 class DemoTopicsTest(unittest.TestCase):
-    def test_demo_topics_match_hermes_roles_yaml(self) -> None:
-        topics = load_demo_topics()
-        self.assertEqual(topics, ["aisearch", "leaderboard", "youtube"])
+    def test_demo_topics_derived_from_best_report(self) -> None:
+        topics = load_demo_topics({"demo_topics": "auto"})
+        self.assertGreaterEqual(len(topics), 11)
+        self.assertIn("youtube", topics)
         self.assertEqual(
-            research_category_ids(),
-            frozenset({"aisearch", "leaderboard", "youtube"}),
+            research_category_ids({"demo_topics": "auto"}),
+            frozenset(topics),
         )
 
 
