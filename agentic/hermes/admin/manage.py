@@ -70,6 +70,7 @@ CONFIG_DIR = Path(__file__).resolve().parent / "config"
 MANIFEST_PATH = CONFIG_DIR / "manifest.yaml"
 ROLES_PATH = CONFIG_DIR / "hermes_roles.yaml"
 SOULS_DIR = CONFIG_DIR / "souls"
+REPO_ONBOARDING_SRC = REPO / ".agents" / "onboarding" / "hermes-and-repo.md"
 RUNTIME = HERMES_PKG / ".runtime"
 HERMES_HOME = Path.home() / ".hermes"
 _KANBAN_GOAL_QUIET_MARKER = "# AI Digest: goal-mode workers need --quiet for Ralph loop"
@@ -936,6 +937,23 @@ def _deploy_soul(name: str, *, dry_run: bool) -> None:
     print(f"  ✓ SOUL.md → {name}")
 
 
+def _deploy_repo_onboarding(name: str, *, dry_run: bool) -> None:
+    """Copy .agents/onboarding/hermes-and-repo.md into the Hermes profile dir."""
+    if not REPO_ONBOARDING_SRC.is_file():
+        return
+    dest = _profile_dir(name) / "REPO_ONBOARDING.md"
+    if dry_run:
+        print(
+            f"  would deploy REPO_ONBOARDING.md for {name} ← "
+            f"{REPO_ONBOARDING_SRC.relative_to(REPO)}"
+        )
+        return
+    if not _profile_dir(name).is_dir():
+        return
+    shutil.copy2(REPO_ONBOARDING_SRC, dest)
+    print(f"  ✓ REPO_ONBOARDING.md → {name}")
+
+
 def _configure_default_ollama(
     model: str,
     provider: str,
@@ -1067,6 +1085,7 @@ def setup_agents(*, dry_run: bool = False, quiet: bool = False) -> int:
             name, model, provider, base_url, context_length, dry_run=dry_run
         )
         _deploy_soul(name, dry_run=dry_run)
+        _deploy_repo_onboarding(name, dry_run=dry_run)
         if not dry_run and not quiet:
             print(f"  ✓ {name} → {model}")
 

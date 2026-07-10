@@ -27,7 +27,8 @@ pitfalls, and the non-negotiable principles that make this a showcase project.
     ├── architecture.md             # Architecture & design summary
     ├── running-and-tooling.md      # How to run; what each tool/module is for
     ├── debugging-and-pitfalls.md   # What went wrong, how to debug/trace, fixes
-    └── principles-and-workflow.md  # Core principles + the local change workflow
+    ├── principles-and-workflow.md  # Core principles + the local change workflow
+    └── hermes-and-repo.md          # Hermes profiles: repo, env, imports, PII, git boundaries
 ```
 
 ## Repo-root symlinks (for tool compatibility)
@@ -59,6 +60,9 @@ consistent: a rule is stated once in `AGENTS.md` and expanded here.
 5. `onboarding/architecture.md` — agentic GO + shared library stages.
 6. `onboarding/running-and-tooling.md` — how to run and what each piece does.
 7. `onboarding/debugging-and-pitfalls.md` — when (not if) something breaks.
+
+**Hermes profiles (`orio_*`):** read `onboarding/hermes-and-repo.md` for imports, env,
+PII/commit policy, and git boundaries — referenced from each profile SOUL.
 
 ## Maintenance
 
