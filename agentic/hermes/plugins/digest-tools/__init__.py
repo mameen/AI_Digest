@@ -118,14 +118,22 @@ def _ensure_repo_path() -> None:
         sys.path.insert(0, str(repo))
 
 
+_AGENTIC_TOOL_DEPS: dict[str, tuple[str, ...]] = {
+    "orchestration": ("profiles", "artifacts"),
+    "publish": ("baseline",),
+}
+
+
 def _overlay_agentic_tool(stem: str):
     """Load ``agentic/hermes/tools/<stem>.py`` as ``tools.<stem>`` inside Hermes workers.
 
     Hermes CLI already imports its own top-level ``tools`` package; overlaying
     individual submodules lets digest handlers reach AI Digest adapters without
-    clobbering built-in Hermes tools.
+    clobbering built-in Hermes tools. Dependencies are preloaded first.
     """
     _ensure_repo_path()
+    for dep in _AGENTIC_TOOL_DEPS.get(stem, ()):
+        _overlay_agentic_tool(dep)
     key = f"tools.{stem}"
     path = _HERMES_PKG / "tools" / f"{stem}.py"
     existing = sys.modules.get(key)
@@ -228,11 +236,12 @@ def read_topic_config_json(args: dict, **kwargs) -> str:
 
 
 def digest_board_status_json(args: dict, **kwargs) -> str:
-    _overlay_agentic_tool("orchestration")
-    from tools.orchestration import board_status
-
-    brief = bool(args.get("brief", False))
-    return json.dumps(board_status(brief=brief), default=str)
+    try:
+        mod = _overlay_agentic_tool("orchestration")
+        brief = bool(args.get("brief", False))
+        return json.dumps(mod.board_status(brief=brief), default=str)
+    except Exception as exc:
+        return json.dumps({"ok": False, "error": str(exc)})
 
 
 def digest_setup_board_json(args: dict, **kwargs) -> str:
@@ -271,11 +280,14 @@ def digest_setup_board_json(args: dict, **kwargs) -> str:
         "stderr": (proc.stderr or "")[-2000:],
     }
     if proc.returncode == 0:
-        from tools.orchestration import board_status
-        from tools.topics import resolve_board_topics
+        try:
+            orch = _overlay_agentic_tool("orchestration")
+            topics_mod = _overlay_agentic_tool("topics")
 
-        payload["board"] = board_status()
-        payload["board_topics"] = resolve_board_topics()
+            payload["board"] = orch.board_status()
+            payload["board_topics"] = topics_mod.resolve_board_topics()
+        except Exception as exc:
+            payload["board_error"] = str(exc)
     return json.dumps(payload, default=str)
 
 
@@ -333,9 +345,11 @@ def digest_go_json(args: dict, **kwargs) -> str:
         "stdout": (proc.stdout or "")[-6000:],
         "stderr": (proc.stderr or "")[-2000:],
     }
-    from tools.orchestration import board_status
-
-    payload["board"] = board_status()
+    try:
+        orch = _overlay_agentic_tool("orchestration")
+        payload["board"] = orch.board_status()
+    except Exception as exc:
+        payload["board_error"] = str(exc)
     return json.dumps(payload, default=str)
 
 
