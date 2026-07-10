@@ -54,3 +54,25 @@ Env/config templates (no secrets): [`../config/`](../config/) (`hermes.env.examp
 `digest_publish` (push only with `confirm_push: true`)
 
 Search uses Hermes **`web_search`** via `web.backend ddgs`.
+
+## Hermes redeploy (after SOUL / tool / patch changes)
+
+Re-run when you change SOUL templates, `hermes_roles.yaml`, digest-tools, kanban
+patches, or orchestration code loaded by the plugin:
+
+```bash
+python agentic/hermes/admin/manage.py setup
+hermes gateway restart
+python agentic/hermes/admin/manage.py hermes dashboard   # reopen if tab was open
+```
+
+**First-time / cold start** (no gateway yet):
+
+```bash
+python agentic/hermes/admin/manage.py bootstrap
+hermes gateway start
+python agentic/hermes/admin/manage.py hermes dashboard
+```
+
+Verify: `python agentic/hermes/admin/manage.py hermes doctor` and
+`hermes profile list`. Dry-run deploy: `setup --dry-run`.
