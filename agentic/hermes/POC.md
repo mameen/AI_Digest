@@ -1,35 +1,37 @@
 # Proof-of-concept — agentic AI Digest
 
-> **Showcase narrative:** [README.md](../../README.md) at the repo root — crew mascots, evolution story, screenshots.
+> **Canonical narrative:** [`README.md`](../../README.md) at the repo root — **if this
+> doc conflicts with README, README wins.**
 
-**Generate a digest report (~30s):**
+> **Showcase:** crew mascots, evolution story, screenshots — see root README.
+
+**Production GO:** four-role kanban crew (`manage.py go`). Batch escape hatch only: `go --pipeline`.
 
 ```bash
-python agentic/hermes/admin/manage.py generate-report
+python agentic/hermes/admin/manage.py go --start 2026-07-09 --history 10 --fresh
 ```
 
-Opens `reports/YYYYMMDDHHMMSS.html` — 12 categories, validation, pinned baseline
-carry-forward + fresh research on aisearch/robotics/llm/rag.
+Opens `agentic/hermes/reports/<prefix>.html` after kanban crew + deterministic render.
+Topic count follows the **best known-good report** (unless `demo_topics` pinned).
 
 Prereqs (once): `python agentic/hermes/admin/manage.py bootstrap` and Ollama running.
 
 ---
 
-Step-by-step to **validate the agentic idea** using upstream Hermes — without
-waiting for `run_hermes.py` or in-repo Concierge/Librarian code.
+Step-by-step to **validate the agentic stack** using upstream Hermes.
 
 | Phase | Proves | Time | Status |
 |---|---|---|---|
 | [1. Dashboard chat](#phase-1-hermes-dashboard-chat) | Local Ollama + agent + tools in UI | ~15 min | **Do this first** |
-| [2. Kanban fan-out](#phase-2-kanban-parallel-demo-optional) | Parallel roles + synthesizer pattern | ~1 hr | Hermes native |
+| [2. Kanban fan-out](#phase-2-kanban-parallel-demo) | Parallel roles + synthesizer | ~1 hr | **Default `go`** |
 | [3. Slack](#phase-3-slack-optional) | Concierge front desk in chat | ~30 min | See [`slack.md`](slack.md) |
-| [4. Digest integration](#phase-4-digest-via-go) | Full pipeline → `reports/*.html` | ~30s | **`generate-report` / `go`** |
+| [4. Digest integration](#phase-4-digest-via-go) | Kanban GO → `reports/*.html` | varies | **Default `go`** |
 
 ---
 
 ## Why this isn't the YouTube walkthrough
 
-The [Hermes parallel-agents video](docs/202607_research/hermes-parallel-agents-walkthrough.md)
+The [Hermes parallel-agents video](https://www.youtube.com/watch?v=1MaFErWfL24)
 runs on a VPS with larger models. AI Digest adds grounding, validation, and a
 12-category render path. On a MacBook (M3), use **`llama3.1:latest`** (~5 GB, 128K ctx)
 with **`kanban.max_in_progress 1`** and expect workers to take time — researchers
@@ -61,8 +63,6 @@ python agentic/hermes/admin/manage.py hermes dashboard
 python agentic/hermes/admin/manage.py setup
 ```
 
-Manual learning path: [`MANUAL_BOOTSTRAP.md`](MANUAL_BOOTSTRAP.md) (hand-run before automate).
-
 You can also chat: `hermes chat` or `python agentic/hermes/admin/manage.py hermes chat`.
 
 ---
@@ -75,11 +75,12 @@ You can also chat: `hermes chat` or `python agentic/hermes/admin/manage.py herme
 | Concierge / Researcher / Librarian profiles in this repo | Implemented — [`system_roles.md`](system_roles.md), `orio_*` in [`hermes_roles.yaml`](admin/config/hermes_roles.yaml) |
 | Task board in `agentic/hermes/.runtime/` | Empty dir |
 | A/B vs `llm_pipeline` | Stub [`tools/baseline.py`](tools/baseline.py) |
-| Digest JSON from agentic run | **`go` / `generate-report`** → `reports/*.html` |
-| A/B vs `llm_pipeline` | Stub [`tools/baseline.py`](tools/baseline.py) |
+| Digest JSON from agentic run | **`go`** (kanban crew) → `reports/*.html` |
+| Batch A/B vs `run.py` | **`go --pipeline`** via [`tools/pipeline_go.py`](tools/pipeline_go.py) |
 
 Phase 1–3 prove **Hermes + Ollama + (optional) kanban/Slack**. Phase 4 is
-**`generate-report`** for agentic digests; use `python run.py` for full production quality.
+**default `manage.py go`** — the four-role kanban graph. Batch escape hatch:
+`go --pipeline`.
 
 ---
 
@@ -154,11 +155,12 @@ In dashboard chat, ask something that triggers a built-in tool, e.g. *“What ti
 
 ---
 
-## Phase 2: Kanban POC — research × N → librarian → synthesizer
+## Phase 2: Kanban parallel demo
 
-**Goal:** Prove the **AI Digest** task graph on Hermes kanban before wiring digest
-tools. Scale by adding `demo_topics` in `hermes_roles.yaml` — same `researcher`
-profile, more tasks.
+**Goal:** Prove the **AI Digest** task graph on Hermes kanban.
+
+Board topics default to the **best known-good report** (most stories). Override by
+pinning `demo_topics` in `hermes_roles.yaml` — same `orio_researcher` profile, more tasks.
 
 ```
 research × N  →  librarian (merge/classify)  →  synthesizer
@@ -211,36 +213,22 @@ Watch in **Kanban** (web dashboard) or `hermes kanban list`.
 
 ---
 
-## Phase 4: Digest via GO
+## Phase 4: Digest via GO (production — default)
 
-**Goal:** Produce a validated digest HTML from the agentic graph.
+**Goal:** Produce a validated digest HTML via the four-role kanban crew.
 
 ```bash
-python agentic/hermes/admin/manage.py generate-report
-# or: python agentic/hermes/admin/manage.py go --fresh --rounds 1
+python agentic/hermes/admin/manage.py go --start 2026-07-09 --history 10 --fresh
 ```
 
-**Pass criteria:** `reports/YYYYMMDDHHMMSS.html` exists, 12 categories, validation OK.
+**Pass criteria:** `agentic/hermes/reports/<prefix>.html` exists, 12 categories,
+validation OK, artifact gates passed per role (`digest_board_status`).
 
-Artifacts cached under `agentic/hermes/.runtime/artifacts/<prefix>/`. Board tasks
-archived automatically after success.
+Batch escape hatch only (debug/A/B):
 
-For production-quality editorial, use `python run.py` — agentic path reuses baseline
-carry-forward and research overlay.
-
----
-
-## Phase 4 (legacy note): Not ready yet
-
-<details>
-<summary>Original Phase 4 scope (superseded by GO)</summary>
-
-To proof **AI Digest specifically** (categories, grounding, `reports/*.json`):
-
-1. Implement in-repo task board + role runners.
-2. Wire [`tools/baseline.py`](tools/baseline.py) for ingest/render.
-3. A/B same run prefix: `run.py` vs agentic output.
-</details>
+```bash
+python agentic/hermes/admin/manage.py go --pipeline --start 2026-07-09 --history 10
+```
 
 ---
 
@@ -251,21 +239,57 @@ Want to proof agents + Ollama work?
   → Phase 1: hermes dashboard → Chat
 
 Want to proof parallel fan-out / fan-in?
-  → Phase 2: kanban + walkthrough doc
+  → Phase 2: demo-board + kanban dispatch
 
 Want to proof chat from Slack?
   → Phase 3: slack.md
 
-Want to proof tomorrow's digest HTML?
-  → python run.py (production) OR agentic/hermes/admin/manage.py generate-report
+Want production digest HTML?
+  → python agentic/hermes/admin/manage.py go --start YYYY-MM-DD --fresh
+  (four-role kanban — default; NOT run.py)
 ```
+
+---
+
+## E2E test runbook
+
+### Phase 0 — Offline gates (no LLM, no network)
+
+```bash
+python -m unittest tests.test_board_topics tests.test_pipeline_go -v
+python run_tests.py
+```
+
+### Phase 1 — Production GO (kanban)
+
+```bash
+python agentic/hermes/admin/manage.py go --start 2026-07-09 --fresh --skip-doctor
+```
+
+Requires Hermes gateway + worker profiles. Expect artifact gates per role in
+`digest_board_status`.
+
+### Phase 2 — Eval fixtures (optional)
+
+Pin `demo_topics: [evaluation_test_topic]` in `hermes_roles.yaml`, then:
+
+```bash
+python agentic/hermes/admin/manage.py go --fresh --prefix eval$(date -u +%Y%m%d%H%M%S)
+```
+
+### Phase 3 — Batch parity (optional, escape hatch)
+
+```bash
+python agentic/hermes/admin/manage.py go --pipeline --start 2026-07-09 --skip-doctor
+```
+
+Diagnostics rebuild: `python agentic/hermes/admin/manage.py diagnostics --prefix <prefix>`
 
 ---
 
 ## Related
 
-- [`slack.md`](slack.md) — Slack credentials + gateway
-- [`config/README.md`](config/README.md) — env/config templates
-- [`admin/README.md`](admin/README.md) — agentic Hermes admin
-- [`../../../admin/README.md`](../../../admin/README.md) — pipeline admin
+- [`slack.md`](slack.md) — Slack credentials + gateway + config templates
+- [`admin/README.md`](admin/README.md) — `manage.py` + digest-tools
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — approved design
 - [Hermes dashboard docs](https://hermes-agent.nousresearch.com/docs/user-guide/profiles) — profile switcher, chat follows selection

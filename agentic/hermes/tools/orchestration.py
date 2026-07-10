@@ -8,7 +8,15 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
-from tools.profiles import DISPLAY, LIBRARIAN, RESEARCHER, SYNTHESIZER, WORKER_GRAPH, normalize
+from tools.profiles import (
+    CONCIERGE,
+    LIBRARIAN,
+    LOGICAL_ROLES,
+    RESEARCHER,
+    SYNTHESIZER,
+    WORKER_GRAPH,
+    normalize,
+)
 
 HERMES_HOME = Path.home() / ".hermes"
 
@@ -123,8 +131,9 @@ def board_status(*, include_workspace: bool = True) -> dict[str, Any]:
                 task = shown.get("task") or {}
                 ws = _task_workspace(task)
                 entry["workspace"] = str(ws)
-                if assignee in (RESEARCHER, LIBRARIAN, SYNTHESIZER):
-                    entry.update(_artifact_gate(assignee, ws))
+                role = normalize(assignee)
+                if role in (RESEARCHER, LIBRARIAN, SYNTHESIZER):
+                    entry.update(_artifact_gate(role, ws))
             except (RuntimeError, KeyError, json.JSONDecodeError) as exc:
                 entry["workspace_error"] = str(exc)
         tasks.append(entry)
@@ -156,7 +165,7 @@ def board_status(*, include_workspace: bool = True) -> dict[str, Any]:
         "ok": True,
         "board_empty": not digest_rows,
         "graph": WORKER_GRAPH,
-        "roles": list(DISPLAY.keys()),
+        "roles": list(LOGICAL_ROLES),
         "research": _role_summary(research),
         "librarian": _role_summary([librarian] if librarian else []),
         "synthesizer": _role_summary([synthesizer] if synthesizer else []),

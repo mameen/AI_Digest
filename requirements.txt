@@ -13,7 +13,7 @@
 #   uv venv && uv pip install -r requirements.txt && uv run playwright install chromium
 #   pip install -r requirements.txt && playwright install chromium
 #
-# Hermes agent CLI is separate (~/.hermes/hermes-agent); see agentic/hermes/MANUAL_BOOTSTRAP.md.
+# Hermes agent CLI is separate (~/.hermes/hermes-agent); see agentic/hermes/POC.md.
 # Agentic synthesize_digest uses this repo .venv (instructor + llm_pipeline).
 
 pyyaml>=6.0.3

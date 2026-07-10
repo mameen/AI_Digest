@@ -82,6 +82,30 @@ def register(ctx) -> None:
         schema=schemas.DIGEST_GO,
         handler=digest_go_json,
     )
+    ctx.register_tool(
+        name="digest_assess_run",
+        toolset="digest_admin",
+        schema=schemas.DIGEST_ASSESS_RUN,
+        handler=digest_assess_run_json,
+    )
+    ctx.register_tool(
+        name="digest_deploy_app",
+        toolset="digest_admin",
+        schema=schemas.DIGEST_DEPLOY_APP,
+        handler=digest_deploy_app_json,
+    )
+    ctx.register_tool(
+        name="digest_publish",
+        toolset="digest_admin",
+        schema=schemas.DIGEST_PUBLISH,
+        handler=digest_publish_json,
+    )
+    ctx.register_tool(
+        name="digest_open_report",
+        toolset="digest_admin",
+        schema=schemas.DIGEST_OPEN_REPORT,
+        handler=digest_open_report_json,
+    )
 
 
 def _repo_root() -> Path:
@@ -232,14 +256,31 @@ def digest_setup_board_json(args: dict, **kwargs) -> str:
     }
     if proc.returncode == 0:
         from tools.orchestration import board_status
+        from tools.topics import resolve_board_topics
 
         payload["board"] = board_status()
+        payload["board_topics"] = resolve_board_topics()
     return json.dumps(payload, default=str)
 
 
 def digest_go_json(args: dict, **kwargs) -> str:
-    fresh = bool(args.get("fresh", True))
+    fresh = bool(args.get("fresh", False))
     prefix = str(args.get("prefix") or "").strip() or None
+    start = str(args.get("start") or "").strip() or None
+    history_raw = args.get("history")
+    history: int | None = None
+    if history_raw is not None and str(history_raw).strip() != "":
+        try:
+            history = int(history_raw)
+        except (TypeError, ValueError):
+            return json.dumps(
+                {"ok": False, "error": f"invalid history: {history_raw!r}"},
+            )
+    pipeline = bool(args.get("pipeline", False))
+    # Backward compat: old digest_go default was batch; explicit agents:false meant batch.
+    legacy_agents = args.get("agents")
+    if legacy_agents is False and not pipeline:
+        pipeline = True
     try:
         rounds = int(args.get("rounds", 2))
     except (TypeError, ValueError):
@@ -247,11 +288,19 @@ def digest_go_json(args: dict, **kwargs) -> str:
     venv_py = _REPO_ROOT / ".venv" / "bin" / "python"
     py = str(venv_py if venv_py.is_file() else Path(sys.executable))
     manage = _REPO_ROOT / "agentic" / "hermes" / "admin" / "manage.py"
-    cmd = [py, str(manage), "go", f"--rounds={rounds}"]
-    if fresh:
-        cmd.append("--fresh")
+    cmd = [py, str(manage), "go"]
+    if pipeline:
+        cmd.append("--pipeline")
+    else:
+        cmd.append(f"--rounds={rounds}")
+        if fresh:
+            cmd.append("--fresh")
     if prefix:
         cmd.extend(["--prefix", prefix])
+    if start:
+        cmd.extend(["--start", start])
+    if history is not None:
+        cmd.extend(["--history", str(history)])
     try:
         proc = subprocess.run(
             cmd,
@@ -272,6 +321,62 @@ def digest_go_json(args: dict, **kwargs) -> str:
 
     payload["board"] = board_status()
     return json.dumps(payload, default=str)
+
+
+def digest_assess_run_json(args: dict, **kwargs) -> str:
+    publish = _overlay_agentic_tool("publish")
+    prefix = str(args.get("prefix") or "").strip() or None
+    compare = str(args.get("compare_prefix") or "").strip() or None
+    force = bool(args.get("force", False))
+    try:
+        result = publish.assess_run(prefix, compare_prefix=compare, force=force)
+    except (FileNotFoundError, ValueError) as exc:
+        return json.dumps({"ok": False, "error": str(exc)})
+    return json.dumps(result, default=str)
+
+
+def digest_deploy_app_json(args: dict, **kwargs) -> str:
+    publish = _overlay_agentic_tool("publish")
+    prefix = str(args.get("prefix") or "").strip() or None
+    dry_run = bool(args.get("dry_run", False))
+    force = bool(args.get("force", False))
+    try:
+        result = publish.deploy_to_app(prefix, dry_run=dry_run, force=force)
+    except (FileNotFoundError, ValueError) as exc:
+        return json.dumps({"ok": False, "error": str(exc)})
+    return json.dumps(result, default=str)
+
+
+def digest_publish_json(args: dict, **kwargs) -> str:
+    publish = _overlay_agentic_tool("publish")
+    prefix = str(args.get("prefix") or "").strip() or None
+    msg = str(args.get("commit_message") or "").strip() or None
+    confirm_push = bool(args.get("confirm_push", False))
+    dry_run = bool(args.get("dry_run", False))
+    force = bool(args.get("force", False))
+    try:
+        result = publish.publish_run(
+            prefix,
+            commit_message=msg,
+            confirm_push=confirm_push,
+            dry_run=dry_run,
+            force=force,
+        )
+    except (FileNotFoundError, ValueError, RuntimeError) as exc:
+        return json.dumps({"ok": False, "error": str(exc)})
+    return json.dumps(result, default=str)
+
+
+def digest_open_report_json(args: dict, **kwargs) -> str:
+    publish = _overlay_agentic_tool("publish")
+    prefix = str(args.get("prefix") or "").strip() or None
+    target = str(args.get("target") or "report").strip() or "report"
+    dry_run = bool(args.get("dry_run", False))
+    try:
+        result = publish.open_report(prefix, target=target, dry_run=dry_run)
+    except (FileNotFoundError, ValueError) as exc:
+        return json.dumps({"ok": False, "error": str(exc)})
+    return json.dumps(result, default=str)
 
 
 def synthesize_digest_json(args: dict, **kwargs) -> str:

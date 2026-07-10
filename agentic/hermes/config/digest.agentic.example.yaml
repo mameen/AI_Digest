@@ -1,6 +1,6 @@
 # Agentic block — merge into repo config.yaml (not ~/.hermes/)
 # Pipeline LLM defaults stay in admin/config/templates/config.yaml
-# ADR: agentic/hermes/docs/adr/001-local-ollama-with-per-role-model-routing.md
+# Model tiers: agentic/hermes/docs/ARCHITECTURE.md § Role profiles
 
 agentic:
   enabled: false

@@ -387,7 +387,6 @@ class DiagnosticCollector:
 
         report = self.build_report()
         from lib.report_source import enrich_diagnostics_with_source
-        from llm_pipeline.paths import diagnostics_dir
 
         report = enrich_diagnostics_with_source(report, diagnostics_dir(self.cfg))
         json_path = out_dir / f"{self.prefix}.diagnostics.json"

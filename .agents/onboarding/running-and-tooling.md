@@ -1,5 +1,8 @@
 # Running & Tooling
 
+> **Canonical narrative:** [`README.md`](../../README.md) at the repo root. **If this
+> doc conflicts with README, README wins.**
+
 ## Prerequisites
 
 - Python venv: `python admin/manage.py bootstrap` (or `bootstrap --locked` for exact pins from `requirements-lock.txt`).
@@ -8,10 +11,33 @@
 - Ollama running locally with the configured model (`llm.model` in
   `config.yaml`, default `llama3.1:latest` on laptop; showcase runs use
   `qwen3.6:35b`). No cloud keys needed.
+- Hermes on PATH for production GO (`python agentic/hermes/admin/manage.py bootstrap`).
 
-## Full run
+## Production GO (default)
 
-```powershell
+```bash
+python agentic/hermes/admin/manage.py go --start 2026-07-09 --history 10 --fresh
+```
+
+Requires Hermes gateway running. Pass: artifact gates, report HTML under
+`agentic/hermes/reports/`, diagnostics waterfall.
+
+Handover smoke (kanban, no HTML):
+
+```bash
+python agentic/hermes/admin/manage.py verify-handover
+```
+
+See [`agentic/hermes/POC.md`](../../agentic/hermes/POC.md) and
+[`system_roles.md`](../../agentic/hermes/system_roles.md).
+
+## Batch escape hatch (`go --pipeline` / `run.py`)
+
+Debug or A/B against deprecated batch orchestration — **not** daily GO:
+
+```bash
+python agentic/hermes/admin/manage.py go --pipeline --start 2026-07-09 --skip-ingest
+# or directly:
 python run.py --start 2026-07-02 --history 10
 ```
 
@@ -109,42 +135,17 @@ branch, get explicit approval, then merge/push to `main` to publish.
 
 ---
 
-## Agentic Hermes E2E (`agentic/hermes/`)
+## Agentic Hermes modules
 
-Parallel worker pipeline — same render output as `run.py`, different orchestration.
-Full architecture: [`agentic/hermes/docs/ARCHITECTURE.md`](../../agentic/hermes/docs/ARCHITECTURE.md).
-E2E runbook: [`agentic/hermes/HANDOFF.md`](../../agentic/hermes/HANDOFF.md).
-
-### Prerequisites
-
-- Hermes CLI on PATH (`python agentic/hermes/admin/manage.py bootstrap` once)
-- Ollama at `http://192.168.1.20:11434` with `qwen3.6:35b` (see `hermes_roles.yaml`)
-- Hermes gateway running
-
-### Eval E2E (fixture topic, no live network)
-
-```bash
-python -m unittest lib.tests.test_lazy_ingest -v
-PREFIX="eval$(date -u +%Y%m%d%H%M%S)"
-python agentic/hermes/admin/manage.py go --fresh --prefix "$PREFIX"
-```
-
-Pass: all three artifact gates (research → librarian → synthesizer) and
-`llm_pipeline/reports/<prefix>.html` written. No bypass paths — workers must
-complete via LLM + tools.
-
-### Handover smoke (no HTML)
-
-```bash
-python agentic/hermes/admin/manage.py verify-handover
-```
+> Production GO details: root README and [`system_roles.md`](../../agentic/hermes/system_roles.md).
 
 ### Key modules
 
 | Area | Module(s) |
 |---|---|
+| Production GO | `agentic/hermes/admin/manage.py` `cmd_go_agents` |
+| Batch escape hatch | `agentic/hermes/tools/pipeline_go.py` |
 | Orchestration | `agentic/hermes/admin/manage.py` |
-| Digest tools plugin | `agentic/hermes/plugins/digest-tools/` |
-| Synthesis | `agentic/hermes/tools/synthesize.py` |
-| Shared ingest | `lib/ingest/` (lazy + topic registry) |
-| Runtime cache | `agentic/hermes/.runtime/artifacts/<prefix>/` |
+| Shared ingest | `lib/ingest/stage1.py` |
+| Grounding / validate / render | `llm_pipeline/` (shared libs) |
+| Worker tools | `agentic/hermes/plugins/digest-tools/` |

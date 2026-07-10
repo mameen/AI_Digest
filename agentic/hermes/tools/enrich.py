@@ -79,8 +79,11 @@ def enrich_librarian_md(
     except SystemExit:
         return EnrichResult(False, ["librarian enrich skipped: LLM client unavailable"])
 
-    prompt = f"""You are the AI Digest Librarian. Merge these parallel researcher outputs into
-one librarian.md for the Synthesizer. Use markdown with:
+    prompt = f"""You are the AI Digest Librarian. Trust researcher artifacts — do not re-fetch.
+Resolve overlap across tasks; map every article and data point to standing topics.
+Merge these parallel researcher outputs into one librarian.md for the Synthesizer
+(overlap and topic placement must be settled — Synthesizer only writes prose).
+Use markdown with:
 - # Librarian: merge & classify
 - ## Executive merge (2-4 sentences)
 - ## Topics applied (bullet list)

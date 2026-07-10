@@ -25,7 +25,7 @@ python agentic/hermes/admin/manage.py hermes dashboard
 ```
 
 See [`../agentic/hermes/admin/README.md`](../agentic/hermes/admin/README.md) and
-[`../agentic/hermes/MANUAL_BOOTSTRAP.md`](../agentic/hermes/MANUAL_BOOTSTRAP.md).
+[`../agentic/hermes/POC.md`](../agentic/hermes/POC.md).
 
 ## Digest web UI
 

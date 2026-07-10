@@ -38,39 +38,42 @@ synthesizer_toolsets:
 demo_goal:
   max_turns: 50
 
+# Board topics: omit or `auto` → best known-good report (most stories). Pin for eval:
+# demo_topics: [evaluation_test_topic]
+demo_topics: auto
+
 roles:
   - name: orio_concierge
     description: >-
-      Concierge (orio_concierge). Single point of contact — standing topic list,
-      schedule, GO vs add-topic. Assembles kanban; reports flow status via
-      digest_board_status. Never fetches sources or writes stories.
+      Concierge — single point of contact and ORIO control plane. Standing topic
+      list, schedule, GO vs add-topic, board status, open report, assess,
+      deploy, publish (push only after approval). Assembles kanban — never
+      fetches sources or writes stories.
 
   - name: orio_researcher
     description: >-
       Researcher — parallel worker, one target per kanban task. Fetches pages,
-      extracts facts, returns structured notes with URLs. Does not merge across
-      topics or write the digest.
+      extracts facts, structured notes with verified URLs. Reflects and grounds
+      its own output.md; downstream roles trust that work. Does not merge
+      across topics or write the digest.
 
   - name: orio_librarian
     description: >-
-      Librarian — fan-in after all researchers. Dedupes, classifies, regroups
-      categories, maps knowledge graph onto standing topics. Outputs curated
-      skeleton — not final prose.
+      Librarian — fan-in after all researchers finish. Resolves overlap; maps
+      every article and data point to standing topics; dedupes and regroups into
+      librarian.md + knowledge graph. Synthesizer must not redo this work.
+      Does not fetch URLs or write final publishable prose.
 
   - name: orio_synthesizer
     description: >-
-      Synthesizer — composes finished briefing JSON from librarian graph.
-      Executive takeaway, daily summary, category narratives. Does not re-fetch;
-      grounding runs downstream.
+      Synthesizer — reads librarian.md only (overlap and topics already settled).
+      Format, schema, and writing: takeaway, summary, narratives → digest.json.
+      Does not resolve overlap, remap topics, re-fetch, or read raw researcher
+      artifacts. Grounding · validate · render run downstream — not this role.
 
 agentic_enrich:
   enabled: false
   model: qwen3.6:35b
-
-demo_topics:
-  - aisearch
-  - leaderboard
-  - youtube
 
 demo_prompt: >-
   Create one kanban research task per demo topic assigned to orio_researcher;

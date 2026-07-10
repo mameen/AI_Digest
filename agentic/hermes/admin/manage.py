@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -43,11 +44,16 @@ from tools.artifacts import (  # noqa: E402
 from tools.profiles import (  # noqa: E402
     CONCIERGE,
     DEPRECATED_PROFILES,
+    HERMES_CONCIERGE,
+    HERMES_LIBRARIAN,
+    HERMES_RESEARCHER,
+    HERMES_SYNTHESIZER,
     LEGACY,
     LIBRARIAN,
     RESEARCHER,
     SYNTHESIZER,
     WORKERS,
+    kanban_assignee,
 )
 from tools.runtime_store import (  # noqa: E402
     load_digest,
@@ -113,8 +119,8 @@ _TOOLSETS_KANBAN_WORKER_INSERT = f'''        "includes": [],
     }},
 
     "digest_admin": {{
-        "description": "AI Digest Concierge orchestration — board status and GO",
-        "tools": ["digest_board_status", "digest_setup_board", "digest_go"],
+        "description": "AI Digest Concierge orchestration — board status, GO, assess, deploy, publish",
+        "tools": ["digest_board_status", "digest_setup_board", "digest_go", "digest_assess_run", "digest_deploy_app", "digest_publish", "digest_open_report"],
         "includes": [],
     }},
 
@@ -479,14 +485,27 @@ def _ensure_digest_admin_toolset_tools(*, dry_run: bool = False) -> None:
     text = target.read_text(encoding="utf-8")
     want = (
         '"digest_admin": {\n'
-        '        "description": "AI Digest Concierge orchestration — board status and GO",\n'
-        '        "tools": ["digest_board_status", "digest_setup_board", "digest_go"],\n'
+        '        "description": "AI Digest Concierge orchestration — board status, GO, assess, deploy, publish",\n'
+        '        "tools": ["digest_board_status", "digest_setup_board", "digest_go", '
+        '"digest_assess_run", "digest_deploy_app", "digest_publish", "digest_open_report"],\n'
         '        "includes": [],\n'
         "    },"
     )
     if want in text:
         if not dry_run:
             print("  ✓ toolsets.py digest_admin (already present)")
+        return
+    old_block = re.compile(
+        r'"digest_admin":\s*\{[^}]+\},',
+        re.DOTALL,
+    )
+    if old_block.search(text):
+        if dry_run:
+            print(f"  would upgrade digest_admin toolset in {target}")
+            return
+        text = old_block.sub(want, text, count=1)
+        target.write_text(text, encoding="utf-8")
+        print(f"  ✓ upgraded digest_admin toolset in {target.name}")
         return
     anchor = '"discord": {'
     if anchor not in text:
@@ -618,7 +637,7 @@ def _configure_concierge_toolsets(*, dry_run: bool = False) -> None:
     spec = _load_roles()
     toolsets = list(spec.get("concierge_toolsets") or ["file", "kanban", "digest_admin"])
     print("== setup: concierge tool surface ==")
-    cfg_path = _profile_dir(CONCIERGE) / "config.yaml"
+    cfg_path = _profile_dir(HERMES_CONCIERGE) / "config.yaml"
     if dry_run:
         print(f"  would set {cfg_path} toolsets = {toolsets}")
         return
@@ -636,7 +655,7 @@ def _configure_concierge_toolsets(*, dry_run: bool = False) -> None:
     agent["disabled_toolsets"] = sorted(disabled)
     with cfg_path.open("w", encoding="utf-8") as f:
         yaml.safe_dump(cfg, f, default_flow_style=False, sort_keys=False)
-    print(f"  ✓ {CONCIERGE} toolsets {toolsets}")
+    print(f"  ✓ {HERMES_CONCIERGE} toolsets {toolsets}")
 
 
 def _configure_researcher_worker_toolsets(*, dry_run: bool) -> None:
@@ -647,7 +666,7 @@ def _configure_researcher_worker_toolsets(*, dry_run: bool) -> None:
     (clarify, kanban_create, browser, …). Write profile YAML directly.
     """
     print("== setup: researcher worker tool surface ==")
-    cfg_path = _profile_dir(RESEARCHER) / "config.yaml"
+    cfg_path = _profile_dir(HERMES_RESEARCHER) / "config.yaml"
     toolsets = list(_RESEARCHER_CLI_TOOLSETS)
     if dry_run:
         print(f"  would set {cfg_path} toolsets + platform_toolsets.cli = {toolsets}")
@@ -666,13 +685,13 @@ def _configure_researcher_worker_toolsets(*, dry_run: bool) -> None:
     agent["disabled_toolsets"] = sorted(disabled)
     with cfg_path.open("w", encoding="utf-8") as f:
         yaml.safe_dump(cfg, f, default_flow_style=False, sort_keys=False)
-    print(f"  ✓ {RESEARCHER} toolsets + platform_toolsets.cli {toolsets}")
+    print(f"  ✓ {HERMES_RESEARCHER} toolsets + platform_toolsets.cli {toolsets}")
 
 
 def _configure_synthesizer_worker_toolsets(*, dry_run: bool = False) -> None:
     """Pin synthesizer workers to file + kanban + synthesize_digest."""
     print("== setup: synthesizer worker tool surface ==")
-    cfg_path = _profile_dir(SYNTHESIZER) / "config.yaml"
+    cfg_path = _profile_dir(HERMES_SYNTHESIZER) / "config.yaml"
     toolsets = list(_SYNTHESIZER_CLI_TOOLSETS)
     if dry_run:
         print(f"  would set {cfg_path} toolsets + platform_toolsets.cli = {toolsets}")
@@ -691,7 +710,7 @@ def _configure_synthesizer_worker_toolsets(*, dry_run: bool = False) -> None:
     agent["disabled_toolsets"] = sorted(disabled)
     with cfg_path.open("w", encoding="utf-8") as f:
         yaml.safe_dump(cfg, f, default_flow_style=False, sort_keys=False)
-    print(f"  ✓ {SYNTHESIZER} toolsets + platform_toolsets.cli {toolsets}")
+    print(f"  ✓ {HERMES_SYNTHESIZER} toolsets + platform_toolsets.cli {toolsets}")
 
 
 def _remove_legacy_profiles(*, dry_run: bool = False) -> None:
@@ -1079,7 +1098,7 @@ def setup_agents(*, dry_run: bool = False, quiet: bool = False) -> int:
     _configure_researcher_worker_toolsets(dry_run=dry_run)
     _configure_synthesizer_worker_toolsets(dry_run=dry_run)
     _configure_worker_profile_plugins(
-        [RESEARCHER, LIBRARIAN, SYNTHESIZER, CONCIERGE],
+        sorted(WORKERS | {HERMES_CONCIERGE}),
         dry_run=dry_run,
     )
     _remove_legacy_profiles(dry_run=dry_run)
@@ -1092,7 +1111,7 @@ def setup_agents(*, dry_run: bool = False, quiet: bool = False) -> int:
     if not quiet:
         print("\n== setup: done ==")
         print("  Chat:  python agentic/hermes/admin/manage.py hermes dashboard")
-        print(f"  Concierge profile: {CONCIERGE}")
+        print(f"  Concierge profile: {HERMES_CONCIERGE}")
         print("  Roles: python agentic/hermes/admin/manage.py hermes profile list")
         print("  python agentic/hermes/admin/manage.py go [--fresh]")
         print("  python agentic/hermes/admin/manage.py dispatch-research --redo-invalid")
@@ -1151,9 +1170,12 @@ def _librarian_body(*, prefix: str | None = None) -> str:
     return (
         f"Librarian merge for AI Digest (run prefix `{pfx}`).\n\n"
         f"Read researcher outputs under `{cache}` (one .md per topic). "
-        "Merge, classify, dedupe across topics; map to the standing topic list. "
-        "Write **librarian.md** in your workspace (structured merge + notes for "
-        "the Synthesizer). Do not fetch new URLs.\n\n"
+        "**Trust researchers** — they reflected and grounded their own artifacts; "
+        "do not re-fetch or re-verify URLs.\n\n"
+        "**Your job (Synthesizer must not redo this):** resolve overlap across tasks, "
+        "map every article and data point to standing topics, dedupe and regroup. "
+        "Write **librarian.md** in your workspace (structured merge + knowledge graph).\n\n"
+        "Do not fetch new URLs.\n\n"
         'Call `kanban_complete` with artifacts: ["<absolute-path>/librarian.md"]. '
         "Do not call kanban_block unless capability-blocked."
     )
@@ -1163,6 +1185,9 @@ def _synthesizer_body(*, prefix: str | None = None) -> str:
     pfx = prefix or "YYYYMMDDHHMMSS"
     return (
         f"Synthesize AI Digest (run prefix `{pfx}`).\n\n"
+        "**Role:** format, schema, and writing only. Overlap and topic mapping are "
+        "already settled in **librarian.md** — do not resolve overlap, remap topics, "
+        "re-fetch, or read raw researcher outputs.\n\n"
         "Tools allowed: kanban_show, read_file, synthesize_digest, kanban_complete only.\n"
         "Do NOT use terminal, patch, search_files, or Python scripts.\n\n"
         "Steps:\n"
@@ -1171,6 +1196,7 @@ def _synthesizer_body(*, prefix: str | None = None) -> str:
         f"3. synthesize_digest(workspace=<workspace>, prefix={pfx}) — wait for it to finish.\n"
         "4. read_file digest.json — confirm it exists.\n"
         '5. kanban_complete with artifacts: ["<workspace>/digest.json"].\n\n'
+        "Grounding · validate · render run deterministically after you complete — not your job.\n"
         "Do not hand-author digest.json. Do not call kanban_complete until step 4 passes."
     )
 
@@ -1331,11 +1357,11 @@ def _warm_run_ingest(prefix: str) -> None:
     """Stage-1 fetch once per run prefix (shared cache for researcher tools)."""
     if str(REPO) not in sys.path:
         sys.path.insert(0, str(REPO))
-    from tools.baseline import default_config
+    from tools.baseline import agentic_config
     from tools.researchers.ingest import warm_ingest_cache
 
     print("\n== ingest: warm bundle (once per prefix) ==")
-    bundle = warm_ingest_cache(default_config(), prefix)
+    bundle = warm_ingest_cache(agentic_config(), prefix)
     print(f"  ✓ prefix={bundle.prefix} preflight + crawl + structured")
 
 
@@ -1393,8 +1419,63 @@ def cmd_diagnostics(args: argparse.Namespace) -> int:
     return 0
 
 
-def cmd_go(args: argparse.Namespace) -> int:
-    """Concierge GO — kanban workers: research → librarian → synthesizer → render."""
+def cmd_go_pipeline(args: argparse.Namespace) -> int:
+    """Batch GO — ``run.py`` parity via ``pipeline_go`` (escape hatch, not default)."""
+    global _agentic_run_prefix
+
+    from tools.pipeline_go import resolve_go_window, run_production_pipeline
+
+    window, run_prefix = resolve_go_window(
+        start=getattr(args, "start", None),
+        history=getattr(args, "history", None),
+        prefix=args.prefix,
+    )
+    _agentic_run_prefix = run_prefix
+    _init_run_telemetry(run_prefix)
+
+    print("== GO: batch pipeline (--pipeline) ==")
+    print(f"  window: {window.label()}")
+    print(f"  prefix: {run_prefix}")
+    print("  stages: preflight → crawl/structured → enrich → validate → render")
+    print("  NOTE: default GO uses agent kanban (Concierge → research × N → librarian → synthesizer)")
+
+    result = run_production_pipeline(
+        start=getattr(args, "start", None),
+        history=getattr(args, "history", None),
+        prefix=args.prefix,
+        fetch_only=bool(getattr(args, "fetch_only", False)),
+        skeleton_only=bool(getattr(args, "skeleton_only", False)),
+        skip_doctor=bool(getattr(args, "skip_doctor", False)),
+        skip_ingest=bool(getattr(args, "skip_ingest", False)),
+        force=bool(getattr(args, "force", False)),
+        telemetry_started=True,
+    )
+    if not result.get("ok"):
+        print(f"\n✗ Pipeline failed: {result.get('error', 'unknown')}")
+        if result.get("doctor"):
+            print(result["doctor"])
+        _finish_run_telemetry()
+        return 1
+
+    if result.get("fetch_only"):
+        print("\n✓ Ingest complete (--fetch-only)")
+        _finish_run_telemetry()
+        return 0
+
+    report = Path(str(result.get("report_html") or ""))
+    stories = result.get("story_count", "?")
+    print(f"\n✓ Report: {report.relative_to(REPO) if report.is_file() else report}")
+    print(f"  stories: {stories}")
+    if result.get("diagnostics_json"):
+        diag = Path(str(result["diagnostics_json"]))
+        print(f"  diagnostics: {diag.relative_to(REPO)}")
+    _finish_run_telemetry()
+    print("\n✓ GO completed (batch pipeline)")
+    return 0
+
+
+def cmd_go_agents(args: argparse.Namespace) -> int:
+    """Production GO — kanban crew: research × N → librarian → synthesizer → render."""
     global _agentic_run_prefix
 
     if not _hermes_bin():
@@ -1405,10 +1486,10 @@ def cmd_go(args: argparse.Namespace) -> int:
     _agentic_run_prefix = run_prefix
     _init_run_telemetry(run_prefix)
 
-    print("== GO: Concierge pipeline ==")
-    print("  Graph: research × N → librarian → synthesizer → render")
+    print("== GO: agentic kanban (production) ==")
+    print("  Graph: Concierge → research × N → librarian → synthesizer → render")
     print(f"  prefix: {run_prefix}")
-    print("  mode: agent workers (plan → tools → artifacts)")
+    print("  mode: Hermes workers (plan → tools → artifact gates)")
 
     from tools.agent_diagnostics import get_agent_diagnostics
 
@@ -1442,6 +1523,7 @@ def cmd_go(args: argparse.Namespace) -> int:
 
     rounds = max(1, int(args.rounds))
     if not args.skip_dispatch:
+        _warm_run_ingest(run_prefix)
         _stamp_run_prefix_on_tasks(run_prefix)
         research_cm = diag.phase("go.research", "Research workers") if diag else None
         if research_cm:
@@ -1568,27 +1650,49 @@ def cmd_go(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_go(args: argparse.Namespace) -> int:
+    """Concierge GO — agentic kanban by default; ``--pipeline`` for batch ``run.py`` parity."""
+    if getattr(args, "pipeline", False):
+        return cmd_go_pipeline(args)
+    return cmd_go_agents(args)
+
+
 def cmd_verify_handover(_: argparse.Namespace) -> int:
     """Smoke-test full worker pipeline; receipt at .runtime/artifacts/<prefix>/handover.json."""
-    return cmd_go(
+    return cmd_go_agents(
         argparse.Namespace(
             fresh=True,
             rounds=1,
             prefix=None,
             skip_dispatch=False,
             handover_only=True,
+            pipeline=False,
+            start=None,
+            history=None,
+            fetch_only=False,
+            skeleton_only=False,
+            skip_doctor=False,
+            force=False,
         )
     )
 
 
-def cmd_generate_report(_: argparse.Namespace) -> int:
-    """Generate a digest report — same as `go --fresh --rounds 1`."""
+def cmd_generate_report(args: argparse.Namespace) -> int:
+    """Generate a digest report — same as ``go`` (agentic kanban unless ``--pipeline``)."""
     return cmd_go(
         argparse.Namespace(
-            fresh=True,
+            fresh=False,
             rounds=1,
-            prefix=None,
+            prefix=getattr(args, "prefix", None),
             skip_dispatch=False,
+            pipeline=bool(getattr(args, "pipeline", False)),
+            start=getattr(args, "start", None),
+            history=getattr(args, "history", None),
+            fetch_only=False,
+            skeleton_only=False,
+            skip_doctor=False,
+            skip_ingest=False,
+            force=False,
         )
     )
 
@@ -1651,7 +1755,7 @@ def _replace_research_task(task_id: str, librarian_id: str) -> str:
     _run_hermes("kanban", "archive", "--rm", task_id)
     new_id = _kanban_create_json(
         f"Research: {topic}",
-        assignee=RESEARCHER,
+        assignee=kanban_assignee(RESEARCHER),
         body=_research_body(topic, prefix=_agentic_run_prefix),
         goal=goal,
         goal_max_turns=goal_max_turns,
@@ -1779,7 +1883,7 @@ def _replace_synthesizer_task(task_id: str, librarian_id: str) -> str:
     _run_hermes("kanban", "archive", "--rm", task_id)
     new_id = _kanban_create_json(
         "Synthesize digest",
-        assignee=SYNTHESIZER,
+        assignee=kanban_assignee(SYNTHESIZER),
         body=_synthesizer_body(prefix=_agentic_run_prefix),
         parents=[librarian_id],
         goal=goal,
@@ -2001,7 +2105,10 @@ def cmd_demo_board(args: argparse.Namespace) -> int:
         return 1
 
     spec = _load_roles()
-    topics = spec.get("demo_topics") or ["aisearch", "robotics", "llm", "rag"]
+    from tools.topics import resolve_board_topics
+
+    board = resolve_board_topics(spec)
+    topics = board["topics"]
     dry_run = args.dry_run
     goal_cfg = spec.get("demo_goal") or {}
     goal = bool(goal_cfg.get("enabled", True))
@@ -2012,6 +2119,13 @@ def cmd_demo_board(args: argparse.Namespace) -> int:
     print("== demo-board: AI Digest Phase 2 POC ==")
     print("  Graph: research × N → librarian → synthesizer")
     print(f"  Topics ({len(topics)}): {', '.join(topics)}")
+    if board.get("source_prefix"):
+        print(
+            f"  Topic source: {board['source']} — report {board['source_prefix']} "
+            f"({board.get('story_total')} stories, goodness {board.get('goodness')})"
+        )
+    else:
+        print(f"  Topic source: {board.get('source', 'unknown')}")
     if goal:
         turns_note = f", max_turns={goal_max_turns}" if goal_max_turns else ""
         print(f"  Goal mode: on{turns_note} (Ralph loop until kanban_complete)")
@@ -2024,7 +2138,7 @@ def cmd_demo_board(args: argparse.Namespace) -> int:
         research_ids.append(
             _kanban_create_json(
                 title,
-                assignee=RESEARCHER,
+                assignee=kanban_assignee(RESEARCHER),
                 body=_research_body(topic, prefix=_agentic_run_prefix),
                 goal=goal,
                 goal_max_turns=goal_max_turns,
@@ -2036,7 +2150,7 @@ def cmd_demo_board(args: argparse.Namespace) -> int:
         print("\n  + Librarian: merge & classify")
     librarian_id = _kanban_create_json(
         "Librarian: merge & classify",
-        assignee=LIBRARIAN,
+        assignee=kanban_assignee(LIBRARIAN),
         body=_librarian_body(prefix=_agentic_run_prefix),
         parents=research_ids,
         goal=goal,
@@ -2048,7 +2162,7 @@ def cmd_demo_board(args: argparse.Namespace) -> int:
         print("\n  + Synthesize digest")
     synthesizer_id = _kanban_create_json(
         "Synthesize digest",
-        assignee=SYNTHESIZER,
+        assignee=kanban_assignee(SYNTHESIZER),
         body=_synthesizer_body(prefix=_agentic_run_prefix),
         parents=[librarian_id],
         goal=goal,
@@ -2184,17 +2298,79 @@ def main() -> int:
 
     p_go = sub.add_parser(
         "go",
-        help="Concierge GO: create board, dispatch research, render report (Phases A→C)",
+        help="Concierge GO: agentic kanban (research × N → librarian → synthesizer → render)",
     )
-    p_go.add_argument("--fresh", action="store_true", help="archive existing digest tasks first")
-    p_go.add_argument("--rounds", type=int, default=2, help="max dispatch-research rounds")
-    p_go.add_argument("--prefix", default=None, help="run prefix for rendered report")
+    p_go.add_argument(
+        "--start",
+        metavar="DATE",
+        default=None,
+        help="digest date YYYY-MM-DD or YYYYMMDD (default: today UTC)",
+    )
+    p_go.add_argument(
+        "--history",
+        type=int,
+        metavar="N",
+        default=None,
+        help="editorial lookback days (default: config run.history_days)",
+    )
+    p_go.add_argument("--prefix", default=None, help="run prefix YYYYMMDDHHMMSS (overrides --start noon)")
+    p_go.add_argument(
+        "--fetch-only",
+        action="store_true",
+        help="stop after preflight/crawl/structured ingest",
+    )
+    p_go.add_argument(
+        "--skeleton-only",
+        action="store_true",
+        help="skip LLM enrich (promote preflight skeleton only)",
+    )
+    p_go.add_argument(
+        "--skip-doctor",
+        action="store_true",
+        help="skip pre-run doctor self-check",
+    )
+    p_go.add_argument(
+        "--skip-ingest",
+        action="store_true",
+        help="reuse cached preflight/crawl for prefix (re-enrich + diagnostics)",
+    )
+    p_go.add_argument(
+        "--force",
+        action="store_true",
+        help="proceed even if doctor reports blocking issues",
+    )
+    p_go.add_argument(
+        "--pipeline",
+        action="store_true",
+        help="batch run.py parity via pipeline_go (escape hatch — skips kanban workers)",
+    )
+    p_go.add_argument(
+        "--agents",
+        action="store_true",
+        help=argparse.SUPPRESS,
+    )
+    p_go.add_argument("--fresh", action="store_true", help="archive digest board and recreate before GO")
+    p_go.add_argument("--rounds", type=int, default=2, help="max research dispatch rounds")
     p_go.add_argument(
         "--skip-dispatch",
         action="store_true",
-        help="skip worker dispatch (render from existing artifacts only)",
+        help="skip worker dispatch; render existing board artifacts",
     )
     p_go.set_defaults(func=cmd_go)
+
+    p_gen = sub.add_parser(
+        "generate-report",
+        help="generate digest HTML+JSON (same as go — agentic kanban by default)",
+    )
+    p_gen.add_argument("--prefix", default=None, help="run prefix YYYYMMDDHHMMSS")
+    p_gen.add_argument("--start", metavar="DATE", default=None, help="digest date YYYY-MM-DD")
+    p_gen.add_argument("--history", type=int, metavar="N", default=None, help="lookback days")
+    p_gen.add_argument(
+        "--pipeline",
+        action="store_true",
+        help="batch run.py parity instead of kanban workers",
+    )
+    p_gen.set_defaults(func=cmd_generate_report)
 
     p_diag = sub.add_parser(
         "diagnostics",
@@ -2202,12 +2378,6 @@ def main() -> int:
     )
     p_diag.add_argument("--prefix", default=None, help="run prefix YYYYMMDDHHMMSS")
     p_diag.set_defaults(func=cmd_diagnostics)
-
-    p_gen = sub.add_parser(
-        "generate-report",
-        help="generate digest HTML+JSON (go --fresh --rounds 1)",
-    )
-    p_gen.set_defaults(func=cmd_generate_report)
 
     p_verify = sub.add_parser(
         "verify-handover",

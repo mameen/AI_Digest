@@ -15,7 +15,7 @@ from llm_pipeline.schema import CategoryStories, DigestHeader
 
 from tools.artifacts import DIGEST_ARTIFACT, LIBRARIAN_ARTIFACT, validate_synthesizer_artifact
 from tools.category_merge import merge_stories_by_url
-from tools.showcase import load_baseline_digest
+from tools.digest_scaffold import empty_digest
 
 _SECTION_RE = re.compile(r"^###\s+(.+)$", re.MULTILINE)
 _URL_RE = re.compile(r"https?://[^\s\)>\"]+")
@@ -131,11 +131,7 @@ def synthesize_digest_from_librarian(
 
     brief = load_editorial_brief()
     grouped = _group_entries(entries)
-    baseline = load_baseline_digest(cfg)
-    baseline_prefix = str(baseline.get("filename_prefix") or "baseline")
-    digest = copy.deepcopy(baseline)
-    digest["filename_prefix"] = prefix
-    digest["generated_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    digest = empty_digest(prefix)
 
     cat_by_id: dict[str, dict[str, Any]] = {}
     for cat in digest.get("categories") or []:
@@ -150,7 +146,8 @@ def synthesize_digest_from_librarian(
         prompt = f"""{brief}
 
 ## Task
-You are the AI Digest Synthesizer. Turn these librarian merge entries into polished
+You are the AI Digest Synthesizer. Librarian already resolved overlap and mapped
+topics — do not reclassify or merge. Turn these librarian entries into polished
 stories for category **{meta['label']}** (`{cid}`).
 Preserve every `url` exactly. Write magazine-quality titles and 2-3 sentence summaries.
 Assign significance, novelty, relevance_design (1-5). Add concise tags.
@@ -198,8 +195,6 @@ Return JSON with stories array only."""
             prov = str(s.get("provenance") or "")
             if cid in grouped:
                 s["provenance"] = prov or f"agent:synthesizer:{cid}"
-            else:
-                s["provenance"] = prov or f"carry:agentic:{baseline_prefix}"
             stamped_stories.append(s)
         categories.append(
             {
