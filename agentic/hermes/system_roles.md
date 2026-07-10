@@ -18,11 +18,18 @@ Batch `run.py` parity is `go --pipeline` only (deprecated batch orchestration).
 AI Digest. Hermes profile names use the `orio_*` prefix; human-facing labels stay
 **Concierge**, **Researcher**, **Librarian**, **Synthesizer**.
 
-**Pipeline order:**
+**Pipeline order (production GO):**
 
 ```
-Concierge → Researcher × N (parallel) → Librarian → Synthesizer → grounding / validate / render
+Concierge digest_go → manage.py go
+  → ingest warm-up (deterministic)
+  → Researcher × N (kanban) → Librarian (kanban) → Synthesizer (kanban)
+  → ground · validate · render (manage.py Phase C — no kanban task)
+  → handover + board archive
+Concierge: digest_assess_run → digest_deploy_app → digest_publish (separate)
 ```
+
+Concierge **kicks** the graph via `digest_go`; it is **not** a kanban assignee on the worker chain.
 
 See also: [`working_agreements.md`](working_agreements.md) (artifact contracts,
 tools vs pipeline invariants),
@@ -85,10 +92,18 @@ implies quality policing by LLM, which conflicts with the deterministic guard.
 | **Does not** | Fetch sources, classify stories, write the digest, bypass config or grounding, push without explicit user approval. |
 
 **Control plane tools (`digest_admin` + `kanban`):** `digest_go`, `digest_board_status`,
-`digest_setup_board`, `digest_assess_run`, `digest_deploy_app`, `digest_publish`.
+`digest_setup_board`, `digest_assess_run`, `digest_deploy_app`, `digest_publish`,
+`digest_open_report`.
 Assess returns `paths.report_html` (absolute) and `preview.report_local` (`file://`).
 Publish commits staged `app/` + hermes artifacts; **`confirm_push: true`** only after
 you explicitly approve push.
+
+**Post-kanban (inside `digest_go`, not Concierge LLM):** after synthesizer
+`digest.json` passes the artifact gate, `manage.py go` runs Phase C
+(`render-from-board` → `validate_and_render` → `llm_pipeline.render`), writes
+`agentic/hermes/reports/<prefix>.html`, then archives kanban tasks. Concierge
+learns outcomes via **`digest_board_status`** (`phase`, `gate_ok`, `phase_guide`)
+and **`digest_assess_run`** after GO completes.
 
 **Intent taxonomy (planned):**
 

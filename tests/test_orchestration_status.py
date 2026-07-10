@@ -89,6 +89,33 @@ class OrchestrationStatusTest(unittest.TestCase):
         self.assertTrue(any("BLOCKED" in line for line in lines))
         self.assertFalse(any("Workers finished" in line for line in lines))
 
+    def test_format_summary_includes_phase_guide(self) -> None:
+        from tools.profiles import PHASE_GUIDE
+
+        lines = format_status_summary(
+            {
+                "board_empty": False,
+                "run_prefix": "20260709120000",
+                "phase": "blocked",
+                "phase_guide": PHASE_GUIDE,
+                "pipeline_artifacts_ok": False,
+                "report_ready": False,
+                "research": {"count": 12, "done": 12, "artifact_pass": 12},
+                "librarian": {"count": 1, "done": 1, "all_pass": True},
+                "synthesizer": {"count": 1, "done": 1, "all_pass": False},
+            }
+        )
+        self.assertTrue(any("Phase note:" in line for line in lines))
+        self.assertTrue(any("NOT ready for render" in line for line in lines))
+
+    def test_go_pipeline_process_documents_render_step(self) -> None:
+        from tools.profiles import GO_PIPELINE_PROCESS
+
+        render_steps = [s for s in GO_PIPELINE_PROCESS if s["id"] == "render"]
+        self.assertEqual(len(render_steps), 1)
+        self.assertIn("render-from-board", render_steps[0]["actor"])
+        self.assertEqual(render_steps[0]["kanban"], "no")
+
     def test_format_summary_includes_phase(self) -> None:
         lines = format_status_summary(
             {

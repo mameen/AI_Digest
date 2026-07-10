@@ -12,8 +12,10 @@ from typing import Any
 
 from tools.profiles import (
     DISPLAY,
+    GO_PIPELINE_PROCESS,
     LIBRARIAN,
     LOGICAL_ROLES,
+    PHASE_GUIDE,
     RESEARCHER,
     SYNTHESIZER,
     WORKER_GRAPH,
@@ -361,7 +363,14 @@ def format_status_summary(payload: dict[str, Any]) -> list[str]:
     if payload.get("report_ready"):
         lines.append(f"Report HTML: {payload.get('report_html')}")
     elif prefix and phase == "render" and payload.get("pipeline_artifacts_ok"):
-        lines.append("Workers finished — GO may still be rendering or assess not run yet.")
+        lines.append(
+            "Workers finished — Phase C render runs inside digest_go (manage.py go); "
+            "if no report yet, GO may still be running or exited before render-from-board."
+        )
+
+    phase_hint = (payload.get("phase_guide") or {}).get(phase)
+    if phase_hint:
+        lines.append(f"Phase note: {phase_hint}")
 
     active = payload.get("active_tasks") or []
     if active:
@@ -547,6 +556,13 @@ def board_status(*, include_workspace: bool = True, brief: bool = False) -> dict
         "phase": phase,
         "graph": WORKER_GRAPH,
         "roles": list(LOGICAL_ROLES),
+        "pipeline_process": list(GO_PIPELINE_PROCESS),
+        "phase_guide": PHASE_GUIDE,
+        "concierge_note": (
+            "Concierge kicks digest_go (manage.py go subprocess) — not a kanban worker. "
+            "Kanban done ≠ pipeline success; trust artifact gate_ok. "
+            "Render is Phase C inside GO, not a synthesizer or Concierge LLM task."
+        ),
         "status_counts": _status_counts(digest_rows),
         "active_tasks": _active_tasks(digest_rows),
         "board_navigation": board_navigation,
