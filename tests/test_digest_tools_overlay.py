@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import sys
 import types
 import unittest
@@ -92,6 +93,32 @@ class DigestToolsOverlayTest(unittest.TestCase):
                     sys.modules[key] = val
                 else:
                     sys.modules.pop(key, None)
+
+    def test_board_status_after_stale_orchestration_module(self) -> None:
+        """Gateway may cache orchestration before runtime_store overlay existed."""
+        plugin = _load_digest_tools_plugin()
+        stale = types.ModuleType("tools.orchestration")
+
+        def _fake_board_status(*, brief: bool = False):
+            from tools.runtime_store import run_dir  # noqa: F401 — exercise lazy import
+
+            return {"ok": True, "phase": "idle", "brief": brief}
+
+        stale.board_status = _fake_board_status  # type: ignore[attr-defined]
+        stale.__file__ = str(HERMES_PKG / "tools/orchestration.py")
+        saved = sys.modules.get("tools.orchestration")
+        sys.modules["tools.orchestration"] = stale
+        sys.modules.pop("tools.runtime_store", None)
+        try:
+            out = plugin.digest_board_status_json({"brief": True})
+            data = json.loads(out)
+            self.assertTrue(data.get("ok"), data)
+            self.assertIsNotNone(sys.modules.get("tools.runtime_store"))
+        finally:
+            if saved is not None:
+                sys.modules["tools.orchestration"] = saved
+            else:
+                sys.modules.pop("tools.orchestration", None)
 
 
 if __name__ == "__main__":

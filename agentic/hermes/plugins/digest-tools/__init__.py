@@ -137,15 +137,31 @@ def _overlay_agentic_tool(stem: str):
         _overlay_agentic_tool(dep)
     key = f"tools.{stem}"
     path = _HERMES_PKG / "tools" / f"{stem}.py"
+    our_path = str(path)
+    if not path.is_file():
+        raise ImportError(f"agentic tool module missing on disk: {path}")
     existing = sys.modules.get(key)
-    if existing is not None and getattr(existing, "__file__", None) == str(path):
+    if existing is not None and getattr(existing, "__file__", None) == our_path:
         return existing
+    if key in sys.modules:
+        # Drop Hermes stub or stale module from a pre-fix gateway import.
+        del sys.modules[key]
     spec = importlib.util.spec_from_file_location(key, path)
     if spec is None or spec.loader is None:
         raise ImportError(f"cannot load agentic tool module: {path}")
     mod = importlib.util.module_from_spec(spec)
     sys.modules[key] = mod
     spec.loader.exec_module(mod)
+    return mod
+
+
+def _overlay_board_status_stack():
+    """Load orchestration + deps for Concierge digest_board_status (idempotent)."""
+    for stem in ("artifacts", "runtime_store", "profiles", "orchestration"):
+        _overlay_agentic_tool(stem)
+    mod = sys.modules.get("tools.orchestration")
+    if mod is None or not hasattr(mod, "board_status"):
+        raise ImportError("tools.orchestration overlay failed — run manage.py setup and hermes gateway restart")
     return mod
 
 
@@ -238,11 +254,15 @@ def read_topic_config_json(args: dict, **kwargs) -> str:
 
 def digest_board_status_json(args: dict, **kwargs) -> str:
     try:
-        mod = _overlay_agentic_tool("orchestration")
+        mod = _overlay_board_status_stack()
         brief = bool(args.get("brief", False))
         return json.dumps(mod.board_status(brief=brief), default=str)
     except Exception as exc:
-        return json.dumps({"ok": False, "error": str(exc)})
+        hint = (
+            "Run: python agentic/hermes/admin/manage.py setup && hermes gateway restart "
+            "(then retry digest_board_status in a new chat turn)."
+        )
+        return json.dumps({"ok": False, "error": f"{exc}", "remediation": hint})
 
 
 def digest_setup_board_json(args: dict, **kwargs) -> str:
