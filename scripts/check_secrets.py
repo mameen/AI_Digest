@@ -21,30 +21,17 @@ REPO = Path(__file__).resolve().parents[1]
 _SCRIPTS = Path(__file__).resolve().parent
 if str(_SCRIPTS) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS))
-from scan_ignore import is_ignored, load_patterns  # noqa: E402
-
-# ── Repo-specific policy (edit per repository) ────────────────────────────────
-
-BLOCKED_BASENAMES = frozenset(
-    {
-        ".env",
-        ".env.local",
-        ".env.production",
-        "credentials.json",
-        "secrets.json",
-        "vault.json",
-        "id_rsa",
-        "id_ed25519",
-        ".API_KEY",
-    }
+from scan_ignore import (  # noqa: E402
+    alarm_commit_paths,
+    format_local_warnings,
+    load_patterns,
+    local_sensitive_warnings,
+    forbidden_commit_reason,
+    should_skip_audit_path,
 )
 
-BLOCKED_SUFFIXES = (".pem", ".key", ".p12", ".pfx", ".kdbx")
-
-# Whole-tree prefixes that must never be committed (even if gitignored locally).
-BLOCKED_PATH_PREFIXES: tuple[str, ...] = (
-    "agentic/hermes/.runtime/",
-)
+# ── Repo-specific policy (ORIO / AI Digest) ───────────────────────────────────
+# Commit-forbidden paths live in scan_ignore.forbidden_commit_reason (single source).
 
 # Paths where documented LAN endpoints are expected (not scanned for private IPs).
 _LAN_ALLOWLIST: tuple[str, ...] = (
@@ -185,15 +172,7 @@ def _skip_pii_rules(rel: str) -> bool:
 
 
 def _blocked_path(rel: str) -> str | None:
-    name = Path(rel).name
-    if name in BLOCKED_BASENAMES or name.lower().endswith(BLOCKED_SUFFIXES):
-        return "blocked sensitive filename"
-    for prefix in BLOCKED_PATH_PREFIXES:
-        if rel.startswith(prefix):
-            return f"blocked path prefix ({prefix})"
-    if "/private/secrets/" in rel and rel.endswith(".json") and not rel.endswith(".example.json"):
-        return "blocked secrets JSON (use *.example.json templates only)"
-    return None
+    return forbidden_commit_reason(rel)
 
 
 def _staged_files() -> list[Path]:
@@ -494,12 +473,20 @@ def _scan_file(path: Path) -> list[Finding]:
     return findings
 
 
-def scan_paths(paths: list[Path]) -> list[Finding]:
+def _alarm_forbidden_paths(paths: list[Path]) -> None:
+    alarm_commit_paths([_rel(p) for p in paths])
+
+
+def scan_paths(paths: list[Path], *, observe_piiignore: bool = False) -> list[Finding]:
     patterns = load_patterns(REPO)
     all_findings: list[Finding] = []
     for path in paths:
         rel = _rel(path)
-        if is_ignored(rel, patterns):
+        blocked = _blocked_filename_findings(path)
+        if blocked:
+            all_findings.extend(blocked)
+            continue
+        if should_skip_audit_path(rel, patterns, observe_piiignore=observe_piiignore):
             continue
         all_findings.extend(_scan_file(path))
     return all_findings
@@ -571,27 +558,41 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Also run detect-secrets if installed (pip install detect-secrets).",
     )
+    parser.add_argument(
+        "--observe-piiignore",
+        action="store_true",
+        help="opt-in: honor .piiignore exemptions (default: scan commit content fully)",
+    )
     parser.add_argument("paths", nargs="*", help="Explicit file paths to scan (full file).")
     args = parser.parse_args(argv)
 
+    patterns = load_patterns(REPO)
     paths: list[Path] = []
     if args.staged:
+        paths = _staged_files()
+        _alarm_forbidden_paths(paths)
         findings = scan_staged()
         if not _staged_files() and not _staged_added_lines():
             return 0
-        paths = _staged_files()
     elif args.all:
         paths = _tracked_files()
-        findings = scan_paths(paths)
+        _alarm_forbidden_paths(paths)
+        msg = format_local_warnings(
+            local_sensitive_warnings(REPO, patterns, observe_piiignore=args.observe_piiignore)
+        )
+        if msg:
+            print(msg, file=sys.stderr)
+        findings = scan_paths(paths, observe_piiignore=args.observe_piiignore)
     elif args.worktree:
         paths = _worktree_files()
-        findings = scan_paths(paths)
+        _alarm_forbidden_paths(paths)
+        findings = scan_paths(paths, observe_piiignore=args.observe_piiignore)
     else:
         paths = [Path(p) for p in args.paths]
         if not paths:
             parser.print_help()
             return 0
-        findings = scan_paths(paths)
+        findings = scan_paths(paths, observe_piiignore=args.observe_piiignore)
 
     if args.with_detect_secrets and paths:
         ds = _run_detect_secrets(paths)

@@ -3,16 +3,71 @@
 Reads ``.piiignore`` and ``.ignorepii`` (alias) from the repo root.
 Syntax matches ``.gitignore`` (``#`` comments, ``/`` prefix, ``**``, ``*``).
 
-Important: exemptions apply to **audit scans** (Presidio, Betterleaks tree walks).
-``check_secrets.py`` still **blocks** gitignored vault paths if they are staged.
+Policy (default — no ``--observe-piiignore``):
+- **Anything in a commit** (staged or tracked): full content scan; never skip via ``.piiignore``.
+- **Forbidden paths** (``.kb/``, ``.env``, credentials, …): always **alarm** — never skippable,
+  including with ``--observe-piiignore``.
+- **``--all`` local trees:** warn if gitignored vault/venv dirs exist on disk (not in commit).
+- ``.piiignore`` applies only when ``--observe-piiignore`` is passed (opt-in), and only for
+  non-forbidden paths.
 """
 
 from __future__ import annotations
 
 import fnmatch
+import sys
 from pathlib import Path
 
 IGNORE_FILENAMES = (".piiignore", ".ignorepii")
+
+# Directory prefixes — if any path in a commit matches, alarm (never skippable).
+FORBIDDEN_COMMIT_PREFIXES: tuple[str, ...] = (
+    "agentic/hermes/.kb/",
+    "agentic/hermes/.generated/",
+    "agentic/hermes/.runtime/",
+    ".cache/",
+    ".preflight/",
+    "llm_pipeline/.cache/",
+    "llm_pipeline/.preflight/",
+    ".venv/",
+    "venv/",
+)
+
+FORBIDDEN_BASENAMES = frozenset(
+    {
+        ".env",
+        ".env.local",
+        ".env.production",
+        "credentials.json",
+        "secrets.json",
+        "vault.json",
+        "id_rsa",
+        "id_ed25519",
+        ".API_KEY",
+    }
+)
+
+FORBIDDEN_SUFFIXES: tuple[str, ...] = (
+    ".pem",
+    ".key",
+    ".p12",
+    ".pfx",
+    ".kdbx",
+    ".credentials.json",
+    "_credentials.json",
+)
+
+LOCAL_SENSITIVE_DIRS: tuple[str, ...] = (
+    "agentic/hermes/.kb",
+    "agentic/hermes/.generated",
+    "agentic/hermes/.runtime",
+    ".cache",
+    ".preflight",
+    "llm_pipeline/.cache",
+    "llm_pipeline/.preflight",
+    ".venv",
+    "venv",
+)
 
 
 def load_patterns(repo: Path) -> tuple[str, ...]:
@@ -29,9 +84,16 @@ def load_patterns(repo: Path) -> tuple[str, ...]:
     return tuple(patterns)
 
 
+def _normalize_rel(rel: str) -> str:
+    rel = rel.replace("\\", "/")
+    while rel.startswith("./"):
+        rel = rel[2:]
+    return rel
+
+
 def _match_pattern(rel: str, pattern: str) -> bool:
-    rel = rel.replace("\\", "/").lstrip("./")
-    pat = pattern.replace("\\", "/").lstrip("./")
+    rel = _normalize_rel(rel)
+    pat = _normalize_rel(pattern)
 
     if pat.endswith("/"):
         prefix = pat.rstrip("/")
@@ -40,7 +102,6 @@ def _match_pattern(rel: str, pattern: str) -> bool:
     if "/" in pat:
         return fnmatch.fnmatch(rel, pat) or fnmatch.fnmatch(rel, pat.lstrip("/"))
 
-    # No slash — match any path segment
     if fnmatch.fnmatch(rel, pat):
         return True
     parts = rel.split("/")
@@ -52,5 +113,109 @@ def is_ignored(rel: str, patterns: tuple[str, ...] | None = None, *, repo: Path 
         if repo is None:
             raise ValueError("repo required when patterns is None")
         patterns = load_patterns(repo)
-    rel = rel.replace("\\", "/").lstrip("./")
+    rel = _normalize_rel(rel)
     return any(_match_pattern(rel, p) for p in patterns)
+
+
+def forbidden_commit_reason(rel: str) -> str | None:
+    rel = _normalize_rel(rel)
+    name = Path(rel).name
+
+    for prefix in FORBIDDEN_COMMIT_PREFIXES:
+        bare = prefix.rstrip("/")
+        if rel == bare or rel.startswith(prefix):
+            return f"forbidden local-only path must not be committed ({prefix})"
+
+    if name in FORBIDDEN_BASENAMES:
+        return f"forbidden sensitive file must not be committed ({name})"
+
+    lower = name.lower()
+    for suffix in FORBIDDEN_SUFFIXES:
+        if lower.endswith(suffix):
+            return f"forbidden sensitive file must not be committed (*{suffix})"
+
+    if fnmatch.fnmatch(name, ".env.*.local"):
+        return "forbidden local environment file (.env.*.local)"
+
+    if rel.endswith(".local.yaml") and not rel.endswith(".local.yaml.example"):
+        return "forbidden local config override (*.local.yaml)"
+
+    if "/private/secrets/" in rel and rel.endswith(".json") and not rel.endswith(".example.json"):
+        return "forbidden secrets JSON (use *.example.json templates only)"
+
+    return None
+
+
+def is_forbidden_in_commit(rel: str) -> bool:
+    return forbidden_commit_reason(rel) is not None
+
+
+def collect_forbidden_paths(rels: list[str]) -> list[tuple[str, str]]:
+    return [(p, r) for p in rels if (r := forbidden_commit_reason(p))]
+
+
+def alarm_commit_paths(rels: list[str]) -> None:
+    blocked = collect_forbidden_paths(rels)
+    if not blocked:
+        return
+    print(
+        "ERROR: forbidden paths must not be committed "
+        "(vault, venv, .env, credentials — remove from index; keep in .gitignore):\n",
+        file=sys.stderr,
+    )
+    for path, reason in blocked:
+        print(f"  {path}: {reason}", file=sys.stderr)
+    sys.exit(1)
+
+
+def should_skip_audit_path(
+    rel: str,
+    patterns: tuple[str, ...],
+    *,
+    observe_piiignore: bool,
+) -> bool:
+    if is_forbidden_in_commit(rel):
+        return False
+    if not observe_piiignore:
+        return False
+    return is_ignored(rel, patterns)
+
+
+def local_sensitive_warnings(
+    repo: Path,
+    patterns: tuple[str, ...],
+    *,
+    observe_piiignore: bool,
+) -> list[str]:
+    warnings: list[str] = []
+    for rel_dir in LOCAL_SENSITIVE_DIRS:
+        full = repo / rel_dir
+        if not full.exists():
+            continue
+        if observe_piiignore and (
+            is_ignored(rel_dir, patterns) or is_ignored(f"{rel_dir}/", patterns)
+        ):
+            continue
+        if full.is_dir():
+            try:
+                n_files = sum(1 for p in full.rglob("*") if p.is_file())
+            except OSError:
+                n_files = -1
+            warnings.append(
+                f"{rel_dir}/ exists on disk ({n_files} files) — gitignored, must not be committed"
+            )
+        else:
+            warnings.append(f"{rel_dir} exists on disk — gitignored, must not be committed")
+    return warnings
+
+
+def format_local_warnings(warnings: list[str]) -> str:
+    if not warnings:
+        return ""
+    lines = [
+        "WARNING: local-only sensitive trees present (not part of the commit):",
+        *(f"  {w}" for w in warnings),
+        "",
+        "Do not stage these paths. To silence: add to .piiignore and pass --observe-piiignore.",
+    ]
+    return "\n".join(lines)

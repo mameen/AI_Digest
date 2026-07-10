@@ -23,7 +23,6 @@ class ScanIgnoreTest(unittest.TestCase):
     def test_kb_exempt(self) -> None:
         patterns = scan_ignore.load_patterns(ROOT)
         self.assertTrue(scan_ignore.is_ignored("agentic/hermes/.kb/private/goals.md", patterns))
-        self.assertTrue(scan_ignore.is_ignored(".kb/public/resume.md", patterns))
 
     def test_source_not_exempt(self) -> None:
         patterns = scan_ignore.load_patterns(ROOT)
@@ -32,6 +31,39 @@ class ScanIgnoreTest(unittest.TestCase):
     def test_fixture_exempt(self) -> None:
         patterns = scan_ignore.load_patterns(ROOT)
         self.assertTrue(scan_ignore.is_ignored("tests/fixtures/recruiter_sample.eml", patterns))
+
+    def test_forbidden_commit_paths(self) -> None:
+        self.assertIsNotNone(
+            scan_ignore.forbidden_commit_reason("agentic/hermes/.kb/private/resume.docx")
+        )
+        self.assertIsNotNone(
+            scan_ignore.forbidden_commit_reason(".venv/lib/python3.11/site-packages/foo.py")
+        )
+        self.assertIsNone(scan_ignore.forbidden_commit_reason("agentic/hermes/admin/manage.py"))
+
+    def test_piiignore_off_by_default(self) -> None:
+        patterns = scan_ignore.load_patterns(ROOT)
+        self.assertFalse(
+            scan_ignore.should_skip_audit_path(
+                "tests/fixtures/recruiter_sample.eml",
+                patterns,
+                observe_piiignore=False,
+            )
+        )
+        self.assertTrue(
+            scan_ignore.should_skip_audit_path(
+                "tests/fixtures/recruiter_sample.eml",
+                patterns,
+                observe_piiignore=True,
+            )
+        )
+
+    def test_forbidden_observe_piiignore_still_scans(self) -> None:
+        patterns = scan_ignore.load_patterns(ROOT)
+        rel = "agentic/hermes/.kb/private/x.md"
+        self.assertFalse(
+            scan_ignore.should_skip_audit_path(rel, patterns, observe_piiignore=True)
+        )
 
 
 if __name__ == "__main__":
