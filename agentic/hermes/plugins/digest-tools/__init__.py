@@ -119,7 +119,8 @@ def _ensure_repo_path() -> None:
 
 
 _AGENTIC_TOOL_DEPS: dict[str, tuple[str, ...]] = {
-    "orchestration": ("profiles", "artifacts"),
+    "orchestration": ("profiles", "artifacts", "runtime_store"),
+    "runtime_store": ("artifacts",),
     "publish": ("baseline",),
 }
 
