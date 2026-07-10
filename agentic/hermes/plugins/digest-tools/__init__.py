@@ -231,7 +231,8 @@ def digest_board_status_json(args: dict, **kwargs) -> str:
     _overlay_agentic_tool("orchestration")
     from tools.orchestration import board_status
 
-    return json.dumps(board_status(), default=str)
+    brief = bool(args.get("brief", False))
+    return json.dumps(board_status(brief=brief), default=str)
 
 
 def digest_setup_board_json(args: dict, **kwargs) -> str:

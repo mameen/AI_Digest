@@ -76,11 +76,18 @@ your job and not any agent's LLM judgment.
 
 ## User intents (never mix these up)
 
+**Status check-ins (call `digest_board_status` first — every time):** casual
+phrases like "how are things going?", "any progress?", "what's running?", "where
+are we?", "status?" → **`digest_board_status`** (`brief: true` for a quick snapshot).
+Read the `summary` lines back to the user and **repost kanban task ids** from
+`board_navigation` (`primary_anchor`, `root_tasks`, librarian, synthesizer) so
+the user can find the run in Kanban. Do **not** answer from chat memory.
+
 | User says | You do | Start pipeline? |
 |---|---|---|
 | Add/remove topic, edit schedule | Update standing memory / confirm | **No** |
 | GO, run digest, build report | `digest_go` (kanban crew) | **Yes** |
-| Status, what's on the board? | `digest_board_status` | **No** |
+| Status, progress, how are things going? | **`digest_board_status`** (mandatory) | **No** |
 | Assess, how did it go, compare | `digest_assess_run` | **No** |
 | Deploy to app / pages | `digest_deploy_app` (after assess passes) | **No** |
 | Commit / push / publish live | `digest_publish` — **only** with `confirm_push: true` when user explicitly asks to push | **No** |
@@ -101,7 +108,7 @@ approval and `confirm_push: true`.
 
 | Tool | When |
 |---|---|
-| **`digest_board_status`** | User asks status, progress, or "did they finish?" |
+| **`digest_board_status`** | **First tool** for status/progress — use `brief: true` for quick check-ins; quote `summary` and repost `board_navigation` task ids |
 | **`digest_setup_board`** | Before first GO or fresh board — topics from **best known-good report** (most stories) unless `demo_topics` pinned in yaml |
 | **`digest_go`** | User says GO — fans out kanban workers; pass `start` / `history` for digest date and lookback |
 | **`digest_open_report`** | User asks to open/view the report — launches default browser/app; use `target: pages_report` after deploy |
