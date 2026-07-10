@@ -54,6 +54,41 @@ class OrchestrationStatusTest(unittest.TestCase):
         )
         self.assertEqual(phase, "librarian")
 
+    def test_infer_phase_blocked_when_synth_gate_fails(self) -> None:
+        phase = infer_pipeline_phase(
+            board_empty=False,
+            research={"count": 12, "done": 12},
+            librarian={"kanban_done": True, "gate_ok": True},
+            synthesizer={"kanban_done": True, "gate_ok": False},
+            report_ready=False,
+            pipeline_artifacts_ok=False,
+        )
+        self.assertEqual(phase, "blocked")
+
+    def test_format_summary_blocked_not_ready_for_render(self) -> None:
+        lines = format_status_summary(
+            {
+                "board_empty": False,
+                "run_prefix": "20260709120000",
+                "phase": "blocked",
+                "pipeline_artifacts_ok": False,
+                "report_ready": False,
+                "status_counts": {"done": 14},
+                "research": {"count": 12, "done": 12, "artifact_pass": 12, "all_pass": True},
+                "librarian": {"count": 1, "done": 1, "all_pass": True},
+                "synthesizer": {"count": 1, "done": 1, "all_pass": False},
+                "tasks": [
+                    {
+                        "title": "Synthesize digest",
+                        "errors": ["missing digest.json"],
+                    }
+                ],
+            }
+        )
+        self.assertTrue(any("NOT ready for render" in line for line in lines))
+        self.assertTrue(any("BLOCKED" in line for line in lines))
+        self.assertFalse(any("Workers finished" in line for line in lines))
+
     def test_format_summary_includes_phase(self) -> None:
         lines = format_status_summary(
             {

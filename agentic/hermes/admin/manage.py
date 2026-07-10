@@ -1595,6 +1595,7 @@ def cmd_go_agents(args: argparse.Namespace) -> int:
                 validate=validate_synthesizer_artifact,
                 artifact_name=DIGEST_ARTIFACT,
                 prefix=run_prefix,
+                timeout_s=3600,
             )
         finally:
             if syn_cm:
@@ -1919,6 +1920,7 @@ def _dispatch_role_task(
     validate: Any,
     artifact_name: str,
     prefix: str | None = None,
+    timeout_s: int = 900,
 ) -> int:
     """Dispatch one downstream role task and enforce its artifact gate."""
     global _prepare_prefix
@@ -1952,7 +1954,7 @@ def _dispatch_role_task(
     if row.get("status") == "blocked":
         _run_hermes("kanban", "unblock", task_id)
     _prepare_prefix = prefix
-    status = _dispatch_one(task_id, title=title, prefix=prefix)
+    status = _dispatch_one(task_id, title=title, prefix=prefix, timeout_s=timeout_s)
     _prepare_prefix = None
     print(f"  worker finished: {status}")
     if status != "done":
