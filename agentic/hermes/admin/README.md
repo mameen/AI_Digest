@@ -34,6 +34,9 @@ SOUL templates: [`config/souls/`](config/souls/) (deployed to `~/.hermes/profile
 Architecture: [`../docs/ARCHITECTURE.md`](../docs/ARCHITECTURE.md).
 Runbook: [`../POC.md`](../POC.md).
 
+**Hermes profiles:** read [`.agents/onboarding/hermes-and-repo.md`](../../.agents/onboarding/hermes-and-repo.md)
+for repo imports, env, PII, and git boundaries (also in each `orio_*` SOUL).
+
 Env/config templates (no secrets): [`../config/`](../config/) (`hermes.env.example`, etc.).
 
 ## digest-tools plugin
