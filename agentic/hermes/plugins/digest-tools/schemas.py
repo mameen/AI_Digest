@@ -166,11 +166,21 @@ WEB_SEARCH = {
 DIGEST_BOARD_STATUS = {
     "name": "digest_board_status",
     "description": (
-        "Return AI Digest kanban pipeline status: per-task kanban state plus "
-        "deterministic artifact gate results (output.md, librarian.md, digest.json). "
-        "Use for STATUS intent — does not verify ground truth or live URLs."
+        "MANDATORY for status/progress check-ins ('how are things going', 'status', "
+        "'what's running', 'did they finish'). Returns kanban phase, run prefix, "
+        "board_navigation (primary_anchor + root_tasks + librarian/synthesizer ids "
+        "for finding tasks in Kanban), per-task state, artifact gates, active/next "
+        "tasks, and summary[] — call before answering; never guess board state."
     ),
-    "parameters": {"type": "object", "properties": {}},
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "brief": {
+                "type": "boolean",
+                "description": "Fast snapshot from kanban list only (skip per-task artifact gates)",
+            },
+        },
+    },
 }
 
 DIGEST_SETUP_BOARD = {
