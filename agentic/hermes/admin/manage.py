@@ -5,6 +5,7 @@ Agentic Hermes admin — profiles, Ollama, kanban, .runtime lifecycle.
 Usage:
     python agentic/hermes/admin/manage.py bootstrap [--skip-setup]
     python agentic/hermes/admin/manage.py setup [--dry-run]
+    python agentic/hermes/admin/manage.py model <ollama-model> [--dry-run]
     python agentic/hermes/admin/manage.py nuke [--yes]
     python agentic/hermes/admin/manage.py status
     python agentic/hermes/admin/manage.py hermes [--] <hermes-cli-args...>
@@ -2252,6 +2253,80 @@ def cmd_setup(args: argparse.Namespace) -> int:
     return setup_agents(dry_run=args.dry_run)
 
 
+def _set_roles_yaml_model(new_model: str, *, dry_run: bool) -> None:
+    """Point hermes_roles.yaml (source of truth) at ``new_model``, keeping comments.
+
+    Rewrites ``ollama.default_model`` and every ``model:`` line (agentic_enrich
+    and any per-role override) via targeted line edits so future ``setup`` runs
+    reproduce the switch. safe_dump is avoided — it would strip the file's
+    Ollama-switch comments.
+    """
+    text = ROLES_PATH.read_text(encoding="utf-8")
+    updated = re.sub(
+        r"(?m)^(?P<indent>[ \t]*)default_model:.*$",
+        lambda m: f"{m.group('indent')}default_model: {new_model}",
+        text,
+    )
+    updated = re.sub(
+        r"(?m)^(?P<indent>[ \t]*)model:.*$",
+        lambda m: f"{m.group('indent')}model: {new_model}",
+        updated,
+    )
+    rel = ROLES_PATH.relative_to(REPO)
+    if updated == text:
+        print(f"  · {rel} already targets {new_model} (no yaml change)")
+        return
+    if dry_run:
+        print(f"  would update {rel} → {new_model}")
+        return
+    ROLES_PATH.write_text(updated, encoding="utf-8")
+    print(f"  ✓ {rel} → {new_model}")
+
+
+def cmd_model(args: argparse.Namespace) -> int:
+    """Switch the Ollama model for every ORIO role + the default profile."""
+    if not _hermes_bin():
+        print("hermes not on PATH.")
+        return 1
+    new_model = args.model.strip()
+    if not new_model:
+        print("ERROR model name required (e.g. qwen3.6:35b)")
+        return 1
+    dry_run = args.dry_run
+
+    print(f"== model: switch ORIO roles → {new_model} ==")
+    print(f"\n== model: source of truth ({ROLES_PATH.relative_to(REPO)}) ==")
+    _set_roles_yaml_model(new_model, dry_run=dry_run)
+
+    spec = _load_roles()
+    ollama = spec.get("ollama") or {}
+    repo_llm = _repo_llm_config()
+    provider = ollama.get("provider") or "custom"
+    base_url = ollama.get("base_url") or repo_llm.get("base_url") or "http://localhost:11434/v1"
+    context_length = str(ollama.get("context_length") or 131072)
+    installed = _ollama_models()
+    resolved = _resolve_model(new_model, new_model, installed)
+
+    _configure_default_ollama(resolved, provider, base_url, context_length, dry_run=dry_run)
+
+    for role in spec.get("roles") or []:
+        name = role["name"]
+        if not _profile_dir(name).is_dir():
+            print(f"\n== model: {name} ==")
+            print("  · skip — profile not created (run setup first)")
+            continue
+        print(f"\n== model: {name} ==")
+        _profile_model_config(name, resolved, provider, base_url, context_length, dry_run=dry_run)
+        if not dry_run:
+            print(f"  ✓ {name} → {resolved}")
+
+    if not dry_run:
+        print("\n  Make it live on Hermes:")
+        print("    hermes gateway restart")
+        print("    (restart any open `hermes dashboard` tab — it caches the model)")
+    return 0
+
+
 def cmd_board_status(_: argparse.Namespace) -> int:
     """Deterministic kanban + artifact gate snapshot (Concierge STATUS)."""
     from tools.orchestration import board_status
@@ -2322,6 +2397,15 @@ def main() -> int:
     p_setup = sub.add_parser("setup", help="Ollama + digest role profiles + kanban")
     p_setup.add_argument("--dry-run", action="store_true")
     p_setup.set_defaults(func=cmd_setup)
+
+    p_model = sub.add_parser(
+        "model",
+        help="set the Ollama model for all ORIO roles + default profile "
+        "(updates hermes_roles.yaml + Hermes profiles)",
+    )
+    p_model.add_argument("model", help="Ollama model tag, e.g. qwen3.6:35b")
+    p_model.add_argument("--dry-run", action="store_true")
+    p_model.set_defaults(func=cmd_model)
 
     p_board = sub.add_parser(
         "demo-board",
