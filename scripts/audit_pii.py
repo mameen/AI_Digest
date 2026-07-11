@@ -8,11 +8,21 @@
 Policy:
 - Staged / tracked: scan all commit content (``.piiignore`` off unless ``--observe-piiignore``).
 - ``--all``: also warn about local gitignored sensitive trees on disk.
+
+Review lane (fail-closed with audited acknowledgment):
+- ``--emit-review-pending PATH`` (pre-commit): scan commit content fully. Findings on
+  ``.piiignore``-listed, non-forbidden paths are *exemptible* — their fingerprints are written
+  to PATH and the commit proceeds to ``commit-msg``. Any non-exemptible finding blocks now.
+- ``--verify-review MSGFILE --pending PATH`` (commit-msg): if PATH lists exemptible findings,
+  the commit message must carry a substantive ``PII-Reviewed:`` trailer, else the commit is
+  blocked. Secrets and forbidden paths are never exemptible.
 """
 
 from __future__ import annotations
 
 import argparse
+import importlib.util
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -25,6 +35,8 @@ if str(_SCRIPTS) not in sys.path:
 from scan_ignore import (  # noqa: E402
     alarm_commit_paths,
     format_local_warnings,
+    is_forbidden_in_commit,
+    is_ignored,
     load_patterns,
     local_sensitive_warnings,
     should_skip_audit_path,
@@ -141,6 +153,11 @@ def _get_analyzer():
         )
 
     for model in ("en_core_web_lg", "en_core_web_sm"):
+        # Skip models that aren't installed: presidio would otherwise trigger a
+        # `spacy download`, which exits hard (SystemExit, uncaught here) when no
+        # package installer is on PATH — e.g. hooks launched by a Git GUI.
+        if importlib.util.find_spec(model) is None:
+            continue
         try:
             provider = NlpEngineProvider(
                 nlp_configuration={
@@ -234,6 +251,142 @@ def scan_paths(
     return errors
 
 
+# --- Review lane -----------------------------------------------------------
+
+# One substantive ``PII-Reviewed:`` trailer per commit acknowledges the exemptible
+# findings listed in the pending file. Short/placeholder justifications are rejected.
+_REVIEW_TRAILER_RE = re.compile(r"^PII-Reviewed:\s*(.+)$", re.IGNORECASE)
+_MIN_JUSTIFICATION = 15
+
+
+def _fingerprint(rel: str, line_no: int, entity: str) -> str:
+    return f"{rel}:{line_no}:{entity}"
+
+
+def collect_findings(
+    paths: list[Path],
+    patterns: tuple[str, ...],
+) -> list[tuple[str, int, str, float]]:
+    """Scan all candidate paths fully (no ``.piiignore`` skipping), returning raw findings."""
+    analyzer = _get_analyzer()
+    findings: list[tuple[str, int, str, float]] = []
+    for path in paths:
+        rel = _rel(path)
+        if not _is_text_candidate(path):
+            continue
+        try:
+            raw = path.read_bytes()
+        except OSError:
+            continue
+        if b"\x00" in raw[:4096]:
+            continue
+        try:
+            text = raw.decode("utf-8")
+        except UnicodeDecodeError:
+            continue
+        for line_no, entity, score in _scan_text(rel, text, analyzer):
+            findings.append((rel, line_no, entity, score))
+    return findings
+
+
+def _print_hard_block(hard: list[tuple[str, int, str, float]]) -> None:
+    print("ERROR: PII audit failed — possible sensitive data (Presidio):\n", file=sys.stderr)
+    for rel, line_no, entity, score in hard[:50]:
+        print(f"  [pii] {rel}:{line_no} — Presidio {entity} (score {score:.2f})", file=sys.stderr)
+    if len(hard) > 50:
+        print(f"  … and {len(hard) - 50} more", file=sys.stderr)
+    print(
+        "\nThese are NOT exemptible. Remove the data, or (only for genuine false positives on"
+        " non-forbidden paths) add the path to .piiignore and re-stage to route it through the"
+        " PII-Reviewed acknowledgment lane.",
+        file=sys.stderr,
+    )
+
+
+def emit_review(
+    paths: list[Path],
+    patterns: tuple[str, ...],
+    pending_path: Path,
+) -> int:
+    """Split findings into hard vs .piiignore-exempt; block on hard, defer exempt to commit-msg."""
+    findings = collect_findings(paths, patterns)
+
+    # Clear any stale pending file from a previous attempt.
+    try:
+        pending_path.unlink()
+    except OSError:
+        pass
+
+    hard: list[tuple[str, int, str, float]] = []
+    exempt: list[tuple[str, int, str, float]] = []
+    for rel, line_no, entity, score in findings:
+        if not is_forbidden_in_commit(rel) and is_ignored(rel, patterns):
+            exempt.append((rel, line_no, entity, score))
+        else:
+            hard.append((rel, line_no, entity, score))
+
+    if hard:
+        _print_hard_block(hard)
+        return 1
+
+    if exempt:
+        fingerprints = sorted({_fingerprint(rel, ln, ent) for rel, ln, ent, _ in exempt})
+        pending_path.parent.mkdir(parents=True, exist_ok=True)
+        pending_path.write_text("\n".join(fingerprints) + "\n", encoding="utf-8")
+        print(
+            f"⚠ PII audit: {len(fingerprints)} known-safe (.piiignore) finding(s) require"
+            " acknowledgment.\n  Add a substantive 'PII-Reviewed: <why these are safe>' trailer"
+            " to your commit message.",
+            file=sys.stderr,
+        )
+    return 0
+
+
+def _reviewed_justifications(message: str) -> list[str]:
+    out: list[str] = []
+    for line in message.splitlines():
+        m = _REVIEW_TRAILER_RE.match(line.strip())
+        if m:
+            out.append(m.group(1).strip())
+    return out
+
+
+def verify_review(msg_path: Path, pending_path: Path) -> int:
+    """Require a substantive PII-Reviewed: trailer when exemptible findings are pending."""
+    if not pending_path.is_file():
+        return 0
+    pending = [ln for ln in pending_path.read_text(encoding="utf-8").splitlines() if ln.strip()]
+    if not pending:
+        pending_path.unlink(missing_ok=True)
+        return 0
+
+    try:
+        message = msg_path.read_text(encoding="utf-8")
+    except OSError:
+        message = ""
+
+    substantive = [j for j in _reviewed_justifications(message) if len(j) >= _MIN_JUSTIFICATION]
+    if substantive:
+        pending_path.unlink(missing_ok=True)
+        return 0
+
+    print(
+        "ERROR: PII audit — acknowledgment required for known-safe (.piiignore) findings:\n",
+        file=sys.stderr,
+    )
+    for fp in pending[:50]:
+        print(f"  {fp}", file=sys.stderr)
+    if len(pending) > 50:
+        print(f"  … and {len(pending) - 50} more", file=sys.stderr)
+    print(
+        "\nAdd a substantive trailer to the commit message acknowledging you reviewed these:\n"
+        "  PII-Reviewed: <why these are false positives / safe fixtures>\n"
+        f"(justification must be at least {_MIN_JUSTIFICATION} characters).",
+        file=sys.stderr,
+    )
+    return 1
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Presidio PII audit.")
     parser.add_argument("--staged", action="store_true")
@@ -243,9 +396,29 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="opt-in: honor .piiignore exemptions (default: scan commit content fully)",
     )
+    parser.add_argument(
+        "--emit-review-pending",
+        metavar="PATH",
+        help="pre-commit: block on hard findings; write .piiignore-exempt fingerprints to PATH",
+    )
+    parser.add_argument(
+        "--verify-review",
+        metavar="MSGFILE",
+        help="commit-msg: require a PII-Reviewed: trailer for findings in --pending",
+    )
+    parser.add_argument(
+        "--pending",
+        metavar="PATH",
+        help="pending fingerprints file used with --verify-review",
+    )
     args = parser.parse_args(argv)
 
     patterns = load_patterns(REPO)
+
+    if args.verify_review:
+        pending_path = Path(args.pending) if args.pending else REPO / ".git" / "pii-pending.txt"
+        return verify_review(Path(args.verify_review), pending_path)
+
     if args.staged:
         paths = _staged_paths()
         _alarm_forbidden(paths)
@@ -260,6 +433,16 @@ def main(argv: list[str] | None = None) -> int:
     else:
         parser.print_help()
         return 0
+
+    if args.emit_review_pending:
+        pending_path = Path(args.emit_review_pending)
+        if not paths:
+            try:
+                pending_path.unlink()
+            except OSError:
+                pass
+            return 0
+        return emit_review(paths, patterns, pending_path)
 
     if not paths:
         return 0

@@ -1,7 +1,11 @@
 #!/bin/sh
 # Three-layer security gate: fast rules → Presidio PII → secret scanner.
+# PII findings on .piiignore-listed, non-forbidden paths are deferred to commit-msg,
+# where a substantive 'PII-Reviewed:' trailer is required to acknowledge them.
 set -eu
 cd "$(dirname "$0")/.."
-python3 scripts/check_secrets.py --staged
-python3 scripts/audit_pii.py --staged
-python3 scripts/audit_secrets.py --staged
+. "$(dirname "$0")/python-venv.sh"
+"$PY" scripts/check_secrets.py --staged
+PII_PENDING="$(git rev-parse --git-path pii-pending.txt)"
+"$PY" scripts/audit_pii.py --staged --emit-review-pending "$PII_PENDING"
+"$PY" scripts/audit_secrets.py --staged

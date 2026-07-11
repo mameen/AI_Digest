@@ -3,6 +3,10 @@
 Reads ``.piiignore`` and ``.ignorepii`` (alias) from the repo root.
 Syntax matches ``.gitignore`` (``#`` comments, ``/`` prefix, ``**``, ``*``).
 
+Repo-specific forbidden/sensitive paths live in an optional ``scan_ignore.yml`` at the repo
+root; they *extend* (never disable) the universal defaults below, so this module stays
+identical across projects.
+
 Policy (default — no ``--observe-piiignore``):
 - **Anything in a commit** (staged or tracked): full content scan; never skip via ``.piiignore``.
 - **Forbidden paths** (``.kb/``, ``.env``, credentials, …): always **alarm** — never skippable,
@@ -20,20 +24,19 @@ from pathlib import Path
 
 IGNORE_FILENAMES = (".piiignore", ".ignorepii")
 
-# Directory prefixes — if any path in a commit matches, alarm (never skippable).
-FORBIDDEN_COMMIT_PREFIXES: tuple[str, ...] = (
-    "agentic/hermes/.kb/",
-    "agentic/hermes/.generated/",
-    "agentic/hermes/.runtime/",
+# Optional per-repo config: repo-specific paths that EXTEND the universal defaults below.
+# Absent → defaults only; malformed → fail closed. Edit this file to teach the audit about
+# project-specific local-only trees. See ``scan_ignore.yml`` at the repo root.
+_CONFIG_FILENAME = "scan_ignore.yml"
+
+# Universal, security-critical defaults — always enforced, never removable via config.
+_DEFAULT_FORBIDDEN_COMMIT_PREFIXES: tuple[str, ...] = (
     ".cache/",
-    ".preflight/",
-    "llm_pipeline/.cache/",
-    "llm_pipeline/.preflight/",
     ".venv/",
     "venv/",
 )
 
-FORBIDDEN_BASENAMES = frozenset(
+_DEFAULT_FORBIDDEN_BASENAMES: frozenset[str] = frozenset(
     {
         ".env",
         ".env.local",
@@ -47,7 +50,7 @@ FORBIDDEN_BASENAMES = frozenset(
     }
 )
 
-FORBIDDEN_SUFFIXES: tuple[str, ...] = (
+_DEFAULT_FORBIDDEN_SUFFIXES: tuple[str, ...] = (
     ".pem",
     ".key",
     ".p12",
@@ -57,16 +60,79 @@ FORBIDDEN_SUFFIXES: tuple[str, ...] = (
     "_credentials.json",
 )
 
-LOCAL_SENSITIVE_DIRS: tuple[str, ...] = (
-    "agentic/hermes/.kb",
-    "agentic/hermes/.generated",
-    "agentic/hermes/.runtime",
+_DEFAULT_LOCAL_SENSITIVE_DIRS: tuple[str, ...] = (
     ".cache",
-    ".preflight",
-    "llm_pipeline/.cache",
-    "llm_pipeline/.preflight",
     ".venv",
     "venv",
+)
+
+# Keys accepted in ``scan_ignore.yml`` — each maps to the matching default set above.
+_OVERRIDE_KEYS = (
+    "forbidden_commit_prefixes",
+    "forbidden_basenames",
+    "forbidden_suffixes",
+    "local_sensitive_dirs",
+)
+
+
+def _repo_root() -> Path:
+    return Path(__file__).resolve().parents[1]
+
+
+def _load_overrides(repo: Path) -> dict[str, tuple[str, ...]]:
+    """Read repo-specific path extensions from ``scan_ignore.yml`` (optional, additive).
+
+    The config can only *add* to the universal defaults, never disable them. A missing file
+    yields no extensions; a malformed one fails closed so security rules are never weakened.
+    """
+    empty = {key: () for key in _OVERRIDE_KEYS}
+    path = repo / _CONFIG_FILENAME
+    if not path.is_file():
+        return empty
+    try:
+        import yaml
+    except ImportError:
+        print(
+            f"ERROR: {_CONFIG_FILENAME} present but PyYAML is not installed — pip install pyyaml",
+            file=sys.stderr,
+        )
+        raise SystemExit(1)
+    try:
+        data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    except yaml.YAMLError as exc:
+        print(f"ERROR: cannot parse {_CONFIG_FILENAME}: {exc}", file=sys.stderr)
+        raise SystemExit(1)
+    if not isinstance(data, dict):
+        print(f"ERROR: {_CONFIG_FILENAME} must be a mapping of list keys", file=sys.stderr)
+        raise SystemExit(1)
+    out: dict[str, tuple[str, ...]] = {}
+    for key in _OVERRIDE_KEYS:
+        values = data.get(key) or []
+        if not isinstance(values, list) or not all(isinstance(v, str) for v in values):
+            print(f"ERROR: {_CONFIG_FILENAME}: '{key}' must be a list of strings", file=sys.stderr)
+            raise SystemExit(1)
+        out[key] = tuple(v.strip() for v in values if v.strip())
+    unknown = sorted(set(data) - set(_OVERRIDE_KEYS))
+    if unknown:
+        print(f"WARNING: {_CONFIG_FILENAME}: ignoring unknown keys {unknown}", file=sys.stderr)
+    return out
+
+
+_OVERRIDES = _load_overrides(_repo_root())
+
+# Effective rule sets = universal defaults ∪ repo-specific extensions (scan_ignore.yml).
+FORBIDDEN_COMMIT_PREFIXES: tuple[str, ...] = (
+    _DEFAULT_FORBIDDEN_COMMIT_PREFIXES + _OVERRIDES["forbidden_commit_prefixes"]
+)
+
+FORBIDDEN_BASENAMES: frozenset[str] = _DEFAULT_FORBIDDEN_BASENAMES | frozenset(
+    _OVERRIDES["forbidden_basenames"]
+)
+
+FORBIDDEN_SUFFIXES: tuple[str, ...] = _DEFAULT_FORBIDDEN_SUFFIXES + _OVERRIDES["forbidden_suffixes"]
+
+LOCAL_SENSITIVE_DIRS: tuple[str, ...] = (
+    _DEFAULT_LOCAL_SENSITIVE_DIRS + _OVERRIDES["local_sensitive_dirs"]
 )
 
 
@@ -85,6 +151,7 @@ def load_patterns(repo: Path) -> tuple[str, ...]:
 
 
 def _normalize_rel(rel: str) -> str:
+    """Normalize repo-relative paths without stripping leading dots from ``.venv`` etc."""
     rel = rel.replace("\\", "/")
     while rel.startswith("./"):
         rel = rel[2:]
@@ -118,6 +185,7 @@ def is_ignored(rel: str, patterns: tuple[str, ...] | None = None, *, repo: Path 
 
 
 def forbidden_commit_reason(rel: str) -> str | None:
+    """Return alarm reason when a path must not be in a commit (aligned with ``.gitignore``)."""
     rel = _normalize_rel(rel)
     name = Path(rel).name
 
@@ -155,6 +223,7 @@ def collect_forbidden_paths(rels: list[str]) -> list[tuple[str, str]]:
 
 
 def alarm_commit_paths(rels: list[str]) -> None:
+    """Fail fast if any path that would land in a commit is forbidden."""
     blocked = collect_forbidden_paths(rels)
     if not blocked:
         return
@@ -174,6 +243,10 @@ def should_skip_audit_path(
     *,
     observe_piiignore: bool,
 ) -> bool:
+    """Skip content scan only when ``--observe-piiignore`` and path matches ``.piiignore``.
+
+    Forbidden commit paths are never skipped — they must alarm via ``alarm_commit_paths``.
+    """
     if is_forbidden_in_commit(rel):
         return False
     if not observe_piiignore:
@@ -187,6 +260,7 @@ def local_sensitive_warnings(
     *,
     observe_piiignore: bool,
 ) -> list[str]:
+    """Warn about gitignored local trees on disk (``--all`` only, not commit content)."""
     warnings: list[str] = []
     for rel_dir in LOCAL_SENSITIVE_DIRS:
         full = repo / rel_dir

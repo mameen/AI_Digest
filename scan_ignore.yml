@@ -1,0 +1,28 @@
+# scan_ignore.yml — repo-specific paths for the PII / secret audit scanners.
+#
+# These entries EXTEND the universal security defaults hard-coded in
+# scripts/scan_ignore.py (.env, keys, .venv, .cache, ...). They are additive:
+# nothing here can disable a built-in default. Editing this file is the
+# supported way to teach the audit about project-specific local-only trees.
+#
+# Keys (all optional, each a list of strings):
+#   forbidden_commit_prefixes — dir prefixes that must never be committed
+#   forbidden_basenames       — exact filenames that must never be committed
+#   forbidden_suffixes        — filename suffixes that must never be committed
+#   local_sensitive_dirs      — gitignored trees that `--all` warns about on disk
+
+forbidden_commit_prefixes:
+  - agentic/hermes/.kb/
+  - agentic/hermes/.generated/
+  - agentic/hermes/.runtime/
+  - .preflight/
+  - llm_pipeline/.cache/
+  - llm_pipeline/.preflight/
+
+local_sensitive_dirs:
+  - agentic/hermes/.kb
+  - agentic/hermes/.generated
+  - agentic/hermes/.runtime
+  - .preflight
+  - llm_pipeline/.cache
+  - llm_pipeline/.preflight
