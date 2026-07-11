@@ -6,3 +6,12 @@ if has_agent_trailers "$1"; then
   echo "  This repo attributes commits to the maintainer only." >&2
   exit 1
 fi
+
+# Require a substantive 'PII-Reviewed:' trailer when pre-commit deferred known-safe
+# (.piiignore) PII findings for acknowledgment. Secrets/forbidden paths never reach here.
+cd "$(dirname "$0")/.."
+. "$(dirname "$0")/python-venv.sh"
+PII_PENDING="$(git rev-parse --git-path pii-pending.txt)"
+if [ -f "$PII_PENDING" ]; then
+  "$PY" scripts/audit_pii.py --verify-review "$1" --pending "$PII_PENDING" || exit 1
+fi
