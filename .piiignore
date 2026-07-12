@@ -30,3 +30,6 @@ tests/data/
 # ── Hermes config examples (documented LAN hosts) ───────────────────────────
 agentic/hermes/admin/config/hermes_roles.yaml
 llm_pipeline/config.yaml
+
+# ── This file itself (contains comments referencing patterns) ────────────────
+.piiignore
