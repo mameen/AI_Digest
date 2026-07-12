@@ -2,16 +2,200 @@ project:
   name: ai-news-signal-brief
   objective: help one person keep up with AI news in less than 10 minutes per day
 
+# Full source inventory mirroring llm_pipeline production sources.
+# Derived from: llm_pipeline/vendor/ai-news-digest/scripts/preflight.py
+#               and sibling fetch_*.py scripts.
 sources:
+
+  # ── AI news / aisearch ────────────────────────────────────────────────────
+  - id: theaisearch
+    kind: youtube_rss
+    label: theAIsearch
+    url: https://www.youtube.com/@theAIsearch
+    notes: latest video fetched via RSS + yt-dlp; every chapter becomes a story card
+
+  # ── YouTube secondary channels ────────────────────────────────────────────
+  - id: ibm-technology
+    kind: youtube_channel
+    label: IBM Technology
+    url: https://www.youtube.com/@IBMTechnology
+    channel_id: UCKWaEZ-_VweaEx1j62do_vQ
+
+  - id: google-cloud-tech
+    kind: youtube_channel
+    label: Google Cloud Tech
+    url: https://www.youtube.com/@googlecloudtech
+    channel_id: UCJS9pqu9BzkAMNTmzNMNhvg
+
+  - id: the-stack-ai
+    kind: youtube_channel
+    label: The Stack
+    url: https://www.youtube.com/@The-Stack-ai
+    channel_id: UCjete_rlEo4zKvkzJNCMzsA
+
+  - id: nate-herk
+    kind: youtube_channel
+    label: Nate Herk
+    url: https://www.youtube.com/@nateherk
+    channel_id: UC2ojq-nuP8ceeHqiroeKhBA
+
+  - id: network-chuck
+    kind: youtube_channel
+    label: NetworkChuck
+    url: https://www.youtube.com/@NetworkChuck
+    channel_id: UC9x0AN7BWHpCDHSm9NiJFJQ
+
+  - id: azisk
+    kind: youtube_channel
+    label: Alex Ziskind
+    url: https://www.youtube.com/@AZisk
+    channel_id: UCajiMK_CY9icRhLepS8_3ug
+
+  - id: hugging-face-yt
+    kind: youtube_channel
+    label: Hugging Face
+    url: https://www.youtube.com/@HuggingFace
+    channel_id: UCHlNU7kIZhRgSbhHvFoy72w
+
+  # ── Robotics RSS ──────────────────────────────────────────────────────────
+  - id: the-robot-report
+    kind: rss
+    label: The Robot Report
+    url: https://www.therobotreport.com/feed/
+    limit: 10
+
+  - id: ieee-spectrum-robotics
+    kind: rss
+    label: IEEE Spectrum Robotics
+    url: https://spectrum.ieee.org/feeds/topic/robotics.rss
+    limit: 10
+
+  - id: robohub
+    kind: rss
+    label: Robohub
+    url: https://robohub.org/feed/
+    limit: 10
+
+  # ── Research papers ───────────────────────────────────────────────────────
+  - id: huggingface-papers
+    kind: web_scrape
+    label: HuggingFace Papers
+    url: https://huggingface.co/papers
+    limit: 20
+
+  - id: arxiv-cs-ai
+    kind: web_scrape
+    label: arXiv cs.AI
+    url: https://arxiv.org/list/cs.AI/recent
+
+  - id: arxiv-cs-cv
+    kind: web_scrape
+    label: arXiv cs.CV
+    url: https://arxiv.org/list/cs.CV/recent
+
+  - id: arxiv-cs-cl
+    kind: web_scrape
+    label: arXiv cs.CL
+    url: https://arxiv.org/list/cs.CL/recent
+
+  # ── LLM stats / general AI news ──────────────────────────────────────────
+  - id: llm-stats
+    kind: web_scrape
+    label: LLM Stats
+    url: https://llm-stats.com/llm-updates
+
   - id: openai-blog
     kind: rss
+    label: OpenAI Blog
     url: https://openai.com/news/rss.xml
+
   - id: anthropic-news
     kind: rss
+    label: Anthropic News
     url: https://www.anthropic.com/news/rss.xml
+
   - id: google-deepmind-blog
     kind: rss
+    label: Google DeepMind Blog
     url: https://deepmind.google/blog/rss.xml
+
+  # ── Typography (web scrape — no RSS) ─────────────────────────────────────
+  - id: monotype-newsroom
+    kind: web_scrape
+    label: Monotype Newsroom
+    url: https://www.monotype.com/newsroom
+
+  - id: monotype-resources
+    kind: web_scrape
+    label: Monotype Resources
+    url: https://www.monotype.com/resources
+
+  - id: i-love-typography
+    kind: web_scrape
+    label: I Love Typography
+    url: https://ilovetypography.com
+
+  - id: adobe-fonts-blog
+    kind: web_scrape
+    label: Adobe Fonts Blog
+    url: https://blog.adobe.com/en/topics/fonts
+
+  - id: myfonts-blog
+    kind: web_scrape
+    label: MyFonts Blog
+    url: https://www.myfonts.com/pages/blog
+
+  - id: typographica
+    kind: web_scrape
+    label: Typographica
+    url: https://typographica.org
+
+  # ── Leaderboards (JS-rendered — need web_fetch / crawl) ──────────────────
+  - id: aa-intelligence-leaderboard
+    kind: js_crawl
+    label: Artificial Analysis Intelligence Leaderboard
+    url: https://artificialanalysis.ai/leaderboards/models
+
+  - id: vellum-llm-leaderboard
+    kind: js_crawl
+    label: Vellum LLM Leaderboard
+    url: https://www.vellum.ai/llm-leaderboard
+
+  - id: vellum-open-leaderboard
+    kind: js_crawl
+    label: Vellum Open LLM Leaderboard
+    url: https://www.vellum.ai/open-llm-leaderboard
+
+  - id: aa-image-leaderboard
+    kind: js_crawl
+    label: AA Image Text-to-Image Leaderboard
+    url: https://artificialanalysis.ai/image/leaderboard/text-to-image
+
+  - id: arena-ai-t2i
+    kind: js_crawl
+    label: Arena.ai Text-to-Image Leaderboard
+    url: https://arena.ai/leaderboard/text-to-image
+
+  - id: arena-ai-t2v
+    kind: js_crawl
+    label: Arena.ai Text-to-Video Leaderboard
+    url: https://arena.ai/leaderboard/text-to-video
+
+  - id: aa-video-leaderboard
+    kind: js_crawl
+    label: AA Text-to-Video Leaderboard
+    url: https://artificialanalysis.ai/video/leaderboard/text-to-video
+
+  # ── Structured JSON APIs (no scraping needed) ─────────────────────────────
+  - id: swebench-leaderboard
+    kind: structured_json
+    label: SWE-bench Leaderboard
+    url: https://raw.githubusercontent.com/swe-bench/swe-bench.github.io/master/data/leaderboards.json
+
+  - id: evalplus-results
+    kind: structured_json
+    label: EvalPlus Results
+    url: https://evalplus.github.io/results.json
 
 workflow:
   max_items_per_source: 20
