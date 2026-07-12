@@ -178,33 +178,16 @@ def fetch_from_source(source: dict) -> list[NewsItem]:
                         continue
             
             elif source_id == "huggingface-papers":
-                # HuggingFace Papers: parse paper cards
-                # Structure: article.paper-card with h3 title and p.summary
-                papers = soup.find_all('article', class_='paper-card')
-                for paper in papers[:10]:  # Top 10 papers
-                    try:
-                        title_elem = paper.find('h3')
-                        if not title_elem:
-                            continue
-                        title = title_elem.get_text(strip=True)
-                        
-                        # Get link and summary
-                        link_elem = paper.find('a', href=True)
-                        link = link_elem['href'] if link_elem else "https://huggingface.co/papers"
-                        if not link.startswith('http'):
-                            link = f"https://huggingface.co/papers{link}"
-                        
-                        summary_elem = paper.find('p', class_='summary')
-                        summary = summary_elem.get_text(strip=True)[:200] if summary_elem else ""
-                        
-                        items.append(NewsItem(
-                            source_id=source_id,
-                            title=title,
-                            url=link,
-                            summary=summary
-                        ))
-                    except Exception:
-                        continue
+                # HuggingFace Papers: JS-rendered Svelte SPA (requires crawl4ai or Playwright)
+                # Note: huggingface.co/papers is a client-side rendered Svelte app with no static HTML.
+                # Content is only available after JavaScript execution. This requires full JS rendering.
+                #
+                # POST-MVP: Implement using crawl4ai (required: pip install crawl4ai[llm-models])
+                # or Playwright (pip install playwright && playwright install).
+                #
+                # For now: Return empty list. arXiv already covers academic papers effectively.
+                # Limitation: Not in MVP scope; would add JS rendering dependency.
+                pass  # TODO: Implement with crawl4ai or Playwright when needed
             
             return items
         
