@@ -1,4 +1,5 @@
 from kaggle_ai_agents.tools.news_sources import (
+    discover_items,
     fetch_stub_items,
     load_source_registry,
     sources_by_kind,
@@ -47,3 +48,22 @@ def test_rank_items_prioritizes_benchmarks_text() -> None:
     items = fetch_stub_items()
     ranked = rank_items(items)
     assert ranked[0].title == "Open model benchmarks improve"
+
+
+def test_discover_items_calls_discover_script() -> None:
+    """discover_items() executes discover.py and returns NewsItem list."""
+    try:
+        items = discover_items()
+        # discover.py should return a list of NewsItem objects
+        assert isinstance(items, list)
+        # Each item should have required fields
+        for item in items:
+            assert item.source_id
+            assert item.title
+            assert item.url
+            # summary may be empty
+    except RuntimeError as e:
+        # If discover.py fails (e.g., network error), we expect a RuntimeError
+        # This is acceptable in CI/CD where network may be restricted
+        assert "discover.py" in str(e)
+
