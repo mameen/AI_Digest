@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import re
 import unittest
-from pathlib import Path
 
 from lib.paths import REPO_ROOT
 from llm_pipeline.paths import VENDOR_DIR
@@ -22,7 +21,7 @@ from llm_pipeline.leaderboards import (
 )
 
 ROOT = REPO_ROOT
-DATA = Path(__file__).resolve().parent / "data"
+DATA = ROOT / "tests" / "data"
 CRAWL_MD = DATA / "artificialanalysis.ai_leaderboards_models.md"
 ARENA_T2I_MD = DATA / "arena.ai_leaderboard_text-to-image.md"
 TEMPLATE = VENDOR_DIR / "template.html"

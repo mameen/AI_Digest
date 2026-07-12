@@ -26,6 +26,12 @@ def run_python() -> bool:
     loader = unittest.defaultTestLoader
     suite = unittest.TestSuite()
     suite.addTests(loader.discover(str(ROOT / "tests")))
+    hermes_tests = ROOT / "agentic" / "hermes" / "tests"
+    if hermes_tests.is_dir():
+        suite.addTests(loader.discover(str(hermes_tests), top_level_dir=str(ROOT)))
+    llm_tests = ROOT / "llm_pipeline" / "tests"
+    if llm_tests.is_dir():
+        suite.addTests(loader.discover(str(llm_tests), top_level_dir=str(ROOT)))
     lib_tests = ROOT / "lib" / "tests"
     if lib_tests.is_dir():
         suite.addTests(loader.discover(str(lib_tests), top_level_dir=str(ROOT)))

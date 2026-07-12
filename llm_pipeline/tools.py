@@ -2,7 +2,7 @@
 
 The gap-fill model can cite a plausible URL it never actually saw. Instead of
 only demoting such links after the fact (the deterministic guard in
-:mod:`pipeline.grounding`), this module lets the model *actively* check and
+:mod:`llm_pipeline.grounding`), this module lets the model *actively* check and
 repair them: it is told, in the prompt, that it may emit a single JSON tool
 action per turn, we execute the tool, and feed the observation back until it
 ``finalize``s or the iteration budget runs out.

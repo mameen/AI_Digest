@@ -10,16 +10,19 @@ import tempfile
 import unittest
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-HERMES_MANAGE = [sys.executable, str(ROOT / "agentic" / "hermes" / "admin" / "manage.py")]
+from lib.paths import REPO_ROOT
 
-_MANAGE_PATH = ROOT / "agentic" / "hermes" / "admin" / "manage.py"
+ROOT = REPO_ROOT
+HERMES_ROOT = ROOT / "agentic" / "hermes"
+HERMES_MANAGE = [sys.executable, str(HERMES_ROOT / "admin" / "manage.py")]
+
+_MANAGE_PATH = HERMES_ROOT / "admin" / "manage.py"
 _spec = importlib.util.spec_from_file_location("hermes_manage", _MANAGE_PATH)
 assert _spec and _spec.loader
 hermes_manage = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(hermes_manage)
 
-_ARTIFACTS_PATH = ROOT / "agentic" / "hermes" / "tools" / "artifacts.py"
+_ARTIFACTS_PATH = HERMES_ROOT / "tools" / "artifacts.py"
 _art_spec = importlib.util.spec_from_file_location("hermes_artifacts", _ARTIFACTS_PATH)
 assert _art_spec and _art_spec.loader
 hermes_artifacts = importlib.util.module_from_spec(_art_spec)

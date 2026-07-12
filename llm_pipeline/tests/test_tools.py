@@ -11,6 +11,7 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
+from lib.paths import REPO_ROOT
 from llm_pipeline.tools import (
     ToolAction,
     format_tool_result,
@@ -22,7 +23,7 @@ from llm_pipeline.tools import (
     web_search,
 )
 
-_DATA = Path(__file__).parent / "data"
+_DATA = REPO_ROOT / "tests" / "data"
 _DDG_FIXTURE = _DATA / "duckduckgo_html_results.html"
 _NOT_FOUND_FIXTURE = _DATA / "figure_not_found.html"  # real figure.ai 404 (soft-404 body)
 _LIVE_FIXTURE = _DATA / "figure_live_article.html"  # real live figure.ai /news/ article
