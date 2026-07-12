@@ -81,7 +81,7 @@ def discover_items(config_path: str | Path | None = None) -> list[NewsItem]:
             capture_output=True,
             text=True,
             check=False,  # Don't raise on non-zero exit
-            timeout=30,
+            timeout=120,  # Increased to 120s to allow YouTube channel fetching (7 channels × ~15s each)
         )
         
         if result.returncode != 0:
