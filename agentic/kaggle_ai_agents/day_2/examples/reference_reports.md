@@ -10,9 +10,9 @@ This folder points to canonical reference artifacts under `app/` using relative 
 
 ## Paths
 
-1. `../../../../app/index.json`
-2. `../../../../app/reports/<prefix>.json`
-3. `../../../../app/diagnostics/<prefix>.diagnostics.json`
+1. [../../../../app/index.json](../../../../app/index.json)
+2. [../../../../app/reports/<prefix>.json](../../../../app/reports/<prefix>.json)
+3. [../../../../app/diagnostics/<prefix>.diagnostics.json](../../../../app/diagnostics/<prefix>.diagnostics.json)
 
 ## Why
 
