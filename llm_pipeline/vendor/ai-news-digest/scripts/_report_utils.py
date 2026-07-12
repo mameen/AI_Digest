@@ -199,13 +199,13 @@ def leaderboards_for_prefix(prefix: str, reports_dir: Path | None = None) -> str
 
 
 def content_styles_block() -> str:
-    from pipeline.styles import digest_styles
+    from llm_pipeline.styles import digest_styles
 
     return digest_styles()
 
 
 def frame_styles_block() -> str:
-    from pipeline.styles import frame_styles
+    from llm_pipeline.styles import frame_styles
 
     return frame_styles()
 
@@ -225,25 +225,25 @@ def digest_app_js() -> str:
 
 
 def theme_js() -> str:
-    from pipeline.styles import theme_script
+    from llm_pipeline.styles import theme_script
 
     return theme_script()
 
 
 def theme_apply_js() -> str:
-    from pipeline.styles import theme_apply_script
+    from llm_pipeline.styles import theme_apply_script
 
     return theme_apply_script()
 
 
 def trend_charts_js() -> str:
-    from pipeline.styles import trend_charts_script
+    from llm_pipeline.styles import trend_charts_script
 
     return trend_charts_script()
 
 
 def heatmap_js() -> str:
-    from pipeline.styles import heatmap_script
+    from llm_pipeline.styles import heatmap_script
 
     return heatmap_script()
 
@@ -281,11 +281,11 @@ def build_frame_html(reports_dir: Path | None = None) -> str:
             raise RuntimeError(f"frame.html missing {key}")
         html = html.replace(key, value)
     if "__AUTHOR_CARD__" in html:
-        from pipeline.config import load_config
-        from pipeline.frame_author import inject_author_card
+        from llm_pipeline.config import load_config
+        from llm_pipeline.frame_author import inject_author_card
 
         html = inject_author_card(html, load_config())
-    from pipeline.frame_html import assert_archive_html_ready
+    from llm_pipeline.frame_html import assert_archive_html_ready
 
     assert_archive_html_ready(html)
     return html

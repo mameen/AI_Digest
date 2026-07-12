@@ -274,7 +274,7 @@ def write_config_bundle(
 
 
 def list_digests(cfg: dict[str, Any]) -> list[dict[str, Any]]:
-    from pipeline.paths import diagnostics_dir, reports_dir
+    from llm_pipeline.paths import diagnostics_dir, reports_dir
 
     index_path = reports_dir(cfg) / "index.json"
     if not index_path.is_file():
@@ -303,7 +303,7 @@ def _validate_prefix(prefix: str) -> str:
 
 
 def delete_digest(cfg: dict[str, Any], prefix: str) -> dict[str, Any]:
-    from pipeline.paths import cache_dir, diagnostics_dir, preflight_dir, reports_dir
+    from llm_pipeline.paths import cache_dir, diagnostics_dir, preflight_dir, reports_dir
 
     pfx = _validate_prefix(prefix)
     removed: list[str] = []
@@ -436,18 +436,18 @@ def start_pipeline(
     if mode == PipelineMode.RENDER_ONLY:
         pfx = _validate_prefix(prefix or "")
         script = (
-            "import json; from pipeline.config import load_config; from pipeline.render import render; "
+            "import json; from llm_pipeline.config import load_config; from llm_pipeline.render import render; "
             f"cfg=load_config(); p='{pfx}'; "
             "render(cfg, p, json.load(open('reports/'+p+'.json', encoding='utf-8')))"
         )
         return _spawn_job("render", f"Render-only {pfx}", [py, "-c", script])
     if mode == PipelineMode.ARCHIVES_ONLY:
         script = (
-            "from pipeline.config import load_config; from pipeline.render import rebuild_reports_archive; "
-            "from pipeline.paths import diagnostics_dir; "
-            "from pipeline.diagnostics_frame import rebuild_diagnostics_archive; "
-            "from pipeline.diagnostics import rebuild_diagnostics_waterfall_pages; "
-            "from pipeline.admin_frame import rebuild_admin_archive; "
+            "from llm_pipeline.config import load_config; from llm_pipeline.render import rebuild_reports_archive; "
+            "from llm_pipeline.paths import diagnostics_dir; "
+            "from llm_pipeline.diagnostics_frame import rebuild_diagnostics_archive; "
+            "from llm_pipeline.diagnostics import rebuild_diagnostics_waterfall_pages; "
+            "from llm_pipeline.admin_frame import rebuild_admin_archive; "
             "cfg=load_config(); rebuild_reports_archive(cfg); "
             "d=diagnostics_dir(cfg); rebuild_diagnostics_waterfall_pages(d); "
             "rebuild_diagnostics_archive(d, cfg); rebuild_admin_archive(cfg)"

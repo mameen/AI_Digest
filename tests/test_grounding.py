@@ -11,7 +11,7 @@ import json
 import unittest
 
 from lib.paths import LLM_PIPELINE_ROOT, REPO_ROOT
-from pipeline.grounding import (
+from llm_pipeline.grounding import (
     annotate_ungrounded,
     collect_ingestion_urls,
     collect_roots,

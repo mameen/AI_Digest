@@ -18,7 +18,7 @@ import unittest
 
 from lib.paths import LLM_PIPELINE_ROOT
 from pipeline import __version__, generator_version
-from pipeline.site_footer import site_footer_html
+from llm_pipeline.site_footer import site_footer_html
 
 REPORT = LLM_PIPELINE_ROOT / "reports" / "20260630120000.json"
 

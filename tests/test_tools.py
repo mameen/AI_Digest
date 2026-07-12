@@ -11,7 +11,7 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-from pipeline.tools import (
+from llm_pipeline.tools import (
     ToolAction,
     format_tool_result,
     looks_not_found,

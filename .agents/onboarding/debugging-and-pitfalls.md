@@ -87,9 +87,9 @@ one-liner rebuild is a common footgun. Fix: always use the full rebuild helpers:
 
 | Page | Function |
 |---|---|
-| Reports archive | `pipeline.render.rebuild_reports_archive(cfg)` |
-| Diagnostics archive | `pipeline.diagnostics_frame.rebuild_diagnostics_archive(diag_dir, cfg)` |
-| Per-run waterfall HTML | `pipeline.diagnostics.rebuild_diagnostics_waterfall_pages(diag_dir)` |
+| Reports archive | `llm_pipeline.render.rebuild_reports_archive(cfg)` |
+| Diagnostics archive | `llm_pipeline.diagnostics_frame.rebuild_diagnostics_archive(diag_dir, cfg)` |
+| Per-run waterfall HTML | `llm_pipeline.diagnostics.rebuild_diagnostics_waterfall_pages(diag_dir)` |
 
 Each archive rebuild runs, in order: build frame HTML → `inject_author_card` →
 `inject_frame_nav` → `inject_site_footer` → `assert_archive_html_ready` (fails if

@@ -28,17 +28,17 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO))
 
-from pipeline.config import load_config
-from pipeline.dates import build_run_window
-from pipeline.diagnostics import finish_collector, init_collector, log
-from pipeline.doctor import run_doctor
-from pipeline.enrich import enrich_digest
+from llm_pipeline.config import load_config
+from llm_pipeline.dates import build_run_window
+from llm_pipeline.diagnostics import finish_collector, init_collector, log
+from llm_pipeline.doctor import run_doctor
+from llm_pipeline.enrich import enrich_digest
 from lib.ingest.stage1 import crawl_leaderboards, fetch_structured_sources, run_preflight
-from pipeline.grounding import collect_roots
-from pipeline.history import load_prior_digests
-from pipeline.paths import cache_dir, diagnostics_dir, reports_dir
-from pipeline.render import render
-from pipeline.validate import apply_validation, validate_digest
+from llm_pipeline.grounding import collect_roots
+from llm_pipeline.history import load_prior_digests
+from llm_pipeline.paths import cache_dir, diagnostics_dir, reports_dir
+from llm_pipeline.render import render
+from llm_pipeline.validate import apply_validation, validate_digest
 
 
 def main() -> None:
@@ -82,7 +82,7 @@ def main() -> None:
     args = parser.parse_args()
 
     if args.server:
-        from pipeline.local_server import serve_local
+        from llm_pipeline.local_server import serve_local
 
         serve_local(port=args.port, open_browser=not args.no_browser, cfg=cfg)
         return

@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import unittest
 
-from pipeline.diagnostics import (
+from llm_pipeline.diagnostics import (
     DiagnosticCollector,
     _render_run_log,
     _render_waterfall_html,
