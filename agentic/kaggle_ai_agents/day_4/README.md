@@ -9,3 +9,6 @@ Official assignment copy and links:
 
 Cleaned codelab example capture:
 [`examples/secure_agentic_coding_clean.md`](examples/secure_agentic_coding_clean.md)
+
+Quality protection plan (hallucination, drift, context rot):
+[`quality_protection_plan.md`](quality_protection_plan.md)
