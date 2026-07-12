@@ -213,9 +213,91 @@ def fetch_from_source(source: dict) -> list[NewsItem]:
             return []
     
     elif kind in ("youtube_channel", "js_crawl", "mixed"):
-        # TODO: implement adapters for these source kinds
-        # - youtube_channel: Use YouTube API or yt-dlp
-        # - js_crawl: Use Playwright for JS-rendered content (already have crawl4ai)
+        # youtube_channel: Use yt-dlp to fetch latest videos from channel
+        if kind == "youtube_channel":
+            if not url:
+                return []
+            
+            try:
+                import subprocess
+                
+                # Use yt-dlp to get latest videos from channel
+                # -j for JSON output (line-separated)
+                # --flat-playlist to get video list without downloading
+                # --max-downloads to limit
+                result = subprocess.run(
+                    [
+                        "yt-dlp",
+                        "-j",
+                        "--max-downloads", "15",
+                        "--flat-playlist",
+                        url
+                    ],
+                    capture_output=True,
+                    text=True,
+                    timeout=30  # Increased timeout for YouTube channels
+                )
+                
+                if result.returncode != 0:
+                    return []
+                
+                items: list[NewsItem] = []
+                
+                # yt-dlp outputs line-separated JSON when using -j (JSONL format)
+                for line in result.stdout.strip().split('\n'):
+                    if not line:
+                        continue
+                    
+                    try:
+                        video = json.loads(line)
+                    except (json.JSONDecodeError, ValueError):
+                        continue
+                    
+                    try:
+                        # Handle None entries (deleted/unavailable videos)
+                        if video is None:
+                            continue
+                        
+                        title = video.get("title", "Untitled")
+                        video_id = video.get("id", "")
+                        if not video_id:
+                            continue
+                        
+                        # Build YouTube URL
+                        url_item = f"https://www.youtube.com/watch?v={video_id}"
+                        
+                        # Build summary with view count, upload date
+                        view_count = video.get("view_count", "N/A")
+                        upload_date = video.get("upload_date", "")
+                        if upload_date and len(upload_date) >= 8:
+                            # Format YYYYMMDD as YYYY-MM-DD
+                            upload_date = f"{upload_date[:4]}-{upload_date[4:6]}-{upload_date[6:8]}"
+                        
+                        summary = f"Views: {view_count}, Uploaded: {upload_date}"
+                        
+                        items.append(NewsItem(
+                            source_id=source_id,
+                            title=title,
+                            url=url_item,
+                            summary=summary
+                        ))
+                    except Exception:
+                        continue
+                
+                return items[:10]  # Return top 10 videos
+            
+            except subprocess.TimeoutExpired:
+                # Timeout - return what we have so far or empty
+                return []
+            except FileNotFoundError:
+                # yt-dlp not installed
+                return []
+            except Exception:
+                # Any other error (parsing, etc.)
+                return []
+        
+        # TODO: implement js_crawl and mixed adapters
+        # - js_crawl: Use Playwright or crawl4ai for JS-rendered content
         # - mixed: Combine multiple adapters
         # For now, return empty list (stub)
         return []
