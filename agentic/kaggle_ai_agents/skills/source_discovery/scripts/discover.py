@@ -118,12 +118,105 @@ def fetch_from_source(source: dict) -> list[NewsItem]:
             # Silently fail for individual sources; workflow continues
             return []
     
-    elif kind in ("youtube_channel", "web_scrape", "js_crawl", "mixed"):
+    elif kind == "web_scrape":
+        # Web scrape sources: fetch HTML and parse by source ID
+        if not url:
+            return []
+        
+        try:
+            import urllib.request
+            from bs4 import BeautifulSoup
+            
+            with urllib.request.urlopen(url, timeout=5) as response:
+                html = response.read()
+            
+            soup = BeautifulSoup(html, 'html.parser')
+            items: list[NewsItem] = []
+            
+            if source_id == "arxiv-cs-ai" or source_id.startswith("arxiv-"):
+                # arXiv recent listings: parse article list
+                # Structure: <dt> with <a href="/abs/..."> id link, then <dd> with title and abstract
+                articles = soup.find_all('dt')
+                for dt in articles[:10]:  # Top 10 recent papers
+                    try:
+                        # Get arxiv ID from link href (not text content)
+                        id_elem = dt.find('a', href=True)
+                        if not id_elem or 'href' not in id_elem.attrs:
+                            continue
+                        href = id_elem.get('href', '')
+                        # Extract arxiv ID from /abs/XXXX.XXXXX format
+                        arxiv_id = href.split('/abs/')[-1] if '/abs/' in href else None
+                        if not arxiv_id:
+                            continue
+                        url_item = f"https://arxiv.org/abs/{arxiv_id}"
+                        
+                        # Get title and abstract from following dd
+                        dd = dt.find_next('dd')
+                        if not dd:
+                            continue
+                        
+                        # Title is in div.list-title
+                        title_div = dd.find('div', class_='list-title')
+                        if title_div:
+                            title_text = title_div.get_text(strip=True)
+                            # Remove 'Title:' prefix if present
+                            if title_text.startswith('Title:'):
+                                title_text = title_text[6:].strip()
+                        else:
+                            title_text = "Unknown"
+                        
+                        # Summary from full text (first 200 chars)
+                        summary = dd.get_text(strip=True)[:200]
+                        
+                        items.append(NewsItem(
+                            source_id=source_id,
+                            title=title_text,
+                            url=url_item,
+                            summary=summary
+                        ))
+                    except Exception:
+                        continue
+            
+            elif source_id == "huggingface-papers":
+                # HuggingFace Papers: parse paper cards
+                # Structure: article.paper-card with h3 title and p.summary
+                papers = soup.find_all('article', class_='paper-card')
+                for paper in papers[:10]:  # Top 10 papers
+                    try:
+                        title_elem = paper.find('h3')
+                        if not title_elem:
+                            continue
+                        title = title_elem.get_text(strip=True)
+                        
+                        # Get link and summary
+                        link_elem = paper.find('a', href=True)
+                        link = link_elem['href'] if link_elem else "https://huggingface.co/papers"
+                        if not link.startswith('http'):
+                            link = f"https://huggingface.co/papers{link}"
+                        
+                        summary_elem = paper.find('p', class_='summary')
+                        summary = summary_elem.get_text(strip=True)[:200] if summary_elem else ""
+                        
+                        items.append(NewsItem(
+                            source_id=source_id,
+                            title=title,
+                            url=link,
+                            summary=summary
+                        ))
+                    except Exception:
+                        continue
+            
+            return items
+        
+        except Exception:
+            # Silently fail for individual sources; workflow continues
+            return []
+    
+    elif kind in ("youtube_channel", "js_crawl", "mixed"):
         # TODO: implement adapters for these source kinds
-        # These require more sophisticated parsing:
         # - youtube_channel: Use YouTube API or yt-dlp
-        # - web_scrape: Use BeautifulSoup or Selenium
-        # - js_crawl: Use Playwright or Selenium for JS-rendered content
+        # - js_crawl: Use Playwright for JS-rendered content (already have crawl4ai)
+        # - mixed: Combine multiple adapters
         # For now, return empty list (stub)
         return []
     
