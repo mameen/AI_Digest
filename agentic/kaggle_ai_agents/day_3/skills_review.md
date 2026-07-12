@@ -1,5 +1,7 @@
 # Day 3 Skills Review
 
+> **Central Registry:** The complete skill inventory is maintained in [`/SKILL_store.md`](../../../SKILL_store.md) at the repo root. This file is the source of truth for all skills, their usage, examples, and status. Use SKILL_store.md as your first reference — this page documents the SKILL.md format specification.
+
 ## The SKILL.md Format (Official Spec)
 
 Source: https://learn.microsoft.com/en-us/agent-framework/agents/skills
