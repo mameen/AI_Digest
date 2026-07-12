@@ -65,8 +65,65 @@ def fetch_from_source(source: dict) -> list[NewsItem]:
             # Silently fail for individual sources; workflow continues
             return []
     
-    elif kind in ("youtube_channel", "web_scrape", "js_crawl", "structured_json", "mixed"):
+    elif kind == "structured_json":
+        # Structured JSON API sources (SWE-bench, EvalPlus, etc.)
+        if not url:
+            return []
+        
+        try:
+            import urllib.request
+            with urllib.request.urlopen(url, timeout=5) as response:
+                data = response.read().decode('utf-8')
+            
+            payload = json.loads(data)
+            
+            # Map API response to NewsItem records based on source ID
+            items: list[NewsItem] = []
+            
+            if source_id == "swebench-leaderboard":
+                # SWE-bench: list of leaderboard dicts with results
+                if isinstance(payload, dict) and "leaderboards" in payload:
+                    for board in payload.get("leaderboards", [])[:3]:  # Top 3 boards
+                        board_name = board.get("name", "unknown")
+                        results = board.get("results", [])
+                        for result in results[:2]:  # Top 2 results per board
+                            model_name = result.get("name", "Unknown")
+                            resolved_pct = result.get("resolved_pct", result.get("resolved", "N/A"))
+                            items.append(NewsItem(
+                                source_id=source_id,
+                                title=f"SWE-bench {board_name}: {model_name}",
+                                url="https://swe-bench.github.io/leaderboard/",
+                                summary=f"Resolved: {resolved_pct}"
+                            ))
+            
+            elif source_id == "evalplus-results":
+                # EvalPlus: dict of models with their scores
+                if isinstance(payload, dict):
+                    for idx, (model_name, data) in enumerate(list(payload.items())[:10]):  # Top 10 models
+                        pass_rate = data.get("pass@1", {})
+                        if isinstance(pass_rate, dict):
+                            humaneval = pass_rate.get("humaneval", "N/A")
+                        else:
+                            humaneval = pass_rate
+                        items.append(NewsItem(
+                            source_id=source_id,
+                            title=f"EvalPlus: {model_name}",
+                            url=data.get("link", "https://evalplus.github.io/"),
+                            summary=f"HumanEval pass@1: {humaneval}%"
+                        ))
+            
+            return items
+        
+        except Exception:
+            # Silently fail for individual sources; workflow continues
+            return []
+    
+    elif kind in ("youtube_channel", "web_scrape", "js_crawl", "mixed"):
         # TODO: implement adapters for these source kinds
+        # These require more sophisticated parsing:
+        # - youtube_channel: Use YouTube API or yt-dlp
+        # - web_scrape: Use BeautifulSoup or Selenium
+        # - js_crawl: Use Playwright or Selenium for JS-rendered content
         # For now, return empty list (stub)
         return []
     
