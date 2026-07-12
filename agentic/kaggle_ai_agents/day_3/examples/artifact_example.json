@@ -1,0 +1,12 @@
+{
+  "date": "2026-07-11",
+  "theme": "AI signal over noise",
+  "cards": [
+    {
+      "rank": 1,
+      "title": "Open model benchmarks improve",
+      "url": "https://example.com/open-model-benchmarks",
+      "why_it_matters": "Lower latency and stronger quality improves deployability."
+    }
+  ]
+}
