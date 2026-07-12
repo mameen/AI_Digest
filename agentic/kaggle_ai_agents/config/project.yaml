@@ -201,3 +201,45 @@ workflow:
   max_items_per_source: 20
   max_story_cards: 12
   dedupe_window_days: 3
+
+# Agent backend configuration
+# Supports pluggable orchestration: scripted (fast), Google ADK (instruction-based),
+# or local Ollama (LLM-driven). Use run_daily_brief_with_backend() to execute.
+agent:
+  # Active backend: "direct_script" (default), "google_adk", or "ollama"
+  backend: "google_adk"
+  
+  # Backend-specific configurations
+  backends:
+    direct_script:
+      # No configuration needed; uses direct function calls
+      description: "Hardcoded orchestration (deterministic, fast for tests)"
+    
+    google_adk:
+      # Google ADK-style agent with instruction-driven orchestration
+      description: "ADK agent with tools (instruction-based, course-aligned)"
+      instruction: |
+        You are an AI news curator. Your job is to find the latest and most important 
+        AI/ML stories from configured sources. Discover news, rank by relevance and 
+        impact, and produce a curated 10-card brief explaining why each story matters.
+        Focus on: breaking news, technical significance, and broad audience appeal.
+    
+    ollama:
+      # Local Ollama LLM-based agent (requires Ollama running locally)
+      description: "Local Ollama LLM agent (experimental, requires Ollama installed)"
+      
+      # Ollama server configuration
+      base_url: "http://localhost:11434"  # Default Ollama API endpoint
+      model: "llama2"                      # Model to use (llama2, mistral, neural-chat, etc.)
+      
+      # LLM generation parameters
+      temperature: 0.7    # 0.0 (deterministic) to 1.0 (creative)
+      top_p: 0.9          # Nucleus sampling (0.0-1.0)
+      
+      # Notes on setup:
+      # 1. Install Ollama from https://ollama.ai
+      # 2. Start server: ollama serve
+      # 3. Pull model: ollama pull llama2
+      # 4. Set backend to "ollama" to use
+      # Fallback: If Ollama unavailable, automatically falls back to script-based ranking
+
