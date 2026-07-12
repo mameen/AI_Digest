@@ -24,6 +24,58 @@ Common tasks — run evals, add a skill, add a source, run tests:
 
 ---
 
+## Before You Start: Assessment Checklist
+
+**This section helps you assess whether your team and infrastructure are ready to run and evaluate the PoC.**
+
+### 👥 Team Requirements
+
+| Role | Skills | Must-Have | Time |
+|------|--------|-----------|------|
+| Python Developer | Python 3.11+, pytest, CLI, Git | ✅ Required | 2-4 hrs |
+| QA / Verifier | Can read JSON, verify schema | ✅ Required | 1-2 hrs |
+| DevOps (optional) | Docker/Ollama | ⭕ If using Ollama backend | 30min |
+| LLM Researcher (optional) | Prompt engineering | ⭕ If experimenting with LLM | 1-2 hrs |
+
+### 🤖 Infrastructure Requirements
+
+Choose ONE backend. All produce identical `DailyBrief` output:
+
+| Backend | LLM? | Setup | Cost | Best For |
+|---------|------|-------|------|----------|
+| **direct_script** | ❌ None | 0 min | Free | Testing, CI/CD (pick this to start) |
+| **google_adk** | ❌ None | 5 min | Free | Production, course demo (recommended) |
+| **ollama** | ✅ Yes | 20-30 min | Free | Research, LLM experimentation |
+
+### ✅ Quick Start (10 minutes)
+
+```bash
+# 1. Check Python version
+python3 --version          # Should be 3.11+
+
+# 2. Install dependencies
+pip install -r requirements-dev.txt
+
+# 3. Run tests
+PYTHONPATH=src pytest agentic/kaggle_ai_agents/tests -q
+# Should see: "72 passed"
+
+# 4. Generate a brief with stubs (no real sources)
+PYTHONPATH=src python -c "
+  from kaggle_ai_agents.workflow import run_daily_brief_with_backend
+  brief = run_daily_brief_with_backend('direct_script', use_real_sources=False)
+  print(f'✅ Generated {len(brief.cards)} cards')
+  print(f'✅ Schema valid')
+"
+```
+
+### 📊 Full Assessment
+
+For the detailed assessment form (team roles, infrastructure choices, evaluation plan):
+**See: [`HOWTO.md` — Assessment Section](HOWTO.md#assessment-people--llms-required-to-run--evaluate-the-poc)**
+
+---
+
 ## Architecture Shift: From Multi-Agent to Single Agent with Progressive Context
 
 The course highlighted a meaningful shift in how production-grade agents are designed.
