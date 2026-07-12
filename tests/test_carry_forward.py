@@ -11,8 +11,8 @@ import json
 import unittest
 
 from lib.paths import LLM_PIPELINE_ROOT
-from pipeline.editorial import make_category
-from pipeline.enrich import _carry_forward_empty, _prior_category_stories, _with_provenance
+from llm_pipeline.editorial import make_category
+from llm_pipeline.enrich import _carry_forward_empty, _prior_category_stories, _with_provenance
 
 _REPORTS = LLM_PIPELINE_ROOT / "reports"
 

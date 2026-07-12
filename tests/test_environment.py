@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from pipeline.environment import (
+from llm_pipeline.environment import (
     LEGACY_RTX4090_ENV,
     SCHEMA,
     backfill_environment,
@@ -27,7 +27,7 @@ class EnvironmentCapture(unittest.TestCase):
         self.assertIn("cpu", env)
         self.assertIn("gpu", env)
 
-    @patch("pipeline.environment._detect_cuda_gpu", return_value={"name": "RTX 4090", "backend": "cuda", "vram_gb": 24.0})
+    @patch("llm_pipeline.environment._detect_cuda_gpu", return_value={"name": "RTX 4090", "backend": "cuda", "vram_gb": 24.0})
     def test_detect_platform_kind_cuda(self, _mock: object) -> None:
         self.assertEqual(detect_platform_kind(), "cuda")
 
@@ -82,7 +82,7 @@ class EnvironmentBackfill(unittest.TestCase):
 
 class DiagnosticsEnvironment(unittest.TestCase):
     def test_build_report_includes_environment_and_network(self) -> None:
-        from pipeline.diagnostics import DiagnosticCollector
+        from llm_pipeline.diagnostics import DiagnosticCollector
 
         col = DiagnosticCollector(prefix="20260702120000", cfg={}, enabled=True)
         with col.stage("ingestion.preflight", "Preflight"):

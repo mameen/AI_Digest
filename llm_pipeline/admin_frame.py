@@ -77,7 +77,7 @@ def build_admin_html(cfg: dict[str, Any] | None = None) -> str:
 
 
 def rebuild_admin_archive(cfg: dict[str, Any] | None = None, admin: Path | None = None) -> Path:
-    from pipeline.config import load_config
+    from llm_pipeline.config import load_config
 
     if cfg is None:
         cfg = load_config()

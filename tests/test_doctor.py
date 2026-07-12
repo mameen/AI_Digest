@@ -11,8 +11,8 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-from pipeline.config import load_config
-from pipeline.doctor import FAIL, OK, WARN, Check, DoctorReport, run_doctor
+from llm_pipeline.config import load_config
+from llm_pipeline.doctor import FAIL, OK, WARN, Check, DoctorReport, run_doctor
 
 _TAGS = (Path(__file__).resolve().parent / "data" / "ollama_tags.json").read_text(
     encoding="utf-8"

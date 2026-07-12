@@ -12,7 +12,7 @@ from pathlib import Path
 
 from lib.paths import REPO_ROOT
 from llm_pipeline.paths import VENDOR_DIR
-from pipeline.leaderboards import (
+from llm_pipeline.leaderboards import (
     _match_bracket,
     aa_rows,
     apply_crawl_leaderboards,

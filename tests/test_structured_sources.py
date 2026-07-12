@@ -13,8 +13,8 @@ import unittest
 from pathlib import Path
 
 from llm_pipeline.paths import VENDOR_DIR
-from pipeline.leaderboards import _match_bracket
-from pipeline.structured_sources import (
+from llm_pipeline.leaderboards import _match_bracket
+from llm_pipeline.structured_sources import (
     apply_structured_leaderboards,
     evalplus_rows,
     swebench_rows,

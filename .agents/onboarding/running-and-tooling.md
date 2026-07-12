@@ -87,7 +87,7 @@ re-run the pipeline (that re-invokes the LLM and can change/degrade content).
 Re-render deterministically from the existing JSON instead:
 
 ```powershell
-python -c "import json; from pipeline.config import load_config; from pipeline.render import render; cfg=load_config(); p='20260702120000'; render(cfg, p, json.load(open('reports/'+p+'.json',encoding='utf-8')))"
+python -c "import json; from llm_pipeline.config import load_config; from llm_pipeline.render import render; cfg=load_config(); p='20260702120000'; render(cfg, p, json.load(open('reports/'+p+'.json',encoding='utf-8')))"
 ```
 
 This re-stamps `generator_version` (release line + same prefix), re-inlines the
@@ -98,8 +98,8 @@ existing HTML (and refreshed from cache if a crawl exists).
 **Archive-only rebuild** (heatmap, themes, nav, footer — no per-digest JSON change):
 
 ```powershell
-python -c "from pipeline.config import load_config; from pipeline.render import rebuild_reports_archive; rebuild_reports_archive(load_config())"
-python -c "from pipeline.config import load_config; from pipeline.paths import diagnostics_dir; from pipeline.diagnostics_frame import rebuild_diagnostics_archive; from pipeline.diagnostics import rebuild_diagnostics_waterfall_pages; cfg=load_config(); d=diagnostics_dir(cfg); rebuild_diagnostics_waterfall_pages(d); rebuild_diagnostics_archive(d, cfg)"
+python -c "from llm_pipeline.config import load_config; from llm_pipeline.render import rebuild_reports_archive; rebuild_reports_archive(load_config())"
+python -c "from llm_pipeline.config import load_config; from llm_pipeline.paths import diagnostics_dir; from llm_pipeline.diagnostics_frame import rebuild_diagnostics_archive; from llm_pipeline.diagnostics import rebuild_diagnostics_waterfall_pages; cfg=load_config(); d=diagnostics_dir(cfg); rebuild_diagnostics_waterfall_pages(d); rebuild_diagnostics_archive(d, cfg)"
 ```
 
 Do **not** call `build_frame_html()` directly — see `debugging-and-pitfalls.md`.

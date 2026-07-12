@@ -160,7 +160,7 @@ class AttachVideoMetadata(unittest.TestCase):
 
 class AisearchDescriptionIngestion(unittest.TestCase):
     def test_build_ingestion_context_includes_description(self) -> None:
-        from pipeline.editorial import build_ingestion_context, extract_aisearch_description
+        from llm_pipeline.editorial import build_ingestion_context, extract_aisearch_description
 
         desc = (_DATA / "theaisearch_description_sample.txt").read_text(encoding="utf-8").strip()
         skeleton = {
@@ -178,7 +178,7 @@ class AisearchDescriptionIngestion(unittest.TestCase):
         self.assertIn("github.com/deepseek-ai/deepspark", ctx.lower())
 
     def test_description_urls_count_as_grounded(self) -> None:
-        from pipeline.grounding import collect_skeleton_urls, is_ungrounded
+        from llm_pipeline.grounding import collect_skeleton_urls, is_ungrounded
 
         desc = (_DATA / "theaisearch_description_sample.txt").read_text(encoding="utf-8").strip()
         skeleton = {"categories": [{"id": "aisearch", "stories": [], "_video_description": desc}]}

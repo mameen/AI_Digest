@@ -217,7 +217,7 @@ python run.py --start 2026-07-03 --history 10
 After render, rebuild archive sync:
 
 ```bash
-python -c "from pipeline.config import load_config; from pipeline.render import rebuild_reports_archive; rebuild_reports_archive(load_config())"
+python -c "from llm_pipeline.config import load_config; from llm_pipeline.render import rebuild_reports_archive; rebuild_reports_archive(load_config())"
 ```
 
 ---
