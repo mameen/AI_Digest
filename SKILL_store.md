@@ -6,11 +6,11 @@ Central registry of all skills in the AI Digest PoC. Each skill is a reusable, t
 
 | Skill | Level | Instructions | Script | Resources | References | Status |
 |---|---|---|---|---|---|---|
-| **source-discovery** | 4 | ✅ SKILL.md | ✅ discover.py | — | ✅ adapter roadmap | ✅ Complete |
-| **dedupe-and-rank** | 4 | ✅ SKILL.md | ✅ rank.py | — | ✅ scoring rules | ✅ Complete |
-| **artifact-validation** | 4 | ✅ SKILL.md | ✅ validate.py | — | ✅ schema ref | ✅ Complete |
-| **baseline-eval** | 4 | ✅ SKILL.md | ✅ evaluate.py | ✅ THRESHOLDS.md | ✅ quality gate | ✅ Complete |
-| **source-normalization** | 1 | ✅ SKILL.md | — | — | — | 📋 Stub |
+| **source-discovery** | 4 | [SKILL.md](agentic/kaggle_ai_agents/skills/source_discovery/SKILL.md) | [discover.py](agentic/kaggle_ai_agents/skills/source_discovery/scripts/discover.py) | — | [adapter roadmap](#adapters) | ✅ Complete |
+| **dedupe-and-rank** | 4 | [SKILL.md](agentic/kaggle_ai_agents/skills/dedupe_and_rank/SKILL.md) | [rank.py](agentic/kaggle_ai_agents/skills/dedupe_and_rank/scripts/rank.py) | — | [scoring rules](#scoring) | ✅ Complete |
+| **artifact-validation** | 4 | [SKILL.md](agentic/kaggle_ai_agents/skills/artifact_validation/SKILL.md) | [validate.py](agentic/kaggle_ai_agents/skills/artifact_validation/scripts/validate.py) | — | [schema ref](#schema) | ✅ Complete |
+| **baseline-eval** | 4 | [SKILL.md](agentic/kaggle_ai_agents/skills/baseline_eval/SKILL.md) | [evaluate.py](agentic/kaggle_ai_agents/skills/baseline_eval/scripts/evaluate.py) | [THRESHOLDS.md](agentic/kaggle_ai_agents/skills/baseline_eval/references/THRESHOLDS.md) | [quality gate](#references) | ✅ Complete |
+| **source-normalization** | 1 | [SKILL.md](agentic/kaggle_ai_agents/skills/source_normalization/SKILL.md) | — | — | — | 📋 Stub |
 
 ---
 
