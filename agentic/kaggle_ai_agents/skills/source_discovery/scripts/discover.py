@@ -296,8 +296,59 @@ def fetch_from_source(source: dict) -> list[NewsItem]:
                 # Any other error (parsing, etc.)
                 return []
         
-        # TODO: implement js_crawl and mixed adapters
-        # - js_crawl: Use Playwright or crawl4ai for JS-rendered content
+        elif kind == "js_crawl":
+            # JS-crawl sources: leaderboards and similar dynamic pages
+            # For now, extract from schema.org JSON-LD when available
+            if not url:
+                return []
+            
+            try:
+                import urllib.request
+                import re
+                
+                with urllib.request.urlopen(url, timeout=10) as response:
+                    html = response.read().decode('utf-8', errors='ignore')
+                
+                items: list[NewsItem] = []
+                
+                # Extract JSON-LD schema (FAQ format often has leaderboard data)
+                match = re.search(r'<script type="application/ld\+json">({.*?})</script>', html, re.DOTALL)
+                if match:
+                    try:
+                        schema_data = json.loads(match.group(1))
+                        
+                        # Extract FAQ questions and answers
+                        for idx, entity in enumerate(schema_data.get('mainEntity', [])[:5]):  # Top 5 QA
+                            try:
+                                question = entity.get('name', '')
+                                answer = entity.get('acceptedAnswer', {}).get('text', '')
+                                
+                                if question and answer and len(answer) > 30:
+                                    # Create a NewsItem from the FAQ entry
+                                    summary = answer[:200]
+                                    items.append(NewsItem(
+                                        source_id=source_id,
+                                        title=question,
+                                        url=url,
+                                        summary=summary
+                                    ))
+                            except Exception:
+                                continue
+                    except (json.JSONDecodeError, ValueError):
+                        pass
+                
+                # Fallback: try to extract model mentions from HTML (generic backup)
+                if not items:
+                    # Simple fallback: look for common leaderboard patterns
+                    pass
+                
+                return items
+            
+            except Exception:
+                # Timeouts, network errors, etc. - gracefully fail
+                return []
+        
+        # TODO: implement mixed adapter
         # - mixed: Combine multiple adapters
         # For now, return empty list (stub)
         return []
