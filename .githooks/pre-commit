@@ -5,7 +5,8 @@
 set -eu
 cd "$(dirname "$0")/.."
 . "$(dirname "$0")/python-venv.sh"
-"$PY" scripts/check_secrets.py --staged
+CHECK_SECRETS_PENDING="$(git rev-parse --git-path check-secrets-pending.txt)"
+"$PY" scripts/check_secrets.py --staged --emit-review-pending "$CHECK_SECRETS_PENDING"
 PII_PENDING="$(git rev-parse --git-path pii-pending.txt)"
 "$PY" scripts/audit_pii.py --staged --emit-review-pending "$PII_PENDING"
 "$PY" scripts/audit_secrets.py --staged

@@ -27,6 +27,8 @@ from scan_ignore import (  # noqa: E402
     load_patterns,
     local_sensitive_warnings,
     forbidden_commit_reason,
+    is_forbidden_in_commit,
+    is_ignored,
     should_skip_audit_path,
 )
 
@@ -112,6 +114,15 @@ _JSON_CRED_RE = re.compile(
 _HUNK_RE = re.compile(r"@@ -\d+(?:,\d+)? \+(\d+)(?:,\d+)? @@")
 
 _EMAIL_RE = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
+_REVIEW_TRAILER_RE = re.compile(r"^PII-Reviewed:\s*(.+)$", re.IGNORECASE)
+_MIN_JUSTIFICATION = 15
+_REVIEW_EXEMPTIBLE_ABS_PATHS = frozenset({".secrets.baseline"})
+_ABS_HOME_PATH_DETAILS = frozenset(
+    {
+        "absolute macOS home path (use repo-relative paths in committed files)",
+        "absolute Linux home path (use repo-relative paths in committed files)",
+    }
+)
 
 _SCANNER_TEST_FILE = "tests/test_check_secrets.py"
 
@@ -130,6 +141,91 @@ class AddedLine:
     path: str
     line_no: int
     text: str
+
+
+def _fingerprint(finding: Finding) -> str:
+    return f"{finding.path}:{finding.line_no}:{finding.detail}"
+
+
+def _reviewed_justifications(message: str) -> list[str]:
+    out: list[str] = []
+    for line in message.splitlines():
+        m = _REVIEW_TRAILER_RE.match(line.strip())
+        if m:
+            out.append(m.group(1).strip())
+    return out
+
+
+def _is_review_exemptible(finding: Finding, patterns: tuple[str, ...]) -> bool:
+    if finding.kind not in {"pii", "phi"}:
+        return False
+    if finding.detail not in _ABS_HOME_PATH_DETAILS:
+        return False
+    if is_forbidden_in_commit(finding.path):
+        return False
+    if finding.path in _REVIEW_EXEMPTIBLE_ABS_PATHS:
+        return True
+    return is_ignored(finding.path, patterns)
+
+
+def verify_review(msg_path: Path, pending_path: Path) -> int:
+    if not pending_path.is_file():
+        return 0
+    pending = [ln for ln in pending_path.read_text(encoding="utf-8").splitlines() if ln.strip()]
+    if not pending:
+        pending_path.unlink(missing_ok=True)
+        return 0
+
+    try:
+        message = msg_path.read_text(encoding="utf-8")
+    except OSError:
+        message = ""
+
+    substantive = [j for j in _reviewed_justifications(message) if len(j) >= _MIN_JUSTIFICATION]
+    if substantive:
+        pending_path.unlink(missing_ok=True)
+        return 0
+
+    print(
+        "ERROR: commit blocked — review acknowledgment required for known-safe PII findings:\n",
+        file=sys.stderr,
+    )
+    for fp in pending[:50]:
+        print(f"  {fp}", file=sys.stderr)
+    if len(pending) > 50:
+        print(f"  ... and {len(pending) - 50} more", file=sys.stderr)
+    print(
+        "\nAdd a substantive trailer to the commit message and retry:\n"
+        "  PII-Reviewed: <why these are safe / false positives>\n"
+        f"(justification must be at least {_MIN_JUSTIFICATION} characters).",
+        file=sys.stderr,
+    )
+    return 1
+
+
+def _emit_review_pending(
+    findings: list[Finding],
+    pending_path: Path,
+    patterns: tuple[str, ...],
+) -> tuple[list[Finding], list[Finding]]:
+    try:
+        pending_path.unlink()
+    except OSError:
+        pass
+
+    hard: list[Finding] = []
+    exemptible: list[Finding] = []
+    for finding in findings:
+        if _is_review_exemptible(finding, patterns):
+            exemptible.append(finding)
+        else:
+            hard.append(finding)
+
+    if exemptible:
+        fingerprints = sorted({_fingerprint(f) for f in exemptible})
+        pending_path.parent.mkdir(parents=True, exist_ok=True)
+        pending_path.write_text("\n".join(fingerprints) + "\n", encoding="utf-8")
+    return hard, exemptible
 
 
 def _rel(path: Path) -> str:
@@ -559,12 +655,31 @@ def main(argv: list[str] | None = None) -> int:
         help="Also run detect-secrets if installed (pip install detect-secrets).",
     )
     parser.add_argument(
+        "--emit-review-pending",
+        metavar="PATH",
+        help="pre-commit: defer known-safe findings to commit-msg trailer review",
+    )
+    parser.add_argument(
+        "--verify-review",
+        metavar="MSGFILE",
+        help="commit-msg: verify PII-Reviewed trailer when pending findings exist",
+    )
+    parser.add_argument(
+        "--pending",
+        metavar="PATH",
+        help="pending fingerprints file used with --verify-review",
+    )
+    parser.add_argument(
         "--observe-piiignore",
         action="store_true",
         help="opt-in: honor .piiignore exemptions (default: scan commit content fully)",
     )
     parser.add_argument("paths", nargs="*", help="Explicit file paths to scan (full file).")
     args = parser.parse_args(argv)
+
+    if args.verify_review:
+        pending_path = Path(args.pending) if args.pending else REPO / ".git" / "check-secrets-pending.txt"
+        return verify_review(Path(args.verify_review), pending_path)
 
     patterns = load_patterns(REPO)
     paths: list[Path] = []
@@ -602,6 +717,16 @@ def main(argv: list[str] | None = None) -> int:
             if key not in seen:
                 findings.append(f)
                 seen.add(key)
+
+    if args.emit_review_pending:
+        pending_path = Path(args.emit_review_pending)
+        findings, exemptible = _emit_review_pending(findings, pending_path, patterns)
+        if exemptible:
+            print(
+                "WARNING: check_secrets deferred known-safe findings; add a substantive"
+                " 'PII-Reviewed:' trailer in the commit message.",
+                file=sys.stderr,
+            )
 
     if not findings:
         return 0
