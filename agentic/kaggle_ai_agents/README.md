@@ -17,6 +17,13 @@ The project will be designed, implemented, evaluated, documented, and prepared f
 
 All hackathon-specific code, notes, tests, examples, assets, and submission materials will remain inside this directory.
 
+## Quick Reference
+
+Common tasks — run evals, add a skill, add a source, run tests:
+[`HOWTO.md`](HOWTO.md)
+
+---
+
 ## Architecture Shift: From Multi-Agent to Single Agent with Progressive Context
 
 The course highlighted a meaningful shift in how production-grade agents are designed.
