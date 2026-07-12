@@ -2,33 +2,47 @@
 
 ## Step-by-Step Submission Guide
 
-### 1. **Go to Competition Page**
-Navigate to: https://www.kaggle.com/competitions/vibecoding-agents-capstone-project/code
+### ⚡ Quick Path: Direct Import (Recommended)
 
-### 2. **Create New Notebook**
-- Click blue **"Create"** button or **"New Notebook"**
-- Choose **Python** language
-- Title it: `"AI Digest: Single-Agent News Aggregator with Pluggable Backends"`
+**1. Download the notebook**
+- File: `kaggle_submission.ipynb` (in this submission folder)
+- Or clone from GitHub: `https://github.com/[YOUR_USERNAME]/AI_Digest`
 
-### 3. **Copy Notebook Content**
-- Open `kaggle_notebook_submission.md` in this folder
-- Copy each cell (markdown and code sections) into your Kaggle notebook
-- Each `---` separator indicates a new cell
+**2. Go to Competition Code Page**
+- Navigate to: https://www.kaggle.com/competitions/vibecoding-agents-capstone-project/code
+- Click **"Create"** → **"Upload Notebook"**
 
-### 4. **Add Inputs (Optional)**
-If Kaggle requires inputs:
-- You can link to your GitHub repo as input
-- Or leave blank (notebook is self-contained with stubs)
+**3. Select and Import**
+- Choose `kaggle_submission.ipynb`
+- Kaggle will automatically import all 12 cells
+- ✅ **No manual copy/paste needed!**
 
-### 5. **Test Run**
+**4. Update GitHub Link (Optional)**
+- Open notebook in editor
+- Find: `https://github.com/[YOUR_USERNAME]/AI_Digest`
+- Replace with your actual GitHub username
+
+**5. Test Run**
 - Click **"Run All"** or **"Commit and Run"**
-- Should complete in **30-60 seconds** (using stubs)
-- Check output shows 10 cards generated
+- Should complete in **<2 minutes** (using stubs)
+- Check output shows 10 cards × 3 backends
 
-### 6. **Submit**
+**6. Submit**
 - Click **"Commit"** button (top right)
 - Kaggle will auto-save and show version number
 - **✅ You're submitted!**
+
+---
+
+### 📋 Alternative: Manual Cell Copy
+
+If you prefer to copy cells manually:
+1. Open `kaggle_notebook_submission.md` 
+2. Copy each markdown/code section
+3. Paste into new Kaggle notebook
+4. Each `---` separator is a new cell
+
+⚠️ **Takes longer but same result.**
 
 ---
 

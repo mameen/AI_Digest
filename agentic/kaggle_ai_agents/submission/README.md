@@ -4,17 +4,22 @@ Everything you need to submit this project to Kaggle's AI Agents Capstone compet
 
 ## 📂 Files in This Folder
 
-1. **`how_to_submit.md`** — Step-by-step guide for creating and submitting your Kaggle notebook
-2. **`kaggle_notebook_submission.md`** — Complete notebook content (copy/paste into Kaggle)
-3. **`README.md`** — This file
+1. **`kaggle_submission.ipynb`** ⭐ **START HERE** — Ready-to-import Jupyter notebook (direct upload to Kaggle)
+2. **`how_to_submit.md`** — Step-by-step submission guide
+3. **`kaggle_notebook_submission.md`** — Markdown content (if you prefer manual cell copy)
+4. **`NOTEBOOK_STRUCTURE.md`** — Cell-by-cell breakdown
+5. **`README.md`** — This file
 
 ## 🚀 Quick Start
 
-1. Read [`how_to_submit.md`](how_to_submit.md)
-2. Go to https://www.kaggle.com/competitions/vibecoding-agents-capstone-project/code
-3. Click "Create" → "New Notebook"
-4. Copy content from [`kaggle_notebook_submission.md`](kaggle_notebook_submission.md)
-5. Run and commit
+**Easiest way: Use the .ipynb file!**
+
+1. Download `kaggle_submission.ipynb`
+2. Go to: https://www.kaggle.com/competitions/vibecoding-agents-capstone-project/code
+3. Click **"Create"** → **"Upload Notebook"**
+4. Select `kaggle_submission.ipynb` (Kaggle imports automatically)
+5. Click **"Run All"** (completes in <2 min)
+6. Click **"Commit"** to submit
 
 **Total time:** ~10 minutes
 
