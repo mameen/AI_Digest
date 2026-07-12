@@ -6,6 +6,9 @@ below are *test fixtures only* — they are not the real source list.
 
 from __future__ import annotations
 
+import json
+import subprocess
+import sys
 import yaml
 from pathlib import Path
 
@@ -47,6 +50,64 @@ def normalize_source_records(records: list[dict[str, str]]) -> list[NewsItem]:
             )
         )
     return normalized
+
+
+# ── Discover items via source_discovery skill ──────────────────────────────────
+
+def discover_items(config_path: str | Path | None = None) -> list[NewsItem]:
+    """Fetch items from all configured sources using the source_discovery skill.
+    
+    This calls scripts/discover.py which orchestrates all source adapters
+    and applies security filtering.
+    
+    Args:
+        config_path: Optional path to config/project.yaml (defaults to repo config)
+        
+    Returns:
+        List of NewsItem objects (clean, filtered)
+        
+    Raises:
+        RuntimeError: if discover.py exits with non-zero code
+    """
+    if config_path is None:
+        # tools/news_sources.py is 5 levels below kaggle_ai_agents root
+        config_path = Path(__file__).parents[3] / "config" / "project.yaml"
+    
+    discover_script = Path(__file__).parents[3] / "skills" / "source_discovery" / "scripts" / "discover.py"
+    
+    try:
+        result = subprocess.run(
+            [sys.executable, str(discover_script), "--config", str(config_path)],
+            capture_output=True,
+            text=True,
+            check=False,  # Don't raise on non-zero exit
+            timeout=30,
+        )
+        
+        if result.returncode != 0:
+            raise RuntimeError(f"discover.py failed: {result.stderr}")
+        
+        # Parse JSON output
+        items_data = json.loads(result.stdout)
+        
+        # Convert to NewsItem objects
+        items: list[NewsItem] = []
+        for item_dict in items_data:
+            items.append(NewsItem(
+                source_id=item_dict.get("source_id", ""),
+                title=item_dict.get("title", ""),
+                url=item_dict.get("url", "https://example.com"),
+                summary=item_dict.get("summary", ""),
+            ))
+        
+        return items
+    
+    except json.JSONDecodeError as e:
+        raise RuntimeError(f"discover.py returned invalid JSON: {e}")
+    except subprocess.TimeoutExpired:
+        raise RuntimeError("discover.py timed out (>30s)")
+    except Exception as e:
+        raise RuntimeError(f"discover.py execution failed: {e}")
 
 
 # ── Test fixtures (not real sources) ──────────────────────────────────────────
