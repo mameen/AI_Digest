@@ -52,3 +52,59 @@ agentic/agent_skills/skills/
 1. Create the `agentic/agent_skills/skills/` directory structure.
 2. Draft the `SKILL.md` schemas and YAML frontmatter for each of the core skills.
 3. Scaffold the runner script to load and execute these skills sequentially inside a single agent runtime.
+
+---
+
+## 5. Transition Plan (Private Branch)
+
+### 5.1 Naming Decision
+
+Keep `agentic/agent_skills/` as the canonical folder name. We are **not** renaming to `agentic/single_hermes_agent/`.
+
+### 5.2 Scope Boundaries
+
+1. `llm_pipeline/` stays as the deterministic known-good baseline until parity is proven.
+2. `agentic/hermes/` stays isolated as the multi-agent reference/experiment.
+3. `agentic/kaggle_ai_agents/` stays the course sandbox; `uv` is limited to this folder.
+4. `agentic/agent_skills/` is the active single-agent architecture track.
+
+### 5.3 Cleanup Rules
+
+1. Audit `pipeline/` wrappers and move/remove only those proven Hermes-only.
+2. Keep any `pipeline/` module still used by `run.py`, `run_tests.py`, or deterministic workflows.
+3. Prefer small, reversible moves with parity checks after each step.
+
+### 5.4 Wrapper Audit Snapshot (2026-07-11)
+
+Findings:
+
+1. Every file in `pipeline/` is currently a compatibility shim to `llm_pipeline/`.
+2. Hermes code does not directly import `pipeline.*` modules.
+3. Current `pipeline.*` consumers are mostly:
+	- `llm_pipeline/run.py` and `llm_pipeline/admin_ops.py` (legacy import path inside the runtime)
+	- test modules under `tests/`
+	- documentation snippets under `.agents/` and `docs/`
+
+Decision:
+
+1. Do **not** move `pipeline/` shims into `agentic/hermes/`.
+2. Treat `pipeline/` as a temporary compatibility layer for legacy imports.
+
+Action Plan:
+
+1. New code must import `llm_pipeline.*` directly.
+2. Migrate existing imports from `pipeline.*` to `llm_pipeline.*` in small batches (runtime first, then tests/docs).
+3. After imports are migrated and tests are green, retire `pipeline/` shims in a dedicated cleanup change.
+4. Allow shared extraction into `lib/` only for pure, independent utilities (no runtime coupling, no orchestration logic, no side-effect-heavy IO wrappers).
+
+`lib/` gate for new helpers:
+
+1. Function is deterministic and unit-testable in isolation.
+2. Function has no Hermes/agent runtime assumptions.
+3. Function can be reused by at least two call sites without importing app-specific workflow state.
+
+### 5.5 Decision Notes
+
+1. Multi-agent remains valid but costs more time/tokens to orchestrate.
+2. Current direction is a modern single-agent design with dynamic context and explicit contracts.
+3. This plan is tracked on a private branch and may evolve with implementation data.

@@ -20,7 +20,7 @@ From Multi-Agent Crew to Single-Agent-with-Skills: ORIO's evolution preserves th
 
 ## Current Direction (July 2026)
 
-Multi-agent orchestration in Hermes is still a valid architecture for ORIO, but in practice it adds coordination latency, prompt overhead, and token cost. We are preparing a redesign toward a modern single-agent architecture with dynamic context loading and deterministic software boundaries, while preserving Hermes as a runnable reference.
+Multi-agent orchestration in Hermes is still a valid architecture for ORIO, but in practice it adds coordination latency, prompt overhead, and token cost. The project direction is to preserve Hermes artifacts as a reference implementation while redesigning the active runtime toward a modern single-agent architecture with dynamic context loading and deterministic software boundaries.
 
 <a id="four-roles-one-digest-each-agent-has-a-job--and-a-mascot"></a>
 
