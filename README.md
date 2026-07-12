@@ -16,23 +16,27 @@
 
 ---
 
-Four roles. One digest. Each agent has a job — and a mascot.
+From Multi-Agent Crew to Single-Agent-with-Skills: ORIO's evolution preserves the "cute" role mascots from its legacy Hermes multi-agent phase.
+
+## Current Direction (July 2026)
+
+Multi-agent orchestration in Hermes is still a valid architecture for ORIO, but in practice it adds coordination latency, prompt overhead, and token cost. The project direction is to preserve Hermes artifacts as a reference implementation while redesigning the active runtime toward a modern single-agent architecture with dynamic context loading and deterministic software boundaries.
 
 <a id="four-roles-one-digest-each-agent-has-a-job--and-a-mascot"></a>
 
 <table>
 <tr>
 <td align="center" width="25%">
-  <img src="docs/img/agentic/hermes/Concierge.png" alt="Concierge" width="160"><br>
+  <img src="agentic/hermes/assets/img/Concierge.png" alt="Concierge" width="160"><br>
   <strong>Concierge</strong><br>
   <small>Your single point of contact.<br>
-  Keeps the standing topic list and schedule; tells GO from “add a topic.”<br>
+  Keeps the standing topic list and schedule; tells GO from "add a topic."<br>
   Assembles the kanban board — never fetches sources or writes stories.</small><br>
   <small><a href="agentic/hermes/admin/config/souls/orio_concierge.md">SOUL</a> ·
   <a href="agentic/hermes/system_roles.md#concierge">Roles &amp; responsibilities</a></small>
 </td>
 <td align="center" width="25%">
-  <img src="docs/img/agentic/hermes/Researcher.png" alt="Researcher" width="160"><br>
+  <img src="agentic/hermes/assets/img/Researcher.png" alt="Researcher" width="160"><br>
   <strong>Researcher</strong><br>
   <small>Parallel worker — one target per task<br>
   (category, feed cluster, or source bundle).<br>
@@ -43,7 +47,7 @@ Four roles. One digest. Each agent has a job — and a mascot.
   <a href="agentic/hermes/system_roles.md#researcher">Roles &amp; responsibilities</a></small>
 </td>
 <td align="center" width="25%">
-  <img src="docs/img/agentic/hermes/Librarian.png" alt="Librarian" width="160"><br>
+  <img src="agentic/hermes/assets/img/Librarian.png" alt="Librarian" width="160"><br>
   <strong>Librarian</strong><br>
   <small>Fan-in after all researchers finish.<br>
   Resolves overlap and maps every article/data point to topics.<br>
@@ -53,7 +57,7 @@ Four roles. One digest. Each agent has a job — and a mascot.
   <a href="agentic/hermes/system_roles.md#librarian">Roles &amp; responsibilities</a></small>
 </td>
 <td align="center" width="25%">
-  <img src="docs/img/agentic/hermes/Synthesizer.png" alt="Synthesizer" width="160"><br>
+  <img src="agentic/hermes/assets/img/Synthesizer.png" alt="Synthesizer" width="160"><br>
   <strong>Synthesizer</strong><br>
   <small>Reads the librarian skeleton — overlap and topic mapping are done.<br>
   Focuses on format, schema, and writing: takeaway, summary, narratives → digest JSON.<br>
@@ -64,53 +68,37 @@ Four roles. One digest. Each agent has a job — and a mascot.
 </tr>
 </table>
 
-**AI Digest** (codename **ORIO** — *Open Research Intelligence Observatory*) turns noisy AI news into a polished daily briefing — HTML archive, heatmaps, leaderboards, and per-run diagnostics. Hermes profiles use `orio_*` code names. **Default GO** (`manage.py go` / Concierge `digest_go`) runs the four-role kanban graph above, then deterministic grounding and render. The old batch CLI (`run.py`) remains as a **`--pipeline` escape hatch** only. Deterministic code verifies every link before anything publishes.
+**AI Digest** (codename **ORIO** — *Open Research Intelligence Observatory*) turns noisy AI news into a polished daily briefing — HTML archive, heatmaps, leaderboards, and per-run diagnostics. The project's active core is built on a **Skills-First Architecture** (`agentic/agent_skills/`), utilizing a Single-Agent-with-Skills approach. Legacy multi-agent workflows (`agentic/hermes/`) and sequential pipeline scripts (`llm_pipeline/`) are preserved as architectural references.
 
-Built on [**Hermes Agent**](https://hermes-agent.nousresearch.com/) (Nous Research). Local LLMs via [Ollama](https://ollama.com/) — no cloud API keys. Every story traceable to its source.
+ORIO runs local LLMs via [Ollama](https://ollama.com/) — no cloud API keys required. Every published story is deterministically grounded and traceable directly to its source.
 
-### How it evolved
+### How ORIO Evolved
 
-It started as a **Claude skill** — a simple daily briefing prompt. That worked until
-the gaps showed up: some sources need dedicated tooling, not just a longer prompt.
-YouTube chapters, leaderboard crawls, and structured API fetches each wanted their
-own extractors, not improvisation in chat.
+1. **The Claude Skill**: It started as a simple daily briefing prompt. This worked until gaps appeared; dedicated tool integration was needed for YouTube chapter parsing, leaderboard crawlers, and structured API feeds.
+2. **The Staged LLM Pipeline (`llm_pipeline/`)**: We built a structured Python pipeline (ingest $\rightarrow$ enrich $\rightarrow$ validate $\rightarrow$ render) to verify formatting and grounding rules, but the sequential batch execution grew hard to debug and scale.
+3. **The Multi-Agent Crew (`agentic/hermes/`)**: The staged pipeline was replaced by a four-role crew running on a Hermes kanban board (Concierge, Researcher, Librarian, Synthesizer). The mascot illustrations in the table above represent this phase. While highly decoupled, running multiple agents created high latency, orchestration complexity, and prompt attention competition.
+4. **The Agent Skills Refactor (`agentic/agent_skills/`)**: Our current production standard. ORIO implements a **Single-Agent-with-Skills** pattern (inspired by the *Agent Skills* research paper). Instead of executing multiple conversational subagents, a single host agent dynamically loads modular skills (using progressive disclosure) and routes state via a decoupled file message bus, eliminating multi-agent orchestration overhead and context rot.
 
-That pushed the project into a **staged LLM pipeline** (`llm_pipeline/`) — ingest,
-enrich, validate, render — which proved the digest format and grounding model.
-At scale, though, sequential runs became hard to **debug and extend**: one long
-batch job, opaque failures, and every new source meant more pipeline wiring.
-
-The **agentic** cutover replaced the opaque batch job with a **four-role crew**
-on Hermes kanban: Concierge assembles the board; researchers work in parallel;
-Librarian fan-in; Synthesizer composes; deterministic grounding still has the
-last word on links and provenance. The staged batch CLI (`llm_pipeline/` +
-`run.py`) proved the digest format first — it remains as shared libraries and a
-`--pipeline` escape hatch while batch orchestration is deprecated.
-
-What you see in this repo — `agentic/hermes/` — is a **bootstrap snapshot**: enough
-to reproduce the architecture, run E2E locally, and publish showcase reports to
-GitHub Pages. The **production system** now lives and runs on my server; this
-repository is the reference implementation and portfolio demo.
-
+→ Current approach: [`agentic/agent_skills/docs/ideation.md`](agentic/agent_skills/docs/ideation.md)
 → Early pipeline exploration: [`docs/LLM_PIPELINE.md`](docs/LLM_PIPELINE.md)
 
 <p align="center">
   <a href="https://mameen.github.io/AI_Digest/reports/20260707182407.html">
-    <img src="docs/img/agentic/hermes/report.png" alt="AI Daily digest — categories, charts, and story cards" width="720">
+    <img src="agentic/hermes/assets/img/report.png" alt="AI Daily digest — categories, charts, and story cards" width="720">
   </a>
   <br><sub>Daily digest — categories, leaderboards, charts, provenance on every story</sub>
 </p>
 
 <p align="center">
   <a href="https://mameen.github.io/AI_Digest/diagnostics/20260707182407.diagnostics.html">
-    <img src="docs/img/agentic/hermes/diagnostics.png" alt="Hermes agent diagnostics — stage waterfall" width="720">
+    <img src="agentic/hermes/assets/img/diagnostics.png" alt="Hermes agent diagnostics — stage waterfall" width="720">
   </a>
   <br><sub>Agent diagnostics — kanban crew waterfall (research → librarian → synthesizer → render)</sub>
 </p>
 
 <p align="center">
   <a href="https://mameen.github.io/AI_Digest/index/index.html">
-    <img src="docs/img/agentic/hermes/analytics.png" alt="Digest archive — heatmap and topics by week" width="720">
+    <img src="agentic/hermes/assets/img/analytics.png" alt="Digest archive — heatmap and topics by week" width="720">
   </a>
   <br><sub>Archive analytics — activity heatmap and topic trends across runs</sub>
 </p>
@@ -253,7 +241,7 @@ Role, workflow, and architecture pointers are in [Where to read](#where-to-read-
 Each role maps to a profile in the [Hermes dashboard](https://hermes-agent.nousresearch.com/) — seeded from [`hermes_roles.yaml`](agentic/hermes/admin/config/hermes_roles.yaml) via `manage.py setup`. Production runs on a dedicated server; the repo holds the bootstrap config.
 
 <p align="center">
-  <img src="docs/img/agentic/hermes/hermes.png" alt="Hermes dashboard — concierge, researcher, librarian, synthesizer profiles" width="680">
+  <img src="agentic/hermes/assets/img/hermes.png" alt="Hermes dashboard — concierge, researcher, librarian, synthesizer profiles" width="680">
 </p>
 
 ---
@@ -274,7 +262,7 @@ tooling that this digest builds on.
 
 <p align="center">
   <a href="https://github.com/NousResearch/hermes-agent">
-    <img src="docs/img/agentic/hermes/hermes_banner.jpg" alt="Hermes Agent" width="480">
+    <img src="agentic/hermes/assets/img/hermes_banner.jpg" alt="Hermes Agent" width="480">
   </a>
 </p>
 
