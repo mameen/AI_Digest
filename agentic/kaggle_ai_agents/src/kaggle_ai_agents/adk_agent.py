@@ -31,11 +31,20 @@ class ADKAgent:
         name: str = "ai_digest",
         instruction: str = "",
         tools: list[dict] | None = None,
+        use_real_sources: bool = True,
     ):
-        """Initialize agent with instruction and tool definitions."""
+        """Initialize agent with instruction and tool definitions.
+        
+        Args:
+            name: Agent name
+            instruction: System instruction for the agent
+            tools: Custom tool definitions (auto-generated if None)
+            use_real_sources: If True, fetch from real sources; else use stubs
+        """
         self.name = name
         self.instruction = instruction
         self.tools = tools or []
+        self.use_real_sources = use_real_sources
         
         # Auto-register standard skills
         if not self.tools:
@@ -89,7 +98,7 @@ class ADKAgent:
         
         # Phase 1: Discover news
         print("→ Phase 1: Discovering news from sources...")
-        discovered = self._tool_discover_news()
+        discovered = self._tool_discover_news(use_real_sources=self.use_real_sources)
         print(f"  Found {len(discovered)} items")
         
         # Phase 2: Rank and deduplicate
@@ -125,8 +134,28 @@ class ADKAgent:
         # Convert to typed model
         return DailyBrief.model_validate(brief_dict)
     
-    def _tool_discover_news(self, sources: list[str] | None = None, limit: int = 10) -> list[dict]:
-        """Tool: Discover news items from configured sources (via source_discovery skill)."""
+    def _tool_discover_news(self, sources: list[str] | None = None, limit: int = 10, use_real_sources: bool = True) -> list[dict]:
+        """Tool: Discover news items from configured sources (via source_discovery skill).
+        
+        Args:
+            sources: Optional list of source IDs to fetch from
+            limit: Max items per source
+            use_real_sources: If True, fetch from real sources; else use stubs
+        """
+        # Use stubs if not using real sources
+        if not use_real_sources:
+            from kaggle_ai_agents.tools.news_sources import fetch_contract_stub_items
+            items = fetch_contract_stub_items()
+            return [
+                {
+                    "source_id": item.source_id,
+                    "title": item.title,
+                    "url": str(item.url),
+                    "summary": item.summary,
+                }
+                for item in items
+            ]
+        
         try:
             # Find repo root by walking up from this file until we find run_tests.py
             current = Path(__file__)
@@ -269,15 +298,25 @@ class ADKAgent:
 def create_agent(
     name: str = "ai_digest",
     instruction: str | None = None,
+    use_real_sources: bool = True,
 ) -> ADKAgent:
     """Factory function to create an agent with sensible defaults.
     
     This follows the ADK pattern of:
         agent = create_agent(
             name="my_agent",
-            instruction="You are a news curator..."
+            instruction="You are a news curator...",
+            use_real_sources=False  # For testing
         )
         brief = agent.forward("Generate today's digest")
+    
+    Args:
+        name: Agent name
+        instruction: System instruction (auto-generated if None)
+        use_real_sources: If True, fetch from real sources; else use stubs
+    
+    Returns:
+        ADKAgent: Initialized agent ready to run
     """
     default_instruction = (
         "You are an AI news curator. Your job is to find the latest and most important "
@@ -288,4 +327,5 @@ def create_agent(
     return ADKAgent(
         name=name,
         instruction=instruction or default_instruction,
+        use_real_sources=use_real_sources,
     )
