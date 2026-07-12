@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<rss version="2.0">
+  <channel>
+    <title>The Robot Report</title>
+    <link>https://www.therobotreport.com</link>
+    <item>
+      <title>Humanoid robot achieves new walking speed record</title>
+      <link>https://www.therobotreport.com/humanoid-speed-record</link>
+      <description>A bipedal robot completed a test course at record pace.</description>
+    </item>
+    <item>
+      <title>Robotic arm integration expands in manufacturing</title>
+      <link>https://www.therobotreport.com/robotic-arm-manufacturing</link>
+      <description>New deployments improve throughput in assembly lines.</description>
+    </item>
+  </channel>
+</rss>

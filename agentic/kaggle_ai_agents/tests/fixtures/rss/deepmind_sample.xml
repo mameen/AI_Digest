@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Google DeepMind Blog</title>
+  <entry>
+    <title>AlphaFold 4 improves protein structure prediction accuracy</title>
+    <link rel="alternate" href="https://deepmind.google/blog/alphafold-4"/>
+    <summary>Latest model achieves higher accuracy across benchmark datasets.</summary>
+  </entry>
+  <entry>
+    <title>Reinforcement learning breakthrough in multi-agent cooperation</title>
+    <link rel="alternate" href="https://deepmind.google/blog/multi-agent-rl"/>
+    <summary>Agents learn cooperative strategies without explicit reward shaping.</summary>
+  </entry>
+</feed>
