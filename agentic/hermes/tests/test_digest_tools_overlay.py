@@ -9,9 +9,11 @@ import types
 import unittest
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+from lib.paths import REPO_ROOT
+
+ROOT = REPO_ROOT
 HERMES_PKG = ROOT / "agentic" / "hermes"
-PLUGIN_INIT = ROOT / "agentic" / "hermes" / "plugins" / "digest-tools" / "__init__.py"
+PLUGIN_INIT = HERMES_PKG / "plugins" / "digest-tools" / "__init__.py"
 
 
 def _load_digest_tools_plugin():

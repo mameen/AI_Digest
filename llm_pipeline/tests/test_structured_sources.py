@@ -10,8 +10,8 @@ from __future__ import annotations
 
 import json
 import unittest
-from pathlib import Path
 
+from lib.paths import REPO_ROOT
 from llm_pipeline.paths import VENDOR_DIR
 from llm_pipeline.leaderboards import _match_bracket
 from llm_pipeline.structured_sources import (
@@ -21,7 +21,7 @@ from llm_pipeline.structured_sources import (
 )
 
 TEMPLATE = VENDOR_DIR / "template.html"
-DATA = Path(__file__).resolve().parent / "data"
+DATA = REPO_ROOT / "tests" / "data"
 
 EVALPLUS = json.loads((DATA / "evalplus_results.json").read_text(encoding="utf-8"))
 SWEBENCH = json.loads((DATA / "swebench_leaderboards.json").read_text(encoding="utf-8"))

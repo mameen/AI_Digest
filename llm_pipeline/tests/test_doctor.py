@@ -11,10 +11,11 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
+from lib.paths import REPO_ROOT
 from llm_pipeline.config import load_config
 from llm_pipeline.doctor import FAIL, OK, WARN, Check, DoctorReport, run_doctor
 
-_TAGS = (Path(__file__).resolve().parent / "data" / "ollama_tags.json").read_text(
+_TAGS = (REPO_ROOT / "tests" / "data" / "ollama_tags.json").read_text(
     encoding="utf-8"
 )
 

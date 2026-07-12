@@ -18,6 +18,7 @@ import unittest
 import urllib.error
 from pathlib import Path
 
+from lib.paths import REPO_ROOT
 from llm_pipeline.paths import VENDOR_DIR
 
 _SCRIPTS = VENDOR_DIR / "scripts"
@@ -31,7 +32,7 @@ from fetch_video_chapters import (  # noqa: E402
     get_latest_video_url,
 )
 
-_DATA = Path(__file__).parent / "data"
+_DATA = REPO_ROOT / "tests" / "data"
 _RSS_FIXTURE = _DATA / "theaisearch_rss.xml"
 _YTDLP_FIXTURE = _DATA / "theaisearch_ytdlp_flat.json"
 _FEED = _RSS_FIXTURE.read_bytes()
