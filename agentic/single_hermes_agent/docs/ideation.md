@@ -15,12 +15,12 @@ Following the principles in the **Agent Skills** (Day 3) course, we are refactor
 
 ---
 
-## 2. Proposed Skills Library (`agentic/agent_skills/skills/`)
+## 2. Proposed Skills Library (`agentic/single_hermes_agent/skills/`)
 
 Instead of maintaining separate agent runtimes, we will package ORIO's capabilities into modular directories adhering to the `SKILL.md` progressive disclosure standard:
 
 ```
-agentic/agent_skills/skills/
+agentic/single_hermes_agent/skills/
 ├── feed_ingestion/          # Skill: Fetch and parse curated RSS, YouTube, and leaderboard endpoints
 ├── story_curation/          # Skill: Classify, deduplicate, and score daily stories
 └── digest_synthesis/        # Skill: Generate structured prose summaries and JSON schema output
@@ -49,7 +49,7 @@ agentic/agent_skills/skills/
 ---
 
 ## 4. Next Steps
-1. Create the `agentic/agent_skills/skills/` directory structure.
+1. Create the `agentic/single_hermes_agent/skills/` directory structure.
 2. Draft the `SKILL.md` schemas and YAML frontmatter for each of the core skills.
 3. Scaffold the runner script to load and execute these skills sequentially inside a single agent runtime.
 
@@ -59,14 +59,14 @@ agentic/agent_skills/skills/
 
 ### 5.1 Naming Decision
 
-Keep `agentic/agent_skills/` as the canonical folder name. We are **not** renaming to `agentic/single_hermes_agent/`.
+Keep `agentic/single_hermes_agent/` as the canonical folder name.
 
 ### 5.2 Scope Boundaries
 
 1. `llm_pipeline/` stays as the deterministic known-good baseline until parity is proven.
 2. `agentic/hermes/` stays isolated as the multi-agent reference/experiment.
 3. `agentic/kaggle_ai_agents/` stays the course sandbox; `uv` is limited to this folder.
-4. `agentic/agent_skills/` is the active single-agent architecture track.
+4. `agentic/single_hermes_agent/` is the active single-agent architecture track.
 
 ### 5.3 Cleanup Rules
 

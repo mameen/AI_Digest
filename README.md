@@ -68,7 +68,7 @@ Multi-agent orchestration in Hermes is still a valid architecture for ORIO, but 
 </tr>
 </table>
 
-**AI Digest** (codename **ORIO** — *Open Research Intelligence Observatory*) turns noisy AI news into a polished daily briefing — HTML archive, heatmaps, leaderboards, and per-run diagnostics. The project's active core is built on a **Skills-First Architecture** (`agentic/agent_skills/`), utilizing a Single-Agent-with-Skills approach. Legacy multi-agent workflows (`agentic/hermes/`) and sequential pipeline scripts (`llm_pipeline/`) are preserved as architectural references.
+**AI Digest** (codename **ORIO** — *Open Research Intelligence Observatory*) turns noisy AI news into a polished daily briefing — HTML archive, heatmaps, leaderboards, and per-run diagnostics. The current production path is Hermes orchestration plus deterministic pipeline rendering (`agentic/hermes/` + `llm_pipeline/`). A **Skills-First Architecture** track (`agentic/single_hermes_agent/`) is the active direction and is under implementation.
 
 ORIO runs local LLMs via [Ollama](https://ollama.com/) — no cloud API keys required. Every published story is deterministically grounded and traceable directly to its source.
 
@@ -77,9 +77,9 @@ ORIO runs local LLMs via [Ollama](https://ollama.com/) — no cloud API keys req
 1. **The Claude Skill**: It started as a simple daily briefing prompt. This worked until gaps appeared; dedicated tool integration was needed for YouTube chapter parsing, leaderboard crawlers, and structured API feeds.
 2. **The Staged LLM Pipeline (`llm_pipeline/`)**: We built a structured Python pipeline (ingest $\rightarrow$ enrich $\rightarrow$ validate $\rightarrow$ render) to verify formatting and grounding rules, but the sequential batch execution grew hard to debug and scale.
 3. **The Multi-Agent Crew (`agentic/hermes/`)**: The staged pipeline was replaced by a four-role crew running on a Hermes kanban board (Concierge, Researcher, Librarian, Synthesizer). The mascot illustrations in the table above represent this phase. While highly decoupled, running multiple agents created high latency, orchestration complexity, and prompt attention competition.
-4. **The Agent Skills Refactor (`agentic/agent_skills/`)**: Our current production standard. ORIO implements a **Single-Agent-with-Skills** pattern (inspired by the *Agent Skills* research paper). Instead of executing multiple conversational subagents, a single host agent dynamically loads modular skills (using progressive disclosure) and routes state via a decoupled file message bus, eliminating multi-agent orchestration overhead and context rot.
+4. **The Agent Skills Refactor (`agentic/single_hermes_agent/`)**: The active target architecture (in progress). ORIO is being refactored toward a **Single-Agent-with-Skills** pattern (inspired by the *Agent Skills* research paper). Instead of executing multiple conversational subagents, a single host agent will dynamically load modular skills (using progressive disclosure) and route state via a decoupled file message bus, reducing multi-agent orchestration overhead and context rot.
 
-→ Current approach: [`agentic/agent_skills/docs/ideation.md`](agentic/agent_skills/docs/ideation.md)
+→ Current approach: [`agentic/single_hermes_agent/docs/ideation.md`](agentic/single_hermes_agent/docs/ideation.md)
 → Early pipeline exploration: [`docs/LLM_PIPELINE.md`](docs/LLM_PIPELINE.md)
 
 <p align="center">
