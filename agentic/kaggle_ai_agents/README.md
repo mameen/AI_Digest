@@ -17,6 +17,48 @@ The project will be designed, implemented, evaluated, documented, and prepared f
 
 All hackathon-specific code, notes, tests, examples, assets, and submission materials will remain inside this directory.
 
+## Architecture Shift: From Multi-Agent to Single Agent with Progressive Context
+
+The course highlighted a meaningful shift in how production-grade agents are designed.
+
+### The Old Default: Multi-Agent Graphs
+
+The instinct was to split work across a graph of specialized agents — a researcher, a librarian, a synthesizer — each with a fixed context window and a hand-off step between them.
+
+This is the architecture this repo already runs in production (`agentic/hermes`):
+
+```
+concierge → researcher × N → librarian → synthesizer → render
+```
+
+It works, but it has real costs:
+
+- each agent re-reads overlapping context at every hand-off
+- context rot accumulates across steps — later agents see summaries of summaries
+- orchestration adds latency and failure surface
+- skills and tools are duplicated or siloed per agent
+
+### The New Model: Single Agent + Progressive Context (Skills-Driven)
+
+The course describes a different approach, enabled by larger context windows and Agent Skills:
+
+- **One agent** handles the full workflow
+- **Skills** (`SKILL.md` files) are loaded on demand — only the context the current step needs arrives in the window
+- **Progressive disclosure**: broad instruction at the top; detailed tool logic and examples load only when that skill is needed
+- **Context stays fresh** because the agent controls what it reads, not a fixed pipeline topology
+
+### Why This Matters for This Project
+
+This Kaggle project is deliberately built as a **single-agent** implementation using this model:
+
+1. `workflow.py` is the one agent driving all phases: ingest → select → validate → render
+2. `config/project.yaml` replaces hardcoded source lists — the agent reads config on demand
+3. `tools/` modules are skills: each has a clear contract and is loaded only when needed
+4. `state.py` tracks phase explicitly so the agent can resume without re-reading history
+5. Evaluation and security gates are inline steps, not separate agents
+
+The multi-agent `hermes` pipeline remains the production baseline for parity checks. This project is the simpler, more maintainable single-agent path the course advocates.
+
 ## Project Principles
 
 - Build only what can be demonstrated.
