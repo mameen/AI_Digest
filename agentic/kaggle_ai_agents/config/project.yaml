@@ -1,0 +1,19 @@
+project:
+  name: ai-news-signal-brief
+  objective: help one person keep up with AI news in less than 10 minutes per day
+
+sources:
+  - id: openai-blog
+    kind: rss
+    url: https://openai.com/news/rss.xml
+  - id: anthropic-news
+    kind: rss
+    url: https://www.anthropic.com/news/rss.xml
+  - id: google-deepmind-blog
+    kind: rss
+    url: https://deepmind.google/blog/rss.xml
+
+workflow:
+  max_items_per_source: 20
+  max_story_cards: 12
+  dedupe_window_days: 3

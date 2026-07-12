@@ -1,0 +1,5 @@
+sources:
+  - id: openai-blog
+    url: https://openai.com/news/rss.xml
+  - id: deepmind-blog
+    url: https://deepmind.google/blog/rss.xml

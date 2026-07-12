@@ -1,0 +1,14 @@
+{
+  "id": "PL_SAMPLE",
+  "title": "Sample Playlist",
+  "entries": [
+    {
+      "title": "Video One",
+      "url": "https://www.youtube.com/watch?v=aaaa"
+    },
+    {
+      "title": "Video Two",
+      "url": "https://www.youtube.com/watch?v=bbbb"
+    }
+  ]
+}

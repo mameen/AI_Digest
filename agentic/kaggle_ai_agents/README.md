@@ -50,6 +50,9 @@ kaggle_ai_agents/
 
 The root `README.md` remains the main project entry point.
 
+Playlist pacing plan (5 videos over 5 days):
+[`video_plan.md`](video_plan.md)
+
 The daily folders record the work completed during each stage of the hackathon. Shared application code belongs in `src/`, shared tests belong in `tests/`, and final competition materials belong in `submission/`.
 
 ## Day 1 — Problem Definition and Agent Design

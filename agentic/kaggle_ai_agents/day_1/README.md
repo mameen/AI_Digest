@@ -10,6 +10,9 @@ https://www.kaggle.com/competitions/5-day-ai-agents-intensive-vibecoding-course-
 
 Complete Unit 1: **Introduction to Agents and Vibe Coding**.
 
+Official assignment copy and links:
+[`assignment.md`](assignment.md)
+
 ### Required Work
 
 - Listen to the Unit 1 summary podcast.
@@ -214,7 +217,8 @@ day_1/
 ├── README.md
 ├── problem_statement.md
 ├── project_spec.md
-├── architecture_draft.md
+├── architecture.md
+├── sources.md
 ├── prompt_log.md
 ├── prototype_notes.md
 ├── results.md
