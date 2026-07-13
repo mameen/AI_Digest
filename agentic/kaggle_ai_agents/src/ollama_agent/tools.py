@@ -9,12 +9,13 @@ from typing import List
 from langchain.tools import tool
 
 from src.base import NewsItem, BriefCard, DailyBrief
-from src.fully_scripted.agent import _fetch_mvp_sources
+from src.base.sources import fetch_all_sources
+from src.base.utils import score_keyword
 
 
 @tool
 def discover(count: int = 100) -> str:
-    """Discover recent AI/ML stories.
+    """Discover recent AI/ML stories from all sources.
     
     Args:
         count: Number of stories to retrieve (default 100)
@@ -22,7 +23,7 @@ def discover(count: int = 100) -> str:
     Returns:
         JSON string with list of NewsItem records
     """
-    items = _fetch_mvp_sources()[:count]
+    items = fetch_all_sources()[:count]
     return json.dumps([dataclasses.asdict(item) for item in items])
 
 
@@ -39,9 +40,8 @@ def rank(items_json: str, count: int = 10) -> str:
     """
     items = [NewsItem(**item) for item in json.loads(items_json)]
     
-    # Keyword-based ranking (can be replaced with LLM later)
-    from src.fully_scripted.agent import _score_keyword
-    ranked = sorted(items, key=lambda x: (-_score_keyword(x), x.title.lower()))
+    # Keyword-based ranking (fallback)
+    ranked = sorted(items, key=lambda x: (-score_keyword(x), x.title.lower()))
     
     return json.dumps(
         [dataclasses.asdict(item) for item in ranked[:count]]

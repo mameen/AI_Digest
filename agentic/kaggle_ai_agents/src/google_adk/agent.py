@@ -7,7 +7,7 @@ from datetime import date
 from typing import List
 
 from src.base import Agent, NewsItem, BriefCard, DailyBrief
-from src.fully_scripted.agent import _fetch_mvp_sources, _score_keyword
+from src.base.sources import fetch_all_sources
 
 
 class GoogleADKAgent(Agent):
@@ -19,10 +19,10 @@ class GoogleADKAgent(Agent):
             raise EnvironmentError("GEMINI_API_KEY env var not set")
 
     def discover(self) -> List[NewsItem]:
-        """Discover stories (MVP: arXiv)."""
+        """Discover from all configured sources."""
         print("\n[tool: discover]")
-        items = _fetch_mvp_sources()
-        print(f"  → {len(items)} items")
+        items = fetch_all_sources()
+        print(f"  → {len(items)} items from {len(set(i.source_id for i in items))} sources")
         return items
 
     def rank(self, items: List[NewsItem], count: int = 10) -> List[NewsItem]:
