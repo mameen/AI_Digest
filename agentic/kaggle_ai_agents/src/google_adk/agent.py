@@ -8,6 +8,7 @@ from typing import List
 
 from src.base import Agent, NewsItem, BriefCard, DailyBrief
 from src.base.sources import fetch_all_sources
+from src.base.utils import score_keyword
 
 
 class GoogleADKAgent(Agent):
@@ -62,7 +63,7 @@ class GoogleADKAgent(Agent):
     ) -> List[NewsItem]:
         """Fallback to keyword ranking if API fails."""
         ranked = sorted(
-            items, key=lambda x: (-_score_keyword(x), x.title.lower())
+            items, key=lambda x: (-score_keyword(x), x.title.lower())
         )
         return ranked[:count]
 
