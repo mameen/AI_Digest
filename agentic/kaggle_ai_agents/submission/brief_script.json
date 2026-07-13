@@ -1,0 +1,67 @@
+{
+  "date": "2026-07-12",
+  "theme": "AI signal over noise",
+  "schema_version": "1.0",
+  "cards": [
+    {
+      "rank": 1,
+      "title": "Separating signal from noise in coding evaluations",
+      "url": "https://openai.com/index/separating-signal-from-noise-coding-evaluations",
+      "why_it_matters": "Source: openai-blog. Score: 11.0"
+    },
+    {
+      "rank": 2,
+      "title": "GPT-5.6 is now the preferred model in Microsoft 365 Copilot",
+      "url": "https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot",
+      "why_it_matters": "Source: openai-blog. Score: 5.0"
+    },
+    {
+      "rank": 3,
+      "title": "Introducing GPT-Live",
+      "url": "https://openai.com/index/introducing-gpt-live",
+      "why_it_matters": "Source: openai-blog. Score: 5.0"
+    },
+    {
+      "rank": 4,
+      "title": "Investing in multi-agent AI safety research",
+      "url": "https://deepmind.google/blog/investing-in-multi-agent-ai-safety-research/",
+      "why_it_matters": "Source: google-deepmind-blog. Score: 5.0"
+    },
+    {
+      "rank": 5,
+      "title": "Securing the future of AI agents",
+      "url": "https://deepmind.google/blog/securing-the-future-of-ai-agents/",
+      "why_it_matters": "Source: google-deepmind-blog. Score: 5.0"
+    },
+    {
+      "rank": 6,
+      "title": "ChatGPT is now a partner for your most ambitious work",
+      "url": "https://openai.com/index/chatgpt-for-your-most-ambitious-work",
+      "why_it_matters": "Source: openai-blog. Score: 3.0"
+    },
+    {
+      "rank": 7,
+      "title": "Introducing Gemma 4 12B: a unified, encoder-free multimodal model",
+      "url": "https://deepmind.google/blog/introducing-gemma-4-12b-a-unified-encoder-free-multimodal-model/",
+      "why_it_matters": "Source: google-deepmind-blog. Score: 3.0"
+    },
+    {
+      "rank": 8,
+      "title": "Fluid, natural voice translation with Gemini 3.5 Live Translate",
+      "url": "https://deepmind.google/blog/fluid-natural-voice-translation-with-gemini-35-live-translate/",
+      "why_it_matters": "Source: google-deepmind-blog. Score: 2.0"
+    },
+    {
+      "rank": 9,
+      "title": "GPT-5.5 Bio Bug Bounty",
+      "url": "https://openai.com/index/bio-bug-bounty",
+      "why_it_matters": "Source: openai-blog. Score: 2.0"
+    },
+    {
+      "rank": 10,
+      "title": "Helping K\u201312 educators build practical AI skills",
+      "url": "https://openai.com/index/k-12-educators-practical-skills",
+      "why_it_matters": "Source: openai-blog. Score: 2.0"
+    }
+  ]
+}
