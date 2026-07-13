@@ -27,3 +27,5 @@ Thumbs.db
 # reports/, diagnostics/, and .preflight/ are tracked
 .preflight/
 *.log
+brief_output.json
+API_KEY_SETUP.md
