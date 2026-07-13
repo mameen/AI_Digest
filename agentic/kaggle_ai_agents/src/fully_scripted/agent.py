@@ -5,12 +5,12 @@ No LLM, no framework, pure Python orchestration.
 
 from __future__ import annotations
 
-import urllib.request
-import xml.etree.ElementTree as ET
 from datetime import date
 from typing import List
 
 from src.base import Agent, NewsItem, BriefCard, DailyBrief
+from src.base.sources import fetch_all_sources
+from src.base.utils import score_keyword
 
 
 # ── Discovery ─────────────────────────────────────────────────────────────────
@@ -109,25 +109,6 @@ def _stub_items() -> List[NewsItem]:
 
 # ── Ranking ───────────────────────────────────────────────────────────────────
 
-def _score_keyword(item: NewsItem) -> int:
-    """Keyword-based scoring (fully scripted, no LLM)."""
-    score = 0
-    text = f"{item.title} {item.summary}".lower()
-
-    # High-priority keywords (+3)
-    if any(k in text for k in ["model", "llm", "agent", "reasoning", "benchmark", "eval"]):
-        score += 3
-
-    # Medium-priority keywords (+2)
-    if any(k in text for k in ["ai", "ml", "learning", "neural", "deep"]):
-        score += 2
-
-    # Low-priority keywords (+1)
-    if any(k in text for k in ["training", "data", "algorithm"]):
-        score += 1
-
-    return score
-
 
 # ── Agent ─────────────────────────────────────────────────────────────────────
 
@@ -135,18 +116,16 @@ class FullyScriptedAgent(Agent):
     """Direct function calls: discover → rank → validate."""
 
     def discover(self) -> List[NewsItem]:
-        """Fetch MVP sources (arXiv)."""
+        """Fetch from all configured sources."""
         print("\n[discover]")
-        items = _fetch_mvp_sources()
-        if not items:
-            print("  ⚠️  No items fetched, using empty list")
-        print(f"  → {len(items)} items")
+        items = fetch_all_sources()
+        print(f"  → {len(items)} items from {len(set(i.source_id for i in items))} sources")
         return items
 
     def rank(self, items: List[NewsItem], count: int = 10) -> List[NewsItem]:
         """Keyword-based scoring, no LLM."""
         print("\n[rank]")
-        ranked = sorted(items, key=lambda x: (-_score_keyword(x), x.title.lower()))
+        ranked = sorted(items, key=lambda x: (-score_keyword(x), x.title.lower()))
         print(f"  → {len(ranked[:count])} top items ranked (keyword-based, no LLM)")
         return ranked[:count]
 
