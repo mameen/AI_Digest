@@ -131,17 +131,20 @@ def fetch_all_sources() -> List[NewsItem]:
     """Fetch from all configured sources.
     
     Strategy:
-    1. Try source_discovery skill (all sources + security gate)
+    1. Try source_discovery skill (all sources + security gate) — skip if SKIP_SKILL_DISCOVERY set
     2. Fallback to key RSS feeds
     3. Fallback to MVP stub data
     
     Returns:
         List of NewsItem (never empty - always has fallback)
     """
-    # Try source discovery skill first
-    items = fetch_from_discovery_skill()
-    if items:
-        return items
+    import os
+    
+    # Try source discovery skill first (unless disabled for testing)
+    if not os.getenv("SKIP_SKILL_DISCOVERY"):
+        items = fetch_from_discovery_skill()
+        if items:
+            return items
 
     # Fallback to RSS feeds
     items = fetch_rss_fallback()

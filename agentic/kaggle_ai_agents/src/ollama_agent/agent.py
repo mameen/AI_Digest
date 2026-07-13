@@ -1,19 +1,21 @@
-"""Ollama agent with LangChain ReAct orchestration."""
+"""Ollama agent with LangChain prompt templates and chains."""
 
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 
 from langchain_ollama import ChatOllama
-from langchain.agents import create_react_agent, AgentExecutor
 from langchain_core.prompts import PromptTemplate
+from langchain_core.output_parsers import JsonOutputParser
 
-from src.base import Agent, NewsItem, DailyBrief
-from src.ollama_agent.tools import discover, rank, validate
+from src.base import Agent, NewsItem, DailyBrief, BriefCard
+from src.base.sources import fetch_all_sources
+from src.base.utils import score_keyword
 
 
 class OllamaAgent(Agent):
-    """LangChain + Ollama ReAct agent."""
+    """LangChain + Ollama chain-based agent (no ReAct)."""
 
     def __init__(
         self,
@@ -26,15 +28,15 @@ class OllamaAgent(Agent):
         Args:
             model: Ollama model name
             host: Ollama server URL
-            verbose: Print agent thinking steps
+            verbose: Print thinking steps
         """
         self.model = model
         self.host = host
         self.verbose = verbose
         self.llm = None
-        self.executor = None
+        self.chain = None
         self._init_llm()
-        self._init_agent()
+        self._init_chain()
 
     def _init_llm(self):
         """Initialize ChatOllama LLM."""
@@ -45,80 +47,127 @@ class OllamaAgent(Agent):
             top_k=40,
             top_p=0.9,
         )
-        print(f"✅ Initialized ChatOllama: {self.model} @ {self.host}")
+        if self.verbose:
+            print(f"✅ Initialized ChatOllama: {self.model} @ {self.host}")
 
-    def _init_agent(self):
-        """Initialize ReAct agent with tools."""
+    def _init_chain(self):
+        """Initialize LangChain prompt + parser chain."""
         prompt = PromptTemplate.from_template(
-            """You are an AI curator for AI/ML stories. Your task:
-1. Use discover() to find recent stories
-2. Use rank() to rank them by importance
-3. Use validate() to finalize the brief
+            """You are an AI/ML news curator. Given a list of stories, 
+rank the top 10 most important for an AI/ML audience.
 
-Think step-by-step. When ready, call validate() to complete.
+Consider: novelty, impact, technical depth, relevance to recent developments.
 
-Available tools: discover, rank, validate
+Stories to rank:
+{stories_json}
 
-{agent_scratchpad}"""
+Return a JSON array with exactly 10 items:
+[
+  {{"title": "...", "summary": "...", "source": "...", "relevance_score": 8}},
+  ...
+]"""
         )
 
-        tools = [discover, rank, validate]
-
-        agent = create_react_agent(self.llm, tools, prompt)
-
-        self.executor = AgentExecutor(
-            agent=agent,
-            tools=tools,
-            verbose=self.verbose,
-            max_iterations=10,
-            handle_parsing_errors=True,
-        )
-        print(f"✅ Initialized AgentExecutor with ReAct pattern")
+        parser = JsonOutputParser()
+        self.chain = prompt | self.llm | parser
+        if self.verbose:
+            print(f"✅ Initialized LangChain prompt + parser chain")
 
     def discover(self) -> list[NewsItem]:
-        """Not used directly; called via tool."""
+        """Not used (chain pattern combines all steps)."""
         raise NotImplementedError("Use run() to execute full pipeline")
 
-    def rank(self, items, count: int = 10):
-        """Not used directly; called via tool."""
+    def rank(self, items: list[NewsItem], count: int = 10) -> list[NewsItem]:
+        """Not used (chain pattern combines all steps)."""
         raise NotImplementedError("Use run() to execute full pipeline")
 
-    def validate(self, items) -> DailyBrief:
-        """Not used directly; called via tool."""
+    def validate(self, items: list[NewsItem]) -> DailyBrief:
+        """Not used (chain pattern combines all steps)."""
         raise NotImplementedError("Use run() to execute full pipeline")
 
     def run(self) -> DailyBrief:
-        """Execute full pipeline via LangChain AgentExecutor.
+        """Execute full pipeline via LangChain chain.
         
         Returns:
             DailyBrief with 10 ranked stories
         """
-        print("\n[LangChain Agent Loop]")
+        if self.verbose:
+            print("\n[LangChain Chain Pipeline]")
 
-        result = self.executor.invoke(
-            {"input": "Generate a top-10 AI/ML stories brief for today."}
+        # Fetch all sources
+        items = fetch_all_sources()
+        if self.verbose:
+            print(f"📰 Fetched {len(items)} items from all sources")
+
+        # Pre-rank with keyword scoring
+        ranked = sorted(
+            items,
+            key=lambda x: (-score_keyword(x), x.title.lower()),
+        )[:15]  # Top 15 for LLM refinement
+
+        # Prepare stories for LLM
+        stories_json = json.dumps(
+            [
+                {
+                    "title": item.title,
+                    "source_id": item.source_id,
+                    "summary": item.summary[:200],  # First 200 chars
+                }
+                for item in ranked
+            ],
+            indent=2,
         )
 
-        # Extract DailyBrief from output
-        output_text = result.get("output", "")
-        
+        if self.verbose:
+            print(f"🧠 Invoking LLM to rank top {len(ranked)} stories...")
+
         try:
-            # Try to parse as JSON
-            if output_text.startswith("{"):
-                brief_dict = json.loads(output_text)
-            else:
-                # Fallback: extract JSON from text
-                import re
-                match = re.search(r"\{.*\}", output_text, re.DOTALL)
-                if match:
-                    brief_dict = json.loads(match.group(0))
-                else:
-                    raise ValueError("Could not extract JSON from output")
-            
-            brief = DailyBrief(**brief_dict)
-            print(f"✅ Brief generated: {len(brief.cards)} cards")
+            # Invoke chain
+            result = self.chain.invoke({"stories_json": stories_json})
+
+            # Parse result
+            cards = []
+            for i, r in enumerate(result[:10]):  # Ensure exactly 10
+                card = BriefCard(
+                    rank=i + 1,
+                    title=r.get("title", ""),
+                    url=next(
+                        (item.url for item in items if item.title == r.get("title")),
+                        "https://example.com",
+                    ),
+                    why_it_matters=r.get("summary", r.get("content", "Key AI/ML story")),
+                )
+                cards.append(card)
+
+            brief = DailyBrief(
+                date=str(datetime.now(timezone.utc).date()),
+                theme="AI signal over noise",
+                cards=cards,
+            )
+
+            if self.verbose:
+                print(f"✅ Generated brief with {len(brief.cards)} cards")
+
             return brief
 
         except Exception as e:
-            print(f"❌ Error parsing brief: {str(e)[:100]}")
-            raise
+            if self.verbose:
+                print(
+                    f"⚠️  LLM ranking failed ({str(e)[:50]}), falling back to keyword ranking"
+                )
+            # Fallback: use keyword ranking
+            cards = [
+                BriefCard(
+                    rank=i + 1,
+                    title=item.title,
+                    url=item.url,
+                    why_it_matters=item.summary[:200] if item.summary else "Key AI/ML story",
+                )
+                for i, item in enumerate(ranked[:10])
+            ]
+
+            return DailyBrief(
+                date=str(datetime.now(timezone.utc).date()),
+                theme="AI signal over noise",
+                cards=cards,
+            )
