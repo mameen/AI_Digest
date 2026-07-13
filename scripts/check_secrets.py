@@ -43,7 +43,7 @@ _LAN_ALLOWLIST: tuple[str, ...] = (
     ".agents/onboarding/running-and-tooling.md",
 )
 
-_FIXTURE_PREFIXES: tuple[str, ...] = ("tests/data/", "tests/fixtures/", "agentic/kaggle_ai_agents/submission/")
+_FIXTURE_PREFIXES: tuple[str, ...] = ("tests/data/", "tests/fixtures/")
 
 _SKIP_CONTENT_PREFIXES: tuple[str, ...] = (
     "tests/",
@@ -426,7 +426,7 @@ def _assignment_findings(rel: str, line: str, line_no: int) -> list[Finding]:
     if not m:
         return []
     value = m.group(2).strip("'\"")
-    if value.startswith("str(") or value.startswith("os.environ") or value.startswith("os.getenv"):
+    if value.startswith("str(") or value.startswith("os.environ"):
         return []
     if _looks_like_placeholder(value):
         return []
