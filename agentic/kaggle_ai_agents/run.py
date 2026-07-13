@@ -21,11 +21,13 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import subprocess
 import sys
 import urllib.request
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from datetime import date
+from pathlib import Path
 from typing import List
 
 
@@ -138,6 +140,44 @@ def parse_rss(data: bytes, source_id: str, limit: int = 20) -> List[NewsItem]:
 
 
 def fetch_items() -> List[NewsItem]:
+    """Fetch from all configured sources via source_discovery skill.
+    
+    Sources configured in: config/project.yaml
+    Adapters: RSS, YouTube RSS, Structured JSON (SWE-bench, EvalPlus), web scrape (fallback)
+    Includes: OpenAI, Anthropic, DeepMind blogs + arXiv + benchmarks + robotics + YouTube
+    """
+    import subprocess
+    import json
+    
+    # Use source_discovery skill script
+    skill_script = Path(__file__).parent / "skills" / "source_discovery" / "scripts" / "discover.py"
+    config_file = Path(__file__).parent / "config" / "project.yaml"
+    
+    if not skill_script.exists() or not config_file.exists():
+        # Fallback to MVP sources if skill not available
+        return _fetch_items_fallback()
+    
+    try:
+        result = subprocess.run(
+            [sys.executable, str(skill_script), "--config", str(config_file)],
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        
+        if result.returncode == 0:
+            data = json.loads(result.stdout)
+            items = [NewsItem(**item) for item in data]
+            print(f"  source_discovery: {len(items)} items from {len(set(i.source_id for i in items))} sources")
+            return items
+    except Exception as e:
+        print(f"  source_discovery error: {str(e)[:100]}, falling back to MVP")
+    
+    return _fetch_items_fallback()
+
+
+def _fetch_items_fallback() -> List[NewsItem]:
+    """Fallback: arXiv only (MVP sources)."""
     sources = [
         ("arxiv-cs-ai", "https://arxiv.org/rss/cs.AI"),
         ("arxiv-cs-lg", "https://arxiv.org/rss/cs.LG"),
