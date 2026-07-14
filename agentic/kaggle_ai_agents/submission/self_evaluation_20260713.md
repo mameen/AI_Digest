@@ -1,3 +1,40 @@
+## 📣 Announcement (Discord / LinkedIn)
+
+Hi all,
+
+I'd love your feedback on my capstone: **AI Digest — a single-agent AI/ML news
+aggregator** built on Google's Agent Development Kit (ADK 2.0). It turns the daily
+arXiv firehose into a ranked, 10-story brief with a one-line "why it matters" per
+story.
+
+Under the hood it's a real ADK agent, not a hard-coded pipeline:
+🔹 a **`google.adk` Agent + Runner + InMemorySessionService** runtime
+🔹 a model-chosen **`FunctionTool`** that pulls live arXiv `cs.AI` / `cs.LG` feeds
+🔹 **Gemini** (`gemini-flash-latest`) via the `google.genai` SDK for ranking + explanations
+🔹 a **self-critique loop** — a curator drafts the brief, a critic reviews it for
+duplicates / vague reasoning / poor ordering, and the curator revises until approved
+🔹 a deterministic keyword fallback + schema validation, so it always emits a valid
+10-card brief even with no API key or network
+
+Two shifts stuck with me building this:
+
+**1. From multi-agent graphs → a single agent with progressive context.** My
+instinct (and my current production pipeline) was a graph: concierge → researchers
+→ librarian → synthesizer. It works, but every hand-off re-reads overlapping
+context, and you end up with summaries of summaries — context rot. The course
+reframed it: one agent that decides what it reads on demand (advertise → load →
+read → run), so context stays fresh. Simpler, and honestly more maintainable.
+
+**2. From code assistance → a factory model with intent-driven development.** The
+real unlock isn't autocomplete. It's expressing intent — "discover, dedupe, rank,
+validate, brief" — and letting deterministic steps (a validation script beats LLM
+guessing for any pass/fail check) do the exact work. You stop writing steps and
+start governing outcomes.
+
+📓 Kaggle notebook 👉 https://www.kaggle.com/code/ameenmohameddemiry/ai-digest-single-agent-news-aggregator
+
+---
+
 # Self-Evaluation: `kaggle_submission.ipynb` vs. Competing Submissions
 
 _Critical review conducted 2026-07-13. Scope: all notebooks in this folder._
