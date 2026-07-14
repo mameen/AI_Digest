@@ -10,4 +10,3 @@ venv/
 tests/fixtures/
 tests/data/
 **/*.example.json
-tests/test_check_secrets.py

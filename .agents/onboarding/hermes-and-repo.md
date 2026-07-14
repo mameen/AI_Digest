@@ -84,17 +84,14 @@ Concierge equivalent: `digest_go` (subprocess of the same command).
 
 ---
 
-## PII, secrets, and commit policy
+## Secrets and commit policy
 
 Commits are **maintainer-only** attribution. Pre-commit hooks (`.githooks/`) run on staged files:
 
-1. `scripts/check_secrets.py --staged` — tokens, `.env`, home paths, blocked paths
-2. `scripts/audit_pii.py --staged` — Microsoft Presidio PII/PHI
-3. `scripts/audit_secrets.py --staged` — Gitleaks / detect-secrets
+1. `scripts/audit_secrets.py --staged` — Gitleaks / detect-secrets
 
 | File | Purpose |
 |---|---|
-| `.piiignore` / `.ignorepii` | PII audit exemptions (gitignore syntax) |
 | `.gitleaksignore` | Secret scanner allowlist |
 | `.secrets.baseline` | detect-secrets baseline |
 
@@ -105,7 +102,7 @@ if hooks sometimes allow via ignore rules.
 **Agent rule:** do not paste maintainer home paths, tokens, or personal identifiers into
 kanban comments, artifacts, or chat. Use run prefix and role names only.
 
-Manual audit: `python scripts/check_secrets.py --all` · `python scripts/audit_pii.py --all`
+Manual audit: `python scripts/audit_secrets.py --all`
 
 Full hook install: see [`.githooks/README.md`](../../.githooks/README.md).
 

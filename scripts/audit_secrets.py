@@ -10,6 +10,7 @@ Policy:
 from __future__ import annotations
 
 import argparse
+import re
 import shutil
 import subprocess
 import sys
@@ -32,9 +33,7 @@ BASELINE = REPO / ".secrets.baseline"
 
 _SKIP_SECRET_SCAN = frozenset(
     {
-        "scripts/check_secrets.py",
         "scripts/audit_secrets.py",
-        "scripts/audit_pii.py",
         "scripts/scan_ignore.py",
         ".secrets.baseline",
     }

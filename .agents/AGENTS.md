@@ -34,20 +34,20 @@ Full detail: `.agents/onboarding/principles-and-workflow.md`.
 | Run it / know what a module does | `.agents/onboarding/running-and-tooling.md` |
 | Debug a failure or trace a story | `.agents/onboarding/debugging-and-pitfalls.md` |
 | Know the rules before I touch code | `.agents/onboarding/principles-and-workflow.md` |
-| Hermes profile: repo, env, imports, PII | `.agents/onboarding/hermes-and-repo.md` |
+| Hermes profile: repo, env, imports, secrets | `.agents/onboarding/hermes-and-repo.md` |
 
 ## Hermes profiles & agent repo rules
 
 **All `orio_*` Hermes profiles** must follow [`.agents/onboarding/hermes-and-repo.md`](onboarding/hermes-and-repo.md)
 — referenced from each profile SOUL and copied to `~/.hermes/profiles/<role>/REPO_ONBOARDING.md`
-on `manage.py setup`. When import, env, git, or PII questions come up in chat, **`read_file` that
+on `manage.py setup`. When import, env, git, or secrets questions come up in chat, **`read_file` that
 doc before guessing** (do not infer PYTHONPATH, pip install, or missing `__init__.py` without it).
 
 | Topic | Rule |
 |---|---|
 | **Imports under Hermes** | `digest-tools` overlays `agentic/hermes/tools/*.py` as `tools.*`; preload deps include `profiles`, `artifacts`, `runtime_store`. `manage.py` uses normal imports via `sys.path`. |
 | **Redeploy after code/SOUL changes** | `python agentic/hermes/admin/manage.py setup` → `hermes gateway restart` → reopen dashboard if needed. |
-| **PII / secrets** | Pre-commit: `check_secrets.py`, `audit_pii.py`, `audit_secrets.py` on staged files. Never commit `.env`, tokens, or home paths. Exemptions: `.piiignore`. Install hooks: `./.githooks/install.sh`. |
+| **Secrets** | Pre-commit: `audit_secrets.py` on staged files. Never commit `.env`, tokens, or credentials. Exemptions: `.gitleaksignore`. Install hooks: `./.githooks/install.sh`. |
 | **Git (Concierge)** | `digest_publish` only — fixed paths, commit, push only with `confirm_push: true` after explicit user approval. No branch/status/diff tools. |
 | **Git (maintainers)** | Branch → test → PR; never push without permission; no agent co-author trailers. |
 | **Sister project** | **Project Career Zazu** (`job-ai-sistant` repo) mirrors this `.agents/` layout — separate product, same Hermes onboarding pattern. |
@@ -161,5 +161,5 @@ A single human-readable version, more traceable at a glance than a commit hash.
   `core.hooksPath` is set (run `./.githooks/install.sh` once per clone).
 - Never commit secrets. The `.cache/` prefetch is gitignored; `reports/`,
   `diagnostics/`, and `.preflight/` are tracked. **Pre-commit** (`.githooks/`)
-  runs `scripts/check_secrets.py --staged` to block API keys, `.env` files,
-  absolute home paths, and other sensitive PII/PHI in newly staged lines.
+  runs `scripts/audit_secrets.py --staged` to block API keys, `.env` files,
+  and other credentials in newly staged lines.
