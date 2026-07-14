@@ -29,3 +29,7 @@ Thumbs.db
 *.log
 brief_output.json
 API_KEY_SETUP.md
+
+# Kaggle notebook build scaffolding (regenerates kaggle_submission.ipynb)
+agentic/kaggle_ai_agents/submission/_build/
+agentic/kaggle_ai_agents/submission/_test_brief.json
