@@ -1,3 +1,8 @@
 pydantic>=2.8,<3
 pyyaml>=6.0,<7
 httpx>=0.27,<1
+
+# Google ADK agent runtime + Gemini SDK (kaggle_submission.ipynb)
+google-adk>=2.4,<3
+google-genai>=2.11,<3
+nest-asyncio>=1.6,<2
