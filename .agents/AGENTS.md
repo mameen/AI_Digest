@@ -8,6 +8,62 @@ conservative and in keeping with the surrounding code.
 > onboarding narrative lives under `.agents/onboarding/`. **Product narrative:**
 > [`README.md`](../README.md) at the repo root — if anything conflicts, README wins.
 
+## Repository layout
+
+```
+AI_Digest/                          ← ORIO: agentic daily AI news digest
+├── README.md                       ← Product story, ORIO roles, evolution (canonical)
+├── AGENTS.md → .agents/AGENTS.md   ← Agent rulebook (symlink to source of truth)
+│
+├── .agents/                        ← Agent onboarding & rules (source of truth)
+│   ├── README.md                   ← Layout, symlinks, reading order
+│   ├── AGENTS.md                   ← This file — day-to-day rules
+│   ├── onboarding/                 ← Full narrative docs
+│   │   ├── architecture.md         ← Architecture & design summary
+│   │   ├── running-and-tooling.md  ← How to run; what each tool/module does
+│   │   ├── debugging-and-pitfalls.md
+│   │   ├── principles-and-workflow.md
+│   │   └── hermes-and-repo.md      ← Hermes profiles: env, imports, secrets
+│   └── .cursor/rules/              ← Cursor rules (symlinked to root)
+│
+├── agentic/                        ← Agentic layer (4 branches)
+│   ├── hermes/                     ← Multi-agent crew (active production)
+│   │   ├── admin/                  ← Gateway, SOUL configs, roles
+│   │   ├── tools/                  ← Agent tool implementations
+│   │   ├── plugins/                ← Hermes plugins
+│   │   └── docs/                   ← Architecture, POC, Slack integration
+│   ├── kaggle_ai_agents/           ← Training project (incomplete)
+│   │   ├── day_1 … day_5/          ← Daily exercises
+│   │   ├── submission/             ← Kaggle submissions
+│   │   └── capstone_project/       ← Capstone work
+│   └── single_hermes_agent/        ← Single-agent-with-skills (active direction, in progress)
+│
+├── llm_pipeline/                   ← Legacy staged pipeline (ingest → enrich → validate → render)
+│   ├── fetch.py                    ← Source fetching (YouTube, RSS, web crawls)
+│   ├── editorial.py                ← Editorial brief assembly
+│   ├── enrich.py                   ← Story enrichment & grounding
+│   ├── render.py                   ← HTML/JSON report rendering
+│   ├── leaderboards.py             ← Leaderboard data injection
+│   ├── vendor/                     ← Third-party widgets (digest-app.js, templates)
+│   └── admin/                      ← Admin server & diagnostics
+│
+├── pipeline/                       ← Mirror of llm_pipeline (active code path)
+│   └── [same files as llm_pipeline/]
+│
+├── app/                            ← Deployed site assets (index.html, reports, diagnostics)
+├── lib/                            ← Shared utilities (deploy_app.py, paths, schema)
+├── config/                         ← Project configuration (paths.yaml)
+├── scripts/                        ← Standalone scripts (audit_secrets.py, deploy_app.py)
+├── tests/                          ← Python + Node test suite
+├── docs/                           ← General documentation
+├── admin/                          ← Admin CLI (manage.py, README.md)
+├── run.py                          ← Production entry point
+├── run_tests.py                    ← Combined Python + Node test runner
+└── .cache/                         ← Prefetched data (gitignored)
+```
+
+**Key:** `agentic/hermes/` + `pipeline/` = current production path. `llm_pipeline/` is legacy.
+
 ## Principles
 
 1. **Showcase-grade engineering.** Portfolio-visible project — hold a high bar
