@@ -76,7 +76,11 @@ def rebuild_reports_archive(cfg: dict[str, Any] | None = None, reports: Path | N
     from _report_utils import build_frame_html  # type: ignore
 
     write_index(reports_dir=reports, sync_work=False)
-    has_author_photo = sync_author_assets(reports, cfg)
+    try:
+        has_author_photo = sync_author_assets(reports, cfg)
+    except (PermissionError, OSError):
+        # Windows file lock — non-blocking; author photo is cosmetic
+        has_author_photo = False
     frame = build_frame_html(reports_dir=reports)
     frame = inject_author_card(
         frame,

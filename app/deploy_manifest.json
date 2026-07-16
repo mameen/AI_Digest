@@ -1,31 +1,31 @@
 {
-  "deployed_at": "2026-07-09T05:33:11Z",
-  "source": "agentic/hermes",
-  "source_kind": "agentic-hermes",
+  "deployed_at": "2026-07-16T20:56:32Z",
+  "source": "llm_pipeline",
+  "source_kind": "pipeline",
   "prefixes": [
-    "20260709051615"
+    "20260716120000"
   ],
   "dry_run": false,
   "files": [
     {
-      "from": "agentic/hermes/reports/20260709051615.json",
-      "to": "app/reports/20260709051615.json"
+      "from": "llm_pipeline\\reports\\20260716120000.json",
+      "to": "app\\reports\\20260716120000.json"
     },
     {
-      "from": "agentic/hermes/reports/20260709051615.html",
-      "to": "app/reports/20260709051615.html"
+      "from": "llm_pipeline\\reports\\20260716120000.html",
+      "to": "app\\reports\\20260716120000.html"
     },
     {
-      "from": "agentic/hermes/diagnostics/20260709051615.diagnostics.json",
-      "to": "app/diagnostics/20260709051615.diagnostics.json"
+      "from": "llm_pipeline\\diagnostics\\20260716120000.diagnostics.json",
+      "to": "app\\diagnostics\\20260716120000.diagnostics.json"
     },
     {
-      "from": "agentic/hermes/diagnostics/20260709051615.diagnostics.html",
-      "to": "app/diagnostics/20260709051615.diagnostics.html"
+      "from": "llm_pipeline\\diagnostics\\20260716120000.diagnostics.html",
+      "to": "app\\diagnostics\\20260716120000.diagnostics.html"
     },
     {
-      "from": "agentic/hermes/diagnostics/20260709051615.run.log",
-      "to": "app/diagnostics/20260709051615.run.log"
+      "from": "llm_pipeline\\diagnostics\\20260716120000.run.log",
+      "to": "app\\diagnostics\\20260716120000.run.log"
     }
   ]
 }

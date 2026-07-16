@@ -1,7 +1,7 @@
 {
   "schema": "direct_pipeline_py.diagnostics_index/v1",
-  "updated_at": "2026-07-09T05:33:12Z",
-  "latest": "20260709051615",
+  "updated_at": "2026-07-16T20:56:32Z",
+  "latest": "20260716120000",
   "runs": [
     {
       "prefix": "20260629120000",
@@ -272,6 +272,33 @@
       "report_source": "agentic-hermes",
       "report_source_label": "Hermes Agent",
       "report_source_badge": "../img/report-source/hermes-agent.png"
+    },
+    {
+      "prefix": "20260716120000",
+      "date": "2026-07-16",
+      "display_date": "Jul 16, 2026",
+      "started_at": "2026-07-16T19:07:34Z",
+      "finished_at": "2026-07-16T19:41:35Z",
+      "total_duration_ms": 2040802.8,
+      "total_duration_label": "34.0m",
+      "total_tokens": 385403,
+      "llm_call_count": 22,
+      "llm_duration_ms": 2028421.7,
+      "llm_share_pct": 99.4,
+      "model": "qwen3.6:35b",
+      "poc_id": "ai_digest",
+      "intensity": 0.9674379510581076,
+      "story_count": 139,
+      "platform_kind": "cuda",
+      "cpu": "AMD64 Family 25 Model 97 Stepping 2, AuthenticAMD",
+      "gpu_name": "NVIDIA GeForce RTX 4090",
+      "ram_gb": null,
+      "vram_gb": 24.0,
+      "net_mbps": 6.25,
+      "hw_inferred": false,
+      "report_source": "llm-pipeline",
+      "report_source_label": "LLM Pipeline",
+      "report_source_badge": "../img/report-source/llm_pipeline.png"
     }
   ],
   "by_date": [
@@ -544,6 +571,33 @@
       "report_source": "agentic-hermes",
       "report_source_label": "Hermes Agent",
       "report_source_badge": "../img/report-source/hermes-agent.png"
+    },
+    {
+      "prefix": "20260716120000",
+      "date": "2026-07-16",
+      "display_date": "Jul 16, 2026",
+      "started_at": "2026-07-16T19:07:34Z",
+      "finished_at": "2026-07-16T19:41:35Z",
+      "total_duration_ms": 2040802.8,
+      "total_duration_label": "34.0m",
+      "total_tokens": 385403,
+      "llm_call_count": 22,
+      "llm_duration_ms": 2028421.7,
+      "llm_share_pct": 99.4,
+      "model": "qwen3.6:35b",
+      "poc_id": "ai_digest",
+      "intensity": 0.9674379510581076,
+      "story_count": 139,
+      "platform_kind": "cuda",
+      "cpu": "AMD64 Family 25 Model 97 Stepping 2, AuthenticAMD",
+      "gpu_name": "NVIDIA GeForce RTX 4090",
+      "ram_gb": null,
+      "vram_gb": 24.0,
+      "net_mbps": 6.25,
+      "hw_inferred": false,
+      "report_source": "llm-pipeline",
+      "report_source_label": "LLM Pipeline",
+      "report_source_badge": "../img/report-source/llm_pipeline.png"
     }
   ]
 }

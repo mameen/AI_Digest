@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-07-09T05:33:11Z",
-  "latest": "20260709051615",
+  "updated_at": "2026-07-16T20:56:32Z",
+  "latest": "20260716120000",
   "digests": [
     {
       "prefix": "20260425143000",
@@ -458,6 +458,30 @@
       },
       "report_source": "agentic-hermes",
       "report_source_label": "Hermes Agent"
+    },
+    {
+      "prefix": "20260716120000",
+      "date": "2026-07-16",
+      "display_date": "THURSDAY, JULY 16, 2026",
+      "summary": "OpenAI unveils GPT-5.6 architecture updates while Claude Fable secures the top leaderboard position, alongside Meta's unified generation framework, Google agentic tools, and major shifts across benchmarks, research, and application frontiers.",
+      "story_count": 139,
+      "avg_significance": 3.6,
+      "categories": {
+        "leaderboard": 6,
+        "analytics": 5,
+        "aisearch": 10,
+        "youtube": 79,
+        "agentic-ai": 5,
+        "llm": 5,
+        "rag": 5,
+        "image-gen": 5,
+        "design-ai": 4,
+        "typography": 4,
+        "robotics": 5,
+        "research": 6
+      },
+      "report_source": "llm-pipeline",
+      "report_source_label": "LLM Pipeline"
     }
   ],
   "by_date": [
@@ -917,6 +941,30 @@
       },
       "report_source": "agentic-hermes",
       "report_source_label": "Hermes Agent"
+    },
+    {
+      "prefix": "20260716120000",
+      "date": "2026-07-16",
+      "display_date": "THURSDAY, JULY 16, 2026",
+      "summary": "OpenAI unveils GPT-5.6 architecture updates while Claude Fable secures the top leaderboard position, alongside Meta's unified generation framework, Google agentic tools, and major shifts across benchmarks, research, and application frontiers.",
+      "story_count": 139,
+      "avg_significance": 3.6,
+      "categories": {
+        "leaderboard": 6,
+        "analytics": 5,
+        "aisearch": 10,
+        "youtube": 79,
+        "agentic-ai": 5,
+        "llm": 5,
+        "rag": 5,
+        "image-gen": 5,
+        "design-ai": 4,
+        "typography": 4,
+        "robotics": 5,
+        "research": 6
+      },
+      "report_source": "llm-pipeline",
+      "report_source_label": "LLM Pipeline"
     }
   ]
 }
