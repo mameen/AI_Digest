@@ -1752,7 +1752,11 @@ def _kanban_show_json(task_id: str) -> dict[str, Any]:
     if proc.returncode != 0:
         print(proc.stderr or proc.stdout)
         sys.exit(proc.returncode)
-    return json.loads(proc.stdout)
+    try:
+        return json.loads(proc.stdout)
+    except json.JSONDecodeError as exc:
+        print(f"kanban show {task_id}: JSON decode error — gateway may be down: {exc}")
+        sys.exit(1)
 
 
 def _kanban_list_json() -> list[dict[str, Any]]:
@@ -1760,7 +1764,11 @@ def _kanban_list_json() -> list[dict[str, Any]]:
     if proc.returncode != 0:
         print(proc.stderr or proc.stdout)
         sys.exit(proc.returncode)
-    return json.loads(proc.stdout)
+    try:
+        return json.loads(proc.stdout)
+    except json.JSONDecodeError as exc:
+        print(f"kanban list: JSON decode error — gateway may be down: {exc}")
+        sys.exit(1)
 
 
 def _research_topic(title: str) -> str:

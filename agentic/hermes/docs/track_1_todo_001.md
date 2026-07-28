@@ -82,6 +82,44 @@ Measured via `coverage run -m unittest discover -s llm_pipeline/tests`.
 
 ---
 
+---
+
+## Track 2 Extraction Progress (Snapshot 2026-07-28)
+
+Per ADR-002 Phase 1, the following modules have been extracted to `lib/` with deprecation shims in place:
+
+| Extracted Module | Canonical Location | Shim Location | Status |
+|---|---|---|---|
+| `config.py` (Config, load_config, _apply_llm_defaults, _default_llm) | `lib/config.py` | `llm_pipeline/config.py` | ✅ Shim active (DeprecationWarning) |
+| `schema.py` (Story, Category, DigestDocument, etc.) | `lib/schema.py` | `llm_pipeline/schema.py` | ✅ Shim active (DeprecationWarning) |
+| `paths.py` (REPO_ROOT, LLM_PIPELINE_ROOT, WEB_ROOT, AGENTIC_ROOT) | `lib/paths.py` | — | Already in lib/ |
+
+### Public namespace (`lib/__init__.py`)
+
+```python
+from lib.config import Config, load_config
+from lib.paths import REPO_ROOT, LLM_PIPELINE_ROOT, WEB_ROOT, AGENTIC_ROOT
+from lib.schema import Story, Category, DigestDocument, ResourceLink
+```
+
+### E2E Verification (2026-07-28)
+
+Pipeline run: `python run.py --start 2026-07-28` — **GREEN**
+
+- All 4 phases completed without errors
+- 106 total stories across 12 categories
+- Deprecation shims working (warnings emitted, no breakage)
+- Validation passed, reports rendered correctly
+
+### Remaining Work
+
+- [ ] Update remaining `llm_pipeline/` imports to use `lib.*` directly (eliminate shim warnings)
+- [ ] Create `pyproject.toml` for formal package governance
+- [ ] Retire Hermes patches incrementally as they become obsolete
+- [ ] Remove deprecation shims once single-agent parity is proven
+
+---
+
 ## Parity Gate Rule
 
 No module in `llm_pipeline/` may be removed, deprecated, or have its public API changed until:
@@ -89,3 +127,4 @@ No module in `llm_pipeline/` may be removed, deprecated, or have its public API 
 1. The single-agent runtime achieves ≥55 stories, 11/11 categories, structural match vs `go --pipeline`
 2. All T1.x action items are complete
 3. A new coverage snapshot shows no regression from this baseline
+4. Track 2 extraction is verified via E2E pipeline run (see above)
