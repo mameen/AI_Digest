@@ -27,11 +27,14 @@ AI_Digest/                          ← ORIO: agentic daily AI news digest
 │   └── .cursor/rules/              ← Cursor rules (symlinked to root)
 │
 ├── agentic/                        ← Agentic layer (4 branches)
+│   ├── AGENTS.md                   ← Agent layer governance, Track 2 status
 │   ├── hermes/                     ← Multi-agent crew (active production)
 │   │   ├── admin/                  ← Gateway, SOUL configs, roles
 │   │   ├── tools/                  ← Agent tool implementations
 │   │   ├── plugins/                ← Hermes plugins
 │   │   └── docs/                   ← Architecture, POC, Slack integration
+│   │       ├── ADR-001-extract-shared-pipeline.md  ← Four-track pivot strategy
+│   │       └── track_1_todo_001.md                 ← Coverage baseline & action items
 │   ├── kaggle_ai_agents/           ← Training project (incomplete)
 │   │   ├── day_1 … day_5/          ← Daily exercises
 │   │   ├── submission/             ← Kaggle submissions
@@ -39,6 +42,7 @@ AI_Digest/                          ← ORIO: agentic daily AI news digest
 │   └── single_hermes_agent/        ← Single-agent-with-skills (active direction, in progress)
 │
 ├── llm_pipeline/                   ← Legacy staged pipeline (ingest → enrich → validate → render)
+│   ├── AGENTS.md                   ← Module governance & extraction plan
 │   ├── fetch.py                    ← Source fetching (YouTube, RSS, web crawls)
 │   ├── editorial.py                ← Editorial brief assembly
 │   ├── enrich.py                   ← Story enrichment & grounding
@@ -91,6 +95,31 @@ Full detail: `.agents/onboarding/principles-and-workflow.md`.
 | Debug a failure or trace a story | `.agents/onboarding/debugging-and-pitfalls.md` |
 | Know the rules before I touch code | `.agents/onboarding/principles-and-workflow.md` |
 | Hermes profile: repo, env, imports, secrets | `.agents/onboarding/hermes-and-repo.md` |
+
+## Four-Track Pivot (ADR-002)
+
+The repo is executing a four-track parallel strategy per [ADR-002](agentic/hermes/docs/ADR-001-extract-shared-pipeline.md):
+
+| Track | Focus | Status |
+|---|---|---|
+| **T1: Fortify `llm_pipeline/`** | Immutable parity benchmark — zero removals, zero regressions | Active |
+| **T2: Extract & Package Shared Libs** | Move deterministic utilities → `lib/`, eliminate `sys.path` hacks | In progress |
+| **T3: Stabilize Hermes** | Bounded experiment — never default, archive if metrics degrade | Stable |
+| **T4: Single-Agent-with-Skills** | Progressive skill discovery, file-based state routing | In progress |
+
+### Track 1 Coverage Baseline
+
+See [`track_1_todo_001.md`](agentic/hermes/docs/track_1_todo_001.md) for the full coverage snapshot (61% core pipeline baseline). No module may be removed from `llm_pipeline/` until single-agent parity is proven via automated fixtures.
+
+### Track 2 Extraction Plan
+
+See [`llm_pipeline/AGENTS.md`](../llm_pipeline/AGENTS.md) for the full extraction scope, priority ordering, and per-module workflow. After extraction completes, extracted modules will be wired to skills for the single-agent runtime.
+
+### Agentic Layer Governance
+
+See [`agentic/AGENTS.md`](../agentic/AGENTS.md) for track status, skill wiring timeline, and rules specific to the agentic layer.
+
+---
 
 ## Hermes profiles & agent repo rules
 
