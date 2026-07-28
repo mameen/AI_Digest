@@ -84,6 +84,29 @@ Measured via `coverage run -m unittest discover -s llm_pipeline/tests`.
 
 ---
 
+## Snapshot 3: Coverage Improvement (2026-07-28)
+
+Measured via `coverage run -m unittest discover -s llm_pipeline/tests`.
+
+### Improvements from Track 1/2 work
+
+| Module | Before | After | Tests Added |
+|---|---:|---:|---|
+| `enrich.py` | **19%** | **25%** | 14 tests (pure functions) |
+| `frame_author.py` | **17%** | **73%** | 12 tests |
+| `editorial.py` | **36%** | **86%** | 38 tests |
+| `history.py` | **23%** | **92%** | 11 tests |
+
+**Total new tests: 75** (all fixture-backed, no mocks of own code)
+
+### Remaining gaps
+
+- `enrich.py` at 25% — most remaining code involves LLM calls; pure functions covered
+- `diagnostics.py` at 57% — needs fixture-backed tests for ~40 uncovered branches
+- `environment.py` at 61% — needs fixture-backed tests for ~25 uncovered branches
+
+---
+
 ## Track 2 Extraction Progress (Snapshot 2026-07-28)
 
 Per ADR-002 Phase 1, the following modules have been extracted to `lib/` with deprecation shims in place:
