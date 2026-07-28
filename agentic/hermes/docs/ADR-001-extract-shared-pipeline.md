@@ -34,7 +34,7 @@ See [Issue 001](./issue_001.md)
 We adopt a **Four-Track Parallel Strategy**: Fortify the batch fallback, Extract/Package shared libs, Stabilize Hermes as a bounded experiment, and Build the single-agent-with-skills runtime as the production default. Tracks operate in parallel with strict parity gates before any sunset.
 
 ### Track 1: Fortify `llm_pipeline/`
-Lock the batch pipeline as the fallback of record. Maintain `go --pipeline` green state. Zero removals until single-agent parity is proven via automated fixtures.
+Lock the batch pipeline as the fallback of record. Maintain `go --pipeline` green state **and enforce baseline test/fixture coverage on all deterministic tail modules before extracting any shared code**. Zero removals until single-agent parity is proven via automated fixtures.
 
 ### Track 2: Extract & Package Shared Libs
 Convert `llm_pipeline` + `lib` into formal importable packages via `pyproject.toml`. Eliminate `sys.path.insert` hacks. Retire the 8 Hermes patches incrementally as they become obsolete.
@@ -65,7 +65,7 @@ dependencies = ["instructor>=2.0", "pydantic>=2.10", "pyyaml>=6.0", "jinja2>=3.1
 where = ["."]
 include = ["llm_pipeline*", "lib*", "agentic/single_hermes_agent*"]
 ```
-Verify clean venv sync across worker profiles before removing dynamic import fallbacks.
+Establish regression fixtures covering the full fallback path (ingest → enrich → validate → render). Verify clean venv sync across worker profiles before removing dynamic import fallbacks.
 
 ### Phase 2: Single-Agent Skill Scaffolding
 ```
