@@ -1052,7 +1052,7 @@ def _configure_web(*, dry_run: bool) -> None:
         print("  · doctor finished (review web status manually)")
 
 
-def setup_agents(*, dry_run: bool = False, quiet: bool = False) -> int:
+def setup_agents(*, dry_run: bool = False, quiet: bool = False, override_default: bool = False, patches: bool = False) -> int:
     if not _hermes_bin():
         if quiet:
             return 0
@@ -1073,7 +1073,10 @@ def setup_agents(*, dry_run: bool = False, quiet: bool = False) -> int:
     if not quiet:
         print("== setup: ORIO agent profiles ==")
 
-    _configure_default_ollama(default_model, provider, base_url, context_length, dry_run=dry_run)
+    if override_default:
+        _configure_default_ollama(default_model, provider, base_url, context_length, dry_run=dry_run)
+    else:
+        print("== setup: default profile → SKIPPED (use --override-default to configure) ==")
 
     for role in spec.get("roles") or []:
         name = role["name"]
@@ -1097,21 +1100,26 @@ def setup_agents(*, dry_run: bool = False, quiet: bool = False) -> int:
         if not dry_run and not quiet:
             print(f"  (applied via worker tool surface — {researcher_toolsets})")
 
-    _configure_toolsets(toolsets, dry_run=dry_run)
-    _configure_kanban_poc(dry_run=dry_run)
-    _configure_web(dry_run=dry_run)
-    if not quiet:
-        print("\n== setup: Hermes kanban goal-mode patch ==")
-    _ensure_hermes_kanban_goal_quiet_patch(dry_run=dry_run)
-    _ensure_hermes_cli_goal_loop_patch(dry_run=dry_run)
-    _ensure_hermes_worker_plugin_discover_patch(dry_run=dry_run)
-    _ensure_hermes_digest_toolsets_patch(dry_run=dry_run)
-    _ensure_digest_toolset_tools(dry_run=dry_run)
-    _ensure_digest_admin_toolset_tools(dry_run=dry_run)
-    _ensure_hermes_kanban_complete_artifact_patch(dry_run=dry_run)
-    _refresh_kanban_role_gate_block(dry_run=dry_run)
-    _ensure_hermes_judge_goal_unpack_patch(dry_run=dry_run)
-    _refresh_kanban_complete_error_message(dry_run=dry_run)
+    if override_default:
+        _configure_toolsets(toolsets, dry_run=dry_run)
+        _configure_kanban_poc(dry_run=dry_run)
+        _configure_web(dry_run=dry_run)
+    else:
+        print("== setup: global kanban/toolsets/web → SKIPPED (use --override-default to configure) ==")
+    if patches:
+        print("== setup: Hermes kanban goal-mode patch ==")
+        _ensure_hermes_kanban_goal_quiet_patch(dry_run=dry_run)
+        _ensure_hermes_cli_goal_loop_patch(dry_run=dry_run)
+        _ensure_hermes_worker_plugin_discover_patch(dry_run=dry_run)
+        _ensure_hermes_digest_toolsets_patch(dry_run=dry_run)
+        _ensure_digest_toolset_tools(dry_run=dry_run)
+        _ensure_digest_admin_toolset_tools(dry_run=dry_run)
+        _ensure_hermes_kanban_complete_artifact_patch(dry_run=dry_run)
+        _refresh_kanban_role_gate_block(dry_run=dry_run)
+        _ensure_hermes_judge_goal_unpack_patch(dry_run=dry_run)
+        _refresh_kanban_complete_error_message(dry_run=dry_run)
+    else:
+        print("== setup: upstream CLI source patches → SKIPPED (use --patches to apply) ==")
     _ensure_digest_plugin_symlink(dry_run=dry_run)
     _ensure_digest_plugin_enabled(dry_run=dry_run)
     _configure_concierge_toolsets(dry_run=dry_run)
@@ -2246,11 +2254,11 @@ def cmd_bootstrap(args: argparse.Namespace) -> int:
     if args.skip_setup:
         print("Skipping Hermes profile setup (--skip-setup).")
         return 0
-    return setup_agents(quiet=False)
+    return setup_agents(quiet=False, override_default=args.override_default, patches=args.patches)
 
 
 def cmd_setup(args: argparse.Namespace) -> int:
-    return setup_agents(dry_run=args.dry_run)
+    return setup_agents(dry_run=args.dry_run, override_default=args.override_default, patches=args.patches)
 
 
 def _set_roles_yaml_model(new_model: str, *, dry_run: bool) -> None:
@@ -2391,11 +2399,44 @@ def main() -> int:
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_boot = sub.add_parser("bootstrap", help="ensure .runtime + optional setup")
-    p_boot.add_argument("--skip-setup", action="store_true", help="only create .runtime dirs")
+    p_boot.add_argument(
+        "--skip-setup",
+        action="store_true",
+        help="only create .runtime dirs (skip profile setup)",
+    )
+    p_boot.add_argument(
+        "--override-default",
+        action="store_true",
+        default=False,
+        help="Allow setup to write to the global default profile (default: skip, safe for existing installs)",
+    )
+    p_boot.add_argument(
+        "--patches",
+        action="store_true",
+        default=False,
+        help="Apply invasive upstream CLI source patches (default: skip — safer, no source modification)",
+    )
     p_boot.set_defaults(func=cmd_bootstrap)
 
     p_setup = sub.add_parser("setup", help="Ollama + digest role profiles + kanban")
-    p_setup.add_argument("--dry-run", action="store_true")
+    p_setup.add_argument(
+        "--dry-run",
+        action="store_true",
+        default=False,
+        help="Print what would happen without making changes",
+    )
+    p_setup.add_argument(
+        "--override-default",
+        action="store_true",
+        default=False,
+        help="Allow setup to write to the global default profile (default: skip, safe for existing installs)",
+    )
+    p_setup.add_argument(
+        "--patches",
+        action="store_true",
+        default=False,
+        help="Apply invasive upstream CLI source patches (default: skip — safer, no source modification)",
+    )
     p_setup.set_defaults(func=cmd_setup)
 
     p_model = sub.add_parser(
