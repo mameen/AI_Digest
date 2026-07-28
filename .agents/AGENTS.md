@@ -121,6 +121,27 @@ See [`agentic/AGENTS.md`](../agentic/AGENTS.md) for track status, skill wiring t
 
 ---
 
+## Python environment
+
+**Always activate `.venv` before running any Python command.** Never use
+`.venv\Scripts\python.exe` directly — it bypasses the activation context and
+breaks when the venv path changes.
+
+```powershell
+# Windows (PowerShell)
+.venv\Scripts\Activate.ps1
+python agentic/hermes/admin/manage.py go --start 2026-07-27 --fresh
+
+# Or one-liner
+. .venv\Scripts\Activate.ps1; python manage.py ...
+```
+
+On Windows, if `.venv\Scripts\Activate.ps1` fails with execution policy errors:
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+. .venv\Scripts\Activate.ps1
+```
+
 ## Hermes profiles & agent repo rules
 
 **All `orio_*` Hermes profiles** must follow [`.agents/onboarding/hermes-and-repo.md`](onboarding/hermes-and-repo.md)
