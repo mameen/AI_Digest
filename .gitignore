@@ -35,3 +35,13 @@ agentic/kaggle_ai_agents/submission/_build/
 agentic/kaggle_ai_agents/submission/_test_brief.json
 .secrets.baseline
 .coverage
+
+# Claude settings with secrets (keep directory, ignore env)
+.agents/.claude/settings.local.json
+.claude/settings.local.json
+
+# OpenCode settings with secrets (keep directory, ignore env)
+.agents/.opencode/opencode.json
+.opencode/opencode.json
+.opencode/*.local.*
+

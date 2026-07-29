@@ -34,3 +34,33 @@ select = ["E", "F", "I", "W"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests", "llm_pipeline/tests", "agentic/hermes/tests"]
+
+[tool.coverage.run]
+source = ["lib", "llm_pipeline", "agentic/single_hermes_agent"]
+omit = [
+    "tests/**",
+    "**/test_*.py",
+    "**/__pycache__/**",
+    "**/vendor/**",
+    "scripts/**",
+]
+branch = true
+concurrency = ["multiprocessing"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true
+skip_empty = true
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if __name__ == .__main__.",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+]
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.coverage.json]
+output = "coverage.json"
