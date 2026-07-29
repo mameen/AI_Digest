@@ -48,11 +48,13 @@ class HermesManageCliTest(unittest.TestCase):
             cwd=ROOT,
             capture_output=True,
             text=True,
+            encoding="utf-8",
         )
         self.assertEqual(proc.returncode, 0, proc.stderr or proc.stdout)
-        self.assertIn("orio_concierge", proc.stdout)
-        self.assertIn("SOUL.md", proc.stdout)
-        self.assertIn("would", proc.stdout.lower())
+        stdout = proc.stdout or ""
+        self.assertIn("orio_concierge", stdout)
+        self.assertIn("SOUL.md", stdout)
+        self.assertIn("would", stdout.lower())
 
     def test_demo_board_dry_run(self) -> None:
         if not shutil.which("hermes"):
@@ -66,7 +68,7 @@ class HermesManageCliTest(unittest.TestCase):
         self.assertEqual(proc.returncode, 0, proc.stderr or proc.stdout)
         self.assertIn("orio_librarian", proc.stdout)
         self.assertIn("orio_synthesizer", proc.stdout)
-        self.assertIn("research × N", proc.stdout)
+        self.assertIn("research x N", proc.stdout)
 
     def test_demo_board_dry_run_start_date_prefix(self) -> None:
         if not shutil.which("hermes"):

@@ -455,6 +455,10 @@ def open_report(
     if cmd is None:
         payload["error"] = "no platform opener (use path or file_uri manually)"
         payload["open_hint_macos"] = f"open {shlex.quote(str(resolved))}"
+        payload["command"] = None
+        if dry_run:
+            payload["ok"] = True
+            payload["dry_run"] = True
         return payload
     payload["command"] = cmd
     if dry_run:

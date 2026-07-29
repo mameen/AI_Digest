@@ -127,17 +127,23 @@ class TestSourceDiscoveryScript(unittest.TestCase):
 
     def test_discover_empty_config(self) -> None:
         """discover.py handles config with no sources gracefully."""
+        # Use delete=True to avoid Windows file locking issues
         with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
             f.write("project:\n  name: test\nsources: []\n")
             f.flush()
-            
+            temp_path = f.name
+        
+        try:
+            exit_code, stdout = self.run_discover(temp_path)
+            self.assertEqual(exit_code, 0)
+            items = json.loads(stdout)
+            self.assertEqual(items, [])
+        finally:
+            # Use try/except to handle Windows file locking
             try:
-                exit_code, stdout = self.run_discover(f.name)
-                self.assertEqual(exit_code, 0)
-                items = json.loads(stdout)
-                self.assertEqual(items, [])
-            finally:
-                Path(f.name).unlink()
+                Path(temp_path).unlink(missing_ok=True)
+            except (PermissionError, FileNotFoundError):
+                pass
 
     def test_discover_missing_config(self) -> None:
         """discover.py exits with 1 when config file not found."""

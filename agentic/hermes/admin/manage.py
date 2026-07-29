@@ -27,6 +27,11 @@ from typing import Any
 
 import yaml
 
+# Fix Windows console encoding to handle Unicode characters in output
+if sys.stdout.encoding and "cp" in sys.stdout.encoding.lower():
+    import io
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+
 REPO = Path(__file__).resolve().parents[3]
 HERMES_PKG = Path(__file__).resolve().parents[1]
 if str(REPO) not in sys.path:
@@ -289,7 +294,7 @@ def _ensure_hermes_worker_plugin_discover_patch(*, dry_run: bool = False) -> Non
     text = target.read_text(encoding="utf-8")
     if _CLI_PLUGIN_DISCOVER_MARKER in text:
         if not dry_run:
-            print("  ✓ cli_agent_setup_mixin kanban plugin re-discover (already applied)")
+            print("  [OK] cli_agent_setup_mixin kanban plugin re-discover (already applied)")
         return
     if _CLI_PLUGIN_DISCOVER_ANCHOR not in text:
         print("  WARN cli_agent_setup_mixin wait_for_mcp_discovery anchor changed — patch not applied")
@@ -298,7 +303,7 @@ def _ensure_hermes_worker_plugin_discover_patch(*, dry_run: bool = False) -> Non
         print(f"  would patch {target} (kanban worker plugin re-discover)")
         return
     target.write_text(text.replace(_CLI_PLUGIN_DISCOVER_ANCHOR, _CLI_PLUGIN_DISCOVER_INSERT), encoding="utf-8")
-    print(f"  ✓ patched {target.name} (kanban worker plugin re-discover)")
+    print(f"  [OK] patched {target.name} (kanban worker plugin re-discover)")
 
 
 def _ensure_hermes_kanban_goal_quiet_patch(*, dry_run: bool = False) -> None:
@@ -316,7 +321,7 @@ def _ensure_hermes_kanban_goal_quiet_patch(*, dry_run: bool = False) -> None:
     text = target.read_text(encoding="utf-8")
     if _KANBAN_GOAL_QUIET_MARKER in text:
         if not dry_run:
-            print("  ✓ kanban goal-mode spawn patch (already applied)")
+            print("  [OK] kanban goal-mode spawn patch (already applied)")
         return
     if _KANBAN_SPAWN_OLD not in text:
         print(
@@ -325,10 +330,10 @@ def _ensure_hermes_kanban_goal_quiet_patch(*, dry_run: bool = False) -> None:
         )
         return
     if dry_run:
-        print(f"  would patch {target} (goal-mode → chat --quiet -q …)")
+        print(f"  would patch {target} (goal-mode -> chat --quiet -q …)")
         return
     target.write_text(text.replace(_KANBAN_SPAWN_OLD, _KANBAN_SPAWN_NEW), encoding="utf-8")
-    print(f"  ✓ patched {target.name} (goal-mode workers now use --quiet)")
+    print(f"  [OK] patched {target.name} (goal-mode workers now use --quiet)")
 
 
 def _ensure_hermes_cli_goal_loop_patch(*, dry_run: bool = False) -> None:
@@ -346,7 +351,7 @@ def _ensure_hermes_cli_goal_loop_patch(*, dry_run: bool = False) -> None:
     text = target.read_text(encoding="utf-8")
     if _CLI_GOAL_LOOP_MARKER in text:
         if not dry_run:
-            print("  ✓ cli.py goal-loop patch (already applied)")
+            print("  [OK] cli.py goal-loop patch (already applied)")
         return
     if _CLI_GOAL_LOOP_OLD not in text:
         print(
@@ -358,7 +363,7 @@ def _ensure_hermes_cli_goal_loop_patch(*, dry_run: bool = False) -> None:
         print(f"  would patch {target} (goal loop after chat -q)")
         return
     target.write_text(text.replace(_CLI_GOAL_LOOP_OLD, _CLI_GOAL_LOOP_NEW), encoding="utf-8")
-    print(f"  ✓ patched {target.name} (goal loop on chat -q path)")
+    print(f"  [OK] patched {target.name} (goal loop on chat -q path)")
 
 
 def _ensure_hermes_digest_toolsets_patch(*, dry_run: bool = False) -> None:
@@ -375,7 +380,7 @@ def _ensure_hermes_digest_toolsets_patch(*, dry_run: bool = False) -> None:
     text = target.read_text(encoding="utf-8")
     if _TOOLSETS_DIGEST_MARKER in text:
         if not dry_run:
-            print("  ✓ toolsets.py digest/kanban_worker patch (already applied)")
+            print("  [OK] toolsets.py digest/kanban_worker patch (already applied)")
         return
     if _TOOLSETS_KANBAN_ANCHOR not in text:
         print("  WARN toolsets.py kanban/discord anchor changed — patch not applied")
@@ -387,7 +392,7 @@ def _ensure_hermes_digest_toolsets_patch(*, dry_run: bool = False) -> None:
         text.replace(_TOOLSETS_KANBAN_ANCHOR, _TOOLSETS_KANBAN_WORKER_INSERT),
         encoding="utf-8",
     )
-    print(f"  ✓ patched {target.name} (kanban_worker + digest toolsets)")
+    print(f"  [OK] patched {target.name} (kanban_worker + digest toolsets)")
 
 
 def _ensure_hermes_kanban_complete_artifact_patch(*, dry_run: bool = False) -> None:
@@ -403,7 +408,7 @@ def _ensure_hermes_kanban_complete_artifact_patch(*, dry_run: bool = False) -> N
     text = target.read_text(encoding="utf-8")
     if _KANBAN_ROLE_GATES_MARKER in text:
         if not dry_run:
-            print("  ✓ kanban_complete role artifact gates (already applied)")
+            print("  [OK] kanban_complete role artifact gates (already applied)")
         return
     old_start = "            # # AI Digest: researcher output.md artifact gate"
     if old_start in text:
@@ -415,10 +420,10 @@ def _ensure_hermes_kanban_complete_artifact_patch(*, dry_run: bool = False) -> N
             return
         new_text = text[:start] + _KANBAN_ROLE_GATES_BLOCK + text[end + len(anchor) :]
         if dry_run:
-            print(f"  would upgrade {target} (researcher → full role artifact gates)")
+            print(f"  would upgrade {target} (researcher -> full role artifact gates)")
             return
         target.write_text(new_text, encoding="utf-8")
-        print(f"  ✓ upgraded {target.name} (role artifact gates on kanban_complete)")
+        print(f"  [OK] upgraded {target.name} (role artifact gates on kanban_complete)")
         return
     if _KANBAN_COMPLETE_ANCHOR not in text:
         print("  WARN kanban_tools.py complete_task anchor changed — artifact patch not applied")
@@ -427,7 +432,7 @@ def _ensure_hermes_kanban_complete_artifact_patch(*, dry_run: bool = False) -> N
         print(f"  would patch {target} (role artifact gates on kanban_complete)")
         return
     target.write_text(text.replace(_KANBAN_COMPLETE_ANCHOR, _KANBAN_COMPLETE_INSERT), encoding="utf-8")
-    print(f"  ✓ patched {target.name} (role artifact gates on kanban_complete)")
+    print(f"  [OK] patched {target.name} (role artifact gates on kanban_complete)")
 
 
 def _ensure_hermes_judge_goal_unpack_patch(*, dry_run: bool = False) -> None:
@@ -441,7 +446,7 @@ def _ensure_hermes_judge_goal_unpack_patch(*, dry_run: bool = False) -> None:
     text = target.read_text(encoding="utf-8")
     if _KANBAN_JUDGE_GOAL_MARKER in text:
         if not dry_run:
-            print("  ✓ kanban_complete judge_goal unpack (already applied)")
+            print("  [OK] kanban_complete judge_goal unpack (already applied)")
         return
     if _KANBAN_JUDGE_GOAL_OLD not in text:
         if not dry_run:
@@ -451,7 +456,7 @@ def _ensure_hermes_judge_goal_unpack_patch(*, dry_run: bool = False) -> None:
         print(f"  would patch {target} (judge_goal 4-tuple unpack)")
         return
     target.write_text(text.replace(_KANBAN_JUDGE_GOAL_OLD, _KANBAN_JUDGE_GOAL_NEW), encoding="utf-8")
-    print(f"  ✓ patched {target.name} (judge_goal 4-tuple unpack)")
+    print(f"  [OK] patched {target.name} (judge_goal 4-tuple unpack)")
 
 
 def _refresh_kanban_complete_error_message(*, dry_run: bool = False) -> None:
@@ -467,13 +472,13 @@ def _refresh_kanban_complete_error_message(*, dry_run: bool = False) -> None:
     fixed = ". Write output.md with verified URLs via your tools, then retry kanban_complete "
     if stale not in text:
         if _KANBAN_COMPLETE_ARTIFACT_MARKER in text and not dry_run:
-            print("  ✓ kanban_complete error message (already current)")
+            print("  [OK] kanban_complete error message (already current)")
         return
     if dry_run:
         print("  would refresh kanban_complete error message in kanban_tools.py")
         return
     target.write_text(text.replace(stale, fixed), encoding="utf-8")
-    print("  ✓ refreshed kanban_complete error message in kanban_tools.py")
+    print("  [OK] refreshed kanban_complete error message in kanban_tools.py")
 
 
 def _ensure_digest_admin_toolset_tools(*, dry_run: bool = False) -> None:
@@ -495,7 +500,7 @@ def _ensure_digest_admin_toolset_tools(*, dry_run: bool = False) -> None:
     )
     if want in text:
         if not dry_run:
-            print("  ✓ toolsets.py digest_admin (already present)")
+            print("  [OK] toolsets.py digest_admin (already present)")
         return
     old_block = re.compile(
         r'"digest_admin":\s*\{[^}]+\},',
@@ -507,7 +512,7 @@ def _ensure_digest_admin_toolset_tools(*, dry_run: bool = False) -> None:
             return
         text = old_block.sub(want, text, count=1)
         target.write_text(text, encoding="utf-8")
-        print(f"  ✓ upgraded digest_admin toolset in {target.name}")
+        print(f"  [OK] upgraded digest_admin toolset in {target.name}")
         return
     anchor = '"discord": {'
     if anchor not in text:
@@ -518,7 +523,7 @@ def _ensure_digest_admin_toolset_tools(*, dry_run: bool = False) -> None:
         print(f"  would add digest_admin toolset to {target}")
         return
     target.write_text(text.replace(anchor, insert, 1), encoding="utf-8")
-    print(f"  ✓ added digest_admin toolset to {target.name}")
+    print(f"  [OK] added digest_admin toolset to {target.name}")
 
 
 def _refresh_kanban_role_gate_block(*, dry_run: bool = False) -> None:
@@ -556,7 +561,7 @@ def _refresh_kanban_role_gate_block(*, dry_run: bool = False) -> None:
         print(f"  would refresh kanban role gates in {target}")
         return
     target.write_text(new_text, encoding="utf-8")
-    print(f"  ✓ refreshed {target.name} role artifact gates (orio_* profiles)")
+    print(f"  [OK] refreshed {target.name} role artifact gates (orio_* profiles)")
 
 
 def _ensure_digest_toolset_tools(*, dry_run: bool = False) -> None:
@@ -573,13 +578,13 @@ def _ensure_digest_toolset_tools(*, dry_run: bool = False) -> None:
     legacy = '"tools": ["verify_url", "fetch_rss", "read_preflight_category", "read_crawl_markdown", "read_structured_json", "read_topic_config"],'
     if want in text:
         if not dry_run:
-            print("  ✓ toolsets.py digest tools (already present)")
+            print("  [OK] toolsets.py digest tools (already present)")
         return
     if legacy in text:
         text = text.replace(legacy, want)
         if not dry_run:
             target.write_text(text, encoding="utf-8")
-            print("  ✓ updated digest tools in toolsets.py")
+            print("  [OK] updated digest tools in toolsets.py")
         elif dry_run:
             print("  would update digest tools in toolsets.py")
         return
@@ -592,7 +597,7 @@ def _ensure_digest_toolset_tools(*, dry_run: bool = False) -> None:
                 print(f"  would update digest tools in {target}")
                 return
             target.write_text(text.replace(old, want, 1), encoding="utf-8")
-            print(f"  ✓ updated digest tools in {target.name}")
+            print(f"  [OK] updated digest tools in {target.name}")
             return
     print("  WARN toolsets.py digest tools list changed — update manually")
 
@@ -603,35 +608,92 @@ def _ensure_digest_plugin_symlink(*, dry_run: bool = False) -> None:
     src = HERMES_PKG / "plugins" / "digest-tools"
     if dest.is_symlink() and dest.resolve() == src.resolve():
         if not dry_run:
-            print("  ✓ digest-tools plugin symlink")
+            print("  [OK] digest-tools plugin symlink")
         return
     if dry_run:
-        print(f"  would symlink {dest} → {src}")
+        print(f"  would symlink {dest} -> {src}")
         return
     dest.parent.mkdir(parents=True, exist_ok=True)
     if dest.exists() or dest.is_symlink():
         dest.unlink()
     dest.symlink_to(src)
-    print(f"  ✓ digest-tools plugin → {src.relative_to(REPO)}")
+    print(f"  [OK] digest-tools plugin -> {src.relative_to(REPO)}")
 
 
 def _ensure_digest_plugin_enabled(*, dry_run: bool = False) -> None:
-    """Enable digest-tools plugin (required for synthesize_digest in workers)."""
+    """Enable digest-tools plugin (required for synthesize_digest in workers).
+
+    T3-C fix: The upstream ``hermes plugins enable digest-tools`` command fails
+    because there is no registration path for local plugins.  Instead we write the
+    plugin allow-list directly into the root config.yaml so Hermes' own
+    ``discover_plugins()`` picks it up on next load.
+    """
     print("== setup: digest-tools plugin ==")
     if dry_run:
-        print("  would hermes plugins enable digest-tools")
+        print("  would write plugins.enabled -> config.yaml (direct file edit)")
         return
-    proc = subprocess.run(
-        [_hermes_bin() or "hermes", "plugins", "enable", "digest-tools"],
-        input="n\n",
-        text=True,
-        capture_output=True,
-    )
-    out = (proc.stdout or "") + (proc.stderr or "")
-    if proc.returncode != 0 and "enabled" not in out.lower():
-        print(out.strip() or f"  WARN plugins enable failed (exit {proc.returncode})")
+
+    cfg_path = HERMES_HOME / "config.yaml"
+    if not cfg_path.is_file():
+        print(f"  WARN skip — {cfg_path} missing (run bootstrap first)")
         return
-    print("  ✓ digest-tools plugin enabled")
+
+    with cfg_path.open(encoding="utf-8") as f:
+        cfg = yaml.safe_load(f) or {}
+
+    plugins_cfg = cfg.setdefault("plugins", {})
+    enabled = list(plugins_cfg.get("enabled") or [])
+    if "digest-tools" in enabled:
+        print("  [OK] digest-tools already in plugins.enabled")
+        return
+
+    # Write directly to config.yaml instead of calling the failing CLI command
+    if "digest-tools" not in enabled:
+        enabled.append("digest-tools")
+    plugins_cfg["enabled"] = enabled
+
+    with cfg_path.open("w", encoding="utf-8") as f:
+        yaml.safe_dump(cfg, f, default_flow_style=False, sort_keys=False)
+
+    print("  [OK] digest-tools plugin enabled (via config.yaml)")
+
+
+def _ensure_digest_plugin_registered(*, dry_run: bool = False) -> None:
+    """Ensure digest-tools plugin is discoverable by Hermes' plugin loader.
+
+    T3-C fix: Beyond enabling in the allow-list, we also write a minimal
+    ``plugins/entries`` registration so that ``discover_plugins()`` can locate
+    the local plugin directory without relying on upstream CLI registration.
+    """
+    print("== setup: digest-tools plugin registration ==")
+    if dry_run:
+        print("  would write plugins.entries -> config.yaml (direct file edit)")
+        return
+
+    cfg_path = HERMES_HOME / "config.yaml"
+    if not cfg_path.is_file():
+        print(f"  WARN skip — {cfg_path} missing")
+        return
+
+    with cfg_path.open(encoding="utf-8") as f:
+        cfg = yaml.safe_load(f) or {}
+
+    plugins_cfg = cfg.setdefault("plugins", {})
+    entries = dict(plugins_cfg.get("entries") or {})
+
+    plugin_src = HERMES_PKG / "plugins" / "digest-tools"
+    if not plugin_src.is_dir():
+        print(f"  WARN skip — {plugin_src} missing (run digest-tools symlink step)")
+        return
+
+    # Register the local plugin path so Hermes can discover it
+    entries["digest-tools"] = str(plugin_src)
+    plugins_cfg["entries"] = entries
+
+    with cfg_path.open("w", encoding="utf-8") as f:
+        yaml.safe_dump(cfg, f, default_flow_style=False, sort_keys=False)
+
+    print(f"  [OK] digest-tools registered -> {plugin_src.relative_to(REPO)}")
 
 
 def _configure_concierge_toolsets(*, dry_run: bool = False) -> None:
@@ -657,7 +719,7 @@ def _configure_concierge_toolsets(*, dry_run: bool = False) -> None:
     agent["disabled_toolsets"] = sorted(disabled)
     with cfg_path.open("w", encoding="utf-8") as f:
         yaml.safe_dump(cfg, f, default_flow_style=False, sort_keys=False)
-    print(f"  ✓ {HERMES_CONCIERGE} toolsets {toolsets}")
+    print(f"  [OK] {HERMES_CONCIERGE} toolsets {toolsets}")
 
 
 def _configure_researcher_worker_toolsets(*, dry_run: bool) -> None:
@@ -687,7 +749,7 @@ def _configure_researcher_worker_toolsets(*, dry_run: bool) -> None:
     agent["disabled_toolsets"] = sorted(disabled)
     with cfg_path.open("w", encoding="utf-8") as f:
         yaml.safe_dump(cfg, f, default_flow_style=False, sort_keys=False)
-    print(f"  ✓ {HERMES_RESEARCHER} toolsets + platform_toolsets.cli {toolsets}")
+    print(f"  [OK] {HERMES_RESEARCHER} toolsets + platform_toolsets.cli {toolsets}")
 
 
 def _configure_synthesizer_worker_toolsets(*, dry_run: bool = False) -> None:
@@ -712,7 +774,7 @@ def _configure_synthesizer_worker_toolsets(*, dry_run: bool = False) -> None:
     agent["disabled_toolsets"] = sorted(disabled)
     with cfg_path.open("w", encoding="utf-8") as f:
         yaml.safe_dump(cfg, f, default_flow_style=False, sort_keys=False)
-    print(f"  ✓ {HERMES_SYNTHESIZER} toolsets + platform_toolsets.cli {toolsets}")
+    print(f"  [OK] {HERMES_SYNTHESIZER} toolsets + platform_toolsets.cli {toolsets}")
 
 
 def _remove_legacy_profiles(*, dry_run: bool = False) -> None:
@@ -729,7 +791,7 @@ def _remove_legacy_profiles(*, dry_run: bool = False) -> None:
             continue
         proc = _run_hermes("profile", "delete", old, "-y")
         if proc.returncode == 0:
-            print(f"  ✓ removed legacy profile {old}")
+            print(f"  [OK] removed legacy profile {old}")
         else:
             print(f"  WARN could not remove {old}: {(proc.stderr or proc.stdout).strip()}")
 
@@ -771,7 +833,7 @@ def _configure_worker_profile_plugins(
             print(f"  WARN skip — {cfg_path} missing")
             continue
         if dry_run:
-            print(f"  would copy plugins.enabled + symlink digest-tools → {name}")
+            print(f"  would copy plugins.enabled + symlink digest-tools -> {name}")
             continue
         with cfg_path.open(encoding="utf-8") as f:
             cfg = yaml.safe_load(f) or {}
@@ -792,7 +854,7 @@ def _configure_worker_profile_plugins(
                     continue
         if not plugin_dest.exists():
             plugin_dest.symlink_to(plugin_src)
-        print(f"  ✓ {name} plugins.enabled + digest-tools symlink")
+        print(f"  [OK] {name} plugins.enabled + digest-tools symlink")
 
 
 def _load_manifest() -> dict[str, Any]:
@@ -903,7 +965,7 @@ def _ensure_profile(
         if proc.returncode != 0:
             print(proc.stderr or proc.stdout)
             sys.exit(proc.returncode)
-        print(f"  ✓ profile {name} (updated description)")
+        print(f"  [OK] profile {name} (updated description)")
         return
     if dry_run:
         print(f"  would create profile {name}")
@@ -920,7 +982,7 @@ def _ensure_profile(
     if proc.returncode != 0:
         print(proc.stderr or proc.stdout)
         sys.exit(proc.returncode)
-    print(f"  ✓ profile {name} (created)")
+    print(f"  [OK] profile {name} (created)")
 
 
 def _deploy_soul(name: str, *, dry_run: bool) -> None:
@@ -935,7 +997,7 @@ def _deploy_soul(name: str, *, dry_run: bool) -> None:
         print(f"  WARN skip SOUL for {name} — profile dir missing")
         return
     shutil.copy2(src, dest)
-    print(f"  ✓ SOUL.md → {name}")
+    print(f"  [OK] SOUL.md -> {name}")
 
 
 def _deploy_repo_onboarding(name: str, *, dry_run: bool) -> None:
@@ -952,7 +1014,7 @@ def _deploy_repo_onboarding(name: str, *, dry_run: bool) -> None:
     if not _profile_dir(name).is_dir():
         return
     shutil.copy2(REPO_ONBOARDING_SRC, dest)
-    print(f"  ✓ REPO_ONBOARDING.md → {name}")
+    print(f"  [OK] REPO_ONBOARDING.md -> {name}")
 
 
 def _configure_default_ollama(
@@ -963,7 +1025,7 @@ def _configure_default_ollama(
     *,
     dry_run: bool,
 ) -> None:
-    print("== setup: default profile → Ollama ==")
+    print("== setup: default profile -> Ollama ==")
     for key, value in (
         ("model.default", model),
         ("model.provider", provider),
@@ -978,7 +1040,7 @@ def _configure_default_ollama(
             print(proc.stderr or proc.stdout)
             sys.exit(proc.returncode)
     if not dry_run:
-        print(f"  ✓ default → {model} @ {base_url} (ctx {context_length})")
+        print(f"  [OK] default -> {model} @ {base_url} (ctx {context_length})")
 
 
 def _configure_toolsets(toolsets: list[str], *, dry_run: bool) -> None:
@@ -991,7 +1053,7 @@ def _configure_toolsets(toolsets: list[str], *, dry_run: bool) -> None:
     if proc.returncode != 0:
         print(proc.stderr or proc.stdout)
         sys.exit(proc.returncode)
-    print(f"  ✓ toolsets {payload}")
+    print(f"  [OK] toolsets {payload}")
 
 
 def _configure_profile_toolsets(profile: str, toolsets: list[str], *, dry_run: bool) -> None:
@@ -1003,7 +1065,7 @@ def _configure_profile_toolsets(profile: str, toolsets: list[str], *, dry_run: b
     if proc.returncode != 0:
         print(proc.stderr or proc.stdout)
         sys.exit(proc.returncode)
-    print(f"  ✓ {profile} toolsets {payload}")
+    print(f"  [OK] {profile} toolsets {payload}")
 
 
 def _configure_kanban_poc(*, dry_run: bool) -> None:
@@ -1020,7 +1082,7 @@ def _configure_kanban_poc(*, dry_run: bool) -> None:
         if proc.returncode != 0:
             print(proc.stderr or proc.stdout)
             sys.exit(proc.returncode)
-        print(f"  ✓ {key} = {value}")
+        print(f"  [OK] {key} = {value}")
 
 
 def _configure_web(*, dry_run: bool) -> None:
@@ -1034,18 +1096,18 @@ def _configure_web(*, dry_run: bool) -> None:
     if proc.returncode != 0:
         print(proc.stderr or proc.stdout)
         sys.exit(proc.returncode)
-    print("  ✓ web.backend ddgs")
+    print("  [OK] web.backend ddgs")
     proc = _run_hermes("tools", "post-setup", "ddgs")
     if proc.returncode != 0:
         print(proc.stderr or proc.stdout)
         sys.exit(proc.returncode)
-    print("  ✓ ddgs package (post-setup)")
+    print("  [OK] ddgs package (post-setup)")
     proc = _run_hermes("doctor")
     combined = (proc.stdout or "") + (proc.stderr or "")
-    web_ok = any("web" in line.lower() and "✓" in line for line in combined.splitlines())
+    web_ok = any("web" in line.lower() and "[OK]" in line for line in combined.splitlines())
     web_warn = any("web" in line.lower() and "⚠" in line for line in combined.splitlines())
     if web_ok:
-        print("  ✓ doctor: web available")
+        print("  [OK] doctor: web available")
     elif web_warn:
         print("  WARN doctor: web still unavailable — check `hermes doctor`")
     else:
@@ -1076,7 +1138,7 @@ def setup_agents(*, dry_run: bool = False, quiet: bool = False, override_default
     if override_default:
         _configure_default_ollama(default_model, provider, base_url, context_length, dry_run=dry_run)
     else:
-        print("== setup: default profile → SKIPPED (use --override-default to configure) ==")
+        print("== setup: default profile -> SKIPPED (use --override-default to configure) ==")
 
     for role in spec.get("roles") or []:
         name = role["name"]
@@ -1091,7 +1153,7 @@ def setup_agents(*, dry_run: bool = False, quiet: bool = False, override_default
         _deploy_soul(name, dry_run=dry_run)
         _deploy_repo_onboarding(name, dry_run=dry_run)
         if not dry_run and not quiet:
-            print(f"  ✓ {name} → {model}")
+            print(f"  [OK] {name} -> {model}")
 
     researcher_toolsets = spec.get("researcher_toolsets")
     if researcher_toolsets:
@@ -1105,7 +1167,7 @@ def setup_agents(*, dry_run: bool = False, quiet: bool = False, override_default
         _configure_kanban_poc(dry_run=dry_run)
         _configure_web(dry_run=dry_run)
     else:
-        print("== setup: global kanban/toolsets/web → SKIPPED (use --override-default to configure) ==")
+        print("== setup: global kanban/toolsets/web -> SKIPPED (use --override-default to configure) ==")
     if patches:
         print("== setup: Hermes kanban goal-mode patch ==")
         _ensure_hermes_kanban_goal_quiet_patch(dry_run=dry_run)
@@ -1119,9 +1181,10 @@ def setup_agents(*, dry_run: bool = False, quiet: bool = False, override_default
         _ensure_hermes_judge_goal_unpack_patch(dry_run=dry_run)
         _refresh_kanban_complete_error_message(dry_run=dry_run)
     else:
-        print("== setup: upstream CLI source patches → SKIPPED (use --patches to apply) ==")
+        print("== setup: upstream CLI source patches -> SKIPPED (use --patches to apply) ==")
     _ensure_digest_plugin_symlink(dry_run=dry_run)
     _ensure_digest_plugin_enabled(dry_run=dry_run)
+    _ensure_digest_plugin_registered(dry_run=dry_run)  # T3-C: direct registration path
     _configure_concierge_toolsets(dry_run=dry_run)
     _configure_researcher_worker_toolsets(dry_run=dry_run)
     _configure_synthesizer_worker_toolsets(dry_run=dry_run)
@@ -1144,7 +1207,7 @@ def setup_agents(*, dry_run: bool = False, quiet: bool = False, override_default
         print("  python agentic/hermes/admin/manage.py go [--fresh]")
         print("  python agentic/hermes/admin/manage.py dispatch-research --redo-invalid")
         if demo:
-            print("\n  Task graph (research × N → librarian → synthesizer):")
+            print("\n  Task graph (research x N -> librarian -> synthesizer):")
             print(f"  {demo}")
     return 0
 
@@ -1189,13 +1252,24 @@ def _research_body(topic: str, *, prefix: str | None = None) -> str:
     from tools.topics import research_task_body
 
     pfx = prefix or "YYYYMMDDHHMMSS"
-    return research_task_body(topic, prefix=pfx)
+    body = research_task_body(topic, prefix=pfx)
+
+    # T3-B: Inject skills for RESEARCHER role
+    try:
+        from admin.skills_provider import SkillsProvider
+        provider = SkillsProvider.from_default_paths()
+        body = provider.inject_for_role("RESEARCHER", body)
+    except Exception as _sk_err:
+        # Non-fatal — workers still get raw SOUL text as fallback
+        pass
+
+    return body
 
 
 def _librarian_body(*, prefix: str | None = None) -> str:
     pfx = prefix or "YYYYMMDDHHMMSS"
     cache = f"agentic/hermes/.runtime/artifacts/{pfx}/research/"
-    return (
+    body = (
         f"Librarian merge for AI Digest (run prefix `{pfx}`).\n\n"
         f"Read researcher outputs under `{cache}` (one .md per topic). "
         "**Trust researchers** — they reflected and grounded their own artifacts; "
@@ -1208,10 +1282,20 @@ def _librarian_body(*, prefix: str | None = None) -> str:
         "Do not call kanban_block unless capability-blocked."
     )
 
+    # T3-B: Inject skills for LIBRARIAN role
+    try:
+        from admin.skills_provider import SkillsProvider
+        provider = SkillsProvider.from_default_paths()
+        body = provider.inject_for_role("LIBRARIAN", body)
+    except Exception as _sk_err:
+        pass
+
+    return body
+
 
 def _synthesizer_body(*, prefix: str | None = None) -> str:
     pfx = prefix or "YYYYMMDDHHMMSS"
-    return (
+    body = (
         f"Synthesize AI Digest (run prefix `{pfx}`).\n\n"
         "**Role:** format, schema, and writing only. Overlap and topic mapping are "
         "already settled in **librarian.md** — do not resolve overlap, remap topics, "
@@ -1227,6 +1311,16 @@ def _synthesizer_body(*, prefix: str | None = None) -> str:
         "Grounding · validate · render run deterministically after you complete — not your job.\n"
         "Do not hand-author digest.json. Do not call kanban_complete until step 4 passes."
     )
+
+    # T3-B: Inject skills for SYNTHESIZER role (empty set — no separate skill needed)
+    try:
+        from admin.skills_provider import SkillsProvider
+        provider = SkillsProvider.from_default_paths()
+        body = provider.inject_for_role("SYNTHESIZER", body)
+    except Exception as _sk_err:
+        pass
+
+    return body
 
 
 def _archive_digest_board() -> None:
@@ -1377,7 +1471,7 @@ def cmd_render_from_board(args: argparse.Namespace) -> int:
         for err in errors[:5]:
             print(f"    - {err}")
     html = _agentic_reports_dir() / f"{prefix}.html"
-    print(f"  ✓ wrote {html.relative_to(REPO)}")
+    print(f"  [OK] wrote {html.relative_to(REPO)}")
     return 0 if html.is_file() else 1
 
 
@@ -1390,7 +1484,7 @@ def _warm_run_ingest(prefix: str) -> None:
 
     print("\n== ingest: warm bundle (once per prefix) ==")
     bundle = warm_ingest_cache(agentic_config(), prefix)
-    print(f"  ✓ prefix={bundle.prefix} preflight + crawl + structured")
+    print(f"  [OK] prefix={bundle.prefix} preflight + crawl + structured")
 
 
 def _stamp_run_prefix_on_tasks(prefix: str) -> None:
@@ -1440,7 +1534,7 @@ def cmd_diagnostics(args: argparse.Namespace) -> int:
     except FileNotFoundError as exc:
         print(f"ERROR {exc}")
         return 1
-    print(f"\n✓ diagnostics: {path.relative_to(REPO)}")
+    print(f"\n[OK] diagnostics: {path.relative_to(REPO)}")
     html = path.with_suffix(".html")
     if html.is_file():
         print(f"  open: file://{html.resolve()}")
@@ -1464,8 +1558,8 @@ def cmd_go_pipeline(args: argparse.Namespace) -> int:
     print("== GO: batch pipeline (--pipeline) ==")
     print(f"  window: {window.label()}")
     print(f"  prefix: {run_prefix}")
-    print("  stages: preflight → crawl/structured → enrich → validate → render")
-    print("  NOTE: default GO uses agent kanban (Concierge → research × N → librarian → synthesizer)")
+    print("  stages: preflight -> crawl/structured -> enrich -> validate -> render")
+    print("  NOTE: default GO uses agent kanban (Concierge -> research x N -> librarian -> synthesizer)")
 
     result = run_production_pipeline(
         start=getattr(args, "start", None),
@@ -1486,19 +1580,19 @@ def cmd_go_pipeline(args: argparse.Namespace) -> int:
         return 1
 
     if result.get("fetch_only"):
-        print("\n✓ Ingest complete (--fetch-only)")
+        print("\n[OK] Ingest complete (--fetch-only)")
         _finish_run_telemetry()
         return 0
 
     report = Path(str(result.get("report_html") or ""))
     stories = result.get("story_count", "?")
-    print(f"\n✓ Report: {report.relative_to(REPO) if report.is_file() else report}")
+    print(f"\n[OK] Report: {report.relative_to(REPO) if report.is_file() else report}")
     print(f"  stories: {stories}")
     if result.get("diagnostics_json"):
         diag = Path(str(result["diagnostics_json"]))
         print(f"  diagnostics: {diag.relative_to(REPO)}")
     _finish_run_telemetry()
-    print("\n✓ GO completed (batch pipeline)")
+    print("\n[OK] GO completed (batch pipeline)")
     return 0
 
 
@@ -1522,21 +1616,29 @@ def _resolve_go_prefix(args: argparse.Namespace) -> str:
 
 
 def cmd_go_agents(args: argparse.Namespace) -> int:
-    """Production GO — kanban crew: research × N → librarian → synthesizer → render."""
+    """Production GO - kanban crew: research x N -> librarian -> synthesizer -> render."""
     global _agentic_run_prefix
 
     if not _hermes_bin():
         print("hermes not on PATH.")
         return 1
 
+    # T3-A: Gateway health check before dispatch
+    healthy, msg = _hermes_gateway_health()
+    if not healthy:
+        print(f"\n⚠ Gateway unavailable: {msg}")
+        print("  Auto-routing to batch pipeline (--pipeline fallback)")
+        print("  To restore kanban mode: start the Hermes gateway and retry.")
+        return cmd_go_pipeline(args)
+
     run_prefix = _resolve_go_prefix(args)
     _agentic_run_prefix = run_prefix
     _init_run_telemetry(run_prefix)
 
     print("== GO: agentic kanban (production) ==")
-    print("  Graph: Concierge → research × N → librarian → synthesizer → render")
+    print("  Graph: Concierge -> research x N -> librarian -> synthesizer -> render")
     print(f"  prefix: {run_prefix}")
-    print("  mode: Hermes workers (plan → tools → artifact gates)")
+    print("  mode: Hermes workers (plan -> tools -> artifact gates)")
 
     from tools.agent_diagnostics import get_agent_diagnostics
 
@@ -1594,7 +1696,7 @@ def cmd_go_agents(args: argparse.Namespace) -> int:
             print(f"\n✗ Phase A incomplete: {ok}/{len(research)} research tasks passed artifact gate")
             _finish_run_telemetry()
             return 1
-        print(f"\n✓ Phase A: {ok}/{len(research)} research tasks with valid output.md")
+        print(f"\n[OK] Phase A: {ok}/{len(research)} research tasks with valid output.md")
         _persist_research_artifacts(run_prefix)
         lib_cm = diag.phase("go.librarian", "Librarian · merge & classify") if diag else None
         if lib_cm:
@@ -1613,7 +1715,7 @@ def cmd_go_agents(args: argparse.Namespace) -> int:
             print("\n✗ Phase B incomplete: librarian artifact gate failed")
             _finish_run_telemetry()
             return 1
-        print("\n✓ Phase B (librarian): librarian.md passed artifact gate")
+        print("\n[OK] Phase B (librarian): librarian.md passed artifact gate")
         syn_cm = diag.phase("go.synthesizer", "Synthesizer · digest JSON") if diag else None
         if syn_cm:
             syn_cm.__enter__()
@@ -1632,7 +1734,7 @@ def cmd_go_agents(args: argparse.Namespace) -> int:
             print("\n✗ Phase B incomplete: synthesizer digest.json gate failed")
             _finish_run_telemetry()
             return 1
-        print("\n✓ Phase B (synthesizer): digest.json passed artifact gate")
+        print("\n[OK] Phase B (synthesizer): digest.json passed artifact gate")
     else:
         print("\n-- skip-dispatch: board ready (no worker dispatch)")
         _finish_run_telemetry()
@@ -1648,25 +1750,25 @@ def cmd_go_agents(args: argparse.Namespace) -> int:
             return 1
         print("\n== verify: all digest tasks done ==")
         for t in tasks:
-            print(f"  ✓ {t['id']} {t['title']} ({t['status']})")
+            print(f"  [OK] {t['id']} {t['title']} ({t['status']})")
         if _hermes_bin():
             _cleanup_board_after_go()
         board_clear = len(_digest_board_rows()) == 0
         receipt, trace = _write_handover_receipt(
             run_prefix, tasks=tasks, board_clear=board_clear
         )
-        print(f"\n✓ Receipt: {receipt.relative_to(REPO)}")
+        print(f"\n[OK] Receipt: {receipt.relative_to(REPO)}")
         from tools.handover_trace import format_trace_summary
 
         print("\n== provenance trace ==")
         for line in format_trace_summary(trace):
             print(line)
         if board_clear:
-            print("✓ Board clear (0 open digest tasks)")
+            print("[OK] Board clear (0 open digest tasks)")
         else:
             print("✗ Board not clear after cleanup")
             return 1
-        print("\n✓ verify-handover PASSED (no report render)")
+        print("\n[OK] verify-handover PASSED (no report render)")
         return 0
 
     render_args = argparse.Namespace(prefix=run_prefix)
@@ -1680,7 +1782,7 @@ def cmd_go_agents(args: argparse.Namespace) -> int:
         _finish_run_telemetry()
         return 1
     report = _agentic_reports_dir() / f"{run_prefix}.html"
-    print(f"\n✓ Report: {report.relative_to(REPO)}")
+    print(f"\n[OK] Report: {report.relative_to(REPO)}")
     if _hermes_bin():
         tasks = _handover_board_snapshot()
         _, trace = _write_handover_receipt(
@@ -1696,7 +1798,7 @@ def cmd_go_agents(args: argparse.Namespace) -> int:
     if _hermes_bin():
         _cleanup_board_after_go()
     _finish_run_telemetry()
-    print("\n✓ GO completed (research → librarian → synthesizer → render)")
+    print("\n[OK] GO completed (research -> librarian -> synthesizer -> render)")
     return 0
 
 
@@ -1759,6 +1861,47 @@ def _kanban_show_json(task_id: str) -> dict[str, Any]:
         sys.exit(1)
 
 
+def _hermes_gateway_health() -> tuple[bool, str]:
+    """Check if the Hermes kanban gateway is running and responsive.
+
+    Returns:
+        Tuple of (healthy: bool, message: str).
+        If healthy, message is empty. If unhealthy, message explains why.
+    """
+    hermes = _hermes_bin()
+    if not hermes:
+        return False, "hermes binary not found on PATH"
+
+    try:
+        proc = subprocess.run(
+            [hermes, "kanban", "list", "--json"],
+            cwd=REPO,
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+        if proc.returncode != 0:
+            stderr = (proc.stderr or "").strip()
+            stdout = (proc.stdout or "").strip()
+            combined = stderr or stdout
+            if "gateway" in combined.lower() or "connection" in combined.lower():
+                return False, f"Gateway unreachable: {combined[:200]}"
+            return False, f"Kanban list failed (exit {proc.returncode}): {combined[:200]}"
+
+        # Try to parse JSON to confirm gateway is actually responding
+        try:
+            json.loads(proc.stdout)
+            return True, ""
+        except json.JSONDecodeError:
+            stdout = (proc.stdout or "").strip()
+            return False, f"Gateway returned non-JSON response: {stdout[:200]}"
+
+    except subprocess.TimeoutExpired:
+        return False, "Gateway health check timed out after 10s"
+    except FileNotFoundError:
+        return False, "hermes binary not found on PATH"
+
+
 def _kanban_list_json() -> list[dict[str, Any]]:
     proc = _run_hermes("kanban", "list", "--json")
     if proc.returncode != 0:
@@ -1807,7 +1950,7 @@ def _replace_research_task(task_id: str, librarian_id: str) -> str:
     data = _kanban_show_json(task_id)
     topic = _research_topic(data["task"]["title"])
     goal, goal_max_turns = _demo_goal_settings()
-    print(f"  ↻ replace {task_id} ({topic})")
+    print(f"  <-> replace {task_id} ({topic})")
     _run_hermes("kanban", "unlink", task_id, librarian_id)
     _run_hermes("kanban", "archive", task_id)
     _run_hermes("kanban", "archive", "--rm", task_id)
@@ -1841,7 +1984,7 @@ def _prepare_task(task_id: str) -> bool:
             prefix, ws, librarian_workspace=_librarian_workspace()
         )
         if staged:
-            print(f"  staged: {LIBRARIAN_ARTIFACT} → {ws}")
+            print(f"  staged: {LIBRARIAN_ARTIFACT} -> {ws}")
     return True
 
 
@@ -1858,11 +2001,11 @@ def _materialize_role_artifact(
     if title == "Librarian: merge & classify":
         cached = persist_librarian(run_prefix, ws)
         if cached:
-            print(f"  cache: {LIBRARIAN_ARTIFACT} → {cached.relative_to(HERMES_PKG)}")
+            print(f"  cache: {LIBRARIAN_ARTIFACT} -> {cached.relative_to(HERMES_PKG)}")
     elif title == "Synthesize digest":
         cached = persist_digest(run_prefix, ws)
         if cached:
-            print(f"  cache: {DIGEST_ARTIFACT} → {cached.relative_to(HERMES_PKG)}")
+            print(f"  cache: {DIGEST_ARTIFACT} -> {cached.relative_to(HERMES_PKG)}")
         write_manifest(
             run_prefix,
             {
@@ -1893,7 +2036,7 @@ def _persist_research_artifacts(prefix: str) -> None:
             continue
         path = persist_research(prefix, topic, ws)
         if path:
-            print(f"  cache: research/{topic}.md → {path.name}")
+            print(f"  cache: research/{topic}.md -> {path.name}")
 
 
 def _role_artifact_locations(
@@ -1935,7 +2078,7 @@ def _validate_role_artifact(
 def _replace_synthesizer_task(task_id: str, librarian_id: str) -> str:
     """Archive an invalid synthesizer task and recreate it linked to the librarian."""
     goal, goal_max_turns = _demo_goal_settings()
-    print(f"  ↻ replace {task_id} (synthesizer)")
+    print(f"  <-> replace {task_id} (synthesizer)")
     _run_hermes("kanban", "unlink", task_id, librarian_id)
     _run_hermes("kanban", "archive", task_id)
     _run_hermes("kanban", "archive", "--rm", task_id)
@@ -1972,13 +2115,13 @@ def _dispatch_role_task(
         task = _kanban_show_json(task_id)["task"]
         errors, _ok_loc = _validate_role_artifact(task, title, validate, prefix=prefix)
         if not errors:
-            print(f"  ✓ already done with valid {artifact_name}")
+            print(f"  [OK] already done with valid {artifact_name}")
             return 0
         if title == "Synthesize digest":
             lib_row = _find_task_by_title("Librarian: merge & classify")
             if lib_row and lib_row.get("status") == "done":
                 task_id = _replace_synthesizer_task(task_id, lib_row["id"])
-                print(f"    recreated → {task_id}")
+                print(f"    recreated -> {task_id}")
             else:
                 print(f"  ✗ artifact gate: {', '.join(errors)}")
                 return 1
@@ -2002,7 +2145,7 @@ def _dispatch_role_task(
     if errors:
         print(f"  ✗ artifact gate: {', '.join(errors)}")
         return 1
-    print(f"  ✓ artifact ok: {ok_loc / artifact_name if ok_loc else artifact_name}")
+    print(f"  [OK] artifact ok: {ok_loc / artifact_name if ok_loc else artifact_name}")
     return 0
 
 
@@ -2098,7 +2241,7 @@ def cmd_dispatch_research(args: argparse.Namespace) -> int:
             ws = _researcher_workspace(row)
             if validate_researcher_artifact(ws):
                 new_id = _replace_research_task(row["id"], librarian_id)
-                print(f"    recreated → {new_id}")
+                print(f"    recreated -> {new_id}")
         research = [
             r for r in _kanban_list_json() if str(r.get("title", "")).startswith("Research:")
         ]
@@ -2135,7 +2278,7 @@ def cmd_dispatch_research(args: argparse.Namespace) -> int:
             print(f"  ✗ artifact gate: {', '.join(errors)}")
             if args.redo_invalid:
                 new_id = _replace_research_task(task_id, librarian_id)
-                print(f"  ↻ retrying {new_id}")
+                print(f"  <-> retrying {new_id}")
                 status = _dispatch_one(new_id)
                 print(f"  worker finished: {status}")
                 if status == "done":
@@ -2144,9 +2287,9 @@ def cmd_dispatch_research(args: argparse.Namespace) -> int:
                     errors = validate_researcher_artifact(ws)
             if errors:
                 continue
-            print(f"  ✓ artifact ok: {ws / 'output.md'}")
+            print(f"  [OK] artifact ok: {ws / 'output.md'}")
         else:
-            print(f"  ✓ artifact ok: {ws / 'output.md'}")
+            print(f"  [OK] artifact ok: {ws / 'output.md'}")
         if _agentic_run_prefix:
             topic = _research_topic(str(task.get("title", "")))
             cached = persist_research(_agentic_run_prefix, topic, ws)
@@ -2186,7 +2329,7 @@ def cmd_demo_board(args: argparse.Namespace) -> int:
 
     print("== demo-board: AI Digest Phase 2 POC ==")
     print(f"  run prefix: {_agentic_run_prefix}")
-    print("  Graph: research × N → librarian → synthesizer")
+    print("  Graph: research x N -> librarian -> synthesizer")
     print(f"  Topics ({len(topics)}): {', '.join(topics)}")
     if board.get("source_prefix"):
         print(
@@ -2293,10 +2436,10 @@ def _set_roles_yaml_model(new_model: str, *, dry_run: bool) -> None:
         print(f"  · {rel} already targets {new_model} (no yaml change)")
         return
     if dry_run:
-        print(f"  would update {rel} → {new_model}")
+        print(f"  would update {rel} -> {new_model}")
         return
     ROLES_PATH.write_text(updated, encoding="utf-8")
-    print(f"  ✓ {rel} → {new_model}")
+    print(f"  [OK] {rel} -> {new_model}")
 
 
 def cmd_model(args: argparse.Namespace) -> int:
@@ -2310,7 +2453,7 @@ def cmd_model(args: argparse.Namespace) -> int:
         return 1
     dry_run = args.dry_run
 
-    print(f"== model: switch ORIO roles → {new_model} ==")
+    print(f"== model: switch ORIO roles -> {new_model} ==")
     print(f"\n== model: source of truth ({ROLES_PATH.relative_to(REPO)}) ==")
     _set_roles_yaml_model(new_model, dry_run=dry_run)
 
@@ -2334,7 +2477,7 @@ def cmd_model(args: argparse.Namespace) -> int:
         print(f"\n== model: {name} ==")
         _profile_model_config(name, resolved, provider, base_url, context_length, dry_run=dry_run)
         if not dry_run:
-            print(f"  ✓ {name} → {resolved}")
+            print(f"  [OK] {name} -> {resolved}")
 
     if not dry_run:
         print("\n  Make it live on Hermes:")
@@ -2359,9 +2502,9 @@ def cmd_status(_: argparse.Namespace) -> int:
         ("config/hermes_roles.yaml", ROLES_PATH.is_file()),
     ]
     for name, ok in rows:
-        print(f"  {'✓' if ok else '·'} {name}")
+        print(f"  {'[OK]' if ok else '·'} {name}")
     hermes = _hermes_bin()
-    print(f"  {'✓' if hermes else '·'} hermes CLI ({hermes or 'not on PATH'})")
+    print(f"  {'[OK]' if hermes else '·'} hermes CLI ({hermes or 'not on PATH'})")
     return 0
 
 
@@ -2458,7 +2601,7 @@ def main() -> int:
 
     p_board = sub.add_parser(
         "demo-board",
-        help="create Phase 2 POC kanban graph (research × N → librarian → synthesizer)",
+        help="create Phase 2 POC kanban graph (research x N -> librarian -> synthesizer)",
     )
     p_board.add_argument("--dry-run", action="store_true")
     p_board.add_argument(
@@ -2502,7 +2645,7 @@ def main() -> int:
 
     p_go = sub.add_parser(
         "go",
-        help="Concierge GO: agentic kanban (research × N → librarian → synthesizer → render)",
+        help="Concierge GO: agentic kanban (research x N -> librarian -> synthesizer -> render)",
     )
     p_go.add_argument(
         "--start",

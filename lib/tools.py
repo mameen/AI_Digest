@@ -250,6 +250,10 @@ _REFORMAT_HINT = (
     '{"action": "<tool>", "args": {...}} or {"action": "finalize", "args": {"result": "<json>"}}.'
 )
 
+_NUDGE_PREMATURE_HINT = (
+    "Do not finalize yet. You have made zero tool calls. Please perform at least one tool call before finalizing."
+)
+
 
 def run_tool_loop(
     chat: Chat,
@@ -270,6 +274,7 @@ def run_tool_loop(
         {"role": "user", "content": user},
     ]
     call_log: list[dict[str, Any]] = []
+    last_call_key: tuple[str, dict[str, Any] | None] | None = None
 
     for _ in range(max_iterations):
         # ── emit tool actions ───────────────────────────────────────────────
@@ -278,32 +283,51 @@ def run_tool_loop(
         if not action:
             return None, call_log  # no valid action → bail
 
+        # ── check for finalize ──────────────────────────────────────────────
+        if action.name == "finalize":
+            # If finalize is called with zero tool calls and nudge is enabled,
+            # push the model back to do work first
+            if nudge_before_finalize and len(call_log) == 0:
+                messages.append({"role": "assistant", "content": reply})
+                messages.append({"role": "user", "content": _NUDGE_PREMATURE_HINT})
+                continue
+            return action.args.get("result"), call_log
+
+        # ── deduplicate identical calls ─────────────────────────────────────
+        call_key = (action.name, action.args)
+        if call_key == last_call_key:
+            # Skip duplicate execution, feed observation back and continue
+            messages.append({"role": "assistant", "content": reply})
+            messages.append({"role": "user", "content": f"Duplicate of previous {action.name} call; skip and try something else."})
+            continue
+
         # ── execute tool ────────────────────────────────────────────────────
         t0 = time.monotonic()
         tool_fn = tools.get(action.name)
         if tool_fn is None:
             result = {"error": f"unknown tool: {action.name}"}
+            # Unknown tools should not be logged to call_log per test expectations
+            messages.append({"role": "assistant", "content": reply})
+            messages.append({"role": "tool", "content": format_tool_result(action, result)})
         else:
             try:
                 result = tool_fn(**(action.args or {}))
             except Exception as exc:
                 result = {"error": str(exc)}
-        duration_ms = (time.monotonic() - t0) * 1000
+            duration_ms = (time.monotonic() - t0) * 1000
 
-        call_log.append({
-            "tool": action.name,
-            "args": action.args,
-            "result": result,
-            "duration_ms": round(duration_ms, 1),
-        })
+            call_log.append({
+                "tool": action.name,
+                "args": action.args,
+                "result": result,
+                "duration_ms": round(duration_ms, 1),
+            })
+            
+            # Only feed observation back for known tools (unknown tools already handled above)
+            messages.append({"role": "assistant", "content": reply})
+            messages.append({"role": "tool", "content": format_tool_result(action, result)})
 
-        # ── feed observation back ───────────────────────────────────────────
-        messages.append({"role": "assistant", "content": reply})
-        messages.append({"role": "tool", "content": format_tool_result(action, result)})
-
-        # ── check for finalize ──────────────────────────────────────────────
-        if action.name == "finalize":
-            return action.args.get("result"), call_log
+        last_call_key = call_key
 
     # budget exhausted — ask for a reformat
     if nudge_before_finalize:

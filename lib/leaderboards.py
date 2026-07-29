@@ -16,7 +16,7 @@ from typing import Any
 AA_CRAWL_SLUG = "artificialanalysis.ai_leaderboards_models.md"
 ARENA_T2I_CRAWL_SLUG = "arena.ai_leaderboard_text-to-image.md"
 
-_IMG_MD = re.compile(r"!\[[^\]]*\]\([^)]*\]")
+_IMG_MD = re.compile(r"!\[[^\]]*\]\([^)]*\)", re.DOTALL)
 _WEB_SEARCH = re.compile(r"\s*\[web-search\]")
 _MD_LINK = re.compile(r"\[([^\]]+)\]\(")
 
