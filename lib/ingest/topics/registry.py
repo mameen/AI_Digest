@@ -7,7 +7,7 @@ from enum import Enum
 from typing import Any
 
 from lib.ingest.extractors.rss import FeedSpec
-from llm_pipeline.leaderboards import AA_CRAWL_SLUG
+from lib.leaderboards import AA_CRAWL_SLUG
 
 
 class SourceKind(str, Enum):

@@ -105,7 +105,7 @@ def fetch_structured_sources(cfg: dict[str, Any], prefix: str) -> list[Path]:
     """Download structured-API leaderboard JSON (no scraping) into the run cache."""
     import urllib.request
 
-    from llm_pipeline.structured_sources import STRUCTURED_SOURCES
+    from lib.structured_sources import STRUCTURED_SOURCES
 
     if not cfg.get("ingestion", {}).get("structured_sources", {}).get("enabled", True):
         return []
@@ -186,7 +186,7 @@ def fetch_one_structured(cfg: dict[str, Any], prefix: str, slug: str) -> Path | 
     """Download one structured-API JSON payload by slug."""
     import urllib.request
 
-    from llm_pipeline.structured_sources import STRUCTURED_SOURCES
+    from lib.structured_sources import STRUCTURED_SOURCES
 
     if not cfg.get("ingestion", {}).get("structured_sources", {}).get("enabled", True):
         return None

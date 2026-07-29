@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from lib.paths import cache_dir
-from llm_pipeline.structured_sources import evalplus_rows, swebench_rows
+from lib.structured_sources import evalplus_rows, swebench_rows
 
 from lib.ingest.fixtures import fixture_path
 from lib.ingest.types import IngestBundle, ResearchBullet

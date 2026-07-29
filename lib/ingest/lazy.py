@@ -7,7 +7,7 @@ import shutil
 from pathlib import Path
 from typing import Any
 
-from llm_pipeline.leaderboards import AA_CRAWL_SLUG
+from lib.leaderboards import AA_CRAWL_SLUG
 from lib.paths import cache_dir, preflight_dir
 
 from lib.ingest.fixtures import evaluation_fixture_path, fixture_path, resolve_fixture
