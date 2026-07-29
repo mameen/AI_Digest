@@ -233,7 +233,7 @@ def rebuild_app_archives(repo: Path | None = None, *, dry_run: bool = False) -> 
     _ensure_scripts_path()
     from _report_utils import build_frame_html  # type: ignore
 
-    from llm_pipeline.config import load_config
+    from lib.config import load_config
     from llm_pipeline.diagnostics import rebuild_diagnostics_waterfall_pages
     from llm_pipeline.diagnostics_frame import rebuild_diagnostics_archive
     from llm_pipeline.frame_author import inject_author_card

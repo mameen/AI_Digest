@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from llm_pipeline.leaderboards import AA_CRAWL_SLUG, parse_aa_models_md
-from llm_pipeline.paths import cache_dir
+from lib.paths import cache_dir
 
 from lib.ingest.fixtures import fixture_path
 from lib.ingest.types import IngestBundle, ResearchBullet

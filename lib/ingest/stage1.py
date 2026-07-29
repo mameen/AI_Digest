@@ -13,7 +13,7 @@ from typing import Any
 
 from llm_pipeline.dates import parse_start, prefix_for_start
 from llm_pipeline.diagnostics import get_collector
-from llm_pipeline.paths import SKILL_SCRIPTS, cache_dir, preflight_dir
+from lib.paths import SKILL_SCRIPTS, cache_dir, preflight_dir
 
 
 def run_preflight(cfg: dict[str, Any], prefix: str | None = None) -> tuple[str, Path]:

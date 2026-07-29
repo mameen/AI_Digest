@@ -9,7 +9,7 @@ from typing import Any
 
 from llm_pipeline.editorial import load_editorial_brief
 from llm_pipeline.llm_client import make_client, make_raw_chat
-from llm_pipeline.schema import CategoryStories, DigestHeader
+from lib.schema import CategoryStories, DigestHeader
 
 from tools.artifacts import (
     LIBRARIAN_ARTIFACT,

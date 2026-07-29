@@ -11,7 +11,7 @@ from llm_pipeline.diagnostics import finish_collector, get_collector, init_colle
 from llm_pipeline.enrich import enrich_digest
 from llm_pipeline.grounding import collect_roots
 from llm_pipeline.history import load_prior_digests
-from llm_pipeline.paths import cache_dir, diagnostics_dir, reports_dir
+from lib.paths import cache_dir, diagnostics_dir, reports_dir
 from llm_pipeline.validate import apply_validation, validate_digest
 
 from tools.baseline import agentic_config, validate_and_render
@@ -95,7 +95,7 @@ def run_production_pipeline(
         init_collector(run_prefix, cfg)
 
     from lib.ingest.stage1 import crawl_leaderboards, fetch_structured_sources, run_preflight
-    from llm_pipeline.paths import preflight_dir
+    from lib.paths import preflight_dir
 
     collector = get_collector()
     crawl_files: list[Path] = []

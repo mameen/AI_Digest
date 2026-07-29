@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from llm_pipeline.leaderboards import AA_CRAWL_SLUG
-from llm_pipeline.paths import cache_dir, preflight_dir
+from lib.paths import cache_dir, preflight_dir
 
 from lib.ingest.fixtures import evaluation_fixture_path, fixture_path, resolve_fixture
 from lib.ingest.topics.registry import SourceKind, TopicBinding, binding_for

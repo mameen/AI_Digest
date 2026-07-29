@@ -234,13 +234,13 @@ class AgentDiagnosticsCollector:
     def write(self) -> Path:
         from llm_pipeline.diagnostics import _render_run_log, _render_waterfall_html
         from llm_pipeline.diagnostics_frame import rebuild_diagnostics_archive
-        from llm_pipeline.paths import diagnostics_dir
+        from lib.paths import diagnostics_dir
 
         out_dir = diagnostics_dir(self.cfg)
         out_dir.mkdir(parents=True, exist_ok=True)
         report = self.build_report()
         from lib.report_source import enrich_diagnostics_with_source
-        from llm_pipeline.paths import diagnostics_dir
+        from lib.paths import diagnostics_dir
 
         report = enrich_diagnostics_with_source(report, diagnostics_dir(self.cfg))
         json_path = out_dir / f"{self.prefix}.diagnostics.json"

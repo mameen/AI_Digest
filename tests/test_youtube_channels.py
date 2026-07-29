@@ -7,7 +7,7 @@ import sys
 import unittest
 from pathlib import Path
 
-from llm_pipeline.paths import VENDOR_DIR
+from lib.paths import VENDOR_DIR
 
 _SCRIPTS = VENDOR_DIR / "scripts"
 if str(_SCRIPTS) not in sys.path:

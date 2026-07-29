@@ -11,7 +11,7 @@ from typing import Any
 
 from llm_pipeline.editorial import CANONICAL_ORDER, CATEGORY_CATALOG, category_id, load_editorial_brief
 from llm_pipeline.llm_client import make_client
-from llm_pipeline.schema import CategoryStories, DigestHeader
+from lib.schema import CategoryStories, DigestHeader
 
 from tools.artifacts import DIGEST_ARTIFACT, LIBRARIAN_ARTIFACT, validate_synthesizer_artifact
 from tools.category_merge import merge_stories_by_url
