@@ -1,0 +1,11 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "google/gemini-2.0-flash-exp:free",
+  "provider": {
+    "openrouter": {
+      "options": {
+        "apiKey": "sk-or-v1-your-key"
+      }
+    }
+  }
+}

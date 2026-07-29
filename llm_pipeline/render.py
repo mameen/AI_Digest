@@ -122,6 +122,8 @@ def render(cfg: dict[str, Any], prefix: str, data: dict[str, Any]) -> Path:
     if lb is None:
         lb = "[]"
     lb = _crawl_driven_leaderboards(cfg, prefix, lb)
+    if lb is None:
+        lb = "[]"
     html = build_content_html(prefix, lb, reports)
     html_path = reports / f"{prefix}.html"
     html_path.write_text(html, encoding="utf-8")

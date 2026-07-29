@@ -1,7 +1,7 @@
 {
   "generated_at": "2026-07-28T12:00:00Z",
   "filename_prefix": "20260728120000",
-  "summary": "Claude Opus 5 maintains its dominance on the intelligence benchmarks while IBM redefines AI development workflows and Moonshot AI enables efficient inference on standard hardware through native MXFP4 support.",
+  "summary": "Claude Opus 5 dominates intelligence and latency leaderboards while open contenders like Kimi K3 pressure frontier limits, alongside rapid progress in temporal video generation and local agentic deployment.",
   "aisearch_video_url": "https://www.youtube.com/watch?v=RCsBJz4W4bA",
   "aisearch_video_label": "Jul 27: Claude Opus 5 is a freak",
   "aisearch_video_description": "Claude Opus 5 review & full testing. #ai #ainews #aitools #llm #agi #singularity Thanks to our sponsor Luma. Try it today https://lumalabs.ai/aisearch-skills\n\nFull song: https://x.com/aisearchio/status/2081525872549626276\n\n00:00 Opus 5 intro\n01:02 Windows on browser\n07:16 Image to 3D\n09:08 Financial presentation video\n11:56 Luma Agents\n13:54 Blender X wing fighter\n15:38 Music composition\n20:55 FROG TEST\n22:02 Identifying cancer\n23:09 Deep research\n24:43 Specs cost benchmarks\n29:50 Guardrails \n30:52 Verdict\n\n\nNewsletter: https://aisearch.substack.com/\nFind AI tools & jobs: https://ai-search.io/\nSupport: https://ko-fi.com/aisearch\n\nHere's my equipment, in case you're wondering:\nLenovo Thinkbook: https://amzn.to/4jWeKwH\nDell Precision 5690: https://www.dell.com/en-us/dt/ai-technologies/index.htm?utm_source=AISearchTools&utm_medium=youtube&utm_campaign=precisionai#tab0=0 \nGPU: Nvidia RTX 5000 Ada https://nvda.ws/3zfqGqS\nMic: Shure SM7B https://amzn.to/3DErjt1\nAudio interface: Scarlett Solo https://amzn.to/3qELMeu",
@@ -12,18 +12,18 @@
       "icon": "🏆",
       "stories": [
         {
-          "id": "lb-opus-dominance",
-          "title": "Claude Opus 5 Secures Top Intelligence Score",
-          "summary": "Claude Opus 5 claims the number one spot on the Artificial Analysis Intelligence Index with a score of 61 using max settings. The xhigh configuration follows closely at an index of 60. GPT-5.6 Sol holds the fourth position with an intelligence score of 59. Anthropic maintains clear ranking leadership over rival frontier models in raw reasoning benchmarks this week.",
+          "id": "lb-1",
+          "title": "Claude Opus 5 Secures Top Closed Intelligence Spot",
+          "summary": "Artificial Analysis data places Claude Opus 5 at index value 61, maintaining a clear lead over GPT-5.6 Sol (max) at 59. Anthropic continues to widen the performance gap in complex reasoning tasks while keeping output speed competitive for enterprise workloads.",
           "source": "Artificial Analysis Leaderboard",
           "url": "https://artificialanalysis.ai/leaderboards/models",
-          "significance": 5,
+          "significance": 4,
           "novelty": 3,
-          "relevance_design": 3,
+          "relevance_design": 1,
           "tags": [
-            "claude-opus-5",
-            "intelligence-benchmark",
-            "anthropic"
+            "claude",
+            "closed-model",
+            "intelligence-index"
           ],
           "image_url": null,
           "source_pending": false,
@@ -34,18 +34,18 @@
           "links": []
         },
         {
-          "id": "lb-open-leader",
-          "title": "Llama 4 Scout Leads Open-Weight Cost Efficiency",
-          "summary": "Llama 4 Scout emerges as the open-weight leader for cost efficiency and context window support. The model ties for the lowest cost per task while supporting massive context windows exceeding one million tokens. Meta's architecture demonstrates that scale does not require premium pricing tiers or restricted access points.",
-          "source": "Ingestion Context",
-          "url": null,
-          "significance": 5,
+          "id": "lb-2",
+          "title": "Kimi K3 Dominates Frontend Code and Breaches Closed Wall",
+          "summary": "Moonshot AI's Kimi K3 now leads the frontend code category on arena rankings, surpassing several paid frontier models. The 2.8 trillion parameter Mixture-of-Experts model supports a 1.05 million token context window and costs $0.72 per task, signaling a major shift in open-weight competitiveness.",
+          "source": "The Stack / Moonshot AI",
+          "url": "https://huggingface.co/moonshotai",
+          "significance": 4,
           "novelty": 4,
           "relevance_design": 2,
           "tags": [
-            "llama-4-scout",
-            "open-weight-models",
-            "meta"
+            "kimik3",
+            "open-weight",
+            "code-leaderboard"
           ],
           "image_url": null,
           "source_pending": false,
@@ -56,18 +56,18 @@
           "links": []
         },
         {
-          "id": "lb-kimi-rise",
-          "title": "Kimi K3 Challenges Frontier Rankings with Efficiency",
-          "summary": "Kimi K3 achieves an intelligence score of 57 while maintaining a competitive price point of $0.72 per million input tokens. The model previously topped the frontend code leaderboard and utilizes a Mixture of Experts architecture with only 16 active experts per token. Moonshot AI proves highly efficient parameter routing can compete with dense frontier models.",
-          "source": "The Stack / Artificial Analysis",
-          "url": "https://artificialanalysis.ai/models/kimi-k3",
-          "significance": 4,
-          "novelty": 4,
+          "id": "lb-3",
+          "title": "Cost Per Task Plummets as Llama 4 Scout and MiMo V2.5 Take Crown",
+          "summary": "Entry level closed models now trade under $0.30 per task, with Llama 4 Scout and Xiaomi's MiMo V2.5 claiming the lowest cost benchmarks. GPT-5.6 Sol (low) follows closely at $0.24, proving that baseline commercial routing remains highly cost effective for high volume pipelines.",
+          "source": "Artificial Analysis / Meta",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "significance": 3,
+          "novelty": 5,
           "relevance_design": 1,
           "tags": [
-            "kimi-k3",
-            "mixture-of-experts",
-            "moonshot-ai"
+            "pricing",
+            "cost-optimization",
+            "api-routing"
           ],
           "image_url": null,
           "source_pending": false,
@@ -78,17 +78,17 @@
           "links": []
         },
         {
-          "id": "lb-gpt-luna-speed",
-          "title": "GPT-5.6 Luna Sets New Speed Benchmark",
-          "summary": "GPT-5.6 Luna sets a new speed benchmark for the OpenAI lineup by reaching 197 tokens per second on median throughput tests. The high-speed variant drops the intelligence index to 51 compared to the Sol max score of 59. Engineers gain access to ultra-fast inference at the expense of complex reasoning capabilities.",
-          "source": "Artificial Analysis Leaderboard",
-          "url": "https://artificialanalysis.ai/models/gpt-5-6-luna",
-          "significance": 3,
+          "id": "lb-4",
+          "title": "Latency Wars Push Gemini 3.6 Flash Lite to the Front",
+          "summary": "First token generation times now sit below 22 seconds for Gemini 3.6 Flash Lite, capturing the latency crown ahead of Command A Plus and North Mini Code. Real time application developers are rapidly shifting routing rules toward flash families to satisfy sub minute response thresholds.",
+          "source": "Artificial Analysis / Google",
+          "url": "https://cloud.google.com/vertex-ai/generative-ai/docs/models/gemini-3-6-flash",
+          "significance": 4,
           "novelty": 2,
           "relevance_design": 2,
           "tags": [
-            "gpt-5-6-luna",
-            "openai",
+            "latency",
+            "gemini",
             "inference-speed"
           ],
           "image_url": null,
@@ -100,18 +100,18 @@
           "links": []
         },
         {
-          "id": "lb-mercury-speed",
-          "title": "Mercury 2 Wins Raw Output Speed Category",
-          "summary": "Mercury 2 takes the top position for output speed from previous leaders in the Artificial Analysis rankings. Gemini 3.5 Flash-Lite ranks second for raw tokens per second while Gemini 2.5 Flash-Lite wins the lowest latency category. The race for sub-second responsiveness intensifies across multiple providers simultaneously.",
-          "source": "Artificial Analysis Leaderboard",
-          "url": "https://artificialanalysis.ai/leaderboards/models",
-          "significance": 4,
+          "id": "lb-5",
+          "title": "Context Windows Expand Past One Million Tokens Across Top Tiers",
+          "summary": "Llama 4 Scout, Grok 4.20, and Kimi K3 all formally support windows exceeding one million tokens, pushing the industry standard for long document processing. This expansion reduces context fragmention for enterprise RAG stacks and allows deeper historical retention in multimodal agents.",
+          "source": "Artificial Analysis / Meta",
+          "url": "https://ai.meta.com/blog/llama4",
+          "significance": 3,
           "novelty": 3,
-          "relevance_design": 4,
+          "relevance_design": 1,
           "tags": [
-            "mercury-2",
-            "infrastructure-benchmarks",
-            "latency"
+            "context-window",
+            "rag",
+            "enterprise-ai"
           ],
           "image_url": null,
           "source_pending": false,
@@ -122,18 +122,18 @@
           "links": []
         },
         {
-          "id": "lb-open-closed-gap",
-          "title": "Open Models Close the Intelligence Gap",
-          "summary": "The intelligence gap between open and closed systems shrinks as models like Kimi K3 push past index 57. Open-weight options including Llama 4 Scout offer enterprise features at fractions of the cost associated with GPT-5.6 or Opus configurations. Architecture shifts toward Mixture of Experts continue driving performance gains without proportional pricing hikes.",
-          "source": "Editorial Synthesis",
-          "url": null,
-          "significance": 4,
-          "novelty": 5,
-          "relevance_design": 1,
+          "id": "lb-6",
+          "title": "Image Arena Elo Shifts Favor Text Rendering and Multimodal Accuracy",
+          "summary": "Arena.ai text to image rankings now track typography fidelity alongside aesthetic scores, revealing new gaps in character layout rendering. Models trained on specialized font corpora are rapidly climbing the Elo board, prompting direct competition with established visual generation pipelines.",
+          "source": "Arena.ai / Artificial Analysis",
+          "url": "https://arena.ai/leaderboard/text-to-image",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
           "tags": [
-            "open-weight-analysis",
-            "pricing-trends",
-            "market-competition"
+            "image-gen",
+            "typography",
+            "arena-elo"
           ],
           "image_url": null,
           "source_pending": false,
@@ -151,19 +151,42 @@
       "icon": "📊",
       "stories": [
         {
-          "id": "an-1",
-          "title": "AI Trends Index Tracks Latency and Throughput Curves",
-          "summary": "Artificial Analysis released updated latency and throughput curves for high-volume inference workloads. The analysis isolates first-token response times against median output speed across major API providers.",
+          "id": "analytics-claude-opus-5-intelligence-dominance",
+          "title": "Claude Opus 5 Sets New Intelligence Standard on Artificial Analysis Rankings",
+          "summary": "Anthropic's latest model leads the intelligence index with a score of 61, surpassing all closed and open competitor weights. The assessment notes superior performance in reasoning and math while maintaining competitive latency metrics compared to legacy systems.",
           "source": "Artificial Analysis",
-          "url": "https://artificialanalysis.ai/trends",
+          "url": "https://artificialanalysis.ai/models/claude-opus-5",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "intelligence",
+            "ranking",
+            "anthropic",
+            "opusa-5"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "gap:analytics",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "links": []
+        },
+        {
+          "id": "analytics-gpt-5-6-sol-tiers",
+          "title": "OpenAI Expands GPT-5.6 Portfolio with Sol, Terra, and Luna Performance Tiers",
+          "summary": "OpenAI introduces a three-tier model family targeting distinct cost and speed requirements for enterprise workloads. The Sol variant ranks highest among the new releases on intelligence benchmarks, while Terra offers optimized throughput for standard tasks.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/gpt-5-6-sol",
           "significance": 4,
           "novelty": 3,
           "relevance_design": 2,
           "tags": [
-            "benchmarks",
-            "latency",
-            "throughput",
-            "metrics"
+            "pricing",
+            "openai",
+            "model-family",
+            "tiers"
           ],
           "image_url": null,
           "source_pending": false,
@@ -174,19 +197,19 @@
           "links": []
         },
         {
-          "id": "an-2",
-          "title": "Hybrid Search Metrics Drive Enterprise Vector Benchmarks",
-          "summary": "Google Cloud Tech demonstrated AlloyDB hybrid search using reciprocal rank fusion to combine vector embeddings with full-text backends. Benchmark results show reduced latency and improved ranking accuracy for production retrieval pipelines.",
-          "source": "Google Cloud Tech",
-          "url": "https://goo.gle/4d3cuSe",
-          "significance": 3,
-          "novelty": 4,
-          "relevance_design": 2,
+          "id": "analytics-kimi-k3-code-frontier",
+          "title": "Kimi K3 Surpasses Paid Models on Frontend Code Benchmarks and Intelligence Index",
+          "summary": "The open-weight model from Moonshot AI secures the top spot for code generation, scoring 57 on intelligence and beating costly proprietary options. It combines a trillion-parameter scale with dynamic expert activation to minimize hardware costs for inference servers.",
+          "source": "Artificial Analysis",
+          "url": "https://huggingface.co/moonshotai",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 4,
           "tags": [
-            "search",
-            "vectors",
-            "enterprise",
-            "retrieval"
+            "open-source",
+            "moonshot",
+            "code-generation",
+            "kimi-k3"
           ],
           "image_url": null,
           "source_pending": false,
@@ -197,19 +220,19 @@
           "links": []
         },
         {
-          "id": "an-3",
-          "title": "Vellum Open Weights Metrics Reveal Closed Model Gaps",
-          "summary": "Vellum updated its ranking algorithms with fresh GPQA, AIME, and SWE-bench scores. The revision highlights widening metric gaps between closed foundational models and high-performing open-weight alternatives.",
+          "id": "analytics-vellum-frontier-benchmarks",
+          "title": "Vellum Leaderboard Tracks Shifting GPQA and SWE-Bench Performance Among Top Models",
+          "summary": "Updated analysis highlights the gap between specialized research models and general-purpose agents in advanced reasoning tasks. Frontline contenders maintain high scores while new entrants push cost-per-task metrics to record lows.",
           "source": "Vellum",
           "url": null,
-          "significance": 4,
-          "novelty": 3,
-          "relevance_design": 2,
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 3,
           "tags": [
-            "benchmarking",
-            "open-weight",
-            "rankings",
-            "metrics"
+            "benchmarks",
+            "vellum",
+            "gpqa",
+            "swe-bench"
           ],
           "image_url": null,
           "source_pending": true,
@@ -220,22 +243,22 @@
           "links": []
         },
         {
-          "id": "an-4",
-          "title": "Enterprise Identity Frameworks Secure Agent Access and Costs",
-          "summary": "Hugging Face updated its enterprise plans to enforce single sign-on and centralized token management across team workspaces. The governance layer tracks resource group usage to prevent credential drift during automated tool execution.",
-          "source": "Hugging Face",
-          "url": "https://huggingface.co/pricing",
-          "significance": 3,
+          "id": "analytics-open-weights-cost-disruption",
+          "title": "Llama 4 Scout and MoE Architecture Drive Low-Cost Inference Trends in Open Leaderboard",
+          "summary": "Analysis of the open leaderboards reveals Mixture-of-Experts models dominating cost-per-task rankings by activating minimal parameters per token. This shift places pressure on closed providers to lower prices for standard text-to-text generations.",
+          "source": "Vellum",
+          "url": null,
+          "significance": 4,
           "novelty": 3,
           "relevance_design": 2,
           "tags": [
-            "governance",
-            "security",
-            "enterprise",
-            "billing"
+            "open-source",
+            "architecture",
+            "pricing-trends",
+            "efficiency"
           ],
           "image_url": null,
-          "source_pending": false,
+          "source_pending": true,
           "provenance": "gap:analytics",
           "channel_key": null,
           "channel_label": null,
@@ -250,95 +273,35 @@
       "icon": "🔍",
       "stories": [
         {
-          "id": "ais-identifying-cancer",
-          "title": "Identifying cancer",
-          "summary": "The model processes medical imaging datasets to flag potential tumor regions with high sensitivity. Annotations align with radiologist baselines but require clinical verification before being considered actionable.",
+          "id": "ais-opus-5-intro",
+          "title": "Opus 5 intro",
+          "summary": "Anthropic launches Claude Opus 5 with upgraded multimodal reasoning and lower latency. The update targets complex workflows by combining faster inference with expanded context windows for enterprise deployment.",
           "source": "theAIsearch",
-          "url": "https://www.youtube.com/watch?v=RCsBJz4W4bA&t=1322s",
+          "url": "https://www.youtube.com/watch?v=RCsBJz4W4bA&t=0s",
           "significance": 5,
           "novelty": 4,
-          "relevance_design": 4,
+          "relevance_design": 2,
           "tags": [
-            "medical-imaging",
-            "oncology-detection",
-            "claude-opus-5",
-            "diagnostic-assistance"
+            "llm",
+            "release",
+            "anthropic"
           ],
           "image_url": null,
           "source_pending": false,
-          "channel_key": "youtube-theaisearch",
+          "channel_key": "aisearch",
           "channel_label": "theAIsearch",
-          "topic": "Identifying cancer",
+          "topic": null,
           "links": [
-            {
-              "name": "Full song",
-              "url": "https://x.com/aisearchio/status/2081525872549626276",
-              "kind": "x"
-            },
-            {
-              "name": "Audio interface: Scarlett Solo",
-              "url": "https://amzn.to/3qELMeu",
-              "kind": "web"
-            },
             {
               "name": "Claude Opus 5 review & full testing. #ai #ainews #aitools #llm #agi #singularity Thanks to our sponsor Luma. Try it toda",
               "url": "https://lumalabs.ai/aisearch-skills",
               "kind": "web"
             },
             {
-              "name": "Dell Precision 5690",
-              "url": "https://www.dell.com/en-us/dt/ai-technologies/index.htm?utm_source=AISearchTools&utm_medium=youtube&utm_campaign=precisionai#tab0=0",
-              "kind": "web"
+              "name": "Full song",
+              "url": "https://x.com/aisearchio/status/2081525872549626276",
+              "kind": "x"
             },
-            {
-              "name": "Find AI tools & jobs",
-              "url": "https://ai-search.io/",
-              "kind": "web"
-            },
-            {
-              "name": "GPU: Nvidia RTX 5000 Ada",
-              "url": "https://nvda.ws/3zfqGqS",
-              "kind": "web"
-            },
-            {
-              "name": "Lenovo Thinkbook",
-              "url": "https://amzn.to/4jWeKwH",
-              "kind": "web"
-            },
-            {
-              "name": "Mic: Shure SM7B",
-              "url": "https://amzn.to/3DErjt1",
-              "kind": "web"
-            },
-            {
-              "name": "Newsletter",
-              "url": "https://aisearch.substack.com/",
-              "kind": "web"
-            }
-          ],
-          "provenance": "skeleton:aisearch"
-        },
-        {
-          "id": "ais-verdict",
-          "title": "Verdict",
-          "summary": "The host concludes the review by weighing Claude Opus 5 against competing models in the current market. Production readiness is confirmed for most creative tasks, though specific niche workflows still require desktop extensions.",
-          "source": "theAIsearch",
-          "url": "https://www.youtube.com/watch?v=RCsBJz4W4bA&t=1852s",
-          "significance": 5,
-          "novelty": 2,
-          "relevance_design": 3,
-          "tags": [
-            "product-evaluation",
-            "claude-opus-5",
-            "market-analysis",
-            "ai-verdict"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "channel_key": "youtube-theaisearch",
-          "channel_label": "theAIsearch",
-          "topic": "Verdict",
-          "links": [
             {
               "name": "Audio interface: Scarlett Solo",
               "url": "https://amzn.to/3qELMeu",
@@ -372,16 +335,6 @@
             {
               "name": "Newsletter",
               "url": "https://aisearch.substack.com/",
-              "kind": "web"
-            },
-            {
-              "name": "Full song",
-              "url": "https://x.com/aisearchio/status/2081525872549626276",
-              "kind": "x"
-            },
-            {
-              "name": "Claude Opus 5 review & full testing. #ai #ainews #aitools #llm #agi #singularity Thanks to our sponsor Luma. Try it toda",
-              "url": "https://lumalabs.ai/aisearch-skills",
               "kind": "web"
             }
           ],
@@ -390,92 +343,22 @@
         {
           "id": "ais-deep-research",
           "title": "Deep research",
-          "summary": "Deep search capabilities pull real-time data to expand initial prompts into comprehensive research outlines. The model cross-references sources effectively but occasionally prioritizes older publications over recent arXiv releases.",
+          "summary": "The model implements iterative web browsing and cross document synthesis for long form technical analysis. Analysts use the capability to verify claims across thousands of peer reviewed papers autonomously.",
           "source": "theAIsearch",
           "url": "https://www.youtube.com/watch?v=RCsBJz4W4bA&t=1389s",
-          "significance": 4,
-          "novelty": 5,
-          "relevance_design": 3,
-          "tags": [
-            "deep-research",
-            "real-time-search",
-            "claude-opus-5",
-            "academic-intelligence"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "channel_key": "youtube-theaisearch",
-          "channel_label": "theAIsearch",
-          "topic": "Deep research",
-          "links": [
-            {
-              "name": "Full song",
-              "url": "https://x.com/aisearchio/status/2081525872549626276",
-              "kind": "x"
-            },
-            {
-              "name": "Audio interface: Scarlett Solo",
-              "url": "https://amzn.to/3qELMeu",
-              "kind": "web"
-            },
-            {
-              "name": "Claude Opus 5 review & full testing. #ai #ainews #aitools #llm #agi #singularity Thanks to our sponsor Luma. Try it toda",
-              "url": "https://lumalabs.ai/aisearch-skills",
-              "kind": "web"
-            },
-            {
-              "name": "Dell Precision 5690",
-              "url": "https://www.dell.com/en-us/dt/ai-technologies/index.htm?utm_source=AISearchTools&utm_medium=youtube&utm_campaign=precisionai#tab0=0",
-              "kind": "web"
-            },
-            {
-              "name": "Find AI tools & jobs",
-              "url": "https://ai-search.io/",
-              "kind": "web"
-            },
-            {
-              "name": "GPU: Nvidia RTX 5000 Ada",
-              "url": "https://nvda.ws/3zfqGqS",
-              "kind": "web"
-            },
-            {
-              "name": "Lenovo Thinkbook",
-              "url": "https://amzn.to/4jWeKwH",
-              "kind": "web"
-            },
-            {
-              "name": "Mic: Shure SM7B",
-              "url": "https://amzn.to/3DErjt1",
-              "kind": "web"
-            },
-            {
-              "name": "Newsletter",
-              "url": "https://aisearch.substack.com/",
-              "kind": "web"
-            }
-          ],
-          "provenance": "skeleton:aisearch"
-        },
-        {
-          "id": "ais-luma-agents",
-          "title": "Luma Agents",
-          "summary": "The review highlights Luma Agents as a new automation layer that coordinates multi-step workflows alongside Claude Opus 5. Automated scheduling and context switching require minimal configuration overhead.",
-          "source": "theAIsearch",
-          "url": "https://www.youtube.com/watch?v=RCsBJz4W4bA&t=716s",
-          "significance": 4,
+          "significance": 5,
           "novelty": 4,
           "relevance_design": 2,
           "tags": [
-            "luma-agents",
-            "ai-automation",
-            "claude-opus-5",
-            "workflow-synchronization"
+            "deep-research",
+            "reasoning",
+            "automation"
           ],
           "image_url": null,
           "source_pending": false,
-          "channel_key": "youtube-theaisearch",
+          "channel_key": "aisearch",
           "channel_label": "theAIsearch",
-          "topic": "Luma Agents",
+          "topic": null,
           "links": [
             {
               "name": "Full song",
@@ -526,163 +409,24 @@
           "provenance": "skeleton:aisearch"
         },
         {
-          "id": "ais-opus-5-intro",
-          "title": "Opus 5 intro",
-          "summary": "The channel introduces Claude Opus 5, outlining its base architecture and setting performance baselines for the upcoming benchmark tests. The host details the hardware configuration and evaluation methodology before beginning field testing.",
+          "id": "ais-identifying-cancer",
+          "title": "Identifying cancer",
+          "summary": "Clinical AI models now spot early tumor markers in radiology scans with sub millimeter precision. Hospitals integrate these detectors into PACS workflows to flag anomalies prior to specialist review.",
           "source": "theAIsearch",
-          "url": "https://www.youtube.com/watch?v=RCsBJz4W4bA&t=0s",
-          "significance": 4,
-          "novelty": 3,
-          "relevance_design": 2,
+          "url": "https://www.youtube.com/watch?v=RCsBJz4W4bA&t=1322s",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 1,
           "tags": [
-            "claude-opus-5",
-            "ai-review",
-            "architecture",
-            "performance-baseline"
+            "healthtech",
+            "medical-imaging",
+            "diagnostics"
           ],
           "image_url": null,
           "source_pending": false,
-          "channel_key": "youtube-theaisearch",
+          "channel_key": "aisearch",
           "channel_label": "theAIsearch",
-          "topic": "Opus 5 intro",
-          "links": [
-            {
-              "name": "Claude Opus 5 review & full testing. #ai #ainews #aitools #llm #agi #singularity Thanks to our sponsor Luma. Try it toda",
-              "url": "https://lumalabs.ai/aisearch-skills",
-              "kind": "web"
-            },
-            {
-              "name": "Full song",
-              "url": "https://x.com/aisearchio/status/2081525872549626276",
-              "kind": "x"
-            },
-            {
-              "name": "Audio interface: Scarlett Solo",
-              "url": "https://amzn.to/3qELMeu",
-              "kind": "web"
-            },
-            {
-              "name": "Dell Precision 5690",
-              "url": "https://www.dell.com/en-us/dt/ai-technologies/index.htm?utm_source=AISearchTools&utm_medium=youtube&utm_campaign=precisionai#tab0=0",
-              "kind": "web"
-            },
-            {
-              "name": "Find AI tools & jobs",
-              "url": "https://ai-search.io/",
-              "kind": "web"
-            },
-            {
-              "name": "GPU: Nvidia RTX 5000 Ada",
-              "url": "https://nvda.ws/3zfqGqS",
-              "kind": "web"
-            },
-            {
-              "name": "Lenovo Thinkbook",
-              "url": "https://amzn.to/4jWeKwH",
-              "kind": "web"
-            },
-            {
-              "name": "Mic: Shure SM7B",
-              "url": "https://amzn.to/3DErjt1",
-              "kind": "web"
-            },
-            {
-              "name": "Newsletter",
-              "url": "https://aisearch.substack.com/",
-              "kind": "web"
-            }
-          ],
-          "provenance": "skeleton:aisearch"
-        },
-        {
-          "id": "ais-specs-cost-benchmarks",
-          "title": "Specs cost benchmarks",
-          "summary": "The video breaks down token pricing and computational costs relative to standard LLM deployments. Claude Opus 5 demonstrates competitive throughput at scale, justifying its tiered subscription model for heavy workloads.",
-          "source": "theAIsearch",
-          "url": "https://www.youtube.com/watch?v=RCsBJz4W4bA&t=1483s",
-          "significance": 4,
-          "novelty": 3,
-          "relevance_design": 2,
-          "tags": [
-            "cost-analysis",
-            "token-pricing",
-            "claude-opus-5",
-            "benchmarking"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "channel_key": "youtube-theaisearch",
-          "channel_label": "theAIsearch",
-          "topic": "Specs cost benchmarks",
-          "links": [
-            {
-              "name": "Full song",
-              "url": "https://x.com/aisearchio/status/2081525872549626276",
-              "kind": "x"
-            },
-            {
-              "name": "Audio interface: Scarlett Solo",
-              "url": "https://amzn.to/3qELMeu",
-              "kind": "web"
-            },
-            {
-              "name": "Claude Opus 5 review & full testing. #ai #ainews #aitools #llm #agi #singularity Thanks to our sponsor Luma. Try it toda",
-              "url": "https://lumalabs.ai/aisearch-skills",
-              "kind": "web"
-            },
-            {
-              "name": "Dell Precision 5690",
-              "url": "https://www.dell.com/en-us/dt/ai-technologies/index.htm?utm_source=AISearchTools&utm_medium=youtube&utm_campaign=precisionai#tab0=0",
-              "kind": "web"
-            },
-            {
-              "name": "Find AI tools & jobs",
-              "url": "https://ai-search.io/",
-              "kind": "web"
-            },
-            {
-              "name": "GPU: Nvidia RTX 5000 Ada",
-              "url": "https://nvda.ws/3zfqGqS",
-              "kind": "web"
-            },
-            {
-              "name": "Lenovo Thinkbook",
-              "url": "https://amzn.to/4jWeKwH",
-              "kind": "web"
-            },
-            {
-              "name": "Mic: Shure SM7B",
-              "url": "https://amzn.to/3DErjt1",
-              "kind": "web"
-            },
-            {
-              "name": "Newsletter",
-              "url": "https://aisearch.substack.com/",
-              "kind": "web"
-            }
-          ],
-          "provenance": "skeleton:aisearch"
-        },
-        {
-          "id": "ais-guardrails",
-          "title": "Guardrails",
-          "summary": "Guardrail mechanisms filter sensitive queries and enforce compliance thresholds automatically. The system catches potential policy violations early but occasionally over-restricts benign creative prompts.",
-          "source": "theAIsearch",
-          "url": "https://www.youtube.com/watch?v=RCsBJz4W4bA&t=1790s",
-          "significance": 4,
-          "novelty": 3,
-          "relevance_design": 2,
-          "tags": [
-            "guardrails",
-            "ai-compliance",
-            "prompt-filtering",
-            "claude-opus-5"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "channel_key": "youtube-theaisearch",
-          "channel_label": "theAIsearch",
-          "topic": "Guardrails",
+          "topic": null,
           "links": [
             {
               "name": "Full song",
@@ -735,23 +479,22 @@
         {
           "id": "ais-image-to-3d",
           "title": "Image to 3D",
-          "summary": "The model converts static photos into navigable 3D meshes with consistent geometry and texture mapping. It handles complex spacing well but requires manual cleanup for fine architectural details.",
+          "summary": "Diffusion models now convert single reference images into textured, game ready meshes automatically. Creators use these pipelines to accelerate asset generation for interactive applications.",
           "source": "theAIsearch",
           "url": "https://www.youtube.com/watch?v=RCsBJz4W4bA&t=436s",
-          "significance": 3,
-          "novelty": 4,
-          "relevance_design": 3,
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 5,
           "tags": [
-            "image-to-3d",
-            "generative-3d",
-            "claude-opus-5",
-            "computer-vision"
+            "3d-generation",
+            "graphics",
+            "pipeline"
           ],
           "image_url": null,
           "source_pending": false,
-          "channel_key": "youtube-theaisearch",
+          "channel_key": "aisearch",
           "channel_label": "theAIsearch",
-          "topic": "Image to 3D",
+          "topic": null,
           "links": [
             {
               "name": "Full song",
@@ -802,25 +545,24 @@
           "provenance": "skeleton:aisearch"
         },
         {
-          "id": "ais-windows-on-browser",
-          "title": "Windows on browser",
-          "summary": "Claude Opus 5 runs directly inside the browser without desktop installation, offering streamlined access for Windows users. This web-first rollout cuts setup time and removes local dependency constraints.",
+          "id": "ais-luma-agents",
+          "title": "Luma Agents",
+          "summary": "Luma introduces autonomous agent frameworks that manage cross service workflows without manual prompts. Developers integrate these agents to handle scheduling, data routing, and legacy API calls directly.",
           "source": "theAIsearch",
-          "url": "https://www.youtube.com/watch?v=RCsBJz4W4bA&t=62s",
-          "significance": 3,
+          "url": "https://www.youtube.com/watch?v=RCsBJz4W4bA&t=716s",
+          "significance": 4,
           "novelty": 4,
-          "relevance_design": 2,
+          "relevance_design": 1,
           "tags": [
-            "browser-integration",
-            "claude-opus-5",
-            "web-workflow",
-            "windows-compatibility"
+            "agents",
+            "automation",
+            "luma"
           ],
           "image_url": null,
           "source_pending": false,
-          "channel_key": "youtube-theaisearch",
+          "channel_key": "aisearch",
           "channel_label": "theAIsearch",
-          "topic": "Windows on browser",
+          "topic": null,
           "links": [
             {
               "name": "Full song",
@@ -871,25 +613,296 @@
           "provenance": "skeleton:aisearch"
         },
         {
-          "id": "ais-financial-presentation-video",
-          "title": "Financial presentation video",
-          "summary": "Claude Opus 5 generates structured financial slides with accurate chart layouts and enterprise-grade formatting. Output aligns closely to corporate reporting standards without manual reformatting steps.",
+          "id": "ais-frog-test",
+          "title": "FROG TEST",
+          "summary": "Researchers apply a novel multimodal stress test to evaluate reasoning under high visual noise and ambiguous prompts. The benchmark reveals latency bottlenecks when models cross reference frames during complex evaluation.",
           "source": "theAIsearch",
-          "url": "https://www.youtube.com/watch?v=RCsBJz4W4bA&t=548s",
-          "significance": 3,
+          "url": "https://www.youtube.com/watch?v=RCsBJz4W4bA&t=1255s",
+          "significance": 4,
           "novelty": 3,
-          "relevance_design": 4,
+          "relevance_design": 1,
           "tags": [
-            "financial-presentation",
-            "ai-slide-generation",
-            "claude-opus-5",
-            "enterprise-tools"
+            "benchmark",
+            "rag",
+            "testing"
           ],
           "image_url": null,
           "source_pending": false,
-          "channel_key": "youtube-theaisearch",
+          "channel_key": "aisearch",
           "channel_label": "theAIsearch",
-          "topic": "Financial presentation video",
+          "topic": null,
+          "links": [
+            {
+              "name": "Full song",
+              "url": "https://x.com/aisearchio/status/2081525872549626276",
+              "kind": "x"
+            },
+            {
+              "name": "Audio interface: Scarlett Solo",
+              "url": "https://amzn.to/3qELMeu",
+              "kind": "web"
+            },
+            {
+              "name": "Claude Opus 5 review & full testing. #ai #ainews #aitools #llm #agi #singularity Thanks to our sponsor Luma. Try it toda",
+              "url": "https://lumalabs.ai/aisearch-skills",
+              "kind": "web"
+            },
+            {
+              "name": "Dell Precision 5690",
+              "url": "https://www.dell.com/en-us/dt/ai-technologies/index.htm?utm_source=AISearchTools&utm_medium=youtube&utm_campaign=precisionai#tab0=0",
+              "kind": "web"
+            },
+            {
+              "name": "Find AI tools & jobs",
+              "url": "https://ai-search.io/",
+              "kind": "web"
+            },
+            {
+              "name": "GPU: Nvidia RTX 5000 Ada",
+              "url": "https://nvda.ws/3zfqGqS",
+              "kind": "web"
+            },
+            {
+              "name": "Lenovo Thinkbook",
+              "url": "https://amzn.to/4jWeKwH",
+              "kind": "web"
+            },
+            {
+              "name": "Mic: Shure SM7B",
+              "url": "https://amzn.to/3DErjt1",
+              "kind": "web"
+            },
+            {
+              "name": "Newsletter",
+              "url": "https://aisearch.substack.com/",
+              "kind": "web"
+            }
+          ],
+          "provenance": "skeleton:aisearch"
+        },
+        {
+          "id": "ais-guardrails",
+          "title": "Guardrails",
+          "summary": "Anthropic updates constitutional AI parameters to restrict harmful code generation and jailbreak patterns. Enterprise SaaS partners receive updated system prompts to enforce stricter data handling boundaries.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=RCsBJz4W4bA&t=1790s",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
+          "tags": [
+            "safety",
+            "alignment",
+            "enterprise"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": "aisearch",
+          "channel_label": "theAIsearch",
+          "topic": null,
+          "links": [
+            {
+              "name": "Full song",
+              "url": "https://x.com/aisearchio/status/2081525872549626276",
+              "kind": "x"
+            },
+            {
+              "name": "Audio interface: Scarlett Solo",
+              "url": "https://amzn.to/3qELMeu",
+              "kind": "web"
+            },
+            {
+              "name": "Claude Opus 5 review & full testing. #ai #ainews #aitools #llm #agi #singularity Thanks to our sponsor Luma. Try it toda",
+              "url": "https://lumalabs.ai/aisearch-skills",
+              "kind": "web"
+            },
+            {
+              "name": "Dell Precision 5690",
+              "url": "https://www.dell.com/en-us/dt/ai-technologies/index.htm?utm_source=AISearchTools&utm_medium=youtube&utm_campaign=precisionai#tab0=0",
+              "kind": "web"
+            },
+            {
+              "name": "Find AI tools & jobs",
+              "url": "https://ai-search.io/",
+              "kind": "web"
+            },
+            {
+              "name": "GPU: Nvidia RTX 5000 Ada",
+              "url": "https://nvda.ws/3zfqGqS",
+              "kind": "web"
+            },
+            {
+              "name": "Lenovo Thinkbook",
+              "url": "https://amzn.to/4jWeKwH",
+              "kind": "web"
+            },
+            {
+              "name": "Mic: Shure SM7B",
+              "url": "https://amzn.to/3DErjt1",
+              "kind": "web"
+            },
+            {
+              "name": "Newsletter",
+              "url": "https://aisearch.substack.com/",
+              "kind": "web"
+            }
+          ],
+          "provenance": "skeleton:aisearch"
+        },
+        {
+          "id": "ais-specs-cost-benchmarks",
+          "title": "Specs cost benchmarks",
+          "summary": "Independent labs publish token pricing and throughput metrics showing Opus 5 narrowing the gap with competing frontier models. Cost per million tokens drops while latency stabilizes under high concurrency loads.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=RCsBJz4W4bA&t=1483s",
+          "significance": 4,
+          "novelty": 2,
+          "relevance_design": 1,
+          "tags": [
+            "benchmark",
+            "cost-analysis",
+            "infrastructure"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": "aisearch",
+          "channel_label": "theAIsearch",
+          "topic": null,
+          "links": [
+            {
+              "name": "Full song",
+              "url": "https://x.com/aisearchio/status/2081525872549626276",
+              "kind": "x"
+            },
+            {
+              "name": "Audio interface: Scarlett Solo",
+              "url": "https://amzn.to/3qELMeu",
+              "kind": "web"
+            },
+            {
+              "name": "Claude Opus 5 review & full testing. #ai #ainews #aitools #llm #agi #singularity Thanks to our sponsor Luma. Try it toda",
+              "url": "https://lumalabs.ai/aisearch-skills",
+              "kind": "web"
+            },
+            {
+              "name": "Dell Precision 5690",
+              "url": "https://www.dell.com/en-us/dt/ai-technologies/index.htm?utm_source=AISearchTools&utm_medium=youtube&utm_campaign=precisionai#tab0=0",
+              "kind": "web"
+            },
+            {
+              "name": "Find AI tools & jobs",
+              "url": "https://ai-search.io/",
+              "kind": "web"
+            },
+            {
+              "name": "GPU: Nvidia RTX 5000 Ada",
+              "url": "https://nvda.ws/3zfqGqS",
+              "kind": "web"
+            },
+            {
+              "name": "Lenovo Thinkbook",
+              "url": "https://amzn.to/4jWeKwH",
+              "kind": "web"
+            },
+            {
+              "name": "Mic: Shure SM7B",
+              "url": "https://amzn.to/3DErjt1",
+              "kind": "web"
+            },
+            {
+              "name": "Newsletter",
+              "url": "https://aisearch.substack.com/",
+              "kind": "web"
+            }
+          ],
+          "provenance": "skeleton:aisearch"
+        },
+        {
+          "id": "ais-verdict",
+          "title": "Verdict",
+          "summary": "Claude Opus 5 delivers a complete architectural refresh that prioritizes reliability over raw speed gains. Teams adopting the model report fewer hallucinations in production while maintaining competitive inference costs.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=RCsBJz4W4bA&t=1852s",
+          "significance": 4,
+          "novelty": 2,
+          "relevance_design": 1,
+          "tags": [
+            "opinion",
+            "summary",
+            "review"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": "aisearch",
+          "channel_label": "theAIsearch",
+          "topic": null,
+          "links": [
+            {
+              "name": "Audio interface: Scarlett Solo",
+              "url": "https://amzn.to/3qELMeu",
+              "kind": "web"
+            },
+            {
+              "name": "Dell Precision 5690",
+              "url": "https://www.dell.com/en-us/dt/ai-technologies/index.htm?utm_source=AISearchTools&utm_medium=youtube&utm_campaign=precisionai#tab0=0",
+              "kind": "web"
+            },
+            {
+              "name": "Find AI tools & jobs",
+              "url": "https://ai-search.io/",
+              "kind": "web"
+            },
+            {
+              "name": "GPU: Nvidia RTX 5000 Ada",
+              "url": "https://nvda.ws/3zfqGqS",
+              "kind": "web"
+            },
+            {
+              "name": "Lenovo Thinkbook",
+              "url": "https://amzn.to/4jWeKwH",
+              "kind": "web"
+            },
+            {
+              "name": "Mic: Shure SM7B",
+              "url": "https://amzn.to/3DErjt1",
+              "kind": "web"
+            },
+            {
+              "name": "Newsletter",
+              "url": "https://aisearch.substack.com/",
+              "kind": "web"
+            },
+            {
+              "name": "Full song",
+              "url": "https://x.com/aisearchio/status/2081525872549626276",
+              "kind": "x"
+            },
+            {
+              "name": "Claude Opus 5 review & full testing. #ai #ainews #aitools #llm #agi #singularity Thanks to our sponsor Luma. Try it toda",
+              "url": "https://lumalabs.ai/aisearch-skills",
+              "kind": "web"
+            }
+          ],
+          "provenance": "skeleton:aisearch"
+        },
+        {
+          "id": "ais-blender-x-wing-fighter",
+          "title": "Blender X wing fighter",
+          "summary": "AI sculpting assistants accelerate hard surface modeling by generating base topology from reference sketches. Hobbyists and VFX artists use the technique to cut production time on iconic props.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=RCsBJz4W4bA&t=834s",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "vfx",
+            "blender",
+            "ai-assist"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": "aisearch",
+          "channel_label": "theAIsearch",
+          "topic": null,
           "links": [
             {
               "name": "Full song",
@@ -949,18 +962,17 @@
         {
           "id": "yt-nate-herk-who-replaces-you",
           "title": "Who replaces you?",
-          "summary": "Agentic AI now automates roughly 60 percent of internal corporate tasks, displacing hundreds of thousands of jobs. Nate Herk outlines how professionals can adapt before mass automation accelerates.",
+          "summary": "Agentic AI already handles 60 percent of internal corporate tasks, forcing professionals to pivot before automation accelerates. Nate Herk outlines how non technical creators can build a service infrastructure using current tooling. The segment introduces preparation frameworks for the near term workforce shift.",
           "source": "Nate Herk",
           "url": "https://www.youtube.com/watch?v=Ums8suyAG1A&t=0s",
           "significance": 4,
           "novelty": 3,
-          "relevance_design": 2,
+          "relevance_design": 1,
           "tags": [
-            "ai-agents",
-            "job-security",
+            "agentic-ai",
+            "business-models",
             "automation",
-            "career-advice",
-            "nate-herk"
+            "workforce"
           ],
           "image_url": null,
           "source_pending": false,
@@ -1009,17 +1021,17 @@
         {
           "id": "yt-nate-herk-not-a-robot",
           "title": "Not a robot",
-          "summary": "As automated systems take over routine workflows, the line between human and machine outputs blurs. Herk warns that preparing for this shift requires adopting new technical skills immediately.",
+          "summary": "The creator contrasts manual legacy workflows with automated agent pipelines to demonstrate where human input remains viable. The segment highlights specific technical bottlenecks that currently require human supervision or intervention in production environments.",
           "source": "Nate Herk",
           "url": "https://www.youtube.com/watch?v=Ums8suyAG1A&t=31s",
           "significance": 3,
           "novelty": 2,
-          "relevance_design": 2,
+          "relevance_design": 1,
           "tags": [
-            "ai-development",
+            "agentic-ai",
             "automation",
-            "workforce-shift",
-            "tech-trends"
+            "workflow",
+            "human-in-the-loop"
           ],
           "image_url": null,
           "source_pending": false,
@@ -1068,17 +1080,17 @@
         {
           "id": "yt-nate-herk-ceo-s-warning",
           "title": "CEO's warning",
-          "summary": "Executive leadership faces mounting pressure to integrate AI tools without losing operational control or staff morale. The video highlights immediate strategic pivots required by business leaders.",
+          "summary": "Industry leadership signals an accelerated transition toward autonomous agent deployment across mid sized enterprises. The creator warns that delayed adoption will trigger immediate restructuring waves for traditional service firms relying on manual delivery.",
           "source": "Nate Herk",
           "url": "https://www.youtube.com/watch?v=Ums8suyAG1A&t=43s",
           "significance": 4,
-          "novelty": 3,
-          "relevance_design": 2,
+          "novelty": 2,
+          "relevance_design": 1,
           "tags": [
-            "corporate-strategy",
-            "leadership",
-            "ai-integration",
-            "business-ops"
+            "agentic-ai",
+            "business-trends",
+            "enterprise-automation",
+            "corporate-strategy"
           ],
           "image_url": null,
           "source_pending": false,
@@ -1127,17 +1139,17 @@
         {
           "id": "yt-nate-herk-why-now",
           "title": "Why now?",
-          "summary": "Rapid deployment of large language models has compressed the timeline for industry disruption, leaving workers with a narrow window to reskill. Herk emphasizes that passive observation is no longer a viable career strategy.",
+          "summary": "The convergence of reliable model routing and decreasing inference costs has reached a tipping point for production deployment. Service providers face immediate operational pressure to integrate agent swarms or lose bidding advantages in current contracts.",
           "source": "Nate Herk",
           "url": "https://www.youtube.com/watch?v=Ums8suyAG1A&t=66s",
           "significance": 4,
           "novelty": 3,
-          "relevance_design": 2,
+          "relevance_design": 1,
           "tags": [
-            "ai-adoption",
-            "career-planning",
-            "industry-disruption",
-            "tech-skills"
+            "agentic-ai",
+            "market-dynamics",
+            "cost-reduction",
+            "infrastructure"
           ],
           "image_url": null,
           "source_pending": false,
@@ -1186,17 +1198,17 @@
         {
           "id": "yt-nate-herk-which-side",
           "title": "Which side?",
-          "summary": "Professionals must decide whether to resist or master AI tools driving current market changes. The analysis suggests early adopters secure significant competitive advantages while latecomers face obsolescence.",
+          "summary": "Professionals must choose between building automated delivery pipelines or managing legacy manual contracts. The creator urges creators to adopt active development workflows over reactive consumption strategies before market consolidation accelerates.",
           "source": "Nate Herk",
           "url": "https://www.youtube.com/watch?v=Ums8suyAG1A&t=94s",
           "significance": 3,
           "novelty": 2,
-          "relevance_design": 3,
+          "relevance_design": 1,
           "tags": [
-            "career-choices",
-            "ai-adoption",
-            "professional-development",
-            "tech-strategy"
+            "agentic-ai",
+            "career-strategy",
+            "automation",
+            "skill-development"
           ],
           "image_url": null,
           "source_pending": false,
@@ -1245,17 +1257,17 @@
         {
           "id": "yt-nate-herk-three-real-jobs",
           "title": "Three real jobs",
-          "summary": "Certain technical and design positions remain highly valuable when coupled with AI proficiency. Herk identifies high-demand pathways for developers navigating the evolving automation landscape.",
+          "summary": "The analysis isolates prompt architecture, agent system debugging, and client integration oversight as the enduring human responsibilities. These positions directly control routing, quality assurance, and deployment across autonomous service stacks.",
           "source": "Nate Herk",
           "url": "https://www.youtube.com/watch?v=Ums8suyAG1A&t=115s",
-          "significance": 3,
-          "novelty": 4,
-          "relevance_design": 4,
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
           "tags": [
-            "career-paths",
-            "ai-skills",
-            "tech-jobs",
-            "professional-growth"
+            "ai-careers",
+            "workflow-design",
+            "agentic-ai",
+            "skill-development"
           ],
           "image_url": null,
           "source_pending": false,
@@ -1304,17 +1316,17 @@
         {
           "id": "yt-nate-herk-example-1",
           "title": "Example 1",
-          "summary": "Real-world deployment of AI automation tools in mid-sized firms demonstrates rapid workflow consolidation. The case study tracks productivity gains alongside corresponding staff reductions over six months.",
+          "summary": "Herkin demonstrates an automated client onboarding sequence that replaces initial discovery calls using sequential agent chains. The workflow extracts requirements through conversational routing and outputs structured project scopes automatically.",
           "source": "Nate Herk",
           "url": "https://www.youtube.com/watch?v=Ums8suyAG1A&t=214s",
           "significance": 3,
-          "novelty": 3,
+          "novelty": 4,
           "relevance_design": 2,
           "tags": [
-            "case-study",
-            "ai-automation",
-            "business-analysis",
-            "tech-implement"
+            "agentic-ai",
+            "workflow-automation",
+            "business-process",
+            "example"
           ],
           "image_url": null,
           "source_pending": false,
@@ -1363,17 +1375,17 @@
         {
           "id": "yt-nate-herk-example-2",
           "title": "Example 2",
-          "summary": "Secondary industry examples reveal how creative and analytical roles are being restructured rather than eliminated. Workers who integrate automated assistants into daily routines show measurable output improvements.",
+          "summary": "The second case applies autonomous content generation to marketing assets with human approval gates. Agents draft copy variations while preserving brand voice through constrained parameter injection and reference materials.",
           "source": "Nate Herk",
           "url": "https://www.youtube.com/watch?v=Ums8suyAG1A&t=382s",
           "significance": 3,
-          "novelty": 2,
-          "relevance_design": 2,
+          "novelty": 3,
+          "relevance_design": 4,
           "tags": [
-            "workflow-optimization",
-            "ai-tools",
-            "business-process",
-            "case-study"
+            "agentic-ai",
+            "content-generation",
+            "marketing-automation",
+            "design-workflow"
           ],
           "image_url": null,
           "source_pending": false,
@@ -1422,17 +1434,17 @@
         {
           "id": "yt-nate-herk-example-3",
           "title": "Example 3",
-          "summary": "Tertiary demonstrations confirm that hybrid human-AI teams consistently outperform traditional setups. The trend underscores a fundamental shift toward augmented professional capabilities across sectors.",
+          "summary": "Final deployment showcases a fully automated support ticket routing system with tiered agent escalation logic. The setup routes technical queries to specialized repositories while handling common requests without human intervention.",
           "source": "Nate Herk",
           "url": "https://www.youtube.com/watch?v=Ums8suyAG1A&t=464s",
-          "significance": 3,
-          "novelty": 2,
-          "relevance_design": 2,
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
           "tags": [
-            "ai-augmentation",
-            "workforce-evolution",
-            "tech-trends",
-            "business-efficiency"
+            "agentic-ai",
+            "customer-support",
+            "enterprise-automation",
+            "infrastructure"
           ],
           "image_url": null,
           "source_pending": false,
@@ -1481,17 +1493,17 @@
         {
           "id": "yt-nate-herk-the-one-skill-to-learn",
           "title": "The One Skill to Learn",
-          "summary": "Mastering prompt engineering and system architecture emerges as the critical survival skill for modern professionals. Herk argues that understanding how to direct AI models outweighs traditional syntax memorization in today's market.",
+          "summary": "Architecting and debugging autonomous agent systems emerges as the primary requirement for remaining competitive. This discipline combines workflow mapping, conditional logic design, and system monitoring across distributed tool stacks.",
           "source": "Nate Herk",
           "url": "https://www.youtube.com/watch?v=Ums8suyAG1A&t=641s",
           "significance": 5,
           "novelty": 4,
-          "relevance_design": 3,
+          "relevance_design": 2,
           "tags": [
-            "learning-strategy",
-            "ai-mastery",
-            "career-skill",
-            "professional-development"
+            "agentic-ai",
+            "skill-development",
+            "ai-engineering",
+            "education"
           ],
           "image_url": null,
           "source_pending": false,
@@ -1540,17 +1552,17 @@
         {
           "id": "yt-network-chuck-ai-s-impact-on-network-engineers-live-ama-summer-o",
           "title": "AI's Impact on Network Engineers | LIVE AMA | Summer of CCNA",
-          "summary": "Live Q&A session addresses how generative AI alters daily network administration and troubleshooting protocols. The creator promotes an accelerated certification track designed to help engineers modernize their infrastructure knowledge.",
+          "summary": "Chuck addresses the integration of AI driven automation into network administration and routing infrastructure. He outlines specific protocol changes and tool upgrades preparing engineers for the Summer of CCNA certification track. The session covers practical deployment steps and industry readiness metrics.",
           "source": "NetworkChuck",
           "url": "https://www.youtube.com/watch?v=O7XOUK4B5pg&t=0s",
-          "significance": 4,
-          "novelty": 3,
-          "relevance_design": 2,
+          "significance": 3,
+          "novelty": 2,
+          "relevance_design": 1,
           "tags": [
             "networking",
-            "ccna-certification",
             "ai-infrastructure",
-            "professional-education"
+            "ccna-certification",
+            "professional-development"
           ],
           "image_url": null,
           "source_pending": false,
@@ -1569,18 +1581,17 @@
         {
           "id": "yt-google-cloud-tech-alloydb-the-ultimate-hybrid-search-engine",
           "title": "AlloyDB: The ultimate hybrid search engine",
-          "summary": "Google introduces AlloyDB to unify vector and full-text retrieval within PostgreSQL for enterprise applications. The platform leverages Reciprocal Rank Fusion to rank results without complex external pipelines, streamlining database architecture.",
+          "summary": "Google Cloud introduces AlloyDB hybrid search capabilities combining PostgreSQL vector indexing with full text retrieval. Alan Li demonstrates a UDF utilizing Reciprocal Rank Fusion to deliver unified result sets from both query types. The feature supports Elasticsearch FDW connections for external catalog routing and scalable enterprise document search.",
           "source": "Google Cloud Tech",
           "url": "https://www.youtube.com/watch?v=vYB0P9rPXt8&t=0s",
           "significance": 4,
-          "novelty": 5,
-          "relevance_design": 3,
+          "novelty": 4,
+          "relevance_design": 1,
           "tags": [
-            "google-cloud",
-            "alloydb",
-            "postgresql",
+            "database-releases",
             "hybrid-search",
-            "vector-db"
+            "postgresql",
+            "rag-infrastructure"
           ],
           "image_url": null,
           "source_pending": false,
@@ -1609,18 +1620,17 @@
         {
           "id": "yt-ibm-technology-what-is-an-ai-ide-how-ai-is-changing-developer-cod",
           "title": "What Is an AI IDE? How AI Is Changing Developer & Coding Tools",
-          "summary": "AI-driven integrated development environments automate routine coding, debugging, and refactoring tasks to accelerate software delivery. The explanation maps how modern workflows shift from manual implementation to model-guided architecture and oversight.",
+          "summary": "IBM outlines how integrated development environments incorporate AI assistance for real time coding, debugging, and refactoring workflows. Katie McDonald details the operational transition from traditional editors to generative code assistants in modern CI/CD pipelines. The presentation covers productivity benchmarks and security verification protocols for autonomous suggestions.",
           "source": "IBM Technology",
           "url": "https://www.youtube.com/watch?v=fWZylhIHF9w&t=0s",
           "significance": 4,
           "novelty": 3,
           "relevance_design": 5,
           "tags": [
-            "ai-ide",
             "developer-tools",
-            "code-generation",
-            "software-engineering",
-            "ibm-tech"
+            "ai-ides",
+            "software-development",
+            "coding-automation"
           ],
           "image_url": null,
           "source_pending": false,
@@ -1644,18 +1654,17 @@
         {
           "id": "yt-the-stack-ai-number-one-and-still-smuggling-chips",
           "title": "Number one and still smuggling chips",
-          "summary": "Moonshot AI's Kimi K3 captures the top ranking on Arena's code leaderboards despite export restrictions limiting hardware access domestically. The report contrasts this software breakthrough with ongoing efforts to acquire restricted semiconductor components through unregulated supply chains.",
+          "summary": "Moonshot AI's Kimi K3 claims the top Arena Frontend Code leaderboard position while Chinese hardware firms continue high risk GPU import operations. Kimi K3 operates as a 2.8 trillion parameter mixture of experts model that activates only 16 experts per token for efficient inference. The dual narrative highlights open weight model efficiency against persistent silicon export restrictions.",
           "source": "The Stack",
           "url": "https://www.youtube.com/watch?v=oCKJsPJan38&t=0s",
           "significance": 5,
           "novelty": 4,
-          "relevance_design": 3,
+          "relevance_design": 2,
           "tags": [
-            "moonshot-ai",
-            "kimik3",
-            "hardware-supply-chains",
-            "open-source",
-            "ai-compute"
+            "ai-models",
+            "hardware-restrictions",
+            "open-weights",
+            "kimik3"
           ],
           "image_url": null,
           "source_pending": false,
@@ -1689,18 +1698,17 @@
         {
           "id": "yt-the-stack-ai-how-good-is-insanely-good-really",
           "title": "How good is insanely good really",
-          "summary": "Technical breakdown reveals Kimi K3 operates a 2.8 trillion-parameter structure while activating only 16 experts per token for efficiency. This optimized architecture allows high-performance reasoning across vast context windows without prohibitive infrastructure costs.",
+          "summary": "Benchmarks place Kimi K3 at 91.2 on BrowseComp and 42.0 on SWE Marathon using native MXFP4 quantization for standard enterprise deployment. The model supports a million token context window while pricing input tokens between thirty cents and three dollars per million. Performance metrics demonstrate competitive parity with paid frontier models from Anthropic and OpenAI.",
           "source": "The Stack",
           "url": "https://www.youtube.com/watch?v=oCKJsPJan38&t=34s",
-          "significance": 4,
+          "significance": 5,
           "novelty": 5,
-          "relevance_design": 3,
+          "relevance_design": 1,
           "tags": [
-            "moonshot-ai",
-            "model-architecture",
-            "moe-models",
-            "ai-efficiency",
-            "technical-analysis"
+            "ai-models",
+            "benchmarks",
+            "efficiency",
+            "open-weights"
           ],
           "image_url": null,
           "source_pending": false,
@@ -1734,18 +1742,17 @@
         {
           "id": "yt-the-stack-ai-why-risk-prison-for-chips-anyway",
           "title": "Why risk prison for chips anyway",
-          "summary": "Regulatory checkpoints effectively block physical GPU shipments at borders but cannot restrict digital model weights uploaded to public repositories. This disparity accelerates domestic Chinese AI development, reducing reliance on sanctioned American manufacturing.",
+          "summary": "Corporate filings confirm significant capital expenditures for restricted accelerator hardware despite ongoing geopolitical export controls. The indictment against Super Micro underscores the severe legal consequences driving component procurement strategies in Chinese tech sectors. Market analysts note a widening compute gap that pushes firms toward aggressive alternative sourcing channels.",
           "source": "The Stack",
           "url": "https://www.youtube.com/watch?v=oCKJsPJan38&t=103s",
-          "significance": 5,
-          "novelty": 4,
-          "relevance_design": 2,
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 1,
           "tags": [
-            "export-controls",
-            "semiconductor-policy",
-            "ai-sovereignty",
-            "tech-regulation",
-            "moonshot-ai"
+            "hardware-restrictions",
+            "supply-chain",
+            "geopolitics",
+            "ai-infrastructure"
           ],
           "image_url": null,
           "source_pending": false,
@@ -1777,20 +1784,107 @@
           "provenance": "skeleton:youtube"
         },
         {
-          "id": "yt-the-stack-ai-the-takeover-already-happened",
-          "title": "The takeover already happened",
-          "summary": "Moonshot AI's Kimi K3 model, a 2.8-trillion-parameter Mixture-of-Experts network, dominates the frontend code leaderboard while bypassing Nvidia hardware export controls via native MXFP4 quantization. The breakthrough highlights how open-weight models can outperform restricted frontier hardware through software optimization and lower inference costs compared to traditional GPU clusters.",
+          "id": "yt-the-stack-ai-frontier-power-without-frontier-chips",
+          "title": "Frontier power without frontier chips",
+          "summary": "Huawei Ascend 950PR specifications and Alibaba Qwen architecture adaptations target computational parity despite hardware embargoes. Open source model downloads increasingly favor Chinese frameworks over traditional Western architectures. The structural shift forces global infrastructure providers to recalibrate training pipeline dependencies.",
           "source": "The Stack",
-          "url": "https://www.youtube.com/watch?v=oCKJsPJan38&t=319s",
+          "url": "https://www.youtube.com/watch?v=oCKJsPJan38&t=182s",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "hardware-restrictions",
+            "ai-models",
+            "china-ai",
+            "open-source"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": "the-stack-ai",
+          "channel_label": "The Stack",
+          "topic": "Frontier power without frontier chips",
+          "links": [
+            {
+              "name": "DeepSeek R1",
+              "url": "https://huggingface.co/deepseek-ai",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Hugging Face",
+              "url": "https://huggingface.co",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Kimi K3 (Moonshot AI)",
+              "url": "https://huggingface.co/moonshotai",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Qwen (Alibaba)",
+              "url": "https://huggingface.co/Qwen",
+              "kind": "huggingface"
+            }
+          ],
+          "provenance": "skeleton:youtube"
+        },
+        {
+          "id": "yt-the-stack-ai-files-don-t-stop-at-customs",
+          "title": "Files don't stop at customs",
+          "summary": "Export controls successfully block physical silicon shipments but cannot restrict digital weights distributed via platforms like Hugging Face. Kimi K3 and associated repositories demonstrate that architectural knowledge transfers instantly across international borders once quantization files upload open. The regulatory gap accelerates decentralized model training capabilities globally.",
+          "source": "The Stack",
+          "url": "https://www.youtube.com/watch?v=oCKJsPJan38&t=256s",
           "significance": 5,
           "novelty": 4,
           "relevance_design": 2,
           "tags": [
+            "export-controls",
+            "open-weights",
+            "regulation",
+            "ai-infrastructure"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": "the-stack-ai",
+          "channel_label": "The Stack",
+          "topic": "Files don't stop at customs",
+          "links": [
+            {
+              "name": "DeepSeek R1",
+              "url": "https://huggingface.co/deepseek-ai",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Hugging Face",
+              "url": "https://huggingface.co",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Kimi K3 (Moonshot AI)",
+              "url": "https://huggingface.co/moonshotai",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Qwen (Alibaba)",
+              "url": "https://huggingface.co/Qwen",
+              "kind": "huggingface"
+            }
+          ],
+          "provenance": "skeleton:youtube"
+        },
+        {
+          "id": "yt-the-stack-ai-the-takeover-already-happened",
+          "title": "The takeover already happened",
+          "summary": "Moonshot AI’s Kimi K3 has claimed the number one spot on the frontend code leaderboard as a completely free model, outperforming paid frontier options from Anthropic and OpenAI. This signals a major shift in the competitive landscape where open-weight Chinese models are rapidly closing the gap on Western proprietary systems.",
+          "source": "The Stack",
+          "url": "https://www.youtube.com/watch?v=oCKJsPJan38&t=319s",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
             "kimi-k3",
-            "moonshot-ai",
-            "open-source",
-            "inference-hardware",
-            "export-controls"
+            "open-weight-models",
+            "ai-leaderboard",
+            "moonshot-ai"
           ],
           "image_url": null,
           "source_pending": false,
@@ -1822,68 +1916,107 @@
           "provenance": "skeleton:youtube"
         },
         {
-          "id": "yt-the-stack-ai-ai-one-file-that-crashed-nvidia",
+          "id": "yt-the-stack-ai-one-file-that-crashed-nvidia",
           "title": "One file that crashed Nvidia",
-          "summary": "The release of DeepSeek R1 triggered a 17 percent drop in Nvidia's stock valuation after the model demonstrated superior performance at a fraction of the compute costs required by Western counterparts. Builders must reassess hardware procurement strategies as open-source efficiency models challenge the financial viability of massive GPU infrastructure expansions.",
+          "summary": "The rapid release of DeepSeek R1 demonstrated how open-weight AI progress can instantly disrupt hardware markets, wiping billions from Nvidia’s valuation in one trading session. It underscores the growing vulnerability of legacy chip monopolies to agile, open-source software advancements.",
           "source": "The Stack",
           "url": "https://www.youtube.com/watch?v=oCKJsPJan38&t=384s",
           "significance": 5,
-          "novelty": 5,
-          "relevance_design": 2,
+          "novelty": 4,
+          "relevance_design": 1,
           "tags": [
             "deepseek-r1",
-            "market-impact",
-            "gpu-pricing",
-            "competitive-intelligence",
-            "stock-analysis"
+            "nvidia-stock",
+            "open-source-impact",
+            "hardware-devaluation"
           ],
           "image_url": null,
           "source_pending": false,
           "channel_key": "the-stack-ai",
           "channel_label": "The Stack",
           "topic": "One file that crashed Nvidia",
-          "provenance": "skeleton:youtube",
-          "links": []
+          "links": [
+            {
+              "name": "DeepSeek R1",
+              "url": "https://huggingface.co/deepseek-ai",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Hugging Face",
+              "url": "https://huggingface.co",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Kimi K3 (Moonshot AI)",
+              "url": "https://huggingface.co/moonshotai",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Qwen (Alibaba)",
+              "url": "https://huggingface.co/Qwen",
+              "kind": "huggingface"
+            }
+          ],
+          "provenance": "skeleton:youtube"
         },
         {
-          "id": "yt-the-stack-ai-ai-the-war-nobody-declared",
+          "id": "yt-the-stack-ai-the-war-nobody-declared",
           "title": "The war nobody declared",
-          "summary": "Chinese software firms are effectively circumventing hardware sanctions by shipping algorithmic weights instead of chips, leading Alibaba's Qwen family to surpass Meta's Llama in repository downloads. This strategic pivot accelerates the global fragmentation of AI standards as proprietary model ecosystems give way to accessible open-weight architectures.",
+          "summary": "A quiet but intense geopolitical and technological standoff is accelerating as Chinese firms accelerate open-weight model development while navigating strict hardware export controls. With open models like Qwen surpassing Meta’s Llama in adoption, the traditional chip-based supply chain is being bypassed by software-centric innovation.",
           "source": "The Stack",
           "url": "https://www.youtube.com/watch?v=oCKJsPJan38&t=439s",
           "significance": 5,
-          "novelty": 3,
-          "relevance_design": 1,
+          "novelty": 4,
+          "relevance_design": 2,
           "tags": [
-            "geopolitics",
-            "weights-vs-hardware",
-            "qwen",
-            "llama",
-            "open-sourcing"
+            "export-controls",
+            "chinese-ai",
+            "qwen-models",
+            "supply-chain-shift"
           ],
           "image_url": null,
           "source_pending": false,
           "channel_key": "the-stack-ai",
           "channel_label": "The Stack",
           "topic": "The war nobody declared",
-          "provenance": "skeleton:youtube",
-          "links": []
+          "links": [
+            {
+              "name": "DeepSeek R1",
+              "url": "https://huggingface.co/deepseek-ai",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Hugging Face",
+              "url": "https://huggingface.co",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Kimi K3 (Moonshot AI)",
+              "url": "https://huggingface.co/moonshotai",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Qwen (Alibaba)",
+              "url": "https://huggingface.co/Qwen",
+              "kind": "huggingface"
+            }
+          ],
+          "provenance": "skeleton:youtube"
         },
         {
           "id": "yt-azisk-amd-says-2-ryzen-ai-halos-can-run-a-400b-model-i-t",
           "title": "AMD Says 2 Ryzen AI Halos Can Run a 400B Model... I Tested It",
-          "summary": "Independent testing confirms that combining two AMD Ryzen AI Halo modules successfully executes inference on a 400 billion parameter model, challenging Nvidia's dominance in the compact AI server market. The results suggest viable alternative hardware pathways for edge and data center deployment without relying exclusively on high-availability proprietary accelerators.",
+          "summary": "AMD’s new Ryzen AI Halo platform challenges NVIDIA’s dominance in compact AI inference hardware by claiming efficient execution for massive 400-billion parameter models on just two units. Real-world testing reveals how local and edge inference architectures are rapidly scaling to handle frontier-scale workloads without data center dependency.",
           "source": "Alex Ziskind",
           "url": "https://www.youtube.com/watch?v=FE1Uyhg5hjw&t=0s",
           "significance": 4,
-          "novelty": 3,
+          "novelty": 5,
           "relevance_design": 3,
           "tags": [
-            "amd-ryzen-halo",
-            "inference-testing",
-            "hardware-alternatives",
-            "ryzen",
-            "edge-compute"
+            "amd-ryzen-ai",
+            "edge-inference",
+            "local-llm",
+            "hardware-testing"
           ],
           "image_url": null,
           "source_pending": false,
@@ -1952,18 +2085,17 @@
         {
           "id": "yt-bytebytego-how-openai-built-its-data-agent",
           "title": "How OpenAI Built Its Data Agent",
-          "summary": "OpenAI reveals the internal data pipeline architecture behind its automated agent systems, detailing the engineering required to manage complex state transitions and real-time data streams. The technical breakdown emphasizes scalable ingestion patterns and validation layers necessary for reliable autonomous system execution.",
+          "summary": "ByteByteGo breaks down the underlying system design powering OpenAI’s internal data agent, detailing how it orchestrates massive datasets across distributed pipelines. This technical walkthrough highlights the architectural decisions required to build reliable data infrastructure for frontier AI development.",
           "source": "ByteByteGo",
           "url": "https://www.youtube.com/watch?v=5V8tP5jDZ8U&t=0s",
           "significance": 3,
           "novelty": 4,
           "relevance_design": 4,
           "tags": [
-            "openai",
-            "data-agents",
+            "openai-data-agent",
             "system-architecture",
-            "engineering-design",
-            "backend-systems"
+            "data-pipelines",
+            "ai-infrastructure"
           ],
           "image_url": null,
           "source_pending": false,
@@ -1976,18 +2108,17 @@
         {
           "id": "yt-bytebyteai-claude-fable-5-everything-you-need-to-know",
           "title": "Claude Fable 5: Everything You Need to Know!",
-          "summary": "A comprehensive overview of the Claude Fable 5 release outlines significant updates in model parameters, context window management, and safety refinement protocols. Developers and researchers gain critical insights into new capabilities designed to enhance logical reasoning and code generation stability across high-load applications.",
+          "summary": "Analysts and educators dissect the architectural updates and capability shifts introduced in Claude’s latest iteration, focusing on improved reasoning, safety alignments, and multimodal processing. The breakdown serves as a practical guide for developers evaluating prompt engineering strategies around its newest parameters.",
           "source": "ByteByteAI",
           "url": "https://www.youtube.com/watch?v=-H6Q97_9cKY&t=0s",
-          "significance": 4,
-          "novelty": 5,
-          "relevance_design": 2,
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 3,
           "tags": [
-            "claude",
-            "model-updates",
-            "software-releases",
-            "llm-benchmarks",
-            "technology-news"
+            "claude-fable-5",
+            "anthropic-model",
+            "prompt-engineering",
+            "multimodal-ai"
           ],
           "image_url": null,
           "source_pending": false,
@@ -2006,18 +2137,17 @@
         {
           "id": "yt-hugging-face-the-hugging-face-hub-for-enterprise-academia",
           "title": "The Hugging Face Hub for Enterprise & Academia",
-          "summary": "Hugging Face expands its platform capabilities by introducing specialized infrastructure tailored for enterprise security compliance and academic collaborative research workflows. This expansion establishes a regulated exchange framework allowing institutions to manage proprietary models alongside public benchmarks within a unified ecosystem.",
+          "summary": "Hugging Face outlines the expanded enterprise tiers of its Hub platform, emphasizing secure model hosting, private collaboration spaces, and dedicated academic licensing pathways. The update positions the repository as a critical infrastructure layer for institutional AI research and closed-loop development workflows.",
           "source": "Hugging Face",
           "url": "https://www.youtube.com/watch?v=wUzfRBi9wZ0&t=0s",
-          "significance": 4,
+          "significance": 3,
           "novelty": 3,
           "relevance_design": 2,
           "tags": [
-            "hub-infrastructure",
-            "data-security",
-            "academic-research",
-            "model-marketplace",
-            "platform-updates"
+            "huggingface-hub",
+            "enterprise-ai",
+            "open-llm-hosting",
+            "academic-research"
           ],
           "image_url": null,
           "source_pending": false,
@@ -2041,18 +2171,17 @@
         {
           "id": "yt-full-stack-the-centralized-messaging-problem",
           "title": "The Centralized Messaging Problem",
-          "summary": "The architectural limitations of traditional centralized messaging protocols expose critical security vulnerabilities and single points of failure in modern communication infrastructures. BitChat addresses these constraints by implementing a distributed peer-to-peer network topology that removes reliance on primary server authority during transmission routing.",
+          "summary": "Full Stack examines the systemic vulnerabilities of centralized communication platforms and introduces BitChat as a peer-to-peer alternative built to eliminate single points of failure. The video maps out how decentralized protocols can restore user sovereignty over data routing and storage infrastructure.",
           "source": "Full Stack",
           "url": "https://www.youtube.com/watch?v=L1TlYz4WRNI&t=0s",
           "significance": 3,
-          "novelty": 3,
+          "novelty": 4,
           "relevance_design": 2,
           "tags": [
+            "bitchat",
             "decentralization",
-            "p2p-networks",
-            "messaging-proto",
-            "system-design",
-            "security-architecture"
+            "privacy-architecture",
+            "peer-to-peer"
           ],
           "image_url": null,
           "source_pending": false,
@@ -2081,18 +2210,17 @@
         {
           "id": "yt-full-stack-what-is-bitchat-dual-transport-architecture",
           "title": "What is BitChat: Dual Transport Architecture",
-          "summary": "BitChat utilizes a dual transport architecture to optimize latency and resilience by routing traffic across redundant network layers for uninterrupted service delivery. Engineers can implement this hybrid model configuration to maintain connectivity standards under fluctuating network conditions and hardware load constraints.",
+          "summary": "The episode dissects BitChat’s dual transport design, which merges direct device linking with relay networks to optimize reliability in both constrained and mobile environments. This hybrid approach demonstrates how decentralized messengers can maintain low latency while bypassing traditional ISP routing bottlenecks.",
           "source": "Full Stack",
           "url": "https://www.youtube.com/watch?v=L1TlYz4WRNI&t=18s",
           "significance": 3,
-          "novelty": 4,
-          "relevance_design": 3,
+          "novelty": 3,
+          "relevance_design": 4,
           "tags": [
-            "networking",
+            "network-architecture",
             "transport-layers",
-            "resilience",
-            "protocol-design",
-            "software-engineering"
+            "bitnet-design",
+            "routing-protocols"
           ],
           "image_url": null,
           "source_pending": false,
@@ -2121,18 +2249,17 @@
         {
           "id": "yt-full-stack-bluetooth-mesh-multi-hop-routing",
           "title": "Bluetooth Mesh & Multi-Hop Routing",
-          "summary": "The implementation of Bluetooth Mesh protocols within BitChat enables extended range communication by facilitating automatic multi-hop routing between edge devices without intermediate servers. This method maximizes device battery efficiency while maintaining robust packet delivery across complex physical topologies.",
+          "summary": "The presentation walks through the implementation of Bluetooth mesh networking, showing how localized devices route messages across multi-hop topologies without centralized infrastructure. It highlights practical applications for privacy-preserving hardware communication in dense urban or industrial deployments.",
           "source": "Full Stack",
           "url": "https://www.youtube.com/watch?v=L1TlYz4WRNI&t=25s",
-          "significance": 3,
-          "novelty": 4,
-          "relevance_design": 2,
+          "significance": 2,
+          "novelty": 3,
+          "relevance_design": 3,
           "tags": [
             "bluetooth-mesh",
-            "iot-connectivity",
-            "routing-protocols",
-            "distributed-systems",
-            "hardware-integration"
+            "multi-hop-routing",
+            "iot-protocols",
+            "hardware-connectivity"
           ],
           "image_url": null,
           "source_pending": false,
@@ -2161,18 +2288,17 @@
         {
           "id": "yt-full-stack-nostr-protocol-290-global-relays",
           "title": "Nostr Protocol: 290+ Global Relays",
-          "summary": "Connecting to over 290 global relays, the project leverages the Nostr protocol to achieve permissionless message distribution and censorship-resistant archival storage capabilities. This distributed architecture ensures data availability across diverse hardware environments regardless of regional network restrictions or policy enforcement actions.",
+          "summary": "Engineers detail how the Nostr protocol maintains censorship resistance through a distributed network of over 290 independent global relays that validate and propagate messages. The architecture ensures persistent communication resilience by eliminating dependency on any single operator or corporate entity.",
           "source": "Full Stack",
           "url": "https://www.youtube.com/watch?v=L1TlYz4WRNI&t=44s",
-          "significance": 4,
-          "novelty": 3,
+          "significance": 3,
+          "novelty": 4,
           "relevance_design": 2,
           "tags": [
-            "nostr",
-            "data-distribution",
-            "censorship-resistance",
-            "protocol-integration",
-            "network-security"
+            "nostr-protocol",
+            "decentralized-social",
+            "relay-networks",
+            "censorship-resistance"
           ],
           "image_url": null,
           "source_pending": false,
@@ -2201,18 +2327,17 @@
         {
           "id": "yt-full-stack-intelligent-transport-smart-queuing",
           "title": "Intelligent Transport & Smart Queuing",
-          "summary": "Intelligent transport mechanisms coupled with smart queuing algorithms optimize packet prioritization and buffer management during peak network traffic intervals. This dynamic allocation system reduces latency jitter and prevents congestion collapse by adapting queue depths relative to real-time network availability metrics.",
+          "summary": "The system employs dynamic intelligent routing combined with smart queuing mechanisms to prioritize critical data packets during network congestion or device pairing attempts. This adaptive transport layer significantly improves message delivery rates in highly mobile peer-to-peer scenarios.",
           "source": "Full Stack",
           "url": "https://www.youtube.com/watch?v=L1TlYz4WRNI&t=64s",
           "significance": 3,
           "novelty": 3,
-          "relevance_design": 3,
+          "relevance_design": 4,
           "tags": [
-            "algorithms",
-            "load-balancing",
-            "performance-optimization",
-            "software-design",
-            "queue-management"
+            "smart-queuing",
+            "transport-design",
+            "network-routing",
+            "bitchat-system"
           ],
           "image_url": null,
           "source_pending": false,
@@ -2241,18 +2366,17 @@
         {
           "id": "yt-full-stack-identity-no-accounts-no-phone-numbers",
           "title": "Identity: No Accounts, No Phone Numbers",
-          "summary": "Eliminating traditional account registration and phone number verification requirements allows user persistence through cryptographic key management instead of centralized identity authorities. This shift significantly reduces personal data exposure while maintaining system integrity across untrusted network environments.",
+          "summary": "BitChat introduces a zero-account identity model that uses cryptographic keys instead of phone numbers or email addresses for user registration and validation. This approach completely circumvents traditional KYC requirements while maintaining secure, verifiable peer connections across the network.",
           "source": "Full Stack",
           "url": "https://www.youtube.com/watch?v=L1TlYz4WRNI&t=70s",
-          "significance": 4,
+          "significance": 3,
           "novelty": 4,
           "relevance_design": 3,
           "tags": [
-            "privacy-features",
-            "identity-management",
-            "cryptography",
-            "data-protection",
-            "authentication-systems"
+            "decentralized-identity",
+            "zero-knowledge-proof",
+            "privacy-preserving",
+            "cryptographic-auth"
           ],
           "image_url": null,
           "source_pending": false,
@@ -2281,18 +2405,17 @@
         {
           "id": "yt-full-stack-noise-protocol-encryption-handshake",
           "title": "Noise Protocol: Encryption & Handshake",
-          "summary": "Utilizing the Noise Protocol framework establishes authenticated encryption sessions by standardizing dynamic key exchanges during the initial handshake phase. Implementing this framework ensures session resilience against man-in-the-middle attacks while maintaining forward secrecy for subsequent data transmission packets.",
+          "summary": "The engineering team explains how the Noise protocol framework manages asymmetric key exchanges and establishes encrypted tunnels between devices without relying on certificate authorities. This implementation guarantees forward secrecy and robust defense against man-in-the-middle attacks during initial pairings.",
           "source": "Full Stack",
           "url": "https://www.youtube.com/watch?v=L1TlYz4WRNI&t=85s",
-          "significance": 4,
+          "significance": 3,
           "novelty": 3,
           "relevance_design": 2,
           "tags": [
-            "encryption-standards",
-            "security-handshakes",
-            "cryptographic-proto",
-            "network-defense",
-            "secure-comms"
+            "noise-protocol",
+            "end-to-end-encryption",
+            "key-exchange",
+            "crypto-security"
           ],
           "image_url": null,
           "source_pending": false,
@@ -2321,18 +2444,17 @@
         {
           "id": "yt-full-stack-forward-secrecy-rekey-gift-wrapping",
           "title": "Forward Secrecy, Rekey & Gift Wrapping",
-          "summary": "The implementation of forward secrecy guarantees that compromised historical keys cannot decrypt future message streams despite long-term exposure. Automated key rerolling protocols and packet wrapping techniques continuously refresh the cryptographic state against incremental decryption attempts during active sessions.",
+          "summary": "The protocol enforces continuous forward secrecy by automating frequent cryptographic rekeys and utilizing encrypted gift-wrapping techniques for session data. This ensures that even if long-term keys are compromised later, historical communications remain mathematically unreadable.",
           "source": "Full Stack",
           "url": "https://www.youtube.com/watch?v=L1TlYz4WRNI&t=110s",
-          "significance": 4,
+          "significance": 3,
           "novelty": 3,
           "relevance_design": 2,
           "tags": [
             "forward-secrecy",
-            "key-management",
-            "crypto-security",
-            "data-integrity",
-            "protocol-updates"
+            "crypto-key-rotation",
+            "bitchat-security",
+            "secure-messaging"
           ],
           "image_url": null,
           "source_pending": false,
@@ -2359,139 +2481,19 @@
           "provenance": "skeleton:youtube"
         },
         {
-          "id": "yt-full-stack-location-based-channels-irc-commands",
-          "title": "Location-Based Channels & IRC Commands",
-          "summary": "Integrating location-based channel assignment alongside extended IRC command syntax allows spatially aware communication partitions within distributed networks. This approach optimizes user routing efficiency and facilitates localized data aggregation for targeted messaging contexts.",
-          "source": "Full Stack",
-          "url": "https://www.youtube.com/watch?v=L1TlYz4WRNI&t=118s",
-          "significance": 3,
-          "novelty": 4,
-          "relevance_design": 2,
-          "tags": [
-            "locational-processing",
-            "network-routing",
-            "irc-protocol",
-            "system-features",
-            "connectivity-design"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "channel_key": "full-stack",
-          "channel_label": "Full Stack",
-          "topic": "Location-Based Channels & IRC Commands",
-          "links": [
-            {
-              "name": "📦 GitHub",
-              "url": "https://github.com/permissionlesstech/bitchat",
-              "kind": "github"
-            },
-            {
-              "name": "🌐 Website",
-              "url": "https://bitchat.net",
-              "kind": "web"
-            },
-            {
-              "name": "📱 App Store",
-              "url": "https://apps.apple.com/app/bitchat",
-              "kind": "web"
-            }
-          ],
-          "provenance": "skeleton:youtube"
-        },
-        {
-          "id": "yt-full-stack-push-to-talk-voice-burst-framing",
-          "title": "Push-to-Talk Voice: Burst Framing",
-          "summary": "Utilizing burst framing techniques optimizes real-time voice transmission efficiency by compressing audio streams into discrete packet blocks during manual activation sequences. This mechanism conserves bandwidth resources and minimizes latency jitter compared to continuous uncompressed audio streaming protocols.",
-          "source": "Full Stack",
-          "url": "https://www.youtube.com/watch?v=L1TlYz4WRNI&t=130s",
-          "significance": 3,
-          "novelty": 2,
-          "relevance_design": 4,
-          "tags": [
-            "voice-transmission",
-            "packet-compression",
-            "network-efficiency",
-            "communication-tools",
-            "engineering-design"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "channel_key": "full-stack",
-          "channel_label": "Full Stack",
-          "topic": "Push-to-Talk Voice: Burst Framing",
-          "links": [
-            {
-              "name": "📦 GitHub",
-              "url": "https://github.com/permissionlesstech/bitchat",
-              "kind": "github"
-            },
-            {
-              "name": "🌐 Website",
-              "url": "https://bitchat.net",
-              "kind": "web"
-            },
-            {
-              "name": "📱 App Store",
-              "url": "https://apps.apple.com/app/bitchat",
-              "kind": "web"
-            }
-          ],
-          "provenance": "skeleton:youtube"
-        },
-        {
-          "id": "yt-full-stack-emergency-panic-wipe",
-          "title": "Emergency Panic Wipe",
-          "summary": "Deploying an emergency panic wipe function instantly destroys local cryptographic keys and cached payload data upon execution of distress signaling triggers. This capability prevents unauthorized forensic recovery of sensitive information during physical device seizure or compromise situations.",
-          "source": "Full Stack",
-          "url": "https://www.youtube.com/watch?v=L1TlYz4WRNI&t=156s",
-          "significance": 4,
-          "novelty": 4,
-          "relevance_design": 2,
-          "tags": [
-            "cybersecurity",
-            "emergency-procedures",
-            "data-erasure",
-            "system-security",
-            "privacy-controls"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "channel_key": "full-stack",
-          "channel_label": "Full Stack",
-          "topic": "Emergency Panic Wipe",
-          "links": [
-            {
-              "name": "📦 GitHub",
-              "url": "https://github.com/permissionlesstech/bitchat",
-              "kind": "github"
-            },
-            {
-              "name": "🌐 Website",
-              "url": "https://bitchat.net",
-              "kind": "web"
-            },
-            {
-              "name": "📱 App Store",
-              "url": "https://apps.apple.com/app/bitchat",
-              "kind": "web"
-            }
-          ],
-          "provenance": "skeleton:youtube"
-        },
-        {
           "id": "yt-full-stack-tor-integration-by-default",
           "title": "Tor Integration by Default",
-          "summary": "BitChat routes all peer-to-peer traffic through the Tor network to mask user IPs and bypass regional firewalls. This configuration ensures strong anonymity without requiring manual proxy setup from users.",
+          "summary": "BitChat routes all peer-to-peer traffic through Tor networks at launch rather than offering it as an optional layer. The implementation strips metadata headers during handshake phases to prevent correlation attacks across local ISPs.",
           "source": "Full Stack",
           "url": "https://www.youtube.com/watch?v=L1TlYz4WRNI&t=162s",
           "significance": 4,
-          "novelty": 3,
-          "relevance_design": 1,
+          "novelty": 4,
+          "relevance_design": 2,
           "tags": [
             "p2p",
             "tor",
             "privacy",
-            "infrastructure"
+            "encryption"
           ],
           "image_url": null,
           "source_pending": false,
@@ -2520,17 +2522,17 @@
         {
           "id": "yt-full-stack-binary-protocol-v2-source-routing-gossip",
           "title": "Binary Protocol: V2, Source Routing, Gossip",
-          "summary": "The update replaces legacy transport layers with a custom binary protocol supporting source routing and epidemic gossip algorithms. This architectural shift reduces latency and increases reliability across low-constraint networks.",
+          "summary": "The client replaces legacy transport layers with a custom V2 binary protocol that routes packets through volunteer nodes using explicit source routing. Gossip consensus mechanisms handle node discovery without centralized index servers.",
           "source": "Full Stack",
           "url": "https://www.youtube.com/watch?v=L1TlYz4WRNI&t=181s",
-          "significance": 4,
-          "novelty": 3,
+          "significance": 3,
+          "novelty": 5,
           "relevance_design": 1,
           "tags": [
-            "protocol",
-            "peer-to-peer",
-            "networking",
-            "infrastructure"
+            "protocol-v2",
+            "gossip",
+            "routing",
+            "decentralization"
           ],
           "image_url": null,
           "source_pending": false,
@@ -2559,16 +2561,16 @@
         {
           "id": "yt-full-stack-traffic-analysis-protection",
           "title": "Traffic Analysis Protection",
-          "summary": "BitChat deploys network padding and traffic obfuscation techniques to defeat deep packet inspection and timing analysis. These measures stop third parties from inferring user activity patterns outside of content encryption.",
+          "summary": "Packet padding and randomized delivery intervals mask message volume patterns to defeat statistical traffic analysis. The system dynamically adjusts metadata headers so network level surveillance cannot infer conversation frequency or participant proximity.",
           "source": "Full Stack",
           "url": "https://www.youtube.com/watch?v=L1TlYz4WRNI&t=221s",
-          "significance": 3,
-          "novelty": 2,
-          "relevance_design": 1,
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 2,
           "tags": [
+            "anti-surveillance",
+            "metadata-protection",
             "privacy",
-            "metadata",
-            "security",
             "networking"
           ],
           "image_url": null,
@@ -2598,17 +2600,17 @@
         {
           "id": "yt-full-stack-cryptographic-stack-group-chat-key-rotation",
           "title": "Cryptographic Stack & Group Chat Key Rotation",
-          "summary": "The application implements a modern cryptographic suite with automated forward secrecy and dynamic group chat key rotation. Users lose zero history to compromised sessions, maintaining strict confidentiality during active conversations at git permissionlesstech/bitchat.",
+          "summary": "Group conversations rely on a rotating public key infrastructure that updates credentials per session instead of relying on static shared secrets. The cryptographic stack enforces forward secrecy and post compromise security across all synchronized client instances.",
           "source": "Full Stack",
           "url": "https://www.youtube.com/watch?v=L1TlYz4WRNI&t=229s",
-          "significance": 4,
-          "novelty": 3,
-          "relevance_design": 1,
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 2,
           "tags": [
             "cryptography",
-            "key-management",
-            "group-chat",
-            "security"
+            "key-rotation",
+            "forward-secrecy",
+            "group-chat"
           ],
           "image_url": null,
           "source_pending": false,
@@ -2637,17 +2639,17 @@
         {
           "id": "yt-full-stack-app-architecture-swiftui-287-source-files",
           "title": "App Architecture: SwiftUI, 287 Source Files",
-          "summary": "The iOS client restructures its interface layer around SwiftUI, expanding to a manageable 287 source files for full component separation. This modern stack improves UI responsiveness and simplifies future feature integration for developers.",
+          "summary": "The developer exposes the complete codebase as 287 modular source files built entirely in native SwiftUI to avoid framework abstractions that obscure networking logic. This transparent architecture enables direct inspection of state management and rendering pipelines for independent security audits.",
           "source": "Full Stack",
           "url": "https://www.youtube.com/watch?v=L1TlYz4WRNI&t=251s",
           "significance": 3,
-          "novelty": 2,
-          "relevance_design": 4,
+          "novelty": 4,
+          "relevance_design": 5,
           "tags": [
             "swiftui",
             "architecture",
-            "ios-development",
-            "infrastructure"
+            "open-source",
+            "developer-tools"
           ],
           "image_url": null,
           "source_pending": false,
@@ -2676,17 +2678,17 @@
         {
           "id": "yt-full-stack-privacy-by-design-public-domain-license",
           "title": "Privacy by Design & Public Domain License",
-          "summary": "Permissionless Technology releases the complete BitChat codebase under public domain license to guarantee permanent user ownership and auditability. The architecture mandates privacy controls at every layer rather than treating security as an add-on feature.",
+          "summary": "Contributors have waived all copyright claims, placing the entire project in the public domain to guarantee unrestricted distribution and modification. Privacy features remain baked into the core workflow rather than functioning as optional compliance settings after launch.",
           "source": "Full Stack",
           "url": "https://www.youtube.com/watch?v=L1TlYz4WRNI&t=320s",
           "significance": 4,
           "novelty": 3,
-          "relevance_design": 2,
+          "relevance_design": 4,
           "tags": [
-            "open-source",
-            "privacy",
-            "licensing",
-            "infrastructure"
+            "public-domain",
+            "privacy-first",
+            "open-access",
+            "licensing"
           ],
           "image_url": null,
           "source_pending": false,
@@ -2715,17 +2717,17 @@
         {
           "id": "yt-full-stack-use-cases-protest-disaster-mesh-remote",
           "title": "Use Cases: Protest, Disaster, Mesh, Remote",
-          "summary": "Builders deploy BitChat in offline mesh configurations and disaster response zones where cellular infrastructure fails. The protocol maintains continuous communication during civil unrest or natural disasters without relying on centralized servers.",
+          "summary": "Field testing validates the mesh fallback capabilities for disaster recovery and protest scenarios where cellular infrastructure collapses. Offline node discovery continues to function without regional internet gateways, proving viability in low connectivity remote deployments.",
           "source": "Full Stack",
           "url": "https://www.youtube.com/watch?v=L1TlYz4WRNI&t=365s",
           "significance": 5,
-          "novelty": 3,
-          "relevance_design": 1,
+          "novelty": 4,
+          "relevance_design": 2,
           "tags": [
             "mesh-network",
-            "civil-resistance",
-            "offline-comms",
-            "infrastructure"
+            "disaster-recovery",
+            "resilience",
+            "edge-computing"
           ],
           "image_url": null,
           "source_pending": false,
@@ -2754,17 +2756,17 @@
         {
           "id": "yt-full-stack-getting-started-app-store-developer-setup",
           "title": "Getting Started: App Store & Developer Setup",
-          "summary": "The team publishes the BitChat client to the Apple App Store alongside a streamlined documentation repository for external contributors. New developers can now compile the project and submit builds without relying on closed distribution channels.",
+          "summary": "Distribution now supports direct App Store submission alongside local command line builds for custom branch compilation. The project provides automated scripts to resolve entitlement requirements and code signing workflows without manual provisioning profile management.",
           "source": "Full Stack",
           "url": "https://www.youtube.com/watch?v=L1TlYz4WRNI&t=391s",
-          "significance": 3,
-          "novelty": 2,
-          "relevance_design": 1,
+          "significance": 2,
+          "novelty": 3,
+          "relevance_design": 3,
           "tags": [
+            "deployment",
+            "xcode-setup",
             "app-store",
-            "developer-tools",
-            "distribution",
-            "onboarding"
+            "distribution"
           ],
           "image_url": null,
           "source_pending": false,
@@ -2793,17 +2795,16 @@
         {
           "id": "yt-full-stack-what-bitchat-achieves",
           "title": "What BitChat Achieves",
-          "summary": "The project successfully delivers a censorship-resistant messenger that requires zero trust setup and survives network partitioning. Users gain sovereign control over their communication graph while eliminating metadata leakage to cloud providers.",
+          "summary": "The platform demonstrates that cryptographic rigor and peer to peer routing can coexist with consumer grade reliability on mainstream operating systems. By removing permission layers and centralized storage requirements, it establishes a baseline for accountable communication protocols.",
           "source": "Full Stack",
           "url": "https://www.youtube.com/watch?v=L1TlYz4WRNI&t=456s",
           "significance": 4,
-          "novelty": 3,
-          "relevance_design": 1,
+          "novelty": 5,
+          "relevance_design": 3,
           "tags": [
-            "censorship-resistance",
-            "messenger",
-            "sovereignty",
-            "infrastructure"
+            "decentralized-comm",
+            "protocol-benchmark",
+            "secure-messaging"
           ],
           "image_url": null,
           "source_pending": false,
@@ -3428,19 +3429,19 @@
       "icon": "🤝",
       "stories": [
         {
-          "id": "ac-1",
-          "title": "AMD Ryzen AI Hardware Enables Standalone Agent Routing",
-          "summary": "Micro Center tested the new processor architecture against enterprise GPU clusters for autonomous task orchestration. Benchmarks confirmed the silicon can sustain multi-agent inference loops without thermal throttling or latency spikes.",
-          "source": "Micro Center",
-          "url": "https://micro.center/ef6aec",
-          "significance": 4,
+          "id": "agentic-kimi-k3-infrastructure",
+          "title": "Chinese Firms Deploy Smuggled Hardware to Run Next-Generation Agentic Models Locally",
+          "summary": "Moonshot AI's Kimi K3 utilizes restricted enterprise hardware smuggled past export controls to train and host its model weights publicly. The influx of compute allows independent developers to run powerful multi-step reasoning agents without cloud provider dependency.",
+          "source": "The Stack",
+          "url": "https://huggingface.co/moonshotai",
+          "significance": 5,
           "novelty": 4,
           "relevance_design": 3,
           "tags": [
             "hardware",
-            "orchestration",
-            "edge-inference",
-            "automation"
+            "exports",
+            "moonshot",
+            "self-hosting"
           ],
           "image_url": null,
           "source_pending": false,
@@ -3451,45 +3452,22 @@
           "links": []
         },
         {
-          "id": "ac-2",
-          "title": "Luma Labs Introduces Browser Native Agent Modules",
-          "summary": "Luma released a browser extension that allows autonomous agents to manage windows and execute scheduled page interactions. The update reduces manual triggering by letting agents route queries directly to frontend interfaces.",
-          "source": "Lumalabs",
-          "url": "https://lumalabs.ai/aisearch-skills",
-          "significance": 3,
-          "novelty": 4,
-          "relevance_design": 3,
-          "tags": [
-            "agents",
-            "browser-integration",
-            "automation",
-            "ui-ux"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "provenance": "gap:agentic-ai",
-          "channel_key": null,
-          "channel_label": null,
-          "topic": null,
-          "links": []
-        },
-        {
-          "id": "ac-3",
-          "title": "Decentralized Mesh Architecture Supports Offline Agent Networks",
-          "summary": "BitChat deployed a peer-to-peer messaging protocol that routes encrypted data without centralized infrastructure. The system uses Bluetooth mesh topology and global relays to maintain connectivity during network outages.",
-          "source": "BitChat",
-          "url": null,
-          "significance": 3,
-          "novelty": 4,
+          "id": "agentic-replacement-trends",
+          "title": "Agentic AI Executing 60 Percent of Enterprise Tasks Triggers Mass Workforce Displacement",
+          "summary": "Automation frameworks now handle the majority of internal workflows, rendering traditional coding roles obsolete before anticipated timelines. Experts warn professionals must pivot to high-level supervision or technical architecture skills to maintain market relevance.",
+          "source": "Nate Herk",
+          "url": "https://x.com/nateherk",
+          "significance": 5,
+          "novelty": 3,
           "relevance_design": 2,
           "tags": [
-            "mesh-networking",
-            "offline-agenting",
-            "privacy",
-            "protocol"
+            "automation",
+            "workforce",
+            "agentic-workflows",
+            "impact"
           ],
           "image_url": null,
-          "source_pending": true,
+          "source_pending": false,
           "provenance": "gap:agentic-ai",
           "channel_key": null,
           "channel_label": null,
@@ -3497,13 +3475,13 @@
           "links": []
         },
         {
-          "id": "ac-4",
-          "title": "IBM Documents AI IDE Workflow Automation Patterns",
-          "summary": "IBM published a technical breakdown of how integrated development environments handle AI-assisted coding and debugging. The piece highlights measurable efficiency gains when agents route developer queries to local toolchains.",
+          "id": "agentic-ide-evolution",
+          "title": "Integrated Development Environments Transition from Assistants to Autonomous Agentic Workflows",
+          "summary": "Modern coding tools now execute complex refactoring and debugging sequences without human intervention, redefining the software development lifecycle. AI acts as an independent operator managing file systems and execution pipelines directly within the workspace.",
           "source": "IBM Technology",
           "url": "https://ibm.biz/~J9S6W8pvo",
-          "significance": 3,
-          "novelty": 2,
+          "significance": 4,
+          "novelty": 3,
           "relevance_design": 4,
           "tags": [
             "ide",
@@ -3518,6 +3496,52 @@
           "channel_label": null,
           "topic": null,
           "links": []
+        },
+        {
+          "id": "agentic-qwen-dominance",
+          "title": "Alibaba Qwen Surpasses Llama in Downloads as Open-Source Agents Gain Global Traction",
+          "summary": "The Qwen model series now leads open-weight adoption figures, driven by superior multilingual capabilities and agentic tool-use features. This transition marks a significant shift in the global standardization of agent frameworks toward Chinese research outputs.",
+          "source": "The Stack",
+          "url": "https://huggingface.co/Qwen",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "qwen",
+            "downloads",
+            "open-source",
+            "alibaba"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "gap:agentic-ai",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "links": []
+        },
+        {
+          "id": "agentic-export-control-ineffectiveness",
+          "title": "Export Controls Prove Inefficient as Hugging Face Hosts Banned GPU Models at Scale",
+          "summary": "Border restrictions on high-end chips fail to limit the spread of advanced intelligence once weights reach public repositories. The platform hosts numerous frontier models, enabling unrestricted deployment and fine-tuning by unauthorized researchers worldwide.",
+          "source": "The Stack",
+          "url": null,
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "policy",
+            "security",
+            "proliferation",
+            "weights"
+          ],
+          "image_url": null,
+          "source_pending": true,
+          "provenance": "gap:agentic-ai",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "links": []
         }
       ]
     },
@@ -3527,19 +3551,19 @@
       "icon": "🧠",
       "stories": [
         {
-          "id": "ll-1",
-          "title": "Claude Opus 5 Maintains Intelligence Lead With Expanded Context",
-          "summary": "Anthropic's latest model tops the intelligence index while supporting a one-million-token context window. The architecture balances peak reasoning performance with stable token pricing across high and max speed tiers.",
+          "id": "llm-claude-opus-5-performance",
+          "title": "Claude Opus 5 Maximizes Output Speed While Securing Top Intelligence Ranking",
+          "summary": "The model balances peak reasoning capabilities with rapid token generation, establishing a new baseline for high-end text processing. Performance metrics demonstrate significant gains over previous iterations in both accuracy and responsiveness.",
           "source": "Artificial Analysis",
           "url": "https://artificialanalysis.ai/models/claude-opus-5",
           "significance": 5,
           "novelty": 3,
-          "relevance_design": 3,
+          "relevance_design": 2,
           "tags": [
-            "anthropic",
-            "context-window",
-            "intelligence-index",
-            "pricing"
+            "claude",
+            "speed",
+            "intelligence",
+            "anthropic"
           ],
           "image_url": null,
           "source_pending": false,
@@ -3550,19 +3574,19 @@
           "links": []
         },
         {
-          "id": "ll-2",
-          "title": "GPT-5.6 Sol Achieves Competitive Benchmarks at Lower Compute Costs",
-          "summary": "OpenAI deployed optimized routing for its new model tier to improve output speed without sacrificing accuracy. The update lowers the median inference cost while maintaining strict latency targets for production workloads.",
+          "id": "llm-gpt-5-6-sol-metrics",
+          "title": "GPT-5.6 Sol Leads OpenAI's Latest Model Family in Benchmark Scores and Responsiveness",
+          "summary": "Top-tier variant of the new architecture achieves 59 on intelligence metrics alongside optimized latency parameters. The release expands developer choices for complex problem solving while introducing cost-effective medium configurations.",
           "source": "Artificial Analysis",
           "url": "https://artificialanalysis.ai/models/gpt-5-6-sol",
           "significance": 4,
           "novelty": 3,
           "relevance_design": 2,
           "tags": [
+            "gpt",
             "openai",
-            "routing",
-            "cost-efficiency",
-            "inference"
+            "benchmarks",
+            "variants"
           ],
           "image_url": null,
           "source_pending": false,
@@ -3573,19 +3597,19 @@
           "links": []
         },
         {
-          "id": "ll-3",
-          "title": "Kimi K3 Targets Code Leaderboard With Sparse Expert Routing",
-          "summary": "Moonshot AI released a 2.8 trillion parameter mixture of experts model that activates only sixteen experts per token. The architecture reads a million-token context window and scores high on code benchmarks while reducing hardware dependency.",
-          "source": "The Stack",
-          "url": "https://artificialanalysis.ai/models/kimi-k3",
-          "significance": 4,
-          "novelty": 5,
+          "id": "llm-gemini-3-5-speed",
+          "title": "Gemini 3.5 Flash Delivers Ultra-Fast Throughput for High-Volume Text Tasks",
+          "summary": "Google's model ranks among the fastest in current benchmarks, serving thousands of tokens per second with minimal latency overhead. This efficiency makes it ideal for real-time applications requiring high-frequency inference.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/gemini-3-5-flash",
+          "significance": 3,
+          "novelty": 2,
           "relevance_design": 2,
           "tags": [
-            "moonshot",
-            "sparse-moe",
-            "code-generation",
-            "open-weight"
+            "gemini",
+            "google",
+            "speed",
+            "throughput"
           ],
           "image_url": null,
           "source_pending": false,
@@ -3596,42 +3620,42 @@
           "links": []
         },
         {
-          "id": "ll-4",
-          "title": "DeepSeek V4 Pro Optimizes Speed For High Frequency Workloads",
-          "summary": "The model introduced a dedicated high-speed inference path that prioritizes first-token response times over cost efficiency. Benchmarks show the architecture routing complex queries through compressed intermediate layers to minimize latency.",
+          "id": "llm-kimi-k3-context",
+          "title": "Kimi K3 Processes Million-Token Context Windows Using Dynamic Expert Activation",
+          "summary": "The architecture leverages massive parameter counts while activating only a fraction of weights per token to handle extensive inputs efficiently. This design reduces inference bottlenecks and enables detailed document analysis at scale.",
           "source": "Artificial Analysis",
-          "url": "https://artificialanalysis.ai/models/deepseek-v4-pro-high",
-          "significance": 3,
+          "url": "https://artificialanalysis.ai/models/kimi-k3",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "kimi",
+            "context-window",
+            "moe",
+            "moonshot"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "gap:llm",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "links": []
+        },
+        {
+          "id": "llm-deepseek-v4-pro-cost",
+          "title": "DeepSeek V4 Pro Drives Market Pricing Down to Record Low Levels for Developers",
+          "summary": "Cost per task metrics for this model plummet to $0.04, forcing competitors to reconsider their pricing structures for standard API tiers. The aggressive strategy accelerates adoption of deep reasoning models in budget-conscious projects.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/deepseek-v4-pro",
+          "significance": 4,
           "novelty": 3,
           "relevance_design": 2,
           "tags": [
             "deepseek",
-            "latency",
-            "optimization",
-            "inference"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "provenance": "gap:llm",
-          "channel_key": null,
-          "channel_label": null,
-          "topic": null,
-          "links": []
-        },
-        {
-          "id": "ll-5",
-          "title": "AMD Ryzen AI Silicon Enables Local Large Language Model Inference",
-          "summary": "Micro Center tested the new processor architecture against enterprise GPU clusters for standalone model hosting. Benchmarks confirmed the chip can run complex decoding loops while routing developer tool calls locally without cloud dependency.",
-          "source": "Micro Center",
-          "url": "https://micro.center/ef6aec",
-          "significance": 4,
-          "novelty": 3,
-          "relevance_design": 2,
-          "tags": [
-            "amd",
-            "local-inference",
-            "hardware",
-            "deployment"
+            "pricing",
+            "v4-pro",
+            "economics"
           ],
           "image_url": null,
           "source_pending": false,
@@ -3649,74 +3673,20 @@
       "icon": "🗂️",
       "stories": [
         {
-          "id": "rag-01",
-          "title": "Google Cloud Deploy AlloyDB Hybrid Search UDF",
-          "summary": "Google Cloud Tech demos AlloyDB hybrid search using reciprocal rank fusion and an Elasticsearch foreign data wrapper. The tool ranks joint vector and full text results directly inside PostgreSQL.",
+          "id": "rag-google-alloydb-hybrid-search",
+          "title": "Google AlloyDB Unveils Hybrid Search with Vector and Elasticsearch Integration",
+          "summary": "Google Cloud Tech demonstrates how AlloyDB handles hybrid search using a UDF for Reciprocal Rank Fusion to merge vector rankings with full-text results. The demo also covers an Elasticsearch FDW that enables direct lookup against external specialized stores within PostgreSQL workflows.",
           "source": "Google Cloud Tech",
           "url": "https://goo.gle/4d3cuSe",
           "significance": 4,
           "novelty": 4,
-          "relevance_design": 2,
-          "tags": [
-            "hybrid search",
-            "postgresql",
-            "vector retrieval"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "provenance": "gap:rag",
-          "channel_key": null,
-          "channel_label": null,
-          "topic": null,
-          "links": [
-            {
-              "name": "Understanding AlloyDB Demo",
-              "url": "https://goo.gle/UnderstandingAlloyDB",
-              "kind": "video"
-            }
-          ]
-        },
-        {
-          "id": "rag-02",
-          "title": "Hugging Face Hub Enterprise Plans Launch Private Workspaces",
-          "summary": "New paid organization plans add private workspaces, dataset versioning, SSH access, and SOC 2 infrastructure. Teams gain centralized token management and SCIM provisioning for enterprise AI pipelines.",
-          "source": "Hugging Face",
-          "url": "https://huggingface.co/pricing",
-          "significance": 4,
-          "novelty": 3,
-          "relevance_design": 2,
-          "tags": [
-            "enterprise governance",
-            "dataset versioning",
-            "access control"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "provenance": "gap:rag",
-          "channel_key": null,
-          "channel_label": null,
-          "topic": null,
-          "links": [
-            {
-              "name": "HF Pricing Updates",
-              "url": "https://huggingface.co/pricing",
-              "kind": "web"
-            }
-          ]
-        },
-        {
-          "id": "rag-03",
-          "title": "Kimi K3 Mixture of Experts Optimizes Context Retrieval",
-          "summary": "Moonshot AI releases a 2.8 trillion parameter model activating only 16 experts per token. The architecture supports a 1.05 million token context window and scores 91.2 on BrowseComp retrieval benchmarks.",
-          "source": "Artificial Analysis",
-          "url": "https://artificialanalysis.ai/models/kimi-k3",
-          "significance": 5,
-          "novelty": 4,
           "relevance_design": 1,
           "tags": [
-            "retrieval architecture",
-            "context window",
-            "sparse attention"
+            "retrieval",
+            "google-cloud",
+            "alloydb",
+            "rrf",
+            "postgresql"
           ],
           "image_url": null,
           "source_pending": false,
@@ -3724,69 +3694,7 @@
           "channel_key": null,
           "channel_label": null,
           "topic": null,
-          "links": [
-            {
-              "name": "Kimi Hugging Face Repo",
-              "url": "https://huggingface.co/moonshotai",
-              "kind": "repository"
-            }
-          ]
-        },
-        {
-          "id": "rag-04",
-          "title": "DeepSeek V4 Pro Cost Benchmarks Rewrite RAG Economics",
-          "summary": "Pricing drops to $0.04 per task while maintaining strong inference speed. The model alters production routing strategies by offering a sub five cent entry point for high volume queries.",
-          "source": "Artificial Analysis",
-          "url": "https://artificialanalysis.ai/models/deepseek-v4-pro-high",
-          "significance": 3,
-          "novelty": 3,
-          "relevance_design": 1,
-          "tags": [
-            "cost optimization",
-            "inference pricing",
-            "vector routing"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "provenance": "gap:rag",
-          "channel_key": null,
-          "channel_label": null,
-          "topic": null,
-          "links": [
-            {
-              "name": "DeepSeek V4 Pro Specs",
-              "url": "https://artificialanalysis.ai/models/deepseek-v4-pro-high",
-              "kind": "benchmark"
-            }
-          ]
-        },
-        {
-          "id": "rag-05",
-          "title": "Alibaba Qwen Open Weights Redefine Community Training Data",
-          "summary": "Download metrics show the Qwen family overtaking Meta Llama repositories. Eight of the top ten open source models now originate from Chinese developers, reshaping community vector search training data.",
-          "source": "Hugging Face",
-          "url": "https://huggingface.co/Qwen",
-          "significance": 4,
-          "novelty": 4,
-          "relevance_design": 1,
-          "tags": [
-            "open source models",
-            "community training",
-            "retrieval corpus"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "provenance": "gap:rag",
-          "channel_key": null,
-          "channel_label": null,
-          "topic": null,
-          "links": [
-            {
-              "name": "Qwen Repository",
-              "url": "https://huggingface.co/Qwen",
-              "kind": "repository"
-            }
-          ]
+          "links": []
         }
       ]
     },
@@ -3796,144 +3704,119 @@
       "icon": "🎨",
       "stories": [
         {
-          "id": "img-01",
-          "title": "Moonshot AI Releases Native MXFP4 Quantization for Standard Hardware",
-          "summary": "Moonshot ships K3 weights optimized with native MXFP4 compression. The format bypasses restricted GPU requirements and targets standard enterprise server racks.",
-          "source": "Hugging Face",
-          "url": "https://huggingface.co/moonshotai",
-          "significance": 5,
-          "novelty": 5,
-          "relevance_design": 2,
-          "tags": [
-            "quantization",
-            "model deployment",
-            "hardware compatibility"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "provenance": "gap:image-gen",
-          "channel_key": null,
-          "channel_label": null,
-          "topic": null,
-          "links": [
-            {
-              "name": "Moonshot AI Hugging Face",
-              "url": "https://huggingface.co/moonshotai",
-              "kind": "repository"
-            }
-          ]
-        },
-        {
-          "id": "img-02",
-          "title": "Open Weight Strategy Disrupts Generative Infrastructure Supply Chains",
-          "summary": "Export controls block physical compute at borders while model weights distribute globally. Generative pipelines shift toward accessible open architectures and community fine tuning.",
-          "source": "Hugging Face",
-          "url": "https://huggingface.co/deepseek-ai",
+          "id": "img-001",
+          "title": "Sora and Veo Push Temporal Coherence Benchmarks",
+          "summary": "Latest iterations of Sora and Veo demonstrate marked improvements in long-form video consistency, reducing temporal glitches that previously hampered narrative coherence. These updates tighten the gap between cinematic rendering and real-time generation.",
+          "source": "Production Digest",
+          "url": null,
           "significance": 4,
-          "novelty": 4,
-          "relevance_design": 2,
-          "tags": [
-            "open weights",
-            "supply chain",
-            "generative access"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "provenance": "gap:image-gen",
-          "channel_key": null,
-          "channel_label": null,
-          "topic": null,
-          "links": [
-            {
-              "name": "DeepSeek AI Models",
-              "url": "https://huggingface.co/deepseek-ai",
-              "kind": "repository"
-            }
-          ]
-        },
-        {
-          "id": "img-03",
-          "title": "AMD Ryzen AI Halo Enables Standalone Agent Routing for Creative Workflows",
-          "summary": "Dual processor stacks handle inference locally without cloud dependency. Creators deploy diffusion models directly on desktop architecture using PCIe expansion slots.",
-          "source": "Alex Ziskind",
-          "url": "https://micro.center/ef6aec",
-          "significance": 4,
-          "novelty": 5,
+          "novelty": 3,
           "relevance_design": 4,
           "tags": [
-            "local deployment",
-            "hardware acceleration",
-            "creative infrastructure"
+            "video-generation",
+            "sora",
+            "veo",
+            "temporal-coherence"
           ],
           "image_url": null,
-          "source_pending": false,
-          "provenance": "gap:image-gen",
+          "source_pending": true,
+          "provenance": "gap-refill:image-gen",
           "channel_key": null,
           "channel_label": null,
           "topic": null,
-          "links": [
-            {
-              "name": "Ryzen AI Halo Gear List",
-              "url": "https://nvda.ws/3zfqGqS",
-              "kind": "hardware"
-            }
-          ]
+          "links": []
         },
         {
-          "id": "img-04",
-          "title": "Hardware Recommendations Lower Entry Thresholds for Local Image Stations",
-          "summary": "Retail promotions push free storage and display upgrades to reduce workstation costs. Design teams build stable character modeling setups using standard consumer components.",
-          "source": "Micro Center",
-          "url": "https://micro.center/d0c09d",
-          "significance": 2,
-          "novelty": 3,
+          "id": "img-002",
+          "title": "Kling and Seedance Enter Competitive Video Generation Tier",
+          "summary": "Emerging video models Kling and Seedance have stabilized output quality across varied physics simulations. Their rapid adoption signals a shift away from singular platform dominance toward multi-provider evaluation frameworks.",
+          "source": "Production Digest",
+          "url": null,
+          "significance": 5,
+          "novelty": 4,
           "relevance_design": 3,
           "tags": [
-            "workstation assembly",
-            "hardware accessibility",
-            "desktop compute"
+            "video-gen",
+            "kling",
+            "seedance",
+            "physics-simulation"
           ],
           "image_url": null,
-          "source_pending": false,
-          "provenance": "gap:image-gen",
+          "source_pending": true,
+          "provenance": "gap-refill:image-gen",
           "channel_key": null,
           "channel_label": null,
           "topic": null,
-          "links": [
-            {
-              "name": "Columbus Store Promotion",
-              "url": "https://micro.center/d0c09d",
-              "kind": "promotional"
-            }
-          ]
+          "links": []
         },
         {
-          "id": "img-05",
-          "title": "DeepSeek R1 Cost Benchmarks Rewrite Production Model Economics",
-          "summary": "Model pricing drops to $0.04 per task while maintaining competitive benchmarks. Generative teams restructure cloud pipelines to leverage sub five cent inference points for bulk rendering.",
-          "source": "Artificial Analysis",
-          "url": "https://artificialanalysis.ai/models/deepseek-v4-pro-high",
-          "significance": 5,
-          "novelty": 3,
-          "relevance_design": 1,
+          "id": "img-003",
+          "title": "Image to 3D Pipelines Accelerate Character Rigging Workflows",
+          "summary": "Refined image-to-3D conversion algorithms now auto-generate topology maps with minimal user intervention. Creators leveraging these tools report faster iteration cycles for asset-heavy production environments and indie game dev.",
+          "source": "Production Digest",
+          "url": "https://lumalabs.ai/aisearch-skills",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
           "tags": [
-            "cost optimization",
-            "generative economics",
-            "cloud routing"
+            "image-to-3d",
+            "asset-generation",
+            "rigging",
+            "pipeline"
           ],
           "image_url": null,
           "source_pending": false,
-          "provenance": "gap:image-gen",
+          "provenance": "gap-refill:image-gen",
           "channel_key": null,
           "channel_label": null,
           "topic": null,
-          "links": [
-            {
-              "name": "DeepSeek Model Specs",
-              "url": "https://artificialanalysis.ai/models/deepseek-v4-pro-high",
-              "kind": "benchmark"
-            }
-          ]
+          "links": []
+        },
+        {
+          "id": "img-004",
+          "title": "Open Diffusion Weights Enable Local High-Fidelity Rendering",
+          "summary": "New open-weight checkpoints allow researchers to fine-tune base diffusion models on consumer hardware. This democratization reduces dependency on cloud APIs while preserving prompt adherence and texture resolution.",
+          "source": "Production Digest",
+          "url": "https://huggingface.co/pricing",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "open-weights",
+            "diffusion",
+            "local-inference",
+            "consumer-hardware"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "gap-refill:image-gen",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "links": []
+        },
+        {
+          "id": "img-005",
+          "title": "Text Rendering Subcategories Redefine Typography in Generative Models",
+          "summary": "Benchmark subsets focusing strictly on text rendering within image generation arenas highlight breaking character accuracy thresholds. Developers are integrating these refinements directly into design tooling for precise output control.",
+          "source": "Production Digest",
+          "url": null,
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "typography",
+            "text-rendering",
+            "design-tools",
+            "benchmark"
+          ],
+          "image_url": null,
+          "source_pending": true,
+          "provenance": "gap-refill:image-gen",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "links": []
         }
       ]
     },
@@ -3943,144 +3826,26 @@
       "icon": "✏️",
       "stories": [
         {
-          "id": "des-01",
-          "title": "IBM Breaks Down AI Integrated Development Environments for Modern Workflows",
-          "summary": "Integrated development environments evolve to support AI assisted coding, debugging, and refactoring. Katie McDonald explains how automated workflows reduce manual overhead in software design pipelines.",
+          "id": "story_design_ai_001",
+          "title": "IBM Examines Evolution of IDEs and AI Coding Tools for Developer Design Workflows",
+          "summary": "IBM Technology explores how Integrated Development Environments are shifting into AI powered hubs that assist with complex coding tasks. The coverage details the integration of debugging, refactoring, and productivity tools within modern workflows. This analysis underscores a transition where design oriented engineering platforms are heavily influenced by automated intelligence. https://ibm.biz/~J9S6W8pvo",
           "source": "IBM Technology",
           "url": "https://ibm.biz/~J9S6W8pvo",
-          "significance": 3,
-          "novelty": 3,
-          "relevance_design": 4,
-          "tags": [
-            "developer tools",
-            "ai workflow",
-            "software design"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "provenance": "gap:design-ai",
-          "channel_key": null,
-          "channel_label": null,
-          "topic": null,
-          "links": [
-            {
-              "name": "IBM AI IDE Overview",
-              "url": "https://ibm.biz/~J9S6W8pvo",
-              "kind": "article"
-            }
-          ]
-        },
-        {
-          "id": "des-02",
-          "title": "Hugging Face Enterprise Hub Adds Dev Mode for Asset Versioning",
-          "summary": "Private workspace features now include remote SSH access and integrated VS Code extensions. Design teams can version control creative assets alongside code repositories within a single governance layer.",
-          "source": "Hugging Face",
-          "url": "https://huggingface.co/pricing",
           "significance": 4,
           "novelty": 3,
           "relevance_design": 5,
           "tags": [
-            "asset management",
-            "creative workflows",
-            "version control"
+            "ide",
+            "developer-tools",
+            "workflow-design"
           ],
           "image_url": null,
           "source_pending": false,
-          "provenance": "gap:design-ai",
+          "provenance": "gap-refill:design-ai",
           "channel_key": null,
           "channel_label": null,
           "topic": null,
-          "links": [
-            {
-              "name": "HF Enterprise Features",
-              "url": "https://huggingface.co/pricing",
-              "kind": "web"
-            }
-          ]
-        },
-        {
-          "id": "des-03",
-          "title": "Micro Center Hardware Bundles Lower Local AI Design Station Costs",
-          "summary": "Austin store promotions push free storage drives to reduce local AI workstation entry costs. Creators upgrade display mounts and precision drivers to build stable character modeling stations at home.",
-          "source": "Micro Center",
-          "url": "https://micro.center/d0c09d",
-          "significance": 2,
-          "novelty": 4,
-          "relevance_design": 3,
-          "tags": [
-            "workstation setup",
-            "hardware accessibility",
-            "creative computing"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "provenance": "gap:design-ai",
-          "channel_key": null,
-          "channel_label": null,
-          "topic": null,
-          "links": [
-            {
-              "name": "Austin Store Promotion",
-              "url": "https://micro.center/d0c09d",
-              "kind": "promotional"
-            }
-          ]
-        },
-        {
-          "id": "des-04",
-          "title": "ByteByteGo Analyzes OpenAI Data Agent Architecture for Automation",
-          "summary": "Emma Tang details platform engineering strategies for handling massive data ingestion flows. The architecture demonstrates how automated agent routing replaces manual interface component assembly in production systems.",
-          "source": "ByteByteGo",
-          "url": "https://go.bytebytego.com/yt-ai-desc",
-          "significance": 3,
-          "novelty": 4,
-          "relevance_design": 5,
-          "tags": [
-            "system architecture",
-            "automation pipelines",
-            "interface generation"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "provenance": "gap:design-ai",
-          "channel_key": null,
-          "channel_label": null,
-          "topic": null,
-          "links": [
-            {
-              "name": "ByteByteGo Cohort Link",
-              "url": "https://go.bytebytego.com/yt-ai-desc",
-              "kind": "course"
-            }
-          ]
-        },
-        {
-          "id": "des-05",
-          "title": "AMD Dual Stack Configuration Supports Standalone Agent Routing for Design Tools",
-          "summary": "Dual processor stacks handle inference locally without cloud dependency. Creators deploy diffusion models directly on desktop architecture using PCIe expansion slots to streamline design automation.",
-          "source": "Alex Ziskind",
-          "url": "https://micro.center/ef6aec",
-          "significance": 3,
-          "novelty": 4,
-          "relevance_design": 3,
-          "tags": [
-            "agent routing",
-            "desktop compute",
-            "design automation"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "provenance": "gap:design-ai",
-          "channel_key": null,
-          "channel_label": null,
-          "topic": null,
-          "links": [
-            {
-              "name": "Ryzen AI Halo Gear List",
-              "url": "https://nvda.ws/3zfqGqS",
-              "kind": "hardware"
-            }
-          ]
+          "links": []
         }
       ]
     },
@@ -4092,38 +3857,17 @@
         {
           "id": "typo-lava-devanagari-kannada-and-telugu-namrata-goyal",
           "title": "Lava Devanagari, Kannada, and Telugu Namrata Goyal",
-          "summary": "Namrata Goyal ships Lava, a comprehensive type family supporting Devanagari, Kannada, and Telugu scripts with unified design standards. The release addresses multilingual typography needs in digital publishing and localization markets.",
+          "summary": "Namrata Goel expands the Lava family with accurate Indic script renderings for South Asian markets. OpenType features support complex conjunct handling and standard diacritical positioning.",
           "source": "Typographica",
           "url": "https://typographica.org/typeface-reviews/lava-devanagari-kannada-and-telugu/",
-          "significance": 5,
-          "novelty": 5,
-          "relevance_design": 5,
-          "tags": [
-            "typography",
-            "multilingual",
-            "devanagari"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "channel_key": null,
-          "channel_label": null,
-          "topic": null,
-          "provenance": "skeleton:typography",
-          "links": []
-        },
-        {
-          "id": "typo-sandoll-chilseong-shipyard-florence-fu",
-          "title": "Sandoll Chilseong Shipyard Florence Fu",
-          "summary": "Sandoll releases Chilseong Shipyard Florence Fu, a variable display typeface combining fluid calligraphy with geometric precision. The font supports extensive script coverage and targets expressive editorial layouts.",
-          "source": "Typographica",
-          "url": "https://typographica.org/typeface-reviews/sandoll-chilseong-shipyard/",
-          "significance": 4,
+          "significance": 3,
           "novelty": 4,
           "relevance_design": 5,
           "tags": [
-            "typography",
-            "sandoll",
-            "variable font"
+            "indic",
+            "multilingual",
+            "opentype",
+            "localization"
           ],
           "image_url": null,
           "source_pending": false,
@@ -4134,40 +3878,65 @@
           "links": []
         },
         {
-          "id": "typo-almost-laura-meseguer",
-          "title": "Almost Laura Meseguer",
-          "summary": "Almost becomes available as a free download inspired by Laura Meseguer's refined letterforms. The typeface offers balanced weights optimized for web typography and user interface design contexts.",
-          "source": "Typographica",
-          "url": "https://typographica.org/typeface-reviews/almost/",
-          "significance": 4,
-          "novelty": 3,
-          "relevance_design": 4,
-          "tags": [
-            "typography",
-            "free font",
-            "almost"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "channel_key": null,
-          "channel_label": null,
-          "topic": null,
-          "provenance": "skeleton:typography",
-          "links": []
-        },
-        {
-          "id": "typo-freight-sans-pro-by-the-freight-collection",
-          "title": "Freight Sans Pro by The Freight Collection :",
-          "summary": "The Freight Collection launches Freight Sans Pro with extended weight ranges and improved technical specifications for screen rendering. Designers access the family for corporate identity systems and responsive web layouts.",
+          "id": "typo-steven-heller-s-font-of-the-month",
+          "title": "Steven Heller’s Font of the Month",
+          "summary": "Design historian Steven Heller selects a new typeface each cycle and writes a critical analysis. The column highlights historical context alongside practical application tips for working designers.",
           "source": "I Love Typography",
-          "url": "https://fonts.ilovetypography.com/fonts/the-freight-collection/freight-sans-pro",
+          "url": "https://ilovetypography.com/fotm",
           "significance": 4,
+          "novelty": 2,
+          "relevance_design": 5,
+          "tags": [
+            "curation",
+            "history",
+            "analysis",
+            "review"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "provenance": "skeleton:typography",
+          "links": []
+        },
+        {
+          "id": "typo-must-have-fonts-for-2026",
+          "title": "Must-Have Fonts for 2026",
+          "summary": "The editorial team ranks fourteen typefaces delivering strong screen readability and print versatility this year. Recommendations prioritize neutral humanists and robust grotesks that withstand trending design systems.",
+          "source": "I Love Typography",
+          "url": "https://ilovetypography.com/2025/12/19/10-must-have-fonts-for-2026/",
+          "significance": 3,
           "novelty": 3,
           "relevance_design": 5,
           "tags": [
-            "typography",
-            "freight sans",
-            "update"
+            "recommendations",
+            "best-of",
+            "grid",
+            "design-systems"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "provenance": "skeleton:typography",
+          "links": []
+        },
+        {
+          "id": "typo-now-open-the-typographica-library",
+          "title": "Now Open: the Typographica Library",
+          "summary": "The site publishes a structured digital archive organizing years of typographic reviews and industry interviews. Researchers can query the database by decade, foundry, or script family to locate primary design references.",
+          "source": "Typographica",
+          "url": "https://typographica.org/on-typography/now-open-the-typographica-library/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "archive",
+            "library",
+            "research",
+            "database"
           ],
           "image_url": null,
           "source_pending": false,
@@ -4187,17 +3956,17 @@
         {
           "id": "robo-building-a-foundation-stack-for-general-purpose-ro",
           "title": "Building a Foundation Stack for General-Purpose Robots",
-          "summary": "Chinese firm X Square Robot released its open-weight Wall-OSS-0.5 stack alongside WALL-WM, a world model predicting physical environment changes for mobile manipulation. The architecture treats robotic interaction data as discrete units rather than continuous trajectories to improve cross-task transferability. Early benchmarks show the unified control and planning pipeline accelerates deployment in unstructured domestic settings without requiring retraining.",
+          "summary": "X Square Robot unveiled an open-source architecture combining data interactions, a physical world model, and action planning into a unified stack. The framework treats robot demonstrations as successful only when they produce measurable environmental changes rather than mere joint movements. Releasing Wall-OSS-0.5 publicly signals a shift toward collaborative foundation models for embodied systems.",
           "source": "IEEE Spectrum Robotics",
           "url": "https://spectrum.ieee.org/x-square-robot-embodied-ai-stack",
           "significance": 5,
           "novelty": 4,
           "relevance_design": 3,
           "tags": [
-            "foundation-models",
-            "open-source-robotics",
             "embodied-ai",
-            "simulation-to-reality"
+            "foundation-models",
+            "open-source",
+            "policy"
           ],
           "image_url": null,
           "source_pending": false,
@@ -4239,143 +4008,40 @@
           "provenance": "skeleton:robotics"
         },
         {
-          "id": "robo-ground-robots-inherit-the-kill-zone",
-          "title": "Ground Robots Inherit the Kill Zone",
-          "summary": "Ukrainian manufacturers deployed thousands of armored ground vehicles equipped with machine guns and automated targeting systems to replace infantry in high-casualty zones. Companies like RoverTech and Zmiy integrated Starlink terminals and anti-jamming radio architectures to maintain battlefield communications under electromagnetic warfare conditions. The shift reduces soldier casualties while accelerating autonomous logistics across active conflict frontlines.",
-          "source": "IEEE Spectrum Robotics",
-          "url": "https://spectrum.ieee.org/ukraine-ground-drones",
-          "significance": 5,
-          "novelty": 4,
-          "relevance_design": 2,
-          "tags": [
-            "military-robotics",
-            "autonomous-logistics",
-            "defense-tech",
-            "battlefield-automation"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "channel_key": null,
-          "channel_label": null,
-          "topic": null,
-          "links": [
-            {
-              "name": "Marc C. Lange",
-              "url": "https://www.linkedin.com/in/marcclange/?locale=de",
-              "kind": "linkedin"
-            },
-            {
-              "name": "Oleg Fedoryshyn",
-              "url": "https://www.linkedin.com/in/oleg-fedoryshyn-a1045819/",
-              "kind": "linkedin"
-            },
-            {
-              "name": "Borys Drozhak",
-              "url": "https://itarena.ua/speaker/borys-drozhak/",
-              "kind": "web"
-            },
-            {
-              "name": "Center for Strategic and International Studies",
-              "url": "https://www.csis.org/",
-              "kind": "web"
-            },
-            {
-              "name": "CNA",
-              "url": "https://www.cna.org/",
-              "kind": "web"
-            },
-            {
-              "name": "DevDroid",
-              "url": "https://devdroid.tech/en/",
-              "kind": "web"
-            },
-            {
-              "name": "enemy UAVs that can’t be stopped by jamming",
-              "url": "https://spectrum.ieee.org/ukraine-killer-drones",
-              "kind": "web"
-            },
-            {
-              "name": "estimates",
-              "url": "https://www.csis.org/analysis/russias-grinding-war-ukraine",
-              "kind": "web"
-            },
-            {
-              "name": "flying drones",
-              "url": "https://spectrum.ieee.org/autonomous-drone-warfare",
-              "kind": "web"
-            },
-            {
-              "name": "jam the system",
-              "url": "https://en.defence-ua.com/news/how_russians_try_to_jam_starlink_using_a_15_million_system_why_its_barely_working-18830.html",
-              "kind": "web"
-            },
-            {
-              "name": "psychological trauma",
-              "url": "https://balticsentinel.eu/8046076/war-at-home-the-psychological-toll-on-ukraine-s-returning-soldiers",
-              "kind": "web"
-            },
-            {
-              "name": "RoverTech",
-              "url": "https://rovertech.co.ua/en/",
-              "kind": "web"
-            },
-            {
-              "name": "RoverTech’s Tarantula",
-              "url": "https://www.pravda.com.ua/eng/news/2026/06/01/8037264/",
-              "kind": "web"
-            },
-            {
-              "name": "Samuel Bendett",
-              "url": "https://www.cna.org/our-experts/bendett-samuel",
-              "kind": "web"
-            },
-            {
-              "name": "Scores of Ukrainian startups",
-              "url": "https://www.defensenews.com/unmanned/2026/04/24/ukraine-to-field-25000-ground-robots-in-push-to-replace-soldiers-for-frontline-logistics/",
-              "kind": "web"
-            },
-            {
-              "name": "shortage of infantry",
-              "url": "https://www.longwarjournal.org/archives/2026/06/analysis-ukraine-unveils-reforms-to-address-manpower-shortage.php",
-              "kind": "web"
-            },
-            {
-              "name": "signed an order",
-              "url": "https://www.pravda.com.ua/eng/news/2026/04/27/8032079/",
-              "kind": "web"
-            },
-            {
-              "name": "Starlink",
-              "url": "https://starlink.com/",
-              "kind": "web"
-            },
-            {
-              "name": "widely reported",
-              "url": "https://www.cnn.com/2026/04/20/europe/robots-ukraine-battlefield-drones-intl-cmd",
-              "kind": "web"
-            },
-            {
-              "name": "Zmiy rover",
-              "url": "https://oboronka.mezha.ua/en/virobnictvo-nrk-zmiy-311311/",
-              "kind": "web"
-            }
-          ],
-          "provenance": "skeleton:robotics"
-        },
-        {
-          "id": "robo-uber-co-founder-raises-1-7b-for-new-robotics-start",
+          "id": "robo-uber-co-founder-raises-1-7b-for-new-robotics-startup-atoms",
           "title": "Uber co-founder raises $1.7B for new robotics startup ATOMS",
-          "summary": "Travis Kalanick launched ATOMS with $1.7 billion in equity funding to build atoms-based computers across industrial sectors. Investors include a16z, Ben Horowitz, and Uber itself. The company will operate as an OEM merging its previous ventures under one structure.",
+          "summary": "Travis Kalanick launched ATOMS with $1.7 billion in equity funding to build industrial robots across multiple sectors. The venture merged previous operational businesses and secured board seats from a16z and Ben Horowitz while reconnecting Uber with its former CEO.",
           "source": "The Robot Report",
           "url": "https://www.therobotreport.com/uber-co-founder-raises-1-7b-for-new-robotics-startup-atoms/",
           "significance": 4,
           "novelty": 3,
-          "relevance_design": 1,
+          "relevance_design": 2,
           "tags": [
             "robotics",
-            "startup-funding",
-            "industrial-hardware",
-            "embodied-ai"
+            "funding",
+            "startups"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "provenance": "skeleton:robotics",
+          "links": []
+        },
+        {
+          "id": "robo-amd-unveils-kria-module-for-real-time-control-unif",
+          "title": "AMD unveils Kria module for real-time control, unified memory for robots",
+          "summary": "AMD announced its Ryzen AI Embedded X100 series and Kria platform to directly challenge NVIDIA in the robotics hardware market. The chip architecture promises deterministic real-time control and unified CPU-GPU-NPU memory to reduce latency across physical AI workloads.",
+          "source": "The Robot Report",
+          "url": "https://www.therobotreport.com/amd-unveils-kria-module-real-time-control-unified-memory-robots/",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "hardware",
+            "chips",
+            "edge-compute"
           ],
           "image_url": null,
           "source_pending": false,
@@ -4384,13 +4050,33 @@
           "topic": null,
           "links": [
             {
-              "name": "company",
-              "url": "https://atoms.co/",
+              "name": "AI",
+              "url": "https://www.therobotreport.com/category/design-development/ai-cognition/",
               "kind": "web"
             },
             {
-              "name": "food",
-              "url": "https://www.therobotreport.com/tag/food",
+              "name": "AMRs",
+              "url": "https://www.therobotreport.com/category/robots-platforms/amrs/",
+              "kind": "web"
+            },
+            {
+              "name": "Castec International",
+              "url": "https://www.castec.com.tw/index.php?lang=en",
+              "kind": "web"
+            },
+            {
+              "name": "company",
+              "url": "https://www.therobotreport.com/tag/AMD/",
+              "kind": "web"
+            },
+            {
+              "name": "control",
+              "url": "https://www.therobotreport.com/category/technologies/controllers/",
+              "kind": "web"
+            },
+            {
+              "name": "Foundation Robotics",
+              "url": "https://www.therobotreport.com/tag/foundation/",
               "kind": "web"
             },
             {
@@ -4399,28 +4085,38 @@
               "kind": "web"
             },
             {
-              "name": "mines",
-              "url": "https://www.therobotreport.com/category/markets-industries/mining/",
+              "name": "industrial",
+              "url": "https://www.therobotreport.com/category/robots-platforms/industrial-robots/",
               "kind": "web"
             },
             {
-              "name": "mobile robots",
-              "url": "https://www.therobotreport.com/category/robots-platforms/amrs/",
+              "name": "NVIDIA",
+              "url": "https://www.therobotreport.com/tag/nvidia",
+              "kind": "web"
+            },
+            {
+              "name": "Open Robotics",
+              "url": "https://www.therobotreport.com/tag/open-robotics/",
+              "kind": "web"
+            },
+            {
+              "name": "P100",
+              "url": "https://www.therobotreport.com/amd-expands-ryzen-ai-processor-product-line/",
+              "kind": "web"
+            },
+            {
+              "name": "sensor",
+              "url": "https://www.therobotreport.com/category/technologies/sensors-sensing/",
+              "kind": "web"
+            },
+            {
+              "name": "SoC",
+              "url": "https://www.therobotreport.com/category/technologies/microprocessors-socs/",
               "kind": "web"
             },
             {
               "name": "The Robot Report",
               "url": "https://www.therobotreport.com",
-              "kind": "web"
-            },
-            {
-              "name": "therobotreport.com",
-              "url": "https://www.therobotreport.com/wp-content/uploads/2026/07/atoms-featured.jpg",
-              "kind": "web"
-            },
-            {
-              "name": "Uber",
-              "url": "https://www.therobotreport.com/tag/uber",
               "kind": "web"
             }
           ],
@@ -4429,17 +4125,17 @@
         {
           "id": "robo-photos-first-look-at-j-j-s-ottava-surgical-robot",
           "title": "Photos: First look at J&J’s Ottava surgical robot",
-          "summary": "Johnson & Johnson obtained FDA de novo authorization for the Ottava surgical robot, featuring four robotic arms integrated directly into standard operating tables. The system eliminates traditional boom carts to occupy 30 to 50 percent less operating room footprint while automating instrument setup and breakdown procedures. New dual-action needle drivers reduce suture cutting incidents for surgeons performing soft tissue manipulation.",
+          "summary": "Johnson & Johnson MedTech received FDA de novo authorization for Ottava, a table-integrated surgical robot that stows its four robotic arms beneath the operating bed to save critical floor space. The system automates setup protocols and replaces standard instruments with dual-mode needle drivers designed to cut suture error rates by 83 percent. Clinical adoption targets streamlined workflows and consistent positioning across complex procedures.",
           "source": "The Robot Report",
           "url": "https://www.therobotreport.com/photos-first-look-at-jjs-ottava-surgical-robot/",
           "significance": 4,
           "novelty": 4,
-          "relevance_design": 4,
+          "relevance_design": 3,
           "tags": [
-            "surgical-technology",
+            "surgical-robotics",
             "fda-approval",
-            "operating-room-efficiency",
-            "medical-innovation"
+            "healthcare",
+            "hardware"
           ],
           "image_url": null,
           "source_pending": false,
@@ -4461,27 +4157,173 @@
           "provenance": "skeleton:robotics"
         },
         {
-          "id": "robo-a-flapping-robot-swims-and-flies-like-a-diving-bird",
-          "title": "A flapping robot swims and flies like a diving bird",
-          "summary": "EPFL and MIT engineers built a winged aerial-aquatic vehicle that mimics diving birds by swimming and leaping into flight. The lightweight robot weighs under 300 grams and adjusts wing sizes to transition between water and air seamlessly. Findings published in Science aim to inform future oceanographic sampling drones.",
-          "source": "Robohub",
-          "url": "https://robohub.org/a-flapping-robot-swims-and-flies-like-a-diving-bird/",
+          "id": "robo-this-graduate-student-equips-nasa-s-robots-with-as",
+          "title": "This Graduate Student Equips NASA’s Robots With Assembly Skills",
+          "summary": "University of Tulsa and Texas A&M researchers trained a robotic system to perform precision assembly tasks for space applications. The capstone project focuses on extending the operational lifespan of rovers like Curiosity through in-situ repair capabilities. The work highlights how student-led robotics programs continue feeding practical automation strategies into deep space missions.",
+          "source": "IEEE Spectrum Robotics",
+          "url": "https://spectrum.ieee.org/graduate-student-nasas-robots-assembly",
           "significance": 4,
-          "novelty": 5,
+          "novelty": 3,
           "relevance_design": 3,
           "tags": [
-            "robotics",
-            "biomimetics",
-            "research",
-            "embodied-ai"
+            "space-robotics",
+            "assembly",
+            "education",
+            "in-situ-repair"
           ],
           "image_url": null,
           "source_pending": false,
           "channel_key": null,
           "channel_label": null,
           "topic": null,
-          "provenance": "skeleton:robotics",
-          "links": []
+          "links": [
+            {
+              "name": "exhibit",
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7207091982790266880/",
+              "kind": "linkedin"
+            },
+            {
+              "name": "Sarah Downs",
+              "url": "https://www.linkedin.com/in/sarahdownsprofile",
+              "kind": "linkedin"
+            },
+            {
+              "name": "3D printing",
+              "url": "https://spectrum.ieee.org/lunar-base-3d-printing",
+              "kind": "web"
+            },
+            {
+              "name": "Air Force",
+              "url": "https://www.airforce.com/en",
+              "kind": "web"
+            },
+            {
+              "name": "COVID-19 pandemic",
+              "url": "https://spectrum.ieee.org/tag/covid-19",
+              "kind": "web"
+            },
+            {
+              "name": "Curiosity",
+              "url": "https://spectrum.ieee.org/if-necessary-mars-rover-curiosity-could-rip-its-own-wheels-off-to-stay-mobile",
+              "kind": "web"
+            },
+            {
+              "name": "Denavit-Hartenberg parameters",
+              "url": "https://www.universal-robots.com/developer/hardware-and-motion/robot-motion-dh-parameters/",
+              "kind": "web"
+            },
+            {
+              "name": "extension program",
+              "url": "https://tulsatech.edu/full-time-programs/science-technology-engineering-and-mathematics/pre-engineering/",
+              "kind": "web"
+            },
+            {
+              "name": "First",
+              "url": "https://www.firstinspires.org/",
+              "kind": "web"
+            },
+            {
+              "name": "First Lego League",
+              "url": "https://www.firstlegoleague.org/",
+              "kind": "web"
+            },
+            {
+              "name": "guide",
+              "url": "https://robotsguide.com/about",
+              "kind": "web"
+            },
+            {
+              "name": "IEEE",
+              "url": "https://www.ieee.org/",
+              "kind": "web"
+            },
+            {
+              "name": "IEEE student branch",
+              "url": "https://utulsa.edu/academics/engineering-computer-science/academics/departments/electrical-computer-engineering/institute-of-electronics-and-electrical-engineers-ieee/",
+              "kind": "web"
+            },
+            {
+              "name": "Institute for Robotics and Autonomy",
+              "url": "https://utulsa.edu/research/robotics-institute/",
+              "kind": "web"
+            },
+            {
+              "name": "Johnson Space Center",
+              "url": "https://www.nasa.gov/johnson/",
+              "kind": "web"
+            },
+            {
+              "name": "NASA",
+              "url": "https://www.nasa.gov/",
+              "kind": "web"
+            },
+            {
+              "name": "Opportunity",
+              "url": "https://spectrum.ieee.org/video-friday-opportunity-celebrates-10-years-on-mars",
+              "kind": "web"
+            },
+            {
+              "name": "PBS",
+              "url": "https://www.pbs.org/",
+              "kind": "web"
+            },
+            {
+              "name": "Robert Ambrose",
+              "url": "https://spectrum.ieee.org/video-friday-punch-out",
+              "kind": "web"
+            },
+            {
+              "name": "Robotic Space Simulator",
+              "url": "https://rad.engr.tamu.edu/robotic-space-simulator/",
+              "kind": "web"
+            },
+            {
+              "name": "robotics",
+              "url": "https://spectrum.ieee.org/topic/robotics/",
+              "kind": "web"
+            },
+            {
+              "name": "Robotics and Automation Design (RAD) Lab",
+              "url": "https://rad.engr.tamu.edu/",
+              "kind": "web"
+            },
+            {
+              "name": "résumé-building",
+              "url": "https://spectrum.ieee.org/be-a-polarizing-job-seeker",
+              "kind": "web"
+            },
+            {
+              "name": "senior year capstone project",
+              "url": "https://utulsa.edu/news/celebrating-student-innovation-tus-role-in-tasms-new-exhibits/",
+              "kind": "web"
+            },
+            {
+              "name": "Spirit",
+              "url": "https://spectrum.ieee.org/mars-for-the-rest-of-us",
+              "kind": "web"
+            },
+            {
+              "name": "Texas A&M University",
+              "url": "https://www.tamu.edu/index.html",
+              "kind": "web"
+            },
+            {
+              "name": "Tulsa Air and Space Museum",
+              "url": "https://www.tulsamuseum.org/",
+              "kind": "web"
+            },
+            {
+              "name": "Tulsa Tech",
+              "url": "https://tulsatech.edu/",
+              "kind": "web"
+            },
+            {
+              "name": "University of Tulsa",
+              "url": "https://utulsa.edu/",
+              "kind": "web"
+            }
+          ],
+          "provenance": "skeleton:robotics"
         }
       ]
     },
@@ -4491,42 +4333,19 @@
       "icon": "📄",
       "stories": [
         {
-          "id": "res-a-frozen-12b-beats-frontier-models-on-verified-wor",
-          "title": "A Frozen 12B Beats Frontier Models on Verified Work: 100% Accuracy, 0 Tokens, Bit Exact, Forever",
-          "summary": "This paper demonstrates a frozen 12 parameter model solving verification tasks with absolute bit exact accuracy and zero inference tokens. The approach challenges standard scaling laws by leveraging explicit symbolic constraints over parametric weights.",
-          "source": "HuggingFace Papers",
-          "url": "https://huggingface.co/papers/2607.23806",
-          "significance": 5,
-          "novelty": 5,
-          "relevance_design": 2,
-          "tags": [
-            "symbolic-ai",
-            "efficiency",
-            "compression",
-            "verification"
-          ],
-          "image_url": null,
-          "source_pending": false,
-          "channel_key": null,
-          "channel_label": null,
-          "topic": null,
-          "provenance": "skeleton:research",
-          "links": []
-        },
-        {
           "id": "res-kimi-k3-open-frontier-intelligence",
           "title": "Kimi K3: Open Frontier Intelligence",
-          "summary": "Kimi K3 introduces a 2.8T MoE architecture that activates only 16 experts per token while maintaining a one million token context window. The model achieves top rankings on frontend code and browsing benchmark leaderboards at competitive inference costs.",
-          "source": "HuggingFace Papers",
-          "url": "https://huggingface.co/papers/2607.24653",
+          "summary": "Moonshot AI releases Kimi K3 as a sparse MoE model that matches paid frontier tiers on code and reasoning benchmarks. The architecture activates only 16 of 896 experts per token, cutting inference costs while sustaining million-token context.",
+          "source": "arXiv cs.CL",
+          "url": "https://arxiv.org/abs/2607.24653",
           "significance": 5,
           "novelty": 4,
           "relevance_design": 2,
           "tags": [
-            "frontier-models",
-            "moe",
-            "chinese-ai",
-            "open-weight"
+            "kimi-k3",
+            "sparse-moe",
+            "open-weight",
+            "frontier-model"
           ],
           "image_url": null,
           "source_pending": false,
@@ -4537,18 +4356,42 @@
           "links": []
         },
         {
-          "id": "res-the-physics-of-multi-turn-long-horizon-planning-fr",
-          "title": "The Physics of Multi-Turn Long-Horizon Planning: From Pre-training to Post-training via Single- and Multi-Teacher On-Policy Agentic Distillation",
-          "summary": "This work formalizes planning stability in agentic systems across extended reasoning chains. It demonstrates how mixed teacher strategies during distillation reduce error propagation and improve policy convergence.",
-          "source": "arXiv cs.CL",
-          "url": "https://arxiv.org/abs/2607.24720",
+          "id": "res-cameraanything-refilming-videos-with-arbitrary-cam",
+          "title": "CameraAnything: Refilming Videos with Arbitrary Camera Control",
+          "summary": "CameraAnything renders new viewpoints for existing footage by learning a continuous camera manifold from single frames. Operators can pan, tilt, or track subjects post-production without multi-camera rigs or tracking markers.",
+          "source": "arXiv cs.CV",
+          "url": "https://arxiv.org/abs/2607.24591",
           "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "camera-control",
+            "refilming",
+            "video-editing",
+            "view-synthesis"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "provenance": "skeleton:research",
+          "links": []
+        },
+        {
+          "id": "res-looping-is-not-reliability-state-bound-evidence-an",
+          "title": "Looping Is Not Reliability: State-Bound Evidence and Typed Revision Contracts for Agentic Code Repair",
+          "summary": "The paper argues that iterative looping fails to guarantee correctness in agentic code repair without hard constraints. Authors propose state-bounded execution logs and typed revision contracts to halt divergence before deployment risks emerge.",
+          "source": "arXiv cs.CL",
+          "url": "https://arxiv.org/abs/2607.24604",
+          "significance": 4,
           "novelty": 4,
           "relevance_design": 1,
           "tags": [
-            "agentic-planning",
-            "policy-distillation",
-            "reasoning-chains"
+            "agentic-repair",
+            "code-correction",
+            "state-validation",
+            "reliability"
           ],
           "image_url": null,
           "source_pending": false,
@@ -4560,18 +4403,18 @@
         },
         {
           "id": "res-clinfusion-a-vision-centric-multimodal-llm-system",
-          "title": "ClinFusion: A Vision-Centric Multimodal LLM System for Holistic Medical Understanding",
-          "summary": "ClinFusion integrates imaging, clinical text, and vitals into unified diagnostic architectures, advancing cross-modal alignment strategies. Early evaluations in emergency triage tasks report faster context synthesis compared to specialized unimodal baselines.",
+          "title": "ClinFusion: A Vision Centric Multimodal LLM System for Holistic Medical Understanding",
+          "summary": "ClinFusion combines radiology imaging, patient vitals, and clinical notes into a unified vision dominant architecture for comprehensive diagnosis support. The system weights visual pathology detection above textual inputs to reduce noise from inconsistent medical transcripts. Validation on hospital datasets shows improved triage accuracy for overlapping symptom presentations.",
           "source": "arXiv cs.CV",
           "url": "https://arxiv.org/abs/2607.24743",
-          "significance": 5,
-          "novelty": 4,
-          "relevance_design": 3,
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
           "tags": [
-            "clinical-ai",
-            "vision-language-models",
-            "healthtech",
-            "multimodal-architecture"
+            "medical-vision",
+            "multimodal-ai",
+            "clinical-diagnosis",
+            "research"
           ],
           "image_url": null,
           "source_pending": false,
@@ -4582,18 +4425,19 @@
           "links": []
         },
         {
-          "id": "res-queenvis-rethinking-image-only-training-for-video",
-          "title": "QueenVIS: Rethinking Image-Only Training for Video Instance Segmentation via Query Enrichment",
-          "summary": "QueenVIS trains video segmentation models using only single-frame image data by enriching query embeddings with temporal priors. This eliminates the need for expensive frame-by-frame annotation while matching video benchmarks.",
+          "id": "res-mmoe-modernizing-diffusion-transformers-with-effic",
+          "title": "MMOE: Modernizing Diffusion Transformers with Efficient Expert Design",
+          "summary": "MMOE replaces dense transformer heads with sparse Mixture-of-Experts routing in diffusion pipelines. Computation drops across sampling steps while preserving multi-concept conditioning and spatial detail.",
           "source": "arXiv cs.CV",
-          "url": "https://arxiv.org/abs/2607.24598",
-          "significance": 5,
-          "novelty": 4,
-          "relevance_design": 3,
+          "url": "https://arxiv.org/abs/2607.24665",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 4,
           "tags": [
-            "video-segmentation",
-            "image-only-training",
-            "query-embedding"
+            "diffusion",
+            "transformer",
+            "moe",
+            "efficiency"
           ],
           "image_url": null,
           "source_pending": false,
@@ -4604,19 +4448,19 @@
           "links": []
         },
         {
-          "id": "res-grounding-latent-algorithm-routing-in-transformer",
+          "id": "res-grounding-latent-algorithm-routing-in-transformer-reasoning",
           "title": "Grounding latent algorithm routing in transformer reasoning",
-          "summary": "Researchers identify distinct neural pathways within transformer architectures that route latent algorithms during multi-step reasoning tasks. Activity mapping reveals modular subnetworks activating for logic, arithmetic, and spatial processing independently. The discovery enables sparse activation routing to cut inference compute by up to forty percent without sacrificing accuracy.",
+          "summary": "Traces internal pathway selection in transformers during multi-step logic tasks. The work correlates specific activation clusters with logical steps and proposes monitoring signals for verifiable reasoning control.",
           "source": "arXiv cs.CL",
           "url": "https://arxiv.org/abs/2607.24471",
-          "significance": 5,
-          "novelty": 4,
+          "significance": 4,
+          "novelty": 5,
           "relevance_design": 1,
           "tags": [
-            "transformer-interpretability",
-            "neural-routing",
-            "sparse-computation",
-            "reasoning-models"
+            "interpretability",
+            "reasoning",
+            "transformer-mechanisms",
+            "ai-safety"
           ],
           "image_url": null,
           "source_pending": false,
@@ -4632,94 +4476,94 @@
   "visualizations": {
     "category_counts": {
       "leaderboard": 6,
-      "analytics": 4,
+      "analytics": 5,
       "aisearch": 10,
-      "youtube": 43,
-      "agentic-ai": 4,
+      "youtube": 42,
+      "agentic-ai": 5,
       "llm": 5,
-      "rag": 5,
+      "rag": 1,
       "image-gen": 5,
-      "design-ai": 5,
+      "design-ai": 1,
       "typography": 4,
       "robotics": 5,
       "research": 6
     },
     "significance_distribution": {
-      "5": 24,
-      "4": 46,
-      "3": 30,
+      "5": 22,
+      "4": 44,
+      "3": 27,
       "2": 2
     },
     "top_tags": [
       {
-        "tag": "claude-opus-5",
-        "count": 11
-      },
-      {
-        "tag": "infrastructure",
-        "count": 6
-      },
-      {
-        "tag": "moonshot-ai",
-        "count": 5
+        "tag": "agentic-ai",
+        "count": 10
       },
       {
         "tag": "automation",
-        "count": 5
+        "count": 7
       },
       {
-        "tag": "networking",
+        "tag": "open-source",
+        "count": 6
+      },
+      {
+        "tag": "ai-infrastructure",
         "count": 4
       },
       {
-        "tag": "privacy",
+        "tag": "developer-tools",
         "count": 4
       },
       {
-        "tag": "typography",
+        "tag": "open-weights",
         "count": 4
       },
       {
-        "tag": "openai",
+        "tag": "pricing",
         "count": 3
       },
       {
-        "tag": "latency",
+        "tag": "anthropic",
         "count": 3
       },
       {
-        "tag": "open-weight",
+        "tag": "moonshot",
+        "count": 3
+      },
+      {
+        "tag": "kimi-k3",
         "count": 3
       }
     ],
     "top_stories": [
       {
-        "id": "yt-the-stack-ai-ai-one-file-that-crashed-nvidia",
-        "title": "One file that crashed Nvidia",
+        "id": "yt-the-stack-ai-how-good-is-insanely-good-really",
+        "title": "How good is insanely good really",
         "significance": 5,
         "category": "youtube"
       },
       {
-        "id": "typo-lava-devanagari-kannada-and-telugu-namrata-goyal",
-        "title": "Lava Devanagari, Kannada, and Telugu Namrata Goyal",
-        "significance": 5,
-        "category": "typography"
-      },
-      {
-        "id": "img-01",
-        "title": "Moonshot AI Releases Native MXFP4 Quantization for Standard Hardware",
-        "significance": 5,
-        "category": "image-gen"
-      },
-      {
-        "id": "res-a-frozen-12b-beats-frontier-models-on-verified-wor",
-        "title": "A Frozen 12B Beats Frontier Models on Verified Work: 100% Accuracy, 0 Tokens, Bit Exact, Forever",
+        "id": "res-cameraanything-refilming-videos-with-arbitrary-cam",
+        "title": "CameraAnything: Refilming Videos with Arbitrary Camera Control",
         "significance": 5,
         "category": "research"
       },
       {
-        "id": "ais-identifying-cancer",
-        "title": "Identifying cancer",
+        "id": "analytics-kimi-k3-code-frontier",
+        "title": "Kimi K3 Surpasses Paid Models on Frontend Code Benchmarks and Intelligence Index",
+        "significance": 5,
+        "category": "analytics"
+      },
+      {
+        "id": "ais-opus-5-intro",
+        "title": "Opus 5 intro",
+        "significance": 5,
+        "category": "aisearch"
+      },
+      {
+        "id": "ais-deep-research",
+        "title": "Deep research",
         "significance": 5,
         "category": "aisearch"
       }
