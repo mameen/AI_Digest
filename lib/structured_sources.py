@@ -96,3 +96,4 @@ def apply_structured_leaderboards(
         path = structured_dir / src["slug"]
         if not path.exists():
             continue
+    return block

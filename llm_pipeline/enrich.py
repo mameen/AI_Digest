@@ -635,18 +635,33 @@ def _skeleton_rules(cat_id: str, *, curate_after: bool = False) -> str:
             "GitHub/X/LinkedIn announcements for that chapter. Structured links[] are attached at "
             "ingest — do not invent urls."
         )
+    if cat_id == "research":
+        return (
+            "Score papers by significance to AI practitioners; tag with arxiv/topics. "
+            "Keep ids and urls exactly. Enrich summary, scores, tags. "
+            "Structured links[] (GitHub, X, LinkedIn, announcements) are parsed from ingest text — "
+            "do not invent urls."
+        )
+    if cat_id == "typography":
+        return (
+            "Prioritize text rendering, multilingual fonts, and design workflow impact. "
+            "Keep ids and urls exactly. Enrich summary, scores, tags. "
+            "Structured links[] (GitHub, X, LinkedIn, announcements) are parsed from ingest text — "
+            "do not invent urls."
+        )
+    if cat_id == "robotics":
+        return (
+            "Prioritize humanoid/embodied AI, real-world deployments, and learning-based control. "
+            "Keep ids and urls exactly. Enrich summary, scores, tags. "
+            "Structured links[] (GitHub, X, LinkedIn, announcements) are parsed from ingest text — "
+            "do not invent urls."
+        )
     if cat_id in ("typography", "research", "robotics"):
         return (
             "Keep ids and urls exactly. Enrich summary, scores, tags. "
             "Structured links[] (GitHub, X, LinkedIn, announcements) are parsed from ingest text — "
             "do not invent urls."
         )
-    if cat_id == "research":
-        return "Score papers by significance to AI practitioners; tag with arxiv/topics."
-    if cat_id == "typography":
-        return "Prioritize text rendering, multilingual fonts, and design workflow impact."
-    if cat_id == "robotics":
-        return "Prioritize humanoid/embodied AI, real-world deployments, and learning-based control."
     return ""
 
 
