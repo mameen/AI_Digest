@@ -10,7 +10,7 @@ from typing import Any
 
 from llm_pipeline.editorial import CANONICAL_ORDER, CATEGORY_CATALOG, category_id
 from lib.paths import LLM_PIPELINE_ROOT
-from llm_pipeline.paths import reports_dir
+from lib.paths import reports_dir
 
 from tools.artifacts import _parse_bullet_stories, _read_research_output, _research_topic
 from tools.category_merge import merge_stories_by_url

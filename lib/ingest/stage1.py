@@ -11,9 +11,9 @@ import time
 from pathlib import Path
 from typing import Any
 
-from llm_pipeline.dates import parse_start, prefix_for_start
+from lib.dates import parse_start, prefix_for_start
 from llm_pipeline.diagnostics import get_collector
-from llm_pipeline.paths import SKILL_SCRIPTS, cache_dir, preflight_dir
+from lib.paths import SKILL_SCRIPTS, cache_dir, preflight_dir
 
 
 def run_preflight(cfg: dict[str, Any], prefix: str | None = None) -> tuple[str, Path]:
@@ -105,7 +105,7 @@ def fetch_structured_sources(cfg: dict[str, Any], prefix: str) -> list[Path]:
     """Download structured-API leaderboard JSON (no scraping) into the run cache."""
     import urllib.request
 
-    from llm_pipeline.structured_sources import STRUCTURED_SOURCES
+    from lib.structured_sources import STRUCTURED_SOURCES
 
     if not cfg.get("ingestion", {}).get("structured_sources", {}).get("enabled", True):
         return []
@@ -186,7 +186,7 @@ def fetch_one_structured(cfg: dict[str, Any], prefix: str, slug: str) -> Path | 
     """Download one structured-API JSON payload by slug."""
     import urllib.request
 
-    from llm_pipeline.structured_sources import STRUCTURED_SOURCES
+    from lib.structured_sources import STRUCTURED_SOURCES
 
     if not cfg.get("ingestion", {}).get("structured_sources", {}).get("enabled", True):
         return None

@@ -119,6 +119,8 @@ def render(cfg: dict[str, Any], prefix: str, data: dict[str, Any]) -> Path:
     from _report_utils import leaderboards_for_prefix  # type: ignore
 
     lb = leaderboards_for_prefix(prefix, reports)
+    if lb is None:
+        lb = "[]"
     lb = _crawl_driven_leaderboards(cfg, prefix, lb)
     html = build_content_html(prefix, lb, reports)
     html_path = reports / f"{prefix}.html"

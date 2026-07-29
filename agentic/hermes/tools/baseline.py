@@ -7,8 +7,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from llm_pipeline.config import load_config
-from llm_pipeline.dates import RunWindow
+from lib.config import load_config
+from lib.dates import RunWindow
 from llm_pipeline.enrich import enrich_digest
 from llm_pipeline.grounding import collect_roots
 from llm_pipeline.history import load_prior_digests
@@ -75,7 +75,7 @@ def validation_roots(cfg: dict[str, Any], prefix: str | None = None) -> set[str]
     """Grounding allow-roots from preflight skeleton when available."""
     import json
 
-    from llm_pipeline.paths import preflight_dir
+    from lib.paths import preflight_dir
 
     pfx = (prefix or "").strip()
     if pfx:

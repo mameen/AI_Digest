@@ -312,7 +312,7 @@ class AgenticOutputPathsTest(unittest.TestCase):
         spec.loader.exec_module(baseline)
 
         from lib.paths import AGENTIC_ROOT
-        from llm_pipeline.paths import diagnostics_dir, reports_dir
+        from lib.paths import diagnostics_dir, reports_dir
 
         cfg = baseline.agentic_config()
         self.assertEqual(reports_dir(cfg), AGENTIC_ROOT / "reports")

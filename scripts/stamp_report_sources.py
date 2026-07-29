@@ -55,7 +55,7 @@ def _rebuild_index(reports_dir: Path, *, agentic: bool = False, app: bool = Fals
         sync_app_badge_assets()
         rebuild_app_archives()
         return
-    from llm_pipeline.config import load_config
+    from lib.config import load_config
     from llm_pipeline.render import rebuild_reports_archive
 
     if agentic:

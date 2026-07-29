@@ -1329,7 +1329,7 @@ def _find_task_by_title(title: str) -> dict[str, Any] | None:
 def _agentic_reports_dir() -> Path:
     if str(REPO) not in sys.path:
         sys.path.insert(0, str(REPO))
-    from llm_pipeline.paths import reports_dir
+    from lib.paths import reports_dir
     from tools.baseline import agentic_config
 
     return reports_dir(agentic_config())
