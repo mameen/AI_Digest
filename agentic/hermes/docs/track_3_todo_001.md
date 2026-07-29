@@ -5,6 +5,67 @@
 **Track:** T3 — Stabilize Hermes (bounded experiment, never default)  
 **Governing ADR:** [ADR-002](ADR-001-extract-shared-pipeline.md) — "never set as default. Archive if metrics degrade beyond threshold."
 
+## What Is Track 3?
+
+Track 3 is a **bounded experiment** to stabilize the legacy **Hermes 4-agent kanban pipeline**. It runs in parallel with Tracks 1–4 but has strict guardrails:
+
+- **Never set as default** — `go --pipeline` (batch) and eventually single-agent remain defaults
+- **Parallel benchmark only** — measure if multi-agent actually improves quality vs batch
+- **Strict exit criteria** — archive if metrics degrade beyond threshold (per ADR-002)
+- **Bounded scope** — pin upstream versions, log telemetry, enforce gates
+
+The 4-agent system has roles: `Concierge` (task creation), `Researcher`, `Librarian`, and `Synthesizer`. It's currently **structurally mismatched** to the daily digest workload due to orchestration overhead, context rot on local models, and fragile upstream coupling.
+
+---
+
+## The Three Tasks
+
+### T3-A: Gateway Health Check + Auto-Fallback (P0 — Critical)
+
+**Problem:** When the Hermes gateway is down, `go --fresh` fails silently with a JSON decode error and produces zero reports. Users get no output and no indication of why.
+
+**What needs to happen:**
+
+1. Add a pre-flight health check (`hermes --status` or equivalent) before task creation
+2. If the gateway is healthy → dispatch kanban tasks as normal
+3. If unhealthy → auto-route to `run_production_pipeline` (batch) with a clear message: `"Gateway unavailable — auto-routed to batch pipeline"`
+4. Replace the buried JSON decode error with an actionable prompt
+
+**Why P0:** It blocks all Track 3 work. Without it, you can't even test anything else if the gateway is down.
+
+---
+
+### T3-B: Agent Skills Provider for Kanban Dispatch Injection (P1)
+
+**Problem:** You have `SKILL_store.md` with 6 Level-4 skills defined, but kanban workers receive raw SOUL text instead of progressive skill discovery. There's no provider class that discovers and injects `[description]` tokens during dispatch.
+
+**What needs to happen:**
+
+1. Create a `SkillsProvider` module (likely `agentic/hermes/admin/skills_provider.py`)
+2. It wraps the skills directories (`docs`, `skills`) via discovery methods like `from_paths()`
+3. At dispatch time, each role gets its relevant skills injected into the task system prompt:
+   - **Researcher** → `source-discovery`, `dedupe-and-rank`
+   - **Librarian** → `artifact-validation`
+   - **Synthesizer** → no separate skill set needed
+4. Add test coverage for loader + advertisement
+
+**Why P1:** Foundational change for spec alignment with agentskills.io. Without it, Track 3 works via SOUL text but isn't aligned with the spec.
+
+---
+
+### T3-C: Digest-Tools Plugin Bootstrap Fix (P1)
+
+**Problem:** Workers are supposed to get ~99 tools from a `digest-tools` plugin, but the current setup code calls `hermes plugins enable digest-tools` which fails because there's **no upstream registration path for local plugins**.
+
+**What needs to happen:**
+
+1. Fix the plugin bootstrap in `manage.py` so local plugins can register properly
+2. Ensure workers actually receive their 99 tools at runtime (not just the default hermes tools)
+3. This is a missing registration path — the plugin exists but can't be discovered/loaded
+
+**Why P1:** Without this, kanban workers only have default tools, not the custom digest-specific toolset they need.
+
+
 ---
 
 ## 1. Current State Audit
