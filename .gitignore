@@ -35,3 +35,4 @@ agentic/kaggle_ai_agents/submission/_build/
 agentic/kaggle_ai_agents/submission/_test_brief.json
 .secrets.baseline
 .coverage
+.claude
