@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from lib.config import load_config
-from llm_pipeline.dates import RunWindow
+from lib.dates import RunWindow
 from llm_pipeline.enrich import enrich_digest
 from llm_pipeline.grounding import collect_roots
 from llm_pipeline.history import load_prior_digests
