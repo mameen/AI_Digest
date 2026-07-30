@@ -18,7 +18,7 @@ flowchart TD
 
     subgraph SharedLibs["Shared Libraries (Zero Side-Effects)"]
         E["./lib/ (Ingest, Tools, Source Mapping)"]
-        F["./lib/hermes/ (Skills & Adapters)"]
+        F["./lib/hermes/ (Skills & Adapters) — T3-D deferred"]
     end
 
     subgraph Tail["Deterministic Tail (llm_pipeline/)"]
@@ -36,8 +36,8 @@ flowchart TD
 
 | Layer | What It Is & Execution Model |
 | --- | --- |
-| **Orchestration (Track 3)** | **Async Waterfall DAG:** Concierge → Researcher × N → Librarian → Synthesizer. I/O tasks (fetching, feed discovery) run concurrently on CPU, while model reasoning steps flow sequentially through task semaphores. |
-| **Shared Libraries** | `./lib/` (domain-agnostic tools, ingestion, source mapping), `./lib/hermes/` (custom skill providers & framework adapters). |
+| **Orchestration (Track 3)** | **Hermes Kanban dispatch** (current implementation). An Async Waterfall DAG is a proposed future architecture (not yet implemented) — see `track_3_issue_0001.md` for the design goal. |
+| **Shared Libraries** | `./lib/` (domain-agnostic tools, ingestion, source mapping), `./lib/hermes/` (T3-D deferred — not yet created). |
 | **Deterministic Tail** | `llm_pipeline/` (`grounding.py` → `validate.py` → `render.py`). Shared by all tracks for post-synthesis verification and output rendering. |
 | **Batch Escape Hatch** | `go --pipeline` (`run.py`) — deprecated legacy runner kept purely for debug/A/B parity testing. |
 
@@ -45,9 +45,11 @@ When Track 4 (Single-Agent with Skills) becomes full production default, `agenti
 
 ---
 
-## 4-Role Architecture (Async Waterfall DAG)
+## 4-Role Architecture
 
-Rather than forcing artificial sequential handoffs or unconstrained concurrency that triggers hardware throttling, ORIO Track 3 organizes work across a **Directed Acyclic Graph (DAG)**:
+ORIO divides intelligence across four distinct roles. The current implementation uses Hermes kanban dispatch; an **Async Waterfall DAG** is a proposed future architecture (not yet implemented).
+
+> **Note:** The Async Waterfall DAG — concurrent I/O on CPU with semaphore-based task triggering — is documented as a design goal in `track_3_issue_0001.md` but has not been implemented. Current execution uses sequential Hermes kanban dispatch.
 
 ```mermaid
 sequenceDiagram
@@ -58,14 +60,11 @@ sequenceDiagram
     participant Synthesizer as Synthesizer Author
     participant Tail as Deterministic Tail
 
-    Concierge->>Concierge: Construct Task Graph & Graph ID
-    Concierge->>Researcher: Dispatch Task Nodes (Async CPU Fetch)
-    Note over Researcher: Parallel Fetch, Extract, & Grounding
+    Concierge->>Concierge: Assemble Kanban Board
+    Concierge->>Researcher: Dispatch Task Nodes (Hermes kanban)
+    Note over Researcher: Fetch, Extract, & Grounding (sequential per task)
     Researcher->>Librarian: Submit Note Cards (Verified URLs)
-    Note over Librarian: Deduplicate, Map Categories, & Log Inefficiencies
-    alt Incomplete / Poor Formatting
-        Librarian-->>Researcher: Feedback Loop Log (Prompt Calibration)
-    end
+    Note over Librarian: Deduplicate, Map Categories
     Librarian->>Synthesizer: Stream Structured JSON Schema
     Synthesizer->>Synthesizer: Draft Markdown Report & Summary
     Synthesizer->>Tail: Handoff Draft Artifact
@@ -81,14 +80,13 @@ sequenceDiagram
 ### 2. Researcher Nodes (× N Parallel Workers)
 
 * **Responsibility:** Target-focused worker nodes bound to specific sources, feed clusters, or category channels.
-* **Execution:** Network fetching, HTML extraction, and parsing execute asynchronously on CPU. Model reasoning steps produce structured note cards with verified source URLs.
+* **Execution:** Network fetching, HTML extraction, and parsing via Hermes kanban dispatch. Model reasoning steps produce structured note cards with verified source URLs.
 * **Quality Guard:** Reflects and grounds its own artifact before pushing downstream.
 
 ### 3. Librarian Gate
 
 * **Responsibility:** Deduplication, schema enforcement, and synthesis gate.
-* **Execution:** Evaluates incoming Researcher cards, flags inefficiencies, maps facts to standard categories, and produces clean JSON schemas.
-* **Feedback Loop:** Captures malformed or low-quality researcher notes and logs feedback to refine worker prompts in future cycles.
+* **Execution:** Evaluates incoming Researcher cards, maps facts to standard categories, produces clean JSON schemas.
 
 ### 4. Synthesizer Author
 
@@ -97,11 +95,11 @@ sequenceDiagram
 
 ---
 
-## Model Standardization & Hardware Strategy
+## Model Target & Hardware Strategy
 
-To eliminate historical context rot, prompt drift, and "lost in the middle" degradation observed when using `llama3.1`, all Track 3 roles are standardized on:
+The target model for Track 3 is **`qwen3.6:35b`** via Ollama, chosen to address historical context rot and prompt drift observed with `llama3.1`. This is a design goal, not yet deployed.
 
-* **Primary Model:** **`qwen3.6:35b`** via Ollama.
+* **Target Model:** **`qwen3.6:35b`** (design goal — not yet deployed)
 * **Context Depth:** High-capacity context window to support multi-source Librarian fan-in without hallucination.
 * **CPU/GPU Workstation Split:** CPU handles network fetching and parsing asynchronously; GPU inference executes sequentially per task node.
 
@@ -130,7 +128,7 @@ graph LR
 1. **Zero Cross-Pipeline Imports:**
 * `agentic/hermes/` **must never import from `llm_pipeline/**`.
 * All shared business logic resides in `./lib/` (e.g., `bundle.py`, `agent_tools.py`, `report_source.py`).
-* Skill loading and adapter integration live in `./lib/hermes/` (e.g., `skills_provider.py`).
+* Skill loading and adapter integration live in `./lib/hermes/` (T3-D deferred — not yet created).
 
 
 2. **Fail-Loud Policy (No Silent Fallbacks):**
@@ -177,7 +175,7 @@ To remain active, Track 3 must satisfy the following criteria measured by `t3_me
 # Pre-flight environment check and dependencies setup
 python agentic/hermes/admin/manage.py bootstrap
 
-# Execute Track 3 Async Waterfall Benchmark (Fail-Loud mode)
+# Execute Track 3 Kanban Benchmark (Fail-Loud mode)
 python agentic/hermes/admin/manage.py go --start 2026-07-09 --history 10 --fresh
 
 # Legacy batch runner (Debug & Parity comparison only)
@@ -199,9 +197,9 @@ python -m unittest discover -s agentic/hermes/tests -p "test_*.py"
 | --- | --- |
 | **Primary System Track** | Track 4 (Single-Agent with Skills) is the primary target production driver. |
 | **Track 3 Status** | Bounded parallel benchmark subject to ADR-002 parity gates. |
-| **Execution Pattern** | Async Waterfall DAG (CPU async fetching + GPU sequential node inference). |
-| **Model Standard** | `qwen3.6:35b` across all 4 roles via Ollama. |
-| **Library Layout** | Core utilities in `./lib/`; Hermes adapters in `./lib/hermes/`. |
+| **Execution Pattern** | Hermes kanban dispatch (current); Async Waterfall DAG is a proposed future architecture. |
+| **Model Target** | `qwen3.6:35b` (design goal — not yet deployed) via Ollama. |
+| **Library Layout** | Core utilities in `./lib/`; Hermes adapters in `./lib/hermes/` (T3-D deferred). |
 | **Failure Policy** | Fail hard on gateway error / protocol timeout; zero cross-pipeline fallbacks. |
 | **Deterministic Tail** | Shared calls to `grounding.py` → `validate.py` → `render.py`. |
 

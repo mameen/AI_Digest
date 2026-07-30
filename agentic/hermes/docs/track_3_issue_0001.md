@@ -42,10 +42,10 @@ Kanban is a proven coordination pattern, but its cost-to-benefit ratio must be e
 ### Issue 1: "Artificial Parallelism" & `kanban.max_in_progress: 1`
 * **Assistant 3's Position:** Because local GPU/Ollama hardware forces `kanban.max_in_progress: 1`, Kanban isn't actually running tasks in parallel. It is merely running sequential agent handoffs with state serialization overhead, giving zero speed advantage over a simple loop.
 * **Architectural Rebuttal:** `kanban.max_in_progress: 1` was a temporary local testing cap, not a structural limit. While LLM generation relies on the GPU, CPU resources are free to perform async network fetching, feed parsing, graph coordination, and board state transitions concurrently.
-* **Resolution / Fix:**
-  1. Concurrency is decoupled from LLM inference using an **Async Waterfall DAG**.
-  2. The `Concierge` constructs a Graph ID with dependent task nodes ($S$ sources, $C$ categories).
-  3. `Researchers` run I/O-bound web fetching concurrently on the CPU, using semaphores to trigger downstream tasks automatically upon completion.
+* **Resolution / Fix (Proposed Architecture — Not Yet Implemented):**
+  1. Concurrency is decoupled from LLM inference using an **Async Waterfall DAG** (design goal, not implemented).
+  2. The `Concierge` constructs a Graph ID with dependent task nodes ($S$ sources, $C$ categories) (proposed).
+  3. `Researchers` run I/O-bound web fetching concurrently on the CPU, using semaphores to trigger downstream tasks automatically upon completion (proposed).
 
 ---
 
@@ -53,7 +53,7 @@ Kanban is a proven coordination pattern, but its cost-to-benefit ratio must be e
 * **Assistant 3's Position:** Aggregating raw research from multiple `Researcher` tasks into the single `Librarian` role causes context bloat on local models like `llama3.1`. The model loses key details in the middle of long prompts and produces hallucinated or incomplete summaries.
 * **Architectural Rebuttal:** Context bloat is caused by weak outputs from `Researchers` pushing unformatted, noisy text downstream, combined with undersized context models. Strict contractual boundaries and better models eliminate this failure mode.
 * **Resolution / Fix:**
-  1. **Model Upgrade:** Upgrading local model execution across all roles from `llama3.1` to **`qwen3.6:35b`**.
+  1. **Model Target:** Target model is **`qwen3.6:35b`** via Ollama (design goal — not yet deployed).
   2. **Contract Enforcement:**
      * **Researcher Output Contract:** Must output a clean, well-formed Markdown card with validated URLs.
      * **Librarian Feedback Loop:** If a `Researcher` card is poorly formed or noisy, the `Librarian` captures this inefficiency and provides direct feedback or rejects the task card.
@@ -65,8 +65,8 @@ Kanban is a proven coordination pattern, but its cost-to-benefit ratio must be e
 * **Assistant 3's Position:** Strict framework-level TTLs, claim timeouts, and heartbeat checks in Hermes cause cascading stalls and protocol violations when local inference is slow. These failures are baked into the dispatcher and cannot be cleanly caught in ORIO application code.
 * **Architectural Rebuttal:** TTLs, heartbeats, and claim timeouts are essential engineering primitives for any system intended to scale horizontally across multiple machines in the future. Removing them creates silent deadlocks.
 * **Resolution / Fix:**
-  1. The multi-machine primitives are retained, but heartbeat/TTL parameters are calibrated to local Ollama inference latencies.
-  2. Pre-flight health checks verify Hermes Gateway responsiveness before board instantiation.
+  1. The multi-machine primitives are retained, but heartbeat/TTL parameters should be calibrated to local Ollama inference latencies (not yet done).
+  2. Pre-flight health checks verify Hermes Gateway responsiveness before board instantiation (**implemented**).
 
 ---
 
@@ -74,7 +74,7 @@ Kanban is a proven coordination pattern, but its cost-to-benefit ratio must be e
 * **Assistant 3's Position:** Maintaining 8 local `site-packages` patches to bridge missing native hooks in the upstream Hermes framework creates high code fragility. Any `pip upgrade` silently wipes out patches and breaks production.
 * **Architectural Rebuttal:** The 8 patches represent an accepted, one-time integration cost required to adapt generic agent frameworks to bounded daily workflows.
 * **Resolution / Fix:**
-  1. Move custom skill execution and role adapters into `./lib/hermes/` (e.g., `skills_provider.py`) to minimize touchpoints with upstream files.
+  1. Move custom skill execution and role adapters into `./lib/hermes/` (T3-D deferred — not yet created) to minimize touchpoints with upstream files.
   2. Pin upstream dependencies strictly in `pyproject.toml` to prevent silent breakage during updates.
 
 ---
@@ -83,8 +83,8 @@ Kanban is a proven coordination pattern, but its cost-to-benefit ratio must be e
 * **Assistant 3's Position:** When the Hermes Gateway crashes or times out, `manage.py` should silently fall forward into the batch pipeline (`llm_pipeline/`) to ensure report generation never fails.
 * **Architectural Rebuttal:** Cross-pipeline fallbacks create tight coupling between `agentic/hermes/` and `llm_pipeline/`, masking genuine multi-agent defects and violating clean separation of concerns.
 * **Resolution / Fix:**
-  1. **Zero Import Inversion:** `agentic/hermes/` must interact **only** with adapters in `./lib/hermes/` and shared tools in `./lib/`. It has zero imports from `llm_pipeline/`.
-  2. **Fail-Loud Policy:** If the Hermes Gateway or Kanban board fails, `manage.py go --fresh` raises an explicit `RuntimeError` and exits immediately with a non-zero exit code.
+  1. **Zero Import Inversion (Goal):** `agentic/hermes/` should interact **only** with adapters in `./lib/hermes/` and shared tools in `./lib/`. Currently, `manage.py` imports from `llm_pipeline.diagnostics`, `llm_pipeline.environment`, and `llm_pipeline.validate` — these are known violations to be resolved.
+  2. **Fail-Loud Policy:** If the Hermes Gateway or Kanban board fails, `manage.py go --fresh` exits with a non-zero exit code and clear error message (**implemented**).
 
 ---
 
@@ -97,7 +97,7 @@ Per **ADR-002**, Track 3 remains active purely as a **bounded benchmark experime
 | **Total Stories Processed** | $\ge 55$ stories | Telemetry evaluation (`t3_metrics.py`) |
 | **Category Coverage** | $11 / 11$ categories represented | Diagnostic waterfall check |
 | **Provenance Gap** | $\le 5\%$ gap vs batch baseline | Source URL verification against `llm_pipeline/` |
-| **Gateway Isolation** | 0 imports from `llm_pipeline/` | Pre-flight runtime check & test suite |
+| **Gateway Isolation** | 0 imports from `llm_pipeline/` (goal — currently violated) | Pre-flight runtime check & test suite |
 
-If Track 3 meets parity using `qwen3.6:35b` and `./lib/hermes/` adapters, it remains an available multi-agent runtime. If context degradation or orchestration tax persists beyond the threshold, Track 3 will be formally archived per ADR-002.
+If Track 3 meets parity using target model (`qwen3.6:35b`) and `./lib/hermes/` adapters (T3-D), it remains an available multi-agent runtime. If context degradation or orchestration tax persists beyond the threshold, Track 3 will be formally archived per ADR-002.
 

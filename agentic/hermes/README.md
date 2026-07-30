@@ -1,14 +1,16 @@
 # ORIO — Open Research Intelligence Observatory (`agentic/hermes/`)
 
-This directory contains the **agentic orchestration product** for AI Digest (codename **ORIO**). It is built on the [Nous Research Hermes Agent](https://hermes-agent.nousresearch.com/) platform and designed to run using local LLMs (via Ollama, standardized on **`qwen3.6:35b`**) without requiring cloud API keys.
+This directory contains the **agentic orchestration product** for AI Digest (codename **ORIO**). It is built on the [Nous Research Hermes Agent](https://hermes-agent.nousresearch.com/) platform and designed to run using local LLMs (via Ollama) without requiring cloud API keys.
 
 > ⚠️ **Runtime Status & Governing Policy (ADR-002):** > `agentic/hermes/` represents the **Track 3 Multi-Agent Kanban experimental runtime**. Per **ADR-002**, Track 3 is maintained as an active bounded benchmark to evaluate multi-agent performance against strict parity gates ($\ge 55$ stories, $11/11$ categories, $\le 5\%$ provenance gap vs batch baseline). It is **not** the default production fallback.
 
 ---
 
-## 4-Role Architecture (Async Waterfall DAG)
+## 4-Role Architecture
 
-ORIO divides intelligence across four distinct roles running over an **Async Waterfall DAG (Directed Acyclic Graph)** execution schedule. I/O-bound web fetching and source processing run asynchronously on the CPU, while model reasoning operates cleanly across task nodes without prompt drift or context rot.
+ORIO divides intelligence across four distinct roles. The execution model uses Hermes kanban dispatch (current implementation); an **Async Waterfall DAG** is a proposed future architecture (not yet implemented).
+
+> **Note:** The Async Waterfall DAG — concurrent I/O on CPU with semaphore-based task triggering — is documented as a design goal in `track_3_issue_0001.md` but has not been implemented. Current execution uses sequential Hermes kanban dispatch.
 
 <table>
 <tr>

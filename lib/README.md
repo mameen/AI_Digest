@@ -8,9 +8,9 @@ AI_Digest_2/
 │   ├── agent_tools.py        # Generic tool execution helpers
 │   ├── bundle.py             # Feed bundle processing & ingestion logic
 │   ├── report_source.py      # Source mapping and URL extraction
-│   └── hermes/               # 🟡 Hermes Adapters & Extensions
+│   └── hermes/               # 🟡 Hermes Adapters & Extensions (T3-D deferred)
 │       └── admin/
-│           └── skills_provider.py # Progressive disclosure skill provider
+│           └── skills_provider.py # Progressive disclosure skill provider (T3-B done, lives in agentic/hermes/admin/)
 │
 ├── llm_pipeline/            # 🔵 Deterministic Pipeline Tail (Grounding, Validate, Render)
 │   ├── grounding.py          # Grounding, reflection, & URL verification
@@ -29,8 +29,8 @@ AI_Digest_2/
 
 In **`ADR-001-extract-shared-pipeline.md` (ADR-002)** and **Issue #0001**, we codified four strict software engineering rules:
 
-1. **Zero Import Inversion:**
-* `agentic/hermes/` is **never allowed** to import from `llm_pipeline/`.
+1. **Zero Import Inversion (Goal):**
+* `agentic/hermes/` should eventually be **never allowed** to import from `llm_pipeline/`. Currently, `manage.py` imports from `llm_pipeline.diagnostics`, `llm_pipeline.environment`, and `llm_pipeline.validate` — known violations.
 * Both runtimes import shared logic from `./lib/` and the deterministic tail directly.
 
 
@@ -38,8 +38,8 @@ In **`ADR-001-extract-shared-pipeline.md` (ADR-002)** and **Issue #0001**, we co
 * Source parsing, URL extraction, and feed bundling are centralized in `./lib/` so both batch (`llm_pipeline/`) and agentic (`agentic/hermes/`) pipelines use identical, tested code paths.
 
 
-3. **Adapter Isolation in `./lib/hermes/`:**
-* Instead of hacking upstream framework code, custom skill loading and framework adapters live in `./lib/hermes/admin/skills_provider.py`.
+3. **Adapter Isolation in `./lib/hermes/` (T3-D deferred):**
+* Instead of hacking upstream framework code, custom skill loading and framework adapters live in `agentic/hermes/admin/skills_provider.py` (T3-B done). The target location is `./lib/hermes/admin/skills_provider.py` (not yet created).
 * This limits maintenance friction and ensures upstream dependencies stay cleanly pinned in `pyproject.toml`.
 
 
@@ -55,6 +55,6 @@ In **`ADR-001-extract-shared-pipeline.md` (ADR-002)** and **Issue #0001**, we co
 | Contract / Structural Element | Location in Docs / Code | Reusability Impact |
 | --- | --- | --- |
 | **Shared Library Utilities** | `./lib/` | Centralized I/O, feed discovery, and source parsing used by all tracks. |
-| **Skill Loading Standard** | `./lib/hermes/admin/skills_provider.py` | Implements progressive disclosure based on `agentskills.io` standard. |
-| **Pipeline Boundary Rule** | `ADR-001-extract-shared-pipeline.md` | Enforces zero cross-pipeline imports between `agentic/hermes/` and `llm_pipeline/`. |
+| **Adapter Isolation Target** | `./lib/hermes/admin/` (T3-D deferred) | Limits maintenance friction; upstream deps pinned in `pyproject.toml`. |
+| **Pipeline Boundary Rule** | `ADR-001-extract-shared-pipeline.md` | Goal: zero cross-pipeline imports between `agentic/hermes/` and `llm_pipeline/`. Currently violated in `manage.py`. |
 | **Output Contract Enforcement** | `track_3_issue_0001.md` (Section 3) | Formally defines JSON/Markdown card formats passed between agent roles. |

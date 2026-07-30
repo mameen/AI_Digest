@@ -14,7 +14,7 @@ AI Digest operates two main execution paradigms:
 
 The multi-agent Hermes Kanban setup is structurally mismatched to a bounded daily digest workload on local compute, facing orchestration overhead, context degradation on smaller models, and fragile upstream coupling. 
 
-To safely evaluate and migrate the architecture, the project enforces a strict separation between shared domain utilities (`./lib`), Hermes-specific adapters (`./lib/hermes`), and individual runtime drivers (`llm_pipeline/` and `agentic/hermes/`).
+To safely evaluate and migrate the architecture, the project enforces a strict separation between shared domain utilities (`./lib`), Hermes-specific adapters (T3-D deferred — `./lib/hermes/` not yet created), and individual runtime drivers (`llm_pipeline/` and `agentic/hermes/`).
 
 ---
 
@@ -22,8 +22,8 @@ To safely evaluate and migrate the architecture, the project enforces a strict s
 
 ### 1. Zero Cross-Pipeline Coupling & No Auto-Fallbacks
 - **Self-Sufficiency:** `agentic/hermes/` must operate as a standalone, self-sufficient execution environment.
-- **No Import Inversion:** `agentic/hermes/` (including `admin/manage.py`) must **NEVER** import from `llm_pipeline/` (e.g., `run_production_pipeline`).
-- **Fail Hard Policy:** If the Hermes Gateway is down, unreachable, or encounters an internal protocol violation during a Track 3 run (`manage.py go --fresh`), execution must **fail immediately with a non-zero exit code** and clear stack trace. It must **not** silently fall back or forward into `llm_pipeline/`.
+- **No Import Inversion (Goal):** `agentic/hermes/` should eventually import exclusively from `./lib/` and `./lib/hermes/`. Currently, `manage.py` imports from `llm_pipeline.diagnostics`, `llm_pipeline.environment`, and `llm_pipeline.validate` — these are known violations to be resolved.
+- **Fail Hard Policy:** If the Hermes Gateway is down, unreachable, or encounters an internal protocol violation during a Track 3 run (`manage.py go --fresh`), execution must **fail immediately with a non-zero exit code** and clear error message. It must **not** silently fall back or forward into `llm_pipeline/`.
 
 ### 2. Dependency Hierarchy
 
@@ -49,8 +49,8 @@ graph TD
 ```
 
 1. **`./lib/`**: Generic, headless domain logic (source ingestion, grounding, validation, schemas, rendering).
-2. **`./lib/hermes/`**: Hermes-specific adapters, skills providers (`skills_provider.py`), gateway protocol client interfaces, and card converters. It consumes `./lib/` but has **zero knowledge** of `llm_pipeline/`.
-3. **`agentic/hermes/`**: The Hermes CLI and Kanban board runner (`manage.py`). It imports exclusively from `./lib/hermes/` and `./lib/`.
+2. **`./lib/hermes/`** (T3-D deferred — not yet created): Hermes-specific adapters, skills providers (`skills_provider.py`), gateway protocol client interfaces, and card converters. It will consume `./lib/` but have **zero knowledge** of `llm_pipeline/`.
+3. **`agentic/hermes/`**: The Hermes CLI and Kanban board runner (`manage.py`). It imports from `./lib/`, `./lib/hermes/` (when created), and currently also from `llm_pipeline/` (known violation).
 4. **`llm_pipeline/`**: The batch execution driver. It imports exclusively from `./lib/`.
 
 ---
@@ -63,7 +63,7 @@ To systematically resolve multi-agent debt while preserving production stability
 | --- | --- | --- | --- |
 | **Track 1** | **Fortify Baseline (`llm_pipeline`)** | Increase test coverage (≥80%) across shared primitives in `./lib/` and `llm_pipeline/`. | Maintains stable production fallback via `manage.py go --pipeline`. |
 | **Track 2** | **Extract Shared Primitives (`./lib`)** | Decouple pure python domain tools (ingest, ground, validate, render) into `./lib`. | Shared zero-side-effect utilities usable by any runtime. |
-| **Track 3** | **Stabilize & Benchmark Hermes (`agentic/hermes`)** | Clean up Hermes orchestration using `./lib/hermes`, enforce explicit error handling, and test with upgraded models (`qwen3.6:35b`). | **Bounded experiment.** Hard-fails on gateway outage. Never set as default runtime. |
+| **Track 3** | **Stabilize & Benchmark Hermes (`agentic/hermes`)** | Clean up Hermes orchestration using `./lib/hermes/` (T3-D), enforce explicit error handling, and test with target model (`qwen3.6:35b`). | **Bounded experiment.** Hard-fails on gateway outage. Never set as default runtime. |
 | **Track 4** | **Single-Agent-with-Skills Runtime** | Implement efficient single-agent runtime with progressive disclosure (`SKILL.md`) aligned with `agentskills.io`. | Target runtime for production once parity is reached. |
 
 ---
@@ -72,7 +72,7 @@ To systematically resolve multi-agent debt while preserving production stability
 
 Track 3 (Hermes Multi-Agent) is maintained as a bounded benchmark with strict exit criteria:
 
-1. **Explicit Failures:** Gateway unreachability or socket connection failures raise a hard `RuntimeError` during pre-flight checks (`manage.py go --fresh`).
+1. **Explicit Failures:** Gateway unreachability or socket connection failures cause `manage.py go --fresh` to exit with a non-zero code and clear error message during pre-flight checks.
 2. **Metrics Threshold:** Track 3 must demonstrate parity against the baseline pipeline:
 * Total Stories Processed: $\ge 55$
 * Category Coverage: $11 / 11$ categories represented
