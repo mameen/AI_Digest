@@ -1626,10 +1626,12 @@ def cmd_go_agents(args: argparse.Namespace) -> int:
     # T3-A: Gateway health check before dispatch
     healthy, msg = _hermes_gateway_health()
     if not healthy:
-        print(f"\n⚠ Gateway unavailable: {msg}")
-        print("  Auto-routing to batch pipeline (--pipeline fallback)")
-        print("  To restore kanban mode: start the Hermes gateway and retry.")
-        return cmd_go_pipeline(args)
+        print(f"\n✗ Gateway unavailable: {msg}")
+        print("\nTo fix:")
+        print("  hermes gateway start          # start the Hermes gateway")
+        print("  hermes gateway restart        # if already running")
+        print("  python manage.py go --pipeline  # or use batch pipeline directly")
+        return 1
 
     run_prefix = _resolve_go_prefix(args)
     _agentic_run_prefix = run_prefix

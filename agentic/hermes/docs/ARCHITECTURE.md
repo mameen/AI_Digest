@@ -1,283 +1,207 @@
-# Hermes target architecture
+# Hermes Target Architecture (`agentic/hermes/`)
 
-> **Canonical narrative:** [`README.md`](../../../README.md) at the repo root. **If this
-> doc conflicts with README, README wins.**
+> **Governing Policy (ADR-002):** `agentic/hermes/` represents the **Track 3 Multi-Agent Kanban experimental runtime**. Per **ADR-002**, Track 3 is maintained as an active **bounded parallel benchmark experiment** to evaluate multi-agent performance against strict parity gates ($\ge 55$ stories, $11/11$ categories, $\le 5\%$ provenance gap vs batch baseline). It is **not** the default production driver.
 
-> **Demo overview:** Hermes tree index at [`../README.md`](../README.md).
-
-This document describes the **agentic digest** under `agentic/hermes/` — the
-**one production system**: four ORIO roles on a kanban graph, shared ingestion
-from `lib/ingest`, deterministic invariants from `llm_pipeline` (grounding,
-validate, render). The staged batch CLI (`run.py` / `pipeline_go`) is a
-**deprecated escape hatch**, not a second product.
-
-**Related:** [`../system_roles.md`](../system_roles.md) · [`../working_agreements.md`](../working_agreements.md) · [`../POC.md`](../POC.md)
+> **Canonical Narrative:** [`README.md`](../README.md) in the `agentic/hermes/` root directory. **If this doc conflicts with README, README wins.**
 
 ---
 
-## Mental model
-
-| Layer | What it is |
-|---|---|
-| **Orchestration** | Hermes kanban — Concierge → Researcher × N → Librarian → Synthesizer |
-| **Shared libs** | `lib/ingest/` (fetch/parse), `llm_pipeline/` (schema, grounding, validate, render) |
-| **Deprecated batch** | `run.py`, `pipeline_go.py` — same enrich path, no agent roles; use `--pipeline` only when debugging batch parity |
-
-When agentic fully wins, **`run.py` batch orchestration stops**; `llm_pipeline/` remains
-as libraries agents call through `tools/baseline.py`. The `pipeline/` tree at repo root is an
-**import shim**, not a second product.
-
----
-
-## Production end-to-end flow (default GO)
-
-> **Canonical diagram:** [`README.md`](../../../README.md#orio-workflow-source-of-truth).
-> **Do not change the graph or four-output contract without maintainer approval** —
-> keep README and this section in sync.
+## Mental Model & System Boundaries
 
 ```mermaid
-flowchart TB
-    GO["GO — Concierge"] --> C["Kanban board"]
-    C --> R1["Researcher"]
-    C --> R2["Researcher"]
-    C --> R3["Researcher"]
-    R1 & R2 & R3 --> L["Librarian"]
-    L --> S["Synthesizer"]
-    S --> P["grounding · validate · render"]
-    P --> HTML["reports/&lt;prefix&gt;.html"]
-    P --> JSON["reports/&lt;prefix&gt;.json"]
-    P --> DH["diagnostics/&lt;prefix&gt;.diagnostics.html"]
-    P --> DJ["diagnostics/&lt;prefix&gt;.diagnostics.json"]
+flowchart TD
+    subgraph Orchestration["Orchestration Layer (Track 3)"]
+        A[Concierge] --> B[Researcher × N]
+        B --> C[Librarian]
+        C --> D[Synthesizer]
+    end
+
+    subgraph SharedLibs["Shared Libraries (Zero Side-Effects)"]
+        E["./lib/ (Ingest, Tools, Source Mapping)"]
+        F["./lib/hermes/ (Skills & Adapters)"]
+    end
+
+    subgraph Tail["Deterministic Tail (llm_pipeline/)"]
+        G[grounding.py] --> H[validate.py] --> I[render.py]
+    end
+
+    Orchestration --> SharedLibs
+    D --> Tail
+
+    style Orchestration fill:#f9f,stroke:#333,stroke-width:2px
+    style SharedLibs fill:#bbf,stroke:#333,stroke-width:2px
+    style Tail fill:#dfd,stroke:#333,stroke-width:2px
+
 ```
 
-**What happens on GO (default):**
+| Layer | What It Is & Execution Model |
+| --- | --- |
+| **Orchestration (Track 3)** | **Async Waterfall DAG:** Concierge → Researcher × N → Librarian → Synthesizer. I/O tasks (fetching, feed discovery) run concurrently on CPU, while model reasoning steps flow sequentially through task semaphores. |
+| **Shared Libraries** | `./lib/` (domain-agnostic tools, ingestion, source mapping), `./lib/hermes/` (custom skill providers & framework adapters). |
+| **Deterministic Tail** | `llm_pipeline/` (`grounding.py` → `validate.py` → `render.py`). Shared by all tracks for post-synthesis verification and output rendering. |
+| **Batch Escape Hatch** | `go --pipeline` (`run.py`) — deprecated legacy runner kept purely for debug/A/B parity testing. |
 
-1. **Concierge** parses date/history (or CLI runs `manage.py go`) and assembles /
-   reuses the kanban board. **Board topics:** by default, one research task per
-   non-empty category from the **best known-good report** (most stories, passes
-   validation) — see `tools/topics.py`. Override via `demo_topics` in yaml.
-2. **Ingest warm-up** runs deterministic preflight + crawl + structured fetch into
-   `.preflight/` and `.cache/<prefix>/` so researchers hit warm cache.
-3. **Researchers** (parallel Hermes workers, `orio_researcher`) each take one target;
-   reflect, `verify_url`, and ground **their own** `output.md`. Librarian and
-   Synthesizer trust that per-target work — they merge/compose, not re-research.
-4. **Librarian** (`orio_librarian`) fan-in: resolve overlap, map articles and data
-   points to standing topics, dedupe/regroup → `librarian.md` + knowledge graph.
-5. **Synthesizer** (`orio_synthesizer`) reads **`librarian.md` only** — format,
-   schema, and prose via `synthesize_digest` → `digest.json` (no curatorial rework).
-6. **Grounding + validate + render** — same deterministic modules as the old batch
-   pipeline; not LLM-judged.
-7. **`finish_collector`** writes diagnostics (stage timings, token counts, LLM table).
-
-Render requires a valid `digest.json` — no showcase render fallback.
-
-**Flags:** `--fresh` archives and recreates the board. `--skip-dispatch` stops after
-board setup (no workers, no render — use `render-from-board` later). `--rounds` caps
-research dispatch retries.
-
-**Eval-only exception:** `evaluation_test_topic` may use committed fixtures under
-`tests/data/evaluation/`.
+When Track 4 (Single-Agent with Skills) becomes full production default, `agentic/hermes/` will serve as the reference benchmark. All tracks call into `./lib/` and hand off to `llm_pipeline/` for post-synthesis validation and rendering.
 
 ---
 
-## Batch escape hatch (`go --pipeline`)
+## 4-Role Architecture (Async Waterfall DAG)
 
-For batch parity with `run.py` (re-enrich from cache, A/B against old CLI) —
-**not** default GO:
+Rather than forcing artificial sequential handoffs or unconstrained concurrency that triggers hardware throttling, ORIO Track 3 organizes work across a **Directed Acyclic Graph (DAG)**:
 
 ```mermaid
-flowchart TB
-    GO["manage.py go --pipeline"] --> PF[preflight]
-    PF --> CR[crawl + structured]
-    CR --> EN[enrich_digest]
-    EN --> VA[validate] --> RE[render]
+sequenceDiagram
+    autonumber
+    participant Concierge as Concierge Node
+    participant Researcher as Researcher Nodes (×N)
+    participant Librarian as Librarian Gate
+    participant Synthesizer as Synthesizer Author
+    participant Tail as Deterministic Tail
+
+    Concierge->>Concierge: Construct Task Graph & Graph ID
+    Concierge->>Researcher: Dispatch Task Nodes (Async CPU Fetch)
+    Note over Researcher: Parallel Fetch, Extract, & Grounding
+    Researcher->>Librarian: Submit Note Cards (Verified URLs)
+    Note over Librarian: Deduplicate, Map Categories, & Log Inefficiencies
+    alt Incomplete / Poor Formatting
+        Librarian-->>Researcher: Feedback Loop Log (Prompt Calibration)
+    end
+    Librarian->>Synthesizer: Stream Structured JSON Schema
+    Synthesizer->>Synthesizer: Draft Markdown Report & Summary
+    Synthesizer->>Tail: Handoff Draft Artifact
+    Note over Tail: grounding.py → validate.py → render.py
+
 ```
 
-Implemented in `tools/pipeline_go.py`. Skips kanban workers entirely.
-Use when Hermes gateway is unavailable or you need identical behavior to `run.py`.
+### 1. Concierge Node
 
-**Flags:** `--skip-ingest` reuses cached preflight/crawl. `--fetch-only` stops after ingest.
+* **Responsibility:** Single point of entry. Maintains standing topic lists, user schedules, and execution triggers.
+* **Invariants:** Assembles the task graph and dependent worker nodes ($S$ sources, $C$ categories). Never fetches web sources directly or writes report summaries.
+
+### 2. Researcher Nodes (× N Parallel Workers)
+
+* **Responsibility:** Target-focused worker nodes bound to specific sources, feed clusters, or category channels.
+* **Execution:** Network fetching, HTML extraction, and parsing execute asynchronously on CPU. Model reasoning steps produce structured note cards with verified source URLs.
+* **Quality Guard:** Reflects and grounds its own artifact before pushing downstream.
+
+### 3. Librarian Gate
+
+* **Responsibility:** Deduplication, schema enforcement, and synthesis gate.
+* **Execution:** Evaluates incoming Researcher cards, flags inefficiencies, maps facts to standard categories, and produces clean JSON schemas.
+* **Feedback Loop:** Captures malformed or low-quality researcher notes and logs feedback to refine worker prompts in future cycles.
+
+### 4. Synthesizer Author
+
+* **Responsibility:** Final digest drafting.
+* **Execution:** Consumes structured JSON schemas from the Librarian to draft executive summaries and formatted Markdown reports without prompt drift.
 
 ---
 
-## Shared ingestion (`lib/ingest`)
+## Model Standardization & Hardware Strategy
 
-Source-kind logic lives **once** in `lib/ingest/` — generic extractors + topic registry.
+To eliminate historical context rot, prompt drift, and "lost in the middle" degradation observed when using `llama3.1`, all Track 3 roles are standardized on:
+
+* **Primary Model:** **`qwen3.6:35b`** via Ollama.
+* **Context Depth:** High-capacity context window to support multi-source Librarian fan-in without hallucination.
+* **CPU/GPU Workstation Split:** CPU handles network fetching and parsing asynchronously; GPU inference executes sequentially per task node.
+
+---
+
+## Architectural Isolation & Boundary Rules
+
+Per **ADR-002**, Track 3 enforces strict software engineering boundaries to prevent code bloat and circular dependencies:
 
 ```mermaid
-flowchart TB
-    subgraph lib [lib/ingest]
-        REG[topics/registry]
-        ST1[stage1: preflight, crawl, structured]
-        LAZY[lazy ensure_* — kanban workers]
-        EXT[extractors: rss, preflight, crawl, structured]
+graph LR
+    subgraph Forbidden["Strictly Forbidden"]
+        A["agentic/hermes/"] -.-|X Direct Import X| B["llm_pipeline/"]
     end
 
-    subgraph tracks [Callers]
-        WARM[GO ingest warm-up]
-        WORK[digest-tools plugin]
-        BATCH[run.py / pipeline_go]
+    subgraph Allowed["Allowed Pipeline Path"]
+        C["agentic/hermes/"] -->|Imports| D["./lib/ & ./lib/hermes/"]
+        E["agentic/hermes/ Output"] -->|Handoff Artifact| F["llm_pipeline/ (Tail Only)"]
     end
 
-    subgraph cache [On-disk cache]
-        PF[".preflight/"]
-        CA[".cache/&lt;prefix&gt;/"]
-    end
+    style Forbidden fill:#ffe6e6,stroke:#ff0000,stroke-width:2px
+    style Allowed fill:#e6ffe6,stroke:#00aa00,stroke-width:2px
 
-    WARM --> ST1 --> PF & CA
-    BATCH --> ST1 --> PF & CA
-    WORK --> LAZY --> EXT --> PF & CA
-    REG --> WORK
 ```
 
-| Source kind | Extractor | GO warm-up | Researcher tool |
-|---|---|---|---|
-| Preflight skeleton | `extractors/preflight` | `run_preflight` | `read_preflight_category` |
-| RSS / Atom | `extractors/rss` | preflight | `fetch_rss` |
-| Crawl markdown | `extractors/crawl` | `crawl_leaderboards` | `read_crawl_markdown` |
-| Structured JSON | `extractors/structured` | `fetch_structured_sources` | `read_structured_json` |
-| URL check | `lib/ingest/web` | — | `verify_url` |
-| Web discovery | Hermes ddgs | — | `web_search` |
+1. **Zero Cross-Pipeline Imports:**
+* `agentic/hermes/` **must never import from `llm_pipeline/**`.
+* All shared business logic resides in `./lib/` (e.g., `bundle.py`, `agent_tools.py`, `report_source.py`).
+* Skill loading and adapter integration live in `./lib/hermes/` (e.g., `skills_provider.py`).
 
-**Ingestion rules (approved):** implement fetch/parse once under `lib/ingest/`.
-Extractors are **mechanism-shaped** (RSS, preflight, crawl, structured JSON) — not
-topic-shaped. Hermes tasks stay topic-shaped (`Research: robotics`); the LLM closes
-the editorial gap. Add a digest topic by extending `lib/ingest/topics/registry.py`
-and (optionally) pinning `demo_topics` — no new plugin unless handoff contracts change.
 
----
+2. **Fail-Loud Policy (No Silent Fallbacks):**
+* Pre-flight checks (`_hermes_gateway_health()`) verify gateway and board availability before launching.
+* If the gateway drops or a task stalls, execution aborts immediately with a non-zero exit code.
+* **No silent fallbacks** to `llm_pipeline/` batch execution are permitted during a Track 3 run.
 
-## Role profiles (ORIO crew)
 
-| Profile | Display name | Default GO | `--pipeline` |
-|---|---|---|---|
-| `orio_concierge` | Concierge | Assemble board; GO; assess; publish | Triggers batch only |
-| `orio_researcher` | Researcher | One target → `output.md` (reflect + ground) | — |
-| `orio_librarian` | Librarian | Resolve overlap; map to topics → `librarian.md` | — |
-| `orio_synthesizer` | Synthesizer | Format, schema, prose → `digest.json` | — |
+3. **Deterministic Tail Handoff:**
+* Agent execution ends after the Synthesizer generates the raw digest artifact.
+* The final report is processed by the shared deterministic tail (`llm_pipeline/grounding.py` → `llm_pipeline/validate.py` → `llm_pipeline/render.py`) for schema verification and rendering.
 
-**Not roles:** grounding, validation, provenance — deterministic in `llm_pipeline`.
 
-Model routing: `admin/config/hermes_roles.yaml` → remote Ollama.
-
-| Tier | Model | When |
-|---|---|---|
-| Laptop (default) | `llama3.1:latest` (~5 GB, **128K** ctx) | Dev, POC, Hermes on MacBook |
-| Showcase | `qwen3.6:35b` (~24 GB) | RTX 4090-class published runs |
-
-Hermes requires **≥64K native context** — e.g. `qwen2.5:7b` (32K) is rejected even
-if the Ollama slider is higher. Per-role overrides live in `hermes_roles.yaml`.
-
-Canonical role definitions: [`../system_roles.md`](../system_roles.md).
 
 ---
 
-## Runtime layout
+## Technical Invariants & Parity Gates
 
-**Production GO** writes four files per run under `agentic/hermes/reports/` and
-`agentic/hermes/diagnostics/` (see root README). Intermediate kanban artifacts:
+To remain active, Track 3 must satisfy the following criteria measured by `t3_metrics.py`:
 
-```mermaid
-flowchart LR
-    subgraph kanban [Hermes kanban]
-        WS["~/.hermes/kanban/workspaces/t_*"]
-    end
+| Metric Gate | Threshold | Description |
+| --- | --- | --- |
+| **Story Yield** | $\ge 55$ stories | Total grounded stories produced per daily run. |
+| **Category Coverage** | $11/11$ categories | Full coverage across all configured domain categories. |
+| **Provenance Gap** | $\le 5\%$ gap | Ratio of unverified or broken source links vs batch baseline. |
+| **Boundary Integrity** | 0 illegal imports | Zero direct imports from `llm_pipeline/` within `agentic/hermes/`. |
 
-    subgraph repo [agentic/hermes/.runtime/artifacts]
-        RD["&lt;prefix&gt;/research/&lt;topic&gt;.md"]
-        LM["&lt;prefix&gt;/librarian.md"]
-        DJ["&lt;prefix&gt;/digest.json"]
-        HO["&lt;prefix&gt;/handover.json"]
-    end
+---
 
-    subgraph reports [agentic/hermes/reports]
-        HTML["&lt;prefix&gt;.html"]
-        JSON["&lt;prefix&gt;.json"]
-    end
+## Non-Negotiable Engineering Rules
 
-    WS -->|"materialize on complete"| RD & LM & DJ
-    DJ -->|"validate_and_render"| HTML & JSON
-    RD & LM & DJ --> HO
+1. **Honest, Auditable Data:** All stories must maintain strict provenance tokens; no fabricated URLs or hallucinated domains.
+2. **Post-Synthesizer Grounding Guard:** The deterministic tail strictly validates claims against raw source text after synthesis.
+3. **Strict Validation Gates:** Mandatory category counts and structural schema validation prior to output generation.
+4. **Fixture-Backed Verification:** Unit and integration tests must run against real, recorded fixtures under `tests/data/`.
+5. **Decoupled Rendering:** Modifying UI markdown styling or HTML templates must never require re-running LLM inference.
+6. **Documentation Equivalence:** System documentation must precisely mirror codebase execution paths.
+
+---
+
+## CLI & Operability Workflows
+
+```bash
+# Pre-flight environment check and dependencies setup
+python agentic/hermes/admin/manage.py bootstrap
+
+# Execute Track 3 Async Waterfall Benchmark (Fail-Loud mode)
+python agentic/hermes/admin/manage.py go --start 2026-07-09 --history 10 --fresh
+
+# Legacy batch runner (Debug & Parity comparison only)
+python agentic/hermes/admin/manage.py go --pipeline --start 2026-07-09
+
+# Rebuild diagnostics waterfall log
+python agentic/hermes/admin/manage.py diagnostics --prefix <run_prefix>
+
+# Run Track 3 Telemetry & Parity Gate Benchmark Tests
+python -m unittest discover -s agentic/hermes/tests -p "test_*.py"
+
 ```
 
 ---
 
-## Adapter surface
+## Approved Architectural State
 
-`agentic/hermes/tools/baseline.py` and `pipeline_go.py` wrap shared `llm_pipeline` libs:
+| Topic | Decision / Approved State |
+| --- | --- |
+| **Primary System Track** | Track 4 (Single-Agent with Skills) is the primary target production driver. |
+| **Track 3 Status** | Bounded parallel benchmark subject to ADR-002 parity gates. |
+| **Execution Pattern** | Async Waterfall DAG (CPU async fetching + GPU sequential node inference). |
+| **Model Standard** | `qwen3.6:35b` across all 4 roles via Ollama. |
+| **Library Layout** | Core utilities in `./lib/`; Hermes adapters in `./lib/hermes/`. |
+| **Failure Policy** | Fail hard on gateway error / protocol timeout; zero cross-pipeline fallbacks. |
+| **Deterministic Tail** | Shared calls to `grounding.py` → `validate.py` → `render.py`. |
 
-| Function | Module | Default GO | `--pipeline` |
-|---|---|---|---|
-| Kanban orchestration | `admin/manage.py` `cmd_go_agents` | ✓ | — |
-| `run_production_pipeline()` | `tools/pipeline_go.py` | — | ✓ |
-| `validate_and_render()` | validate + render | ✓ | ✓ |
-| `synthesize_digest()` | `tools/synthesize.py` | ✓ | — |
-| `enrich_digest()` | `enrich.enrich_digest` | — | ✓ |
-| `run_preflight()` etc. | `lib.ingest.stage1` | warm-up + batch | ✓ |
-
----
-
-## File map
-
-```
-agentic/hermes/
-├── admin/manage.py          # go (kanban default), go --pipeline, setup, assess
-├── admin/config/
-│   ├── hermes_roles.yaml    # Ollama routing, demo_topics
-│   └── souls/               # worker SOUL templates
-├── plugins/digest-tools/    # Concierge + worker tools
-├── tools/
-│   ├── pipeline_go.py       # batch escape hatch (--pipeline)
-│   ├── digest_scaffold.py   # empty 12-category shell
-│   ├── baseline.py          # llm_pipeline adapters
-│   ├── synthesize.py        # Instructor synthesis (Synthesizer)
-│   ├── artifacts.py         # kanban artifact gates
-│   └── runtime_store.py     # .runtime/artifacts
-├── reports/                 # production HTML + JSON
-└── diagnostics/             # per-run waterfall JSON/HTML
-```
-
----
-
-## E2E test readiness
-
-See [`../POC.md`](../POC.md) for bootstrap phases. Quick checks:
-
-| Check | Command / location |
-|---|---|
-| Unit tests | `python -m unittest tests.test_board_topics tests.test_pipeline_go -v` |
-| Full suite | `python run_tests.py` |
-| GO dry run (batch) | `python agentic/hermes/admin/manage.py go --pipeline --dry-run` |
-| Full agentic run | `python agentic/hermes/admin/manage.py go --start YYYY-MM-DD --fresh` |
-| Kanban smoke | `python agentic/hermes/admin/manage.py verify-handover` |
-| Eval fixtures | `demo_topics: [evaluation_test_topic]` in `hermes_roles.yaml` |
-| Diagnostics rebuild | `python agentic/hermes/admin/manage.py diagnostics --prefix <prefix>` |
-
----
-
-## Non-negotiables
-
-1. **Honest, auditable data** — provenance tokens; no fabricated links.
-2. **Grounding guard** — deterministic post-Synthesizer.
-3. **Validation gates** — category counts, required IDs.
-4. **Fixture-backed tests** — real data under `tests/data/`.
-5. **Re-render decoupling** — UI changes do not re-run LLM.
-6. **Documentation matches code** — production GO is the four-role kanban graph.
-
----
-
-## Approved state (decisions)
-
-| Topic | Decision |
-|---|---|
-| Production GO | Kanban crew — Concierge → research × N → librarian → synthesizer |
-| Default `manage.py go` | Agentic kanban (not batch enrich) |
-| Batch escape hatch | `go --pipeline` / `run.py` — debug/A/B only |
-| Batch orchestration | Deprecated; `llm_pipeline/` = shared libs |
-| Repo layout | Product under `agentic/hermes/`; root `pipeline/` = import shim |
-| Ingestion | Single implementation in `lib/ingest/`; generic worker tools |
-| Extractors vs topics | Mechanism extractors + topic registry; LLM closes editorial gap |
-| Board topics | Best known-good report by default; override `demo_topics` |
-| Models (laptop) | `llama3.1:latest` via Ollama; showcase `qwen3.6:35b` when VRAM allows |
-| Grounding / validate | Deterministic in `llm_pipeline` — not agent roles |
-| Eval E2E topic | `evaluation_test_topic` + fixtures under `tests/data/evaluation/` |

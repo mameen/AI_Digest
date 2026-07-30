@@ -1,47 +1,48 @@
 # ORIO — Open Research Intelligence Observatory (`agentic/hermes/`)
 
-This directory contains the **agentic orchestration product** for AI Digest (codename **ORIO**). It is built on the [Nous Research Hermes Agent](https://hermes-agent.nousresearch.com/) platform and designed to run using local LLMs (via Ollama) without requiring cloud API keys.
+This directory contains the **agentic orchestration product** for AI Digest (codename **ORIO**). It is built on the [Nous Research Hermes Agent](https://hermes-agent.nousresearch.com/) platform and designed to run using local LLMs (via Ollama, standardized on **`qwen3.6:35b`**) without requiring cloud API keys.
 
-Four roles. One digest. Each agent has a job:
+> ⚠️ **Runtime Status & Governing Policy (ADR-002):** > `agentic/hermes/` represents the **Track 3 Multi-Agent Kanban experimental runtime**. Per **ADR-002**, Track 3 is maintained as an active bounded benchmark to evaluate multi-agent performance against strict parity gates ($\ge 55$ stories, $11/11$ categories, $\le 5\%$ provenance gap vs batch baseline). It is **not** the default production fallback.
+
+---
+
+## 4-Role Architecture (Async Waterfall DAG)
+
+ORIO divides intelligence across four distinct roles running over an **Async Waterfall DAG (Directed Acyclic Graph)** execution schedule. I/O-bound web fetching and source processing run asynchronously on the CPU, while model reasoning operates cleanly across task nodes without prompt drift or context rot.
 
 <table>
 <tr>
 <td align="center" width="25%">
   <img src="assets/img/Concierge.png" alt="Concierge" width="160"><br>
   <strong>Concierge</strong><br>
-  <small>Your single point of contact.<br>
-  Keeps the standing topic list and schedule; tells GO from "add a topic."<br>
-  Assembles the kanban board — never fetches sources or writes stories.</small><br>
+  <small>Single point of entry.<br>
+  Maintains standing topics and schedules.<br>
+  Constructs the Kanban graph and dependent task nodes — never fetches web sources directly.</small><br>
   <small><a href="admin/config/souls/orio_concierge.md">SOUL</a> ·
   <a href="system_roles.md#concierge">Roles &amp; responsibilities</a></small>
 </td>
 <td align="center" width="25%">
   <img src="assets/img/Researcher.png" alt="Researcher" width="160"><br>
   <strong>Researcher</strong><br>
-  <small>Parallel worker — one target per task<br>
-  (category, feed cluster, or source bundle).<br>
-  Fetches pages, extracts facts, returns structured notes with URLs.<br>
-  Reflects and grounds its own artifact — downstream agents trust that work.<br>
-  Does not merge across topics or write the digest.</small><br>
+  <small>Parallel worker — target-focused.<br>
+  Fetches sources, extracts facts, and produces structured note cards with verified URLs.<br>
+  Reflects and grounds its own artifact before pushing downstream.</small><br>
   <small><a href="admin/config/souls/orio_researcher.md">SOUL</a> ·
   <a href="system_roles.md#researcher">Roles &amp; responsibilities</a></small>
 </td>
 <td align="center" width="25%">
   <img src="assets/img/Librarian.png" alt="Librarian" width="160"><br>
   <strong>Librarian</strong><br>
-  <small>Fan-in after all researchers finish.<br>
-  Resolves overlap and maps every article/data point to topics.<br>
-  Outputs a curated skeleton + knowledge graph — not final prose.<br>
-  Synthesizer should not redo this curatorial work.</small><br>
+  <small>Deduplication &amp; synthesis gate.<br>
+  Evaluates incoming Researcher cards, flags inefficiencies, maps facts to categories, and produces clean JSON schemas.</small><br>
   <small><a href="admin/config/souls/orio_librarian.md">SOUL</a> ·
   <a href="system_roles.md#librarian">Roles &amp; responsibilities</a></small>
 </td>
 <td align="center" width="25%">
   <img src="assets/img/Synthesizer.png" alt="Synthesizer" width="160"><br>
   <strong>Synthesizer</strong><br>
-  <small>Reads the librarian skeleton — overlap and topic mapping are done.<br>
-  Focuses on format, schema, and writing: takeaway, summary, narratives → digest JSON.<br>
-  Does not re-fetch, reclassify, or resolve overlap; grounding runs downstream.</small><br>
+  <small>Digest author.<br>
+  Consumes Librarian JSON schemas to draft final structured Markdown reports and executive summaries.</small><br>
   <small><a href="admin/config/souls/orio_synthesizer.md">SOUL</a> ·
   <a href="system_roles.md#synthesizer">Roles &amp; responsibilities</a></small>
 </td>
@@ -82,27 +83,26 @@ flowchart TB
 ## Quick Commands
 
 ```bash
-# Bootstrap (once)
+# Bootstrap environment & verify dependencies
 python agentic/hermes/admin/manage.py bootstrap
 
-# Full production run (agentic kanban — default)
+# Run Track 3 Multi-Agent Kanban Benchmark (Fail-Loud Execution)
 python agentic/hermes/admin/manage.py go --start 2026-07-09 --history 10 --fresh
 
-# Batch run.py parity (escape hatch only)
-python agentic/hermes/admin/manage.py go --pipeline --start 2026-07-09
-
-# Diagnostics waterfall for a run
+# Generate Diagnostics Waterfall for a completed run
 python agentic/hermes/admin/manage.py diagnostics --prefix 20260707182407
+
+# Run Track 3 Telemetry & Parity Gate Benchmark Tests
+python -m unittest discover -s agentic/hermes/tests -p "test_*.py"
 ```
 
 ---
 
-## Documentation Index
+## 📚 Documentation Index
 
 | Topic | Document |
 | :--- | :--- |
-| **High-level E2E Flow** | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
+| **Architectural Decision Record (ADR-002)** | [docs/ADR-001-extract-shared-pipeline.md](docs/ADR-001-extract-shared-pipeline.md) |
+| **Track 3 Issue #0001 (Debate & Mitigations)** | [docs/track_3_issue_0001.md](docs/track_3_issue_0001.md) |
+| **High-Level E2E Flow** | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
 | **Worker Invariants & Tooling Agreements** | [working_agreements.md](working_agreements.md) |
-| **System Roles & Multi-Agent Structure** | [system_roles.md](system_roles.md) |
-| **Bootstrap & Testing POC Runbook** | [POC.md](POC.md) |
-| **Slack Front Desk Integration** | [slack.md](slack.md) |

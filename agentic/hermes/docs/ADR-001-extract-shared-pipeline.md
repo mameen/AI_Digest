@@ -1,103 +1,96 @@
-# ADR-002: Pivot from Multi-Agent Kanban to Single-Agent-with-Skills Runtime
+# ADR-002: Pivot from Multi-Agent Kanban to Single-Agent-with-Skills Runtime & Strict Hermes Isolation
 
-**Status:** Proposal  
-**Date:** 2026-07-28  
-**Supersedes:** Aggressive Hermes crew iterations and parallel kanban stabilization attempts
+**Status:** Proposed / Updating  
+**Date:** 2026-07-28 (Updated 2026-07-29)  
+**Supersedes:** Unbounded Hermes crew iterations and cross-pipeline fallback mechanisms  
 
 ---
 
 ## Context
 
-AI Digest operates two pipelines sharing the deterministic tail `llm_pipeline/` (`ingest → enrich → validate → render`). The legacy batch pipeline (`go --pipeline`) remains reliable. In contrast, the labeled "production" **Hermes kanban crew** (4-role architecture) is structurally mismatched to a bounded daily digest workload. Multi-agent coordination overhead now exceeds throughput benefits, compounded by local compute constraints and fragile upstream coupling. This pivot adopts a four-track parallel strategy to safely migrate to a single-agent-with-skills runtime while preserving production stability.
+AI Digest operates two main execution paradigms:
+1. **Batch Pipeline (`llm_pipeline/`):** The legacy batch driver (`ingest → enrich → validate → render`).
+2. **Hermes Multi-Agent (`agentic/hermes/`):** The 4-role Kanban crew (`Concierge`, `Researcher`, `Librarian`, `Synthesizer`).
 
-See [Issue 001](./issue_001.md)
+The multi-agent Hermes Kanban setup is structurally mismatched to a bounded daily digest workload on local compute, facing orchestration overhead, context degradation on smaller models, and fragile upstream coupling. 
 
-### Current Deficiencies
-1. **Orchestration Tax:** Four roles × kanban transitions create sync complexity, prompt chain drift, and retry cascades baked into the Hermes dispatcher (`protocol_violation`, `stale`, `reclaimed`).
-2. **Context Rot & Local Throttling:** Librarian fan-in overwhelms local context windows (`llama3.1` on Ollama), triggering "lost in the middle" degradation. Parallelism is artificially capped (`kanban.max_in_progress 1`), negating multi-agent speed advantages.
-3. **Upstream Coupling:** Requires 8 `site-packages` patches to bridge missing native hooks for custom goal loops, toolsets, and artifact validation gates. Uncontrolled `pip upgrade` silently breaks production.
-4. **Architectural Mismatch:** Research confirms single-agent + skill libraries cut latency ~50% and token usage ~54% for deterministic workflows. Multi-agent only wins when context utilization degrades—a condition ORIO’s pipeline actively avoids.
+To safely evaluate and migrate the architecture, the project enforces a strict separation between shared domain utilities (`./lib`), Hermes-specific adapters (`./lib/hermes`), and individual runtime drivers (`llm_pipeline/` and `agentic/hermes/`).
 
 ---
 
-## Verified System Constraints
+## Architectural Invariants & Boundary Rules
 
-1. **Dispatcher TTLs & Heartbeats Are Hard Limits:** Hermes enforces strict claim TTLs and liveness probes. Mismatches cause cascading stalls that are framework-level, not ORIO code quality issues.
-2. **Librarian Fan-In Bloat Is Inevitable:** Raw researcher outputs converge into a single context window regardless of orchestration wrapper. Local models cap effective utilization before aggregation completes.
-3. **Code-Level Artifact Gates Are Non-Negotiable:** Prompt-only validation allows truncated or hallucinated digests to pass kanban state transitions. Structural gates must remain in `llm_pipeline/`.
-4. **Local Compute Has Zero Margin for Overhead:** Ollama runs without cloud redundancy. Any architectural shift must preserve deterministic timing and bounded memory profiles.
+### 1. Zero Cross-Pipeline Coupling & No Auto-Fallbacks
+- **Self-Sufficiency:** `agentic/hermes/` must operate as a standalone, self-sufficient execution environment.
+- **No Import Inversion:** `agentic/hermes/` (including `admin/manage.py`) must **NEVER** import from `llm_pipeline/` (e.g., `run_production_pipeline`).
+- **Fail Hard Policy:** If the Hermes Gateway is down, unreachable, or encounters an internal protocol violation during a Track 3 run (`manage.py go --fresh`), execution must **fail immediately with a non-zero exit code** and clear stack trace. It must **not** silently fall back or forward into `llm_pipeline/`.
+
+### 2. Dependency Hierarchy
+
+```mermaid
+graph TD
+    subgraph Shared Domain Utilities
+        LIB["./lib<br>(Domain Tools & Schemas)"]
+    subgraph Hermes Adapters
+        LIB_HERMES["./lib/hermes<br>(Skills & Gateway Adapters)"]
+    subgraph Runtime Drivers
+        LLM_PIPE["llm_pipeline<br>(Batch Pipeline Driver)"]
+        HERMES_RUN["agentic/hermes<br>(Hermes Kanban CLI/Runner)"]
+
+    LIB --> LLM_PIPE
+    LIB --> LIB_HERMES
+    LIB --> HERMES_RUN
+    LIB_HERMES --> HERMES_RUN
+
+    %% Enforced Boundaries
+    HERMES_RUN -.-x|FORBIDDEN IMPORT / FALLBACK| LLM_PIPE
+    LLM_PIPE -.-x|FORBIDDEN IMPORT| LIB_HERMES
+
+```
+
+1. **`./lib/`**: Generic, headless domain logic (source ingestion, grounding, validation, schemas, rendering).
+2. **`./lib/hermes/`**: Hermes-specific adapters, skills providers (`skills_provider.py`), gateway protocol client interfaces, and card converters. It consumes `./lib/` but has **zero knowledge** of `llm_pipeline/`.
+3. **`agentic/hermes/`**: The Hermes CLI and Kanban board runner (`manage.py`). It imports exclusively from `./lib/hermes/` and `./lib/`.
+4. **`llm_pipeline/`**: The batch execution driver. It imports exclusively from `./lib/`.
 
 ---
 
-## Decision
+## Strategy & Four-Track Execution Plan
 
-We adopt a **Four-Track Parallel Strategy**: Fortify the batch fallback, Extract/Package shared libs, Stabilize Hermes as a bounded experiment, and Build the single-agent-with-skills runtime as the production default. Tracks operate in parallel with strict parity gates before any sunset.
+To systematically resolve multi-agent debt while preserving production stability, work is organized across four parallel tracks:
 
-### Track 1: Fortify `llm_pipeline/`
-Lock the batch pipeline as the fallback of record. Maintain `go --pipeline` green state **and enforce baseline test/fixture coverage on all deterministic tail modules before extracting any shared code**. Zero removals until single-agent parity is proven via automated fixtures.
-
-### Track 2: Extract & Package Shared Libs
-Convert `llm_pipeline` + `lib` into formal importable packages via `pyproject.toml`. Eliminate `sys.path.insert` hacks. Retire the 8 Hermes patches incrementally as they become obsolete.
-
-### Track 3: Stabilize (Hermes 4-Agent)
-Run parallel benchmark only. Pin upstream version, log orchestration telemetry, and enforce strict exit criteria. Never set as default. Archive if metrics degrade beyond threshold.
-
-### Track 4: Build Single-Agent-with-Skills
-Implement progressive skill discovery, file-based state routing (`preflight/`, `.cache/`), and deterministic tail calls to `llm_pipeline.validate_and_render()`. Hierarchical routing prevents selection degradation as scope grows.
+| Track | Name | Objective | Governance Rule |
+| --- | --- | --- | --- |
+| **Track 1** | **Fortify Baseline (`llm_pipeline`)** | Increase test coverage (≥80%) across shared primitives in `./lib/` and `llm_pipeline/`. | Maintains stable production fallback via `manage.py go --pipeline`. |
+| **Track 2** | **Extract Shared Primitives (`./lib`)** | Decouple pure python domain tools (ingest, ground, validate, render) into `./lib`. | Shared zero-side-effect utilities usable by any runtime. |
+| **Track 3** | **Stabilize & Benchmark Hermes (`agentic/hermes`)** | Clean up Hermes orchestration using `./lib/hermes`, enforce explicit error handling, and test with upgraded models (`qwen3.6:35b`). | **Bounded experiment.** Hard-fails on gateway outage. Never set as default runtime. |
+| **Track 4** | **Single-Agent-with-Skills Runtime** | Implement efficient single-agent runtime with progressive disclosure (`SKILL.md`) aligned with `agentskills.io`. | Target runtime for production once parity is reached. |
 
 ---
 
-## Detailed Implementation Plan
+## Decision Criteria & Parity Gates for Track 3
 
-### Phase 1: Package Governance & Import Hardening
-Create `/pyproject.toml`:
-```toml
-[build-system]
-requires = ["setuptools>=68.0", "wheel"]
-build-backend = "setuptools.build_meta"
+Track 3 (Hermes Multi-Agent) is maintained as a bounded benchmark with strict exit criteria:
 
-[project]
-name = "orio-digest"
-version = "0.7.0"
-dependencies = ["instructor>=2.0", "pydantic>=2.10", "pyyaml>=6.0", "jinja2>=3.1"]
+1. **Explicit Failures:** Gateway unreachability or socket connection failures raise a hard `RuntimeError` during pre-flight checks (`manage.py go --fresh`).
+2. **Metrics Threshold:** Track 3 must demonstrate parity against the baseline pipeline:
+* Total Stories Processed: $\ge 55$
+* Category Coverage: $11 / 11$ categories represented
+* Provenance Gap: $\le 5\%$ gap vs batch baseline
 
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["llm_pipeline*", "lib*", "agentic/single_hermes_agent*"]
-```
-Establish regression fixtures covering the full fallback path (ingest → enrich → validate → render). Verify clean venv sync across worker profiles before removing dynamic import fallbacks.
 
-### Phase 2: Single-Agent Skill Scaffolding
-```
-agentic/single_hermes_agent/skills/
-├── feed_ingestion/          # Fetch, parse, crawl — deterministic scripts
-│   └── SKILL.md
-├── story_curation/          # Classify, dedupe, score, map to topics
-│   └── SKILL.md
-└── digest_synthesis/        # Generate prose, JSON schema output
-    └── SKILL.md
-```
-Skills load metadata only (~100 tokens). Full `SKILL.md` activates on trigger. State routes via filesystem, not conversation history.
-
-### Phase 3: Parity & Feature Flag Switch
-- Run A/B validation: `single_hermes_agent` vs `go --pipeline`. Target: ≥55 stories, 11/11 categories, structural match.
-- Ship feature flag: `manage.py go` defaults to single-agent. Keep `--hermes-crew` for legacy fallback.
-
-### Phase 4: Sunset & Archive
-Move `agentic/hermes/` to reference/archive. Sunset patches. Fully migrate imports to package namespace.
+3. **Sunset / Archive Rule:** If Track 3 fails to meet parity without excessive orchestration overhead or requires cross-pipeline crutches, `agentic/hermes/` will be formally archived to reference status without affecting core product execution.
 
 ---
 
 ## Consequences
 
 ### Positive
-- **Eliminated Coordination Overhead:** Single context window, no kanban handoff latency, zero protocol violations.
-- **Deterministic Tail Preservation:** `grounding.py`, `validate.py`, `render.py` remain unchanged and callable by the new runtime.
-- **Research-Aligned Efficiency:** ~50% lower latency, ~54% fewer tokens for bounded daily workflows.
-- **Clean Import Chain:** Formal packaging removes `sys.path` hacks and patch-dependent bootstraps.
+
+* **Architectural Clarity:** Clean physical and logical separation of concerns between drivers and shared library code.
+* **Accurate Telemetry & Diagnostics:** Hard failures on gateway issues prevent false-positive green runs and surface real Hermes protocol/network bugs immediately.
+* **Decoupled Maintenance:** Changes to `llm_pipeline/` cannot break `agentic/hermes/` and vice versa.
 
 ### Negative / Technical Debt
-- **Parallel Maintenance Cost:** Hermes telemetry logging and exit-criteria tracking require dedicated CI checks during transition.
-- **Upfront Skill Design Overhead:** Metadata schemas, hierarchical routing rules, and progressive disclosure gates must be specified before sprint work.
-- **Feature-Flag Governance:** Dual-path execution requires strict observability hooks to catch drift between pipelines before full switch.
-- **Long-Term Resolution:** True multi-agent flexibility requires contributing dynamic toolset registration and custom kanban gates to Hermes Core (tracked in [ADR-003](./adr-hermes-plugin-architecture.md)).
+
+* **No Automatic Safety Net during T3 Testing:** Running Track 3 explicitly requires an active, healthy Hermes gateway; failures will abort execution rather than outputting a fallback report.
