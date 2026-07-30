@@ -436,14 +436,14 @@ def start_pipeline(
     if mode == PipelineMode.RENDER_ONLY:
         pfx = _validate_prefix(prefix or "")
         script = (
-            "import json; from llm_pipeline.config import load_config; from llm_pipeline.render import render; "
+            "import json; from lib.config import load_config; from llm_pipeline.render import render; "
             f"cfg=load_config(); p='{pfx}'; "
             "render(cfg, p, json.load(open('reports/'+p+'.json', encoding='utf-8')))"
         )
         return _spawn_job("render", f"Render-only {pfx}", [py, "-c", script])
     if mode == PipelineMode.ARCHIVES_ONLY:
         script = (
-            "from llm_pipeline.config import load_config; from llm_pipeline.render import rebuild_reports_archive; "
+            "from lib.config import load_config; from llm_pipeline.render import rebuild_reports_archive; "
             "from llm_pipeline.paths import diagnostics_dir; "
             "from llm_pipeline.diagnostics_frame import rebuild_diagnostics_archive; "
             "from llm_pipeline.diagnostics import rebuild_diagnostics_waterfall_pages; "

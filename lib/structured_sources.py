@@ -92,9 +92,32 @@ def apply_structured_leaderboards(
 ) -> str:
     """Overwrite each structured tab's rows from its cached JSON, when present."""
     structured_dir = Path(structured_dir)
+
     for src in STRUCTURED_SOURCES:
         path = structured_dir / src["slug"]
         if not path.exists():
             continue
-    # Return original block if no structured data found (prevents None return)
+
+        key = src["key"]
+        parser_name = src["parser"]
+
+        data = json.loads(path.read_text(encoding="utf-8"))
+
+        if parser_name == "evalplus":
+            rows = evalplus_rows(data, limit=limit)
+        elif parser_name == "swebench":
+            rows = swebench_rows(data, limit=limit)
+        else:
+            continue
+
+        if not rows:
+            continue
+
+        # Use leaderboards helpers to inject rows into the JS object literal
+        from lib.leaderboards import render_rows_js, replace_field_array, set_field_string
+
+        block = replace_field_array(block, key, "rows", render_rows_js(rows))
+        if updated_label:
+            block = set_field_string(block, key, "updated", updated_label)
+
     return block

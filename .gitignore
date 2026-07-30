@@ -45,3 +45,6 @@ agentic/kaggle_ai_agents/submission/_test_brief.json
 .opencode/opencode.json
 .opencode/*.local.*
 
+.coverage
+.coverage*
+test_output.txt

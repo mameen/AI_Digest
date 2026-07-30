@@ -29,7 +29,7 @@ from llm_pipeline.admin_ops import (
     start_pipeline,
     write_config_bundle,
 )
-from llm_pipeline.config import load_config
+from lib.config import load_config
 from lib.paths import LLM_PIPELINE_ROOT, REPO_ROOT
 
 REPO = REPO_ROOT

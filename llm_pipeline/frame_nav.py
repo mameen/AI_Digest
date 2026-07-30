@@ -20,10 +20,10 @@ def diagnostics_available(cfg: dict[str, Any] | None = None, diag_dir: Path | No
     if diag_dir is not None:
         return any(diag_dir.glob("*.diagnostics.json"))
     if cfg is None:
-        from llm_pipeline.config import load_config
+        from lib.config import load_config
 
         cfg = load_config()
-    from llm_pipeline.paths import diagnostics_dir
+    from lib.paths import diagnostics_dir
 
     return any(diagnostics_dir(cfg).glob("*.diagnostics.json"))
 
@@ -31,7 +31,7 @@ def diagnostics_available(cfg: dict[str, Any] | None = None, diag_dir: Path | No
 def admin_nav_enabled(cfg: dict[str, Any] | None = None, admin_dir: Path | None = None) -> bool:
     """Admin ⚙️ nav link — off until ``site.admin_nav_enabled`` (local server WIP)."""
     if cfg is None:
-        from llm_pipeline.config import load_config
+        from lib.config import load_config
 
         cfg = load_config()
     if not (cfg.get("site") or {}).get("admin_nav_enabled", False):

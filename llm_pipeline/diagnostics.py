@@ -405,7 +405,7 @@ class DiagnosticCollector:
 
 def rebuild_diagnostics_waterfall_pages(diag_dir: Path, cfg: dict[str, Any] | None = None) -> int:
     """Re-render per-run waterfall HTML from existing diagnostics JSON files."""
-    from llm_pipeline.config import load_config
+    from lib.config import load_config
 
     if cfg is None:
         cfg = load_config()
@@ -429,7 +429,7 @@ def rebuild_diagnostics_waterfall_pages(diag_dir: Path, cfg: dict[str, Any] | No
 
 def backfill_diagnostics_json_files(diag_dir: Path, cfg: dict[str, Any] | None = None) -> int:
     """Add environment/network to legacy diagnostics JSON (in place)."""
-    from llm_pipeline.config import load_config
+    from lib.config import load_config
 
     if cfg is None:
         cfg = load_config()
