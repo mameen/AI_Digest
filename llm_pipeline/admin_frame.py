@@ -21,8 +21,8 @@ def _read_admin_asset(name: str) -> str:
 
 
 def build_admin_html(cfg: dict[str, Any] | None = None) -> str:
-    from llm_pipeline.config import load_config
-    from llm_pipeline.paths import diagnostics_dir
+    from lib.config import load_config
+    from lib.paths import LLM_PIPELINE_ROOT, diagnostics_dir
 
     if cfg is None:
         cfg = load_config()

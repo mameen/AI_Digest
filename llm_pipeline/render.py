@@ -64,7 +64,7 @@ def build_content_html(prefix: str, leaderboards_json: str, reports: Path) -> st
 
 def rebuild_reports_archive(cfg: dict[str, Any] | None = None, reports: Path | None = None) -> Path:
     """Write index.json + fully decorated index.html (nav, author, footer)."""
-    from llm_pipeline.config import load_config
+    from lib.config import load_config
 
     if cfg is None:
         cfg = load_config()

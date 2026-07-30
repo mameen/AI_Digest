@@ -96,7 +96,7 @@ def _story_counts_by_prefix(cfg: dict[str, Any] | None, diag_dir: Path | None = 
 
 
 def build_diagnostics_index(diag_dir: Path, cfg: dict[str, Any] | None = None) -> dict[str, Any]:
-    from llm_pipeline.config import load_config
+    from lib.config import load_config
     from llm_pipeline.diagnostics import _enrich_report_paths
 
     if cfg is None:
@@ -129,7 +129,7 @@ def build_diagnostics_index(diag_dir: Path, cfg: dict[str, Any] | None = None) -
 
 def rebuild_diagnostics_archive(diag_dir: Path, cfg: dict[str, Any] | None = None) -> Path:
     """Write index.json + index.html into the diagnostics output dir."""
-    from llm_pipeline.config import load_config
+    from lib.config import load_config
     from llm_pipeline.frame_author import inject_author_card
     from llm_pipeline.frame_nav import admin_nav_enabled, inject_frame_nav
     from llm_pipeline.site_footer import inject_site_footer

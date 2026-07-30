@@ -28,7 +28,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO))
 
-from llm_pipeline.config import load_config
+from lib.config import load_config
 from llm_pipeline.dates import build_run_window
 from llm_pipeline.diagnostics import finish_collector, init_collector, log
 from llm_pipeline.doctor import run_doctor
