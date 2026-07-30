@@ -7,7 +7,7 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-from llm_pipeline.dates import RunWindow
+from lib.dates import RunWindow
 from llm_pipeline.paths import reports_dir
 
 

@@ -55,7 +55,7 @@ def collect_roots(
             roots.add(normalize_url(str(url)))
     if include_structured:
         try:
-            from llm_pipeline.structured_sources import STRUCTURED_SOURCES
+            from lib.structured_sources import STRUCTURED_SOURCES
 
             for src in STRUCTURED_SOURCES:
                 if src.get("url"):

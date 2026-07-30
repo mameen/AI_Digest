@@ -13,8 +13,8 @@ import unittest
 
 from lib.paths import REPO_ROOT
 from llm_pipeline.paths import VENDOR_DIR
-from llm_pipeline.leaderboards import _match_bracket
-from llm_pipeline.structured_sources import (
+from lib.leaderboards import _match_bracket
+from lib.structured_sources import (
     apply_structured_leaderboards,
     evalplus_rows,
     swebench_rows,

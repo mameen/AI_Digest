@@ -281,7 +281,7 @@ def build_frame_html(reports_dir: Path | None = None) -> str:
             raise RuntimeError(f"frame.html missing {key}")
         html = html.replace(key, value)
     if "__AUTHOR_CARD__" in html:
-        from llm_pipeline.config import load_config
+        from lib.config import load_config
         from llm_pipeline.frame_author import inject_author_card
 
         html = inject_author_card(html, load_config())

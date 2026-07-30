@@ -12,7 +12,7 @@ import unittest
 from pathlib import Path
 
 from lib.paths import REPO_ROOT
-from llm_pipeline.tools import (
+from lib.tools import (
     ToolAction,
     format_tool_result,
     looks_not_found,

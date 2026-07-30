@@ -6,7 +6,7 @@ import unittest
 from datetime import date, datetime, timedelta
 from unittest.mock import patch
 
-from llm_pipeline.dates import (
+from lib.dates import (
     RunWindow,
     build_run_window,
     parse_start,

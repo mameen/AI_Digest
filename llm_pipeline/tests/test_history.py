@@ -8,7 +8,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-from llm_pipeline.dates import RunWindow
+from lib.dates import RunWindow
 from llm_pipeline.history import format_prior_context, load_prior_digests
 
 

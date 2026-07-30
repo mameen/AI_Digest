@@ -25,8 +25,8 @@ def _crawl_driven_leaderboards(cfg: dict[str, Any], prefix: str, block: str) -> 
     """Overwrite stale hand-coded rows with the run's live crawl + structured APIs."""
     from datetime import datetime
 
-    from llm_pipeline.leaderboards import apply_crawl_leaderboards
-    from llm_pipeline.structured_sources import apply_structured_leaderboards
+    from lib.leaderboards import apply_crawl_leaderboards
+    from lib.structured_sources import apply_structured_leaderboards
 
     run_cache = cache_dir(cfg) / prefix
     try:

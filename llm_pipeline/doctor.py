@@ -149,7 +149,7 @@ def _source_urls(cfg: dict[str, Any]) -> dict[str, str]:
         pass
     if (cfg.get("ingestion") or {}).get("structured_sources", {}).get("enabled", True):
         try:
-            from llm_pipeline.structured_sources import STRUCTURED_SOURCES
+            from lib.structured_sources import STRUCTURED_SOURCES
             urls.update({f"structured:{s.get('key', s.get('url'))}": s["url"]
                          for s in STRUCTURED_SOURCES if s.get("url")})
         except Exception:
