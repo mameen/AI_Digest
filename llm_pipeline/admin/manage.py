@@ -131,9 +131,9 @@ def cmd_status(_: argparse.Namespace) -> int:
         ("llm_pipeline/config.yaml", (PIPELINE / "config.yaml").is_file()),
     ]
     for name, ok in rows:
-        print(f"  {'✓' if ok else '·'} {name}")
+        print(f"  {'[OK]' if ok else '·'} {name}")
     uv = _uv_bin()
-    print(f"  {'✓' if uv else '·'} uv ({uv or 'not on PATH — bootstrap uses pip'})")
+    print(f"  {'[OK]' if uv else '·'} uv ({uv or 'not on PATH — bootstrap uses pip'})")
     print("  Agentic Hermes: python agentic/hermes/admin/manage.py status")
     return 0
 

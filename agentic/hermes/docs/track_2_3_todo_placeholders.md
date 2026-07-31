@@ -399,7 +399,70 @@ from lib.validate import validate_digest  # T2 extraction target
 | `llm_pipeline.render` | `lib/render.py` | 1 file | 1 |
 | `llm_pipeline.diagnostics_frame` | `lib/diagnostics_frame.py` | 1 file | 1 |
 | `llm_pipeline.doctor` | `lib/doctor.py` | 1 file | 1 |
-| **Total** | **11 modules** | **12 files** | **33 imports** |
+
+---
+
+## 12. `lib/hermes/orchestration` — Kanban Orchestration (T3 Complete)
+
+**What it provides:** `kanban_list()`, `kanban_show()`, `extract_run_prefix()`, `detect_run_prefix()`, `digest_board_rows()`, `infer_pipeline_phase()`, `board_status()`, `build_board_navigation()`, `format_status_summary()`
+
+**Target location:** `lib/hermes/orchestration.py` (T3-D complete)
+
+### Files Wired ✅
+
+#### A. `agentic/hermes/admin/manage.py`
+
+```python
+# Line 2493 — WIRED:
+from lib.hermes.orchestration import board_status
+```
+
+#### B. `agentic/hermes/tests/test_orchestration_status.py`
+
+```python
+# Lines 16-21 — WIRED:
+from lib.hermes.orchestration import (
+    build_board_navigation,
+    detect_run_prefix,
+    extract_run_prefix,
+    format_status_summary,
+    infer_pipeline_phase,
+)
+```
+
+---
+
+## 13. Test File Imports
+
+### `agentic/hermes/tests/test_board_topics.py`
+
+```python
+# Line 25 — CURRENT:
+from llm_pipeline.validate import validate_digest  # noqa: E402
+
+# REPLACEMENT:
+from lib.validate import validate_digest  # T2 extraction target
+```
+
+---
+
+## Summary Table
+
+| Import Source | Target in `lib/` | Files Affected | Total Imports |
+|---|---|---|---|
+| `llm_pipeline.editorial` | `lib/editorial.py` | 5 files | 6 |
+| `llm_pipeline.validate` | `lib/validate.py` | 3 files | 3 |
+| `llm_pipeline.enrich` | `lib/enrich.py` | 2 files | 2 |
+| `llm_pipeline.grounding` | `lib/grounding.py` | 2 files | 2 |
+| `llm_pipeline.history` | `lib/history.py` | 2 files | 2 |
+| `llm_pipeline.diagnostics` | `lib/diagnostics.py` | 3 files | 5 |
+| `llm_pipeline.llm_client` | `lib/llm_client.py` | 2 files | 2 |
+| `llm_pipeline.environment` | `lib/environment.py` | 1 file | 1 |
+| `llm_pipeline.render` | `lib/render.py` | 1 file | 1 |
+| `llm_pipeline.diagnostics_frame` | `lib/diagnostics_frame.py` | 1 file | 1 |
+| `llm_pipeline.doctor` | `lib/doctor.py` | 1 file | 1 |
+| **T3 Complete** | `lib/hermes/orchestration.py` | ✅ Wired | — |
+| **Total (T2 pending)** | **11 modules** | **12 files** | **33 imports** |
 
 ---
 
@@ -424,5 +487,6 @@ The following imports are **already wired** to `lib/hermes/` and need no further
 | `lib.hermes.skills_provider` | ✅ Wired — SkillsProvider, SkillEntry |
 | `lib.hermes.artifacts` | ✅ Wired — validate_researcher_artifact, validate_librarian_artifact, validate_synthesizer_artifact |
 | `lib.hermes.runtime_store` | ✅ Wired — run_dir, persist_*, load_* |
+| `lib.hermes.orchestration` | ✅ Wired — kanban_list, board_status, infer_pipeline_phase, etc. |
 
-These are **Hermes-specific** adapters that live in `lib/hermes/`. The remaining 32 imports above are **shared pipeline logic** that T2 must extract from `llm_pipeline/` → `lib/` (not `lib/hermes/`).
+These are **Hermes-specific** adapters that live in `lib/hermes/`. The remaining 33 imports above are **shared pipeline logic** that T2 must extract from `llm_pipeline/` → `lib/` (not `lib/hermes/`).

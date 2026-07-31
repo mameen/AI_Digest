@@ -22,7 +22,7 @@ from tools.topics import (  # noqa: E402
     load_demo_topics,
     resolve_board_topics,
 )
-from llm_pipeline.validate import validate_digest  # noqa: E402
+from lib.validate import validate_digest  # T2 stub target
 
 
 class BoardTopicsTest(unittest.TestCase):

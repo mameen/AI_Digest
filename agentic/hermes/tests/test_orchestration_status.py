@@ -13,7 +13,7 @@ if str(ROOT) not in sys.path:
 if str(HERMES_PKG) not in sys.path:
     sys.path.insert(0, str(HERMES_PKG))
 
-from tools.orchestration import (  # noqa: E402
+from lib.hermes.orchestration import (  # T3 wiring target
     build_board_navigation,
     detect_run_prefix,
     extract_run_prefix,

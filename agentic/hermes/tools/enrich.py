@@ -7,8 +7,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from llm_pipeline.editorial import load_editorial_brief
-from llm_pipeline.llm_client import make_client, make_raw_chat
+from lib.editorial import load_editorial_brief  # T2 stub target
+from lib.llm_client import make_client, make_raw_chat  # T2 stub target
 from lib.schema import CategoryStories, DigestHeader
 
 from tools.artifacts import (
@@ -41,7 +41,7 @@ def enrich_cfg(repo_cfg: dict[str, Any], roles: dict[str, Any]) -> dict[str, Any
 
 
 def _llm_call(client: Any, model: str, max_retries: int, prompt: str, response_model: type) -> Any:
-    from llm_pipeline.diagnostics import instrumented_llm_call
+    from lib.diagnostics import instrumented_llm_call  # T2 stub target
 
     return instrumented_llm_call(
         client, model, max_retries, prompt, response_model, call_name="agentic.enrich"

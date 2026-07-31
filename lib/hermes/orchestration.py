@@ -349,6 +349,33 @@ def format_status_summary(payload: dict[str, Any]) -> list[str]:
         for role_key, label in (("librarian", "Librarian"), ("synthesizer", "Synthesizer")):
             role = payload.get(role_key) or {}
 
+    # Phase guide note (if provided)
+    phase_guide = payload.get("phase_guide")
+    if phase_guide and phase in phase_guide:
+        lines.append(f"Phase note: {phase_guide[phase]}")
+
+    # Active tasks (if provided)
+    active_tasks = payload.get("active_tasks") or []
+    if active_tasks:
+        lines.append("Active tasks:")
+        for task in active_tasks[:5]:  # limit to 5
+            title = task.get("title", "unknown")
+            status = task.get("status", "")
+            assignee = task.get("assignee", "")
+            lines.append(f"  [{status}] {title} ({assignee})")
+
+    # Board navigation (if provided)
+    nav = payload.get("board_navigation") or {}
+    if nav:
+        anchor = nav.get("primary_anchor")
+        if anchor:
+            lines.append(f"Primary anchor: {anchor.get('title', 'unknown')} ({anchor.get('id')})")
+        for i, root in enumerate(nav.get("root_tasks", [])[:5]):  # limit to 5
+            lines.append(f"  Root task {i+1}: {root.get('title', 'unknown')} ({root.get('id')})")
+        list_cmd = nav.get("list_cmd")
+        if list_cmd:
+            lines.append(f"List command: {list_cmd}")
+
     return lines
 
 
