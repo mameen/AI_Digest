@@ -63,6 +63,69 @@ from lib.tools import (  # noqa: F401
     verify_url,
     web_search,
 )
+from lib.grounding import (  # noqa: F401
+    normalize_url,
+    collect_roots,
+    annotate_ungrounded,
+)
+from lib.history import (  # noqa: 401
+    load_prior_digests,
+    format_prior_context,
+)
+from lib.llm_client import (  # noqa: F401
+    ensure_ollama_ready,
+    make_client,
+    make_raw_chat,
+)
+from lib.visualize import (  # noqa: F401
+    compute_visualizations,
+    fill_skeleton_stories,
+)
+from lib.editorial import (  # noqa: F401
+    CATEGORY_CATALOG,
+    CANONICAL_ORDER,
+    load_editorial_brief,
+)
+from lib.environment import (  # noqa: F401
+    capture_environment,
+    enrich_diagnostics_report,
+)
+from lib.doctor import (  # noqa: F401
+    Check,
+    DoctorReport,
+    run_doctor,
+)
+from lib.frame_author import (  # noqa: F401
+    GITHUB_MARK,
+    author_card_html,
+    inject_author_card,
+    sync_author_assets,
+)
+from lib.frame_nav import (  # noqa: F401
+    diagnostics_available,
+    admin_nav_enabled,
+    inject_frame_nav,
+)
+from lib.site_footer import (  # noqa: F401
+    site_footer_html,
+    inject_site_footer,
+)
+from lib.validate import (  # noqa: F401
+    validate_digest,
+    apply_validation,
+)
+from lib.diagnostics_frame import (  # noqa: F401
+    build_diagnostics_index,
+    rebuild_diagnostics_archive,
+)
+from lib.diagnostics import (  # noqa: F401
+    DiagnosticCollector,
+    instrumented_llm_call,
+)
+from lib.enrich import (  # noqa: F401
+    enrich_digest,
+    reattach_all_digest_links,
+)
 
 __all__ = [
     # config
@@ -122,4 +185,56 @@ __all__ = [
     "run_tool_loop",
     "verify_url",
     "web_search",
+    # grounding
+    "normalize_url",
+    "collect_roots",
+    "annotate_ungrounded",
+    # history
+    "load_prior_digests",
+    "format_prior_context",
+    # llm_client
+    "ensure_ollama_ready",
+    "make_client",
+    "make_raw_chat",
+    # visualize
+    "compute_visualizations",
+    "fill_skeleton_stories",
+    # editorial
+    "CATEGORY_CATALOG",
+    "CANONICAL_ORDER",
+    "load_editorial_brief",
+    "format_editorial_context",
+    # environment
+    "capture_environment",
+    "enrich_diagnostics_report",
+    # doctor
+    "Check",
+    "DoctorReport",
+    "run_doctor",
+    # frame_author
+    "GITHUB_MARK",
+    "author_card_html",
+    "inject_author_card",
+    "sync_author_assets",
+    # frame_nav
+    "diagnostics_available",
+    "admin_nav_enabled",
+    "inject_frame_nav",
+    # site_footer
+    "site_footer_html",
+    "inject_site_footer",
+    # validate
+    "validate_digest",
+    "apply_validation",
+    # diagnostics_frame
+    "build_diagnostics_index",
+    "rebuild_diagnostics_archive",
+    # diagnostics
+    "DiagnosticCollector",
+    "instrumented_llm_call",
+    "instrumented_fetch",
+    "instrumented_enrichment",
+    # enrich
+    "enrich_digest",
+    "reattach_all_digest_links",
 ]

@@ -9,11 +9,11 @@ from typing import Any
 
 from lib.config import load_config
 from lib.dates import RunWindow
-from llm_pipeline.enrich import enrich_digest
-from llm_pipeline.grounding import collect_roots
-from llm_pipeline.history import load_prior_digests
-from llm_pipeline.render import render
-from llm_pipeline.validate import apply_validation, validate_digest
+from lib.enrich import enrich_digest
+from lib.grounding import collect_roots
+from lib.history import load_prior_digests
+from lib.render import render
+from lib.validate import apply_validation, validate_digest
 
 
 def default_config() -> dict[str, Any]:

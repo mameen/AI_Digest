@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any
 
-from llm_pipeline.editorial import CANONICAL_ORDER, CATEGORY_CATALOG
+from lib.editorial import CANONICAL_ORDER, CATEGORY_CATALOG
 
 
 def empty_digest(prefix: str, *, summary: str = "") -> dict[str, Any]:

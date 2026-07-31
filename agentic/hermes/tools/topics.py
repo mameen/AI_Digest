@@ -10,9 +10,9 @@ import yaml
 
 from lib.ingest.topics.registry import SourceKind, binding_for
 from lib.paths import AGENTIC_ROOT
-from llm_pipeline.editorial import CANONICAL_ORDER
-from llm_pipeline.grounding import collect_roots
-from llm_pipeline.validate import validate_digest
+from lib.editorial import CANONICAL_ORDER
+from lib.grounding import collect_roots
+from lib.validate import validate_digest
 
 _DEFAULT_TOPICS = ("aisearch", "leaderboard", "youtube")
 

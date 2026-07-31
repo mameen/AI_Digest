@@ -7,10 +7,10 @@ import re
 from pathlib import Path
 from typing import Any
 
-from llm_pipeline.frame_author import inject_author_card
-from llm_pipeline.frame_nav import diagnostics_available, inject_frame_nav
-from llm_pipeline.site_footer import inject_site_footer
-from llm_pipeline.styles import frame_styles
+from lib.frame_author import inject_author_card
+from lib.frame_nav import diagnostics_available, inject_frame_nav
+from lib.site_footer import inject_site_footer
+from lib.styles import frame_styles
 from lib.paths import LLM_PIPELINE_ROOT
 
 ADMIN_DIR = LLM_PIPELINE_ROOT / "server"

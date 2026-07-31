@@ -164,8 +164,8 @@ class AgentDiagnosticsCollector:
             self._open_phase.children.append(task)
 
     def build_report(self) -> dict[str, Any]:
-        from llm_pipeline.diagnostics import get_collector
-        from llm_pipeline.environment import capture_environment, enrich_diagnostics_report
+        from lib.diagnostics import get_collector
+        from lib.environment import capture_environment, enrich_diagnostics_report
 
         finished_at = _utc_now()
         total_ms = _ms_between(self.started_at, finished_at)
@@ -232,8 +232,8 @@ class AgentDiagnosticsCollector:
         return report
 
     def write(self) -> Path:
-        from llm_pipeline.diagnostics import _render_run_log, _render_waterfall_html
-        from llm_pipeline.diagnostics_frame import rebuild_diagnostics_archive
+        from lib.diagnostics import _render_run_log, _render_waterfall_html
+        from lib.diagnostics_frame import rebuild_diagnostics_archive
         from lib.paths import diagnostics_dir
 
         out_dir = diagnostics_dir(self.cfg)
