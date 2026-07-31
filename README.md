@@ -70,6 +70,7 @@ Kaggle POC commands live in [`agentic/kaggle_ai_agents/HOWTO.md`](agentic/kaggle
 |---|---|
 | Documentation index | [`docs/README.md`](docs/README.md) |
 | Contributor/agent rules | [`AGENTS.md`](AGENTS.md) |
+| Agentic POCs | [`agentic/README.md`](agentic/README.md) |
 | Shared library notes | [`lib/README.md`](lib/README.md) |
 | Pipeline POC | [`llm_pipeline/README.md`](llm_pipeline/README.md) |
 | Hermes POC | [`agentic/hermes/README.md`](agentic/hermes/README.md) |

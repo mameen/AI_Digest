@@ -10,6 +10,7 @@ folder holds supporting documentation and images that are useful across POCs.
 | Project overview | [`../README.md`](../README.md) |
 | Legacy staged pipeline notes | [`LLM_PIPELINE.md`](LLM_PIPELINE.md) |
 | Contributor and agent rules | [`../AGENTS.md`](../AGENTS.md) |
+| Agentic POCs | [`../agentic/README.md`](../agentic/README.md) |
 | Pipeline POC | [`../llm_pipeline/README.md`](../llm_pipeline/README.md) |
 | Hermes POC | [`../agentic/hermes/README.md`](../agentic/hermes/README.md) |
 | Kaggle POC | [`../agentic/kaggle_ai_agents/README.md`](../agentic/kaggle_ai_agents/README.md) |
