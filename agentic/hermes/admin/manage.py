@@ -1500,7 +1500,11 @@ def _init_run_telemetry(prefix: str) -> None:
     """Start pipeline + agent diagnostic collectors for a GO run."""
     if str(REPO) not in sys.path:
         sys.path.insert(0, str(REPO))
+<<<<<<< HEAD
     from lib.diagnostics import init_collector  # T2 stub target
+=======
+    from lib.diagnostics import init_collector
+>>>>>>> origin/re-renable-hermes-track-2
     from tools.agent_diagnostics import init_agent_diagnostics
     from tools.baseline import agentic_config
 
@@ -1511,7 +1515,11 @@ def _init_run_telemetry(prefix: str) -> None:
 
 def _finish_run_telemetry() -> None:
     """Write agent diagnostics (merges in-process LLM/tool records)."""
+<<<<<<< HEAD
     import lib.diagnostics as diag_mod  # T2 stub target
+=======
+    import lib.diagnostics as diag_mod
+>>>>>>> origin/re-renable-hermes-track-2
     from tools.agent_diagnostics import finish_agent_diagnostics, get_agent_diagnostics
     from tools.baseline import agentic_config
 

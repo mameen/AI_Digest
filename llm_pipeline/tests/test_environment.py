@@ -1,4 +1,4 @@
-"""Hardware + network snapshot helpers."""
+﻿"""Hardware + network snapshot helpers."""
 
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ class EnvironmentCapture(unittest.TestCase):
         self.assertIn("cpu", env)
         self.assertIn("gpu", env)
 
-    @patch("llm_pipeline.environment._detect_cuda_gpu", return_value={"name": "RTX 4090", "backend": "cuda", "vram_gb": 24.0})
+    @patch("lib.environment._detect_cuda_gpu", return_value={"name": "RTX 4090", "backend": "cuda", "vram_gb": 24.0})
     def test_detect_platform_kind_cuda(self, _mock: object) -> None:
         self.assertEqual(detect_platform_kind(), "cuda")
 

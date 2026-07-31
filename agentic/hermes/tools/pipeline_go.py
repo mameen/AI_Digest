@@ -7,12 +7,12 @@ from pathlib import Path
 from typing import Any
 
 from lib.dates import RunWindow, build_run_window
-from lib.diagnostics import finish_collector, get_collector, init_collector, log  # T2 stub target
-from lib.enrich import enrich_digest  # T2 stub target
-from lib.grounding import collect_roots  # T2 stub target
-from lib.history import load_prior_digests  # T2 stub target
+from lib.diagnostics import finish_collector, get_collector, init_collector, log
+from lib.enrich import enrich_digest
+from lib.grounding import collect_roots
+from lib.history import load_prior_digests
 from lib.paths import cache_dir, diagnostics_dir, reports_dir
-from lib.validate import apply_validation, validate_digest  # T2 stub target
+from lib.validate import apply_validation, validate_digest
 
 from tools.baseline import agentic_config, validate_and_render
 
@@ -79,7 +79,7 @@ def run_production_pipeline(
 
     doctor_cfg = (cfg.get("run") or {}).get("doctor") or {}
     if not skip_doctor and doctor_cfg.get("enabled", True):
-        from lib.doctor import run_doctor  # T2 stub target
+        from lib.doctor import run_doctor
 
         report = run_doctor(
             cfg,

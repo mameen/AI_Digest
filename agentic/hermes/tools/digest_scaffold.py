@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any
 
-from lib.editorial import CANONICAL_ORDER, CATEGORY_CATALOG  # T2 stub target
+from lib.editorial import CANONICAL_ORDER, CATEGORY_CATALOG
 
 
 def empty_digest(prefix: str, *, summary: str = "") -> dict[str, Any]:

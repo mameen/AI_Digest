@@ -9,8 +9,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from lib.editorial import CANONICAL_ORDER, CATEGORY_CATALOG, category_id, load_editorial_brief  # T2 stub target
-from lib.llm_client import make_client  # T2 stub target
+from lib.editorial import CANONICAL_ORDER, CATEGORY_CATALOG, category_id, load_editorial_brief
+from lib.llm_client import make_client
 from lib.schema import CategoryStories, DigestHeader
 
 from tools.artifacts import DIGEST_ARTIFACT, LIBRARIAN_ARTIFACT, validate_synthesizer_artifact
@@ -372,7 +372,7 @@ def parse_librarian_entries(text: str) -> list[dict[str, Any]]:
 
 
 def _llm_call(client: Any, model: str, max_retries: int, prompt: str, response_model: type) -> Any:
-    from lib.diagnostics import instrumented_llm_call  # T2 stub target
+    from lib.diagnostics import instrumented_llm_call
 
     return instrumented_llm_call(
         client, model, max_retries, prompt, response_model, call_name="agentic.synthesize"

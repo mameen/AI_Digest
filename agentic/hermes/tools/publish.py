@@ -12,7 +12,7 @@ from urllib.parse import quote
 
 from lib.deploy_app import execute_deploy, plan_deploy
 from lib.paths import AGENTIC_ROOT, REPO_ROOT, WEB_ROOT
-from lib.validate import validate_digest  # T2 stub target
+from lib.validate import validate_digest
 
 _PREFIX_RE = re.compile(r"^[a-zA-Z0-9_-]+$")
 

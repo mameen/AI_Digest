@@ -274,7 +274,7 @@ def write_config_bundle(
 
 
 def list_digests(cfg: dict[str, Any]) -> list[dict[str, Any]]:
-    from llm_pipeline.paths import diagnostics_dir, reports_dir
+    from lib.paths import diagnostics_dir, reports_dir
 
     index_path = reports_dir(cfg) / "index.json"
     if not index_path.is_file():
@@ -303,7 +303,7 @@ def _validate_prefix(prefix: str) -> str:
 
 
 def delete_digest(cfg: dict[str, Any], prefix: str) -> dict[str, Any]:
-    from llm_pipeline.paths import cache_dir, diagnostics_dir, preflight_dir, reports_dir
+    from lib.paths import cache_dir, diagnostics_dir, preflight_dir, reports_dir
 
     pfx = _validate_prefix(prefix)
     removed: list[str] = []

@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from lib.editorial import CANONICAL_ORDER, CATEGORY_CATALOG, category_id  # T2 stub target
+from lib.editorial import CANONICAL_ORDER, CATEGORY_CATALOG, category_id
 from lib.paths import LLM_PIPELINE_ROOT
 from lib.paths import reports_dir
 
