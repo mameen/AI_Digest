@@ -7,12 +7,10 @@ import sys
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-# Ensure repo root is on path so SkillsProvider can find default dirs
-REPO = Path(__file__).resolve().parents[4]
-if str(REPO) not in sys.path:
-    sys.path.insert(0, str(REPO))
-
-import pytest
+# Ensure Hermes root is on path so admin.skills_provider resolves consistently.
+HERMES_ROOT = Path(__file__).resolve().parents[1]
+if str(HERMES_ROOT) not in sys.path:
+    sys.path.insert(0, str(HERMES_ROOT))
 
 from admin.skills_provider import SkillEntry, SkillsProvider  # noqa: E402
 

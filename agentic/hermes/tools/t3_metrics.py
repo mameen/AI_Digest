@@ -1,6 +1,6 @@
 """Track 3 metrics & exit criteria — side-by-side comparison, scorecard, gateway telemetry.
 
-Per ADR-002 / track_3_todo_001.md T3-C:
+Per the Hermes archive criteria captured in docs/ARCHIVE_NOTES.md:
 1. Side-by-side diagnostic waterfall comparing kanban → render vs batch → render
 2. Automated scorecard: ≥55 stories, 11/11 categories, ≤5% provenance gap
 3. Telemetry log capturing gateway health at each run
@@ -412,7 +412,7 @@ def evaluate_exit_criteria(
     scorecard: ScorecardResult,
     comparison: SideBySideComparison,
 ) -> ExitCriteriaResult:
-    """Evaluate T3-C exit criteria per ADR-002."""
+    """Evaluate Hermes reference-runtime exit criteria."""
     result = ExitCriteriaResult(
         scorecard=scorecard,
         comparison=comparison,

@@ -9,8 +9,6 @@ import tempfile
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 
-import pytest
-
 REPO = Path(__file__).resolve().parents[3]
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
@@ -108,7 +106,7 @@ class TestStoryCount:
         sc = StoryCount(kanban=55, batch=60)
         assert sc.match is False
         # gap_pct uses max() as base: 10/60 = 8.33%
-        assert sc.gap_pct == pytest.approx(8.33, abs=0.1)
+        assert abs(sc.gap_pct - 8.33) <= 0.1
 
     def test_zero_both(self):
         sc = StoryCount(kanban=0, batch=0)
@@ -127,14 +125,14 @@ class TestCategoryCoverage:
         assert cc.covered == {"AI"}  # intersection of {"AI","ML"} & {"AI","NLP"}
         assert cc.all_categories == {"AI", "ML", "NLP"}
         # missing = 3 - 1 = 2, gap = 2/3 * 100 = 66.67%
-        assert cc.gap_pct == pytest.approx(66.67, abs=0.1)
+        assert abs(cc.gap_pct - 66.67) <= 0.1
 
     def test_no_overlap(self):
         cc = CategoryCoverage(kanban={"A"}, batch={"B"})
         assert cc.covered == set()
         assert cc.all_categories == {"A", "B"}
         # 2 missing out of 2 total = 100%
-        assert cc.gap_pct == pytest.approx(100.0, abs=0.1)
+        assert abs(cc.gap_pct - 100.0) <= 0.1
 
 
 class TestProvenanceMatch:
@@ -151,7 +149,7 @@ class TestProvenanceMatch:
         assert pm.only_kanban == 1
         assert pm.only_batch == 0
         # 1 mismatch out of 2 total = 50%
-        assert pm.gap_pct == pytest.approx(50.0, abs=0.1)
+        assert abs(pm.gap_pct - 50.0) <= 0.1
 
 
 class TestScorecardResult:

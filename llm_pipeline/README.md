@@ -1,49 +1,46 @@
-# llm_pipeline — shared digest libraries (+ batch escape hatch)
+# LLM Pipeline POC
 
-> **Canonical narrative:** [`README.md`](../README.md) at the repo root. **Production GO**
-> is the four-role ORIO kanban crew under `agentic/hermes/` — not this package's
-> batch orchestration.
+The LLM Pipeline is the stable staged baseline for AI Digest.
 
-This package holds **shared** ingest/enrich/validate/render code: a local-first,
-deterministic four-stage flow (`ingest → enrich → validate → render`) that uses
-a local LLM (Ollama + Instructor) to score, summarize, and gap-fill stories,
-with a grounding guard and auditable provenance.
+It runs a deterministic flow:
 
-**Orchestration:** deprecated batch CLI (`run.py`) and `manage.py go --pipeline`
-call into here. Agentic GO reuses grounding, validate, and render from this tree.
-
-## Relationship to `pipeline/`
-
-`pipeline/` at the repo root is a **compatibility shim** that re-exports this
-package. Existing entry points (`run.py`, tests, admin ops) import `pipeline.*`
-unchanged. New code — especially under `agentic/hermes/` — should import
-`llm_pipeline` directly.
-
-## What this is (and is not)
-
-| This package | Not this |
-|---|---|
-| Staged batch pipeline with structured LLM calls | Agentic fan-out / fan-in orchestration |
-| Deterministic grounding guard | LLM-as-judge for link truth |
-| Fixed enrich passes (skeleton → gap → carry) | Dynamic task boards driven by chat |
-| One report per scheduled run | Per-target parallel workers + synthesizer |
-
-The agentic **product** lives in [`../agentic/hermes/`](../agentic/hermes/).
-
-## Entry points
-
-```bash
-python run.py                    # batch escape hatch (deprecated orchestration)
-python run.py --skeleton-only    # skip LLM enrich
-python run_tests.py              # unit tests (import pipeline shims)
+```text
+ingest -> enrich -> validate -> render
 ```
 
-## Modules (high level)
+The pipeline proves that the digest can be generated, grounded, validated, and
+rendered without multi-agent orchestration. It is the simplest runnable POC in
+the repo.
 
-- **Ingest:** `fetch.py`, `leaderboards.py`, `structured_sources.py`
-- **Enrich:** `enrich.py`, `editorial.py`, `llm_client.py`, `tools.py`
-- **Validate:** `validate.py`, `grounding.py`
-- **Render:** `render.py`, `diagnostics.py`, frame/nav/footer helpers
-- **Ops:** `admin_ops.py`, `local_server.py`, `doctor.py`
+## Run
 
-Full architecture: [`.agents/onboarding/architecture.md`](../.agents/onboarding/architecture.md).
+```powershell
+python run.py --start 2026-07-29 --history 10
+python run_tests.py
+```
+
+## What It Contains
+
+| Area | Files |
+|---|---|
+| Ingest | `fetch.py`, `leaderboards.py`, `structured_sources.py` |
+| Enrich | `enrich.py`, `editorial.py`, `llm_client.py`, `tools.py` |
+| Validate | `validate.py`, `grounding.py`, `schema.py` |
+| Render | `render.py`, `diagnostics.py`, frame/nav/footer helpers |
+| Admin | `admin_ops.py`, `local_server.py`, `doctor.py` |
+
+## Outputs
+
+Development outputs are written under [`reports/`](reports/) and
+[`diagnostics/`](diagnostics/). Approved website artifacts are copied to
+[`../app/`](../app/) and should be treated as the published source of truth.
+
+## Relationship to Other POCs
+
+| POC | Relationship |
+|---|---|
+| Hermes Multi-Agent | Reuses deterministic validation/rendering ideas while exploring role-based orchestration |
+| Kaggle AI Agents | Standalone course sandbox that borrows the skills/tooling mindset |
+| Single Agent + Skills | Future direction for reducing orchestration overhead while keeping deterministic boundaries |
+
+The archive-facing overview lives in [`../README.md`](../README.md).
