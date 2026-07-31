@@ -313,7 +313,7 @@ class TestWrite(unittest.TestCase):
         with col.stage("render", "Render"):
             pass
         with tempfile.TemporaryDirectory() as tmp:
-            import llm_pipeline.diagnostics as diag_mod
+            import lib.diagnostics as diag_mod
             orig_diag_dir = diag_mod.diagnostics_dir
             diag_mod.diagnostics_dir = lambda cfg: Path(tmp)
             try:
@@ -397,7 +397,7 @@ class TestInstrumentedLlmCall(unittest.TestCase):
         # When collector is disabled, instrumented_llm_call should delegate to _raw_llm_call.
         # We verify by patching _raw_llm_call_with_usage to track calls.
         mock_result = MagicMock()
-        with patch("llm_pipeline.diagnostics._raw_llm_call_with_usage", return_value=(mock_result, {}, {})) as mock:
+        with patch("lib.diagnostics._raw_llm_call_with_usage", return_value=(mock_result, {}, {})) as mock:
             result = instrumented_llm_call(
                 MagicMock(), "llama3.1", 0, "prompt", str, call_name="test"
             )
@@ -410,7 +410,7 @@ class TestInstrumentedLlmCall(unittest.TestCase):
 class TestRawLlmCall(unittest.TestCase):
     def test_delegates_to_with_usage(self):
         mock_result = MagicMock()
-        with patch("llm_pipeline.diagnostics._raw_llm_call_with_usage", return_value=(mock_result, {}, {})) as mock:
+        with patch("lib.diagnostics._raw_llm_call_with_usage", return_value=(mock_result, {}, {})) as mock:
             result = _raw_llm_call(MagicMock(), "llama3.1", 0, "prompt", str)
             self.assertIs(result, mock_result)
             mock.assert_called_once()
