@@ -350,7 +350,27 @@ from lib.diagnostics_frame import rebuild_diagnostics_archive  # T2 extraction t
 
 ---
 
-## 11. Test File Imports
+## 11. `llm_pipeline.doctor` — Pipeline Diagnostics Runner
+
+**What it provides:** `run_doctor()`
+
+**Target location:** `lib/doctor.py` (to be created by T2)
+
+### Files Affected (1 file, 1 import)
+
+#### A. `agentic/hermes/tools/pipeline_go.py`
+
+```python
+# Line 82 — CURRENT:
+from llm_pipeline.doctor import run_doctor
+
+# REPLACEMENT:
+from lib.doctor import run_doctor  # T2 extraction target
+```
+
+---
+
+## 12. Test File Imports
 
 ### `agentic/hermes/tests/test_board_topics.py`
 
@@ -378,7 +398,8 @@ from lib.validate import validate_digest  # T2 extraction target
 | `llm_pipeline.environment` | `lib/environment.py` | 1 file | 1 |
 | `llm_pipeline.render` | `lib/render.py` | 1 file | 1 |
 | `llm_pipeline.diagnostics_frame` | `lib/diagnostics_frame.py` | 1 file | 1 |
-| **Total** | **10 modules** | **12 files** | **32 imports** |
+| `llm_pipeline.doctor` | `lib/doctor.py` | 1 file | 1 |
+| **Total** | **11 modules** | **12 files** | **33 imports** |
 
 ---
 
