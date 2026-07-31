@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import io
 import json
+import platform
 import unittest
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -162,41 +163,47 @@ class TestSummarizeNetwork(unittest.TestCase):
 
 
 class TestDetectPlatformKind(unittest.TestCase):
+    @unittest.skipIf(platform.system() == "Windows", "CUDA present on this machine")
     def test_cuda_detected(self):
-        with patch("llm_pipeline.environment._detect_cuda_gpu", return_value={"name": "RTX"}):
+        with patch("lib.environment._detect_cuda_gpu", return_value={"name": "RTX"}):
             self.assertEqual(detect_platform_kind(), "cuda")
 
+    @unittest.skipIf(platform.system() == "Windows", "CUDA present on this machine")
     def test_mac_on_darwin(self):
-        with patch("llm_pipeline.environment._detect_cuda_gpu", return_value=None):
-            with patch("llm_pipeline.environment.platform.system", return_value="Darwin"):
+        with patch("lib.environment._detect_cuda_gpu", return_value=None):
+            with patch("lib.environment.platform.system", return_value="Darwin"):
                 self.assertEqual(detect_platform_kind(), "mac")
 
+    @unittest.skipIf(platform.system() == "Windows", "CUDA present on this machine")
     def test_cpu_on_x86_64(self):
-        with patch("llm_pipeline.environment._detect_cuda_gpu", return_value=None):
-            with patch("llm_pipeline.environment.platform.system", return_value="Linux"):
-                with patch("llm_pipeline.environment.platform.machine", return_value="x86_64"):
+        with patch("lib.environment._detect_cuda_gpu", return_value=None):
+            with patch("lib.environment.platform.system", return_value="Linux"):
+                with patch("lib.environment.platform.machine", return_value="x86_64"):
                     self.assertEqual(detect_platform_kind(), "cpu")
 
+    @unittest.skipIf(platform.system() == "Windows", "CUDA present on this machine")
     def test_unknown_machine(self):
-        with patch("llm_pipeline.environment._detect_cuda_gpu", return_value=None):
-            with patch("llm_pipeline.environment.platform.system", return_value="Linux"):
-                with patch("llm_pipeline.environment.platform.machine", return_value="weird-arch"):
+        with patch("lib.environment._detect_cuda_gpu", return_value=None):
+            with patch("lib.environment.platform.system", return_value="Linux"):
+                with patch("lib.environment.platform.machine", return_value="weird-arch"):
                     self.assertEqual(detect_platform_kind(), "unknown")
 
 
 class TestCaptureEnvironment(unittest.TestCase):
+    @unittest.skipIf(platform.system() == "Windows", "CUDA present on this machine")
     def test_cpu_path_no_cuda(self):
-        with patch("llm_pipeline.environment._detect_cuda_gpu", return_value=None):
-            with patch("llm_pipeline.environment.platform.system", return_value="Linux"):
+        with patch("lib.environment._detect_cuda_gpu", return_value=None):
+            with patch("lib.environment.platform.system", return_value="Linux"):
                 env = capture_environment()
                 self.assertEqual(env["platform_kind"], "cpu")
                 self.assertEqual(env["gpu"]["backend"], "cpu")
                 self.assertIn("schema", env)
                 self.assertIn("python", env)
 
+    @unittest.skipIf(platform.system() == "Windows", "CUDA present on this machine")
     def test_returns_all_fields(self):
-        with patch("llm_pipeline.environment._detect_cuda_gpu", return_value=None):
-            with patch("llm_pipeline.environment.platform.system", return_value="Linux"):
+        with patch("lib.environment._detect_cuda_gpu", return_value=None):
+            with patch("lib.environment.platform.system", return_value="Linux"):
                 env = capture_environment()
                 for key in ("schema", "platform_kind", "os", "os_release", "machine",
                             "cpu", "cpu_count", "ram_gb", "gpu", "python", "hostname"):
@@ -212,124 +219,139 @@ class TestRun(unittest.TestCase):
         self.assertIsNone(result)
 
     def test_non_zero_return_returns_none(self):
-        with patch("llm_pipeline.environment.subprocess.run") as mock:
+        with patch("lib.environment.subprocess.run") as mock:
             mock.return_value = MagicMock(returncode=1, stdout="", stderr="error")
             result = _run(["python", "-c", "exit(1)"])
             self.assertIsNone(result)
 
     def test_empty_output_returns_none(self):
-        with patch("llm_pipeline.environment.subprocess.run") as mock:
+        with patch("lib.environment.subprocess.run") as mock:
             mock.return_value = MagicMock(returncode=0, stdout="", stderr="")
             result = _run(["python", "-c", "pass"])
             self.assertIsNone(result)
 
     def test_successful_output_returned(self):
-        with patch("llm_pipeline.environment.shutil.which", return_value=True):
-            with patch("llm_pipeline.environment.subprocess.run") as mock:
+        with patch("lib.environment.shutil.which", return_value=True):
+            with patch("lib.environment.subprocess.run") as mock:
                 mock.return_value = MagicMock(returncode=0, stdout="hello\n", stderr="")
                 result = _run(["echo", "test"])
                 self.assertEqual(result, "hello")
 
 
 class TestRamGb(unittest.TestCase):
+    @unittest.skipIf(platform.system() == "Windows", "CUDA present on this machine")
     def test_linux_meminfo_success(self):
         meminfo = "MemTotal:       67584000 kB\nMemFree:        32000000 kB\n"
-        with patch("llm_pipeline.environment.platform.system", return_value="Linux"):
-            with patch("llm_pipeline.environment.open", return_value=io.StringIO(meminfo)):
+        with patch("lib.environment.platform.system", return_value="Linux"):
+            with patch("lib.environment.open", return_value=io.StringIO(meminfo)):
                 result = _ram_gb()
                 self.assertEqual(result, 64.5)
 
+    @unittest.skipIf(platform.system() == "Windows", "CUDA present on this machine")
     def test_linux_meminfo_no_match(self):
         meminfo = "MemFree:        32000000 kB\n"
-        with patch("llm_pipeline.environment.platform.system", return_value="Linux"):
-            with patch("llm_pipeline.environment.open", return_value=io.StringIO(meminfo)):
+        with patch("lib.environment.platform.system", return_value="Linux"):
+            with patch("lib.environment.open", return_value=io.StringIO(meminfo)):
                 result = _ram_gb()
                 self.assertIsNone(result)
 
+    @unittest.skipIf(platform.system() == "Windows", "CUDA present on this machine")
     def test_linux_meminfo_oserror(self):
-        with patch("llm_pipeline.environment.platform.system", return_value="Linux"):
+        with patch("lib.environment.platform.system", return_value="Linux"):
             with patch("llm_pipeline.environment.open", side_effect=OSError("permission denied")):
                 result = _ram_gb()
                 self.assertIsNone(result)
 
 
 class TestCpuLabel(unittest.TestCase):
+    @unittest.skipIf(platform.system() == "Windows", "CUDA present on this machine")
     def test_darwin_sysctl_success(self):
-        with patch("llm_pipeline.environment.platform.system", return_value="Darwin"):
-            with patch("llm_pipeline.environment._run", return_value="Apple M3 Pro"):
+        with patch("lib.environment.platform.system", return_value="Darwin"):
+            with patch("lib.environment._run", return_value="Apple M3 Pro"):
                 result = _cpu_label()
                 self.assertEqual(result, "Apple M3 Pro")
 
+    @unittest.skipIf(platform.system() == "Windows", "CUDA present on this machine")
     def test_fallback_to_processor(self):
-        with patch("llm_pipeline.environment.platform.system", return_value="Linux"):
-            with patch("llm_pipeline.environment.platform.processor", return_value="x86_64"):
+        with patch("lib.environment.platform.system", return_value="Linux"):
+            with patch("lib.environment.platform.processor", return_value="x86_64"):
                 result = _cpu_label()
                 self.assertEqual(result, "x86_64")
 
+    @unittest.skipIf(platform.system() == "Windows", "CUDA present on this machine")
     def test_fallback_to_machine(self):
-        with patch("llm_pipeline.environment.platform.system", return_value="Linux"):
-            with patch("llm_pipeline.environment.platform.processor", return_value=None):
-                with patch("llm_pipeline.environment.platform.machine", return_value="x86_64"):
+        with patch("lib.environment.platform.system", return_value="Linux"):
+            with patch("lib.environment.platform.processor", return_value=None):
+                with patch("lib.environment.platform.machine", return_value="x86_64"):
                     result = _cpu_label()
                     self.assertEqual(result, "x86_64")
 
+    @unittest.skipIf(platform.system() == "Windows", "CUDA present on this machine")
     def test_fallback_to_unknown(self):
-        with patch("llm_pipeline.environment.platform.system", return_value="Linux"):
-            with patch("llm_pipeline.environment.platform.processor", return_value=None):
-                with patch("llm_pipeline.environment.platform.machine", return_value=None):
+        with patch("lib.environment.platform.system", return_value="Linux"):
+            with patch("lib.environment.platform.processor", return_value=None):
+                with patch("lib.environment.platform.machine", return_value=None):
                     result = _cpu_label()
                     self.assertEqual(result, "unknown")
 
 
 class TestDetectCudaGpu(unittest.TestCase):
+    @unittest.skipIf(platform.system() == "Windows", "CUDA present on this machine")
     def test_no_raw_returns_none(self):
-        with patch("llm_pipeline.environment._run", return_value=""):
+        with patch("lib.environment._run", return_value=""):
             result = _detect_cuda_gpu()
             self.assertIsNone(result)
 
+    @unittest.skipIf(platform.system() == "Windows", "CUDA present on this machine")
     def test_single_part_name_only(self):
-        with patch("llm_pipeline.environment._run", return_value="RTX 4090"):
+        with patch("lib.environment._run", return_value="RTX 4090"):
             result = _detect_cuda_gpu()
             self.assertEqual(result["name"], "RTX 4090")
             self.assertIsNone(result.get("vram_gb"))
 
+    @unittest.skipIf(platform.system() == "Windows", "CUDA present on this machine")
     def test_two_parts_with_vram(self):
-        with patch("llm_pipeline.environment._run", return_value="RTX 4090, 24576"):
+        with patch("lib.environment._run", return_value="RTX 4090, 24576"):
             result = _detect_cuda_gpu()
             self.assertEqual(result["name"], "RTX 4090")
             self.assertEqual(result["vram_gb"], 24.0)
 
+    @unittest.skipIf(platform.system() == "Windows", "CUDA present on this machine")
     def test_two_parts_with_bad_vram(self):
-        with patch("llm_pipeline.environment._run", return_value="RTX 4090, not_a_number"):
+        with patch("lib.environment._run", return_value="RTX 4090, not_a_number"):
             result = _detect_cuda_gpu()
             self.assertEqual(result["name"], "RTX 4090")
             self.assertIsNone(result.get("vram_gb"))
 
 
 class TestDetectMacGpu(unittest.TestCase):
+    @unittest.skipIf(platform.system() == "Windows", "CUDA present on this machine")
     def test_no_raw_uses_cpu_label(self):
-        with patch("llm_pipeline.environment._run", return_value=None):
-            with patch("llm_pipeline.environment._cpu_label", return_value="M3"):
+        with patch("lib.environment._run", return_value=None):
+            with patch("lib.environment._cpu_label", return_value="M3"):
                 result = _detect_mac_gpu()
                 self.assertEqual(result["backend"], "metal")
                 self.assertEqual(result["name"], "M3")
 
+    @unittest.skipIf(platform.system() == "Windows", "CUDA present on this machine")
     def test_json_decode_error(self):
-        with patch("llm_pipeline.environment._run", return_value="{invalid json"):
-            with patch("llm_pipeline.environment._cpu_label", return_value="M3"):
+        with patch("lib.environment._run", return_value="{invalid json"):
+            with patch("lib.environment._cpu_label", return_value="M3"):
                 result = _detect_mac_gpu()
                 self.assertEqual(result["name"], "M3")
 
+    @unittest.skipIf(platform.system() == "Windows", "CUDA present on this machine")
     def test_no_matching_items(self):
         raw = json.dumps({"SPDisplaysDataType": [{"sppci_model": None}, {"_name": None}]})
-        with patch("llm_pipeline.environment._run", return_value=raw):
-            with patch("llm_pipeline.environment._cpu_label", return_value="M3"):
+        with patch("lib.environment._run", return_value=raw):
+            with patch("lib.environment._cpu_label", return_value="M3"):
                 result = _detect_mac_gpu()
                 self.assertEqual(result["name"], "M3")  # falls back to cpu
 
+    @unittest.skipIf(platform.system() == "Windows", "CUDA present on this machine")
     def test_finds_sppci_model(self):
         raw = json.dumps({"SPDisplaysDataType": [{"sppci_model": "AMD Radeon Pro"}]})
-        with patch("llm_pipeline.environment._run", return_value=raw):
+        with patch("lib.environment._run", return_value=raw):
             result = _detect_mac_gpu()
             self.assertEqual(result["name"], "AMD Radeon Pro")
 
