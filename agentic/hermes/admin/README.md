@@ -34,6 +34,7 @@ SOUL templates: [`config/souls/`](config/souls/) (deployed to `~/.hermes/profile
 Bootstrap scope:
 
 - `bootstrap` owns the Orio profile setup and workspace wiring.
+- `bootstrap` also registers the `ai-digest` Desktop project.
 - `setup --reinstall-orio` rebuilds the `orio_*` profiles only.
 - `default` is separate and must not be overwritten by Orio setup unless `--override-default` is explicit.
 - `USER.md` is a personal bootstrap file for `default` only, not Orio.

@@ -34,6 +34,7 @@ if sys.stdout.encoding and "cp" in sys.stdout.encoding.lower():
 
 REPO = Path(__file__).resolve().parents[3]
 HERMES_PKG = Path(__file__).resolve().parents[1]
+AI_DIGEST_PROJECT = ("AI Digest", "ai-digest", Path(r"C:\dev\personal\.repos\AI_Digest"))
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 if str(HERMES_PKG) not in sys.path:
@@ -1035,6 +1036,43 @@ def _deploy_repo_onboarding(name: str, *, dry_run: bool) -> None:
         return
     shutil.copy2(REPO_ONBOARDING_SRC, dest)
     print(f"  [OK] REPO_ONBOARDING.md -> {name}")
+
+
+def _ensure_project(name: str, slug: str, primary: Path, *, dry_run: bool) -> None:
+    """Register a Hermes Desktop project for the AI Digest repo."""
+    if dry_run:
+        print(f"  would hermes project create {name} --slug {slug} --primary {primary}")
+        return
+    if not primary.is_dir():
+        print(f"  · project {slug!r} skipped - {primary} not found")
+        return
+    proc = _run_hermes("project", "show", slug)
+    if proc.returncode == 0:
+        print(f"  project {slug!r} already exists")
+        return
+    proc = _run_hermes(
+        "project",
+        "create",
+        name,
+        "--slug",
+        slug,
+        "--primary",
+        str(primary),
+    )
+    if proc.returncode == 0:
+        print(f"  project {slug!r} -> {primary}")
+    else:
+        stderr = (proc.stderr or proc.stdout).strip() or "unsupported"
+        print(f"  · project {slug!r} skipped: {stderr}")
+
+
+def _ensure_projects(*, dry_run: bool) -> None:
+    """Register Orio's named Desktop project during bootstrap."""
+    print("== bootstrap: workspace project (ai-digest) ==")
+    if not dry_run and not _hermes_bin():
+        print("  hermes not on PATH - skipping project registration")
+        return
+    _ensure_project(*AI_DIGEST_PROJECT, dry_run=dry_run)
 
 
 def _configure_default_ollama(
@@ -2426,6 +2464,7 @@ def _ensure_runtime_dirs() -> None:
 def cmd_bootstrap(args: argparse.Namespace) -> int:
     print("== agentic bootstrap ==")
     _ensure_runtime_dirs()
+    _ensure_projects(dry_run=False)
     if args.skip_setup:
         print("Skipping Hermes profile setup (--skip-setup).")
         return 0
@@ -2534,6 +2573,43 @@ def cmd_status(_: argparse.Namespace) -> int:
         print(f"  {'[OK]' if ok else '·'} {name}")
     hermes = _hermes_bin()
     print(f"  {'[OK]' if hermes else '·'} hermes CLI ({hermes or 'not on PATH'})")
+    return 0
+
+
+def cmd_stop(args: argparse.Namespace) -> int:
+    print("== stop Orio ==")
+    if args.dry_run:
+        print("  would hermes gateway stop")
+    else:
+        _run_hermes("gateway", "stop")
+    if os.name == "nt":
+        needles = [
+            str(REPO),
+            r"\.hermes\profiles\orio_",
+            "orio_concierge",
+            "orio_researcher",
+            "orio_librarian",
+            "orio_synthesizer",
+        ]
+        conditions = []
+        for needle in needles:
+            escaped = needle.replace("'", "''")
+            conditions.append(f"$_.CommandLine -like '*{escaped}*'")
+        needle_expr = " -or ".join(conditions)
+        script = f"""
+Get-CimInstance Win32_Process |
+  Where-Object {{ ($_.Name -match 'python|hermes') -and $_.CommandLine -and ({needle_expr}) }} |
+  ForEach-Object {{
+    if (-not $env:CODEX_DRY_RUN) {{
+      Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue
+    }}
+    Write-Host ("  [OK] stopped " + $_.Name + " pid=" + $_.ProcessId)
+  }}
+"""
+        env = os.environ.copy()
+        if args.dry_run:
+            env["CODEX_DRY_RUN"] = "1"
+        subprocess.run(["powershell", "-NoProfile", "-Command", script], check=False, env=env)
     return 0
 
 
@@ -2777,6 +2853,10 @@ def main() -> int:
 
     p_st = sub.add_parser("status", help="agentic paths and hermes CLI")
     p_st.set_defaults(func=cmd_status)
+
+    p_stop = sub.add_parser("stop", help="stop Orio gateways and Orio-owned Python processes")
+    p_stop.add_argument("--dry-run", action="store_true", help="show what would stop")
+    p_stop.set_defaults(func=cmd_stop)
 
     p_bs = sub.add_parser(
         "board-status",
