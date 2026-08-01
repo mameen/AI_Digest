@@ -31,6 +31,20 @@ python agentic/hermes/admin/manage.py hermes profile list
 Role definitions: [`config/hermes_roles.yaml`](config/hermes_roles.yaml).
 SOUL templates: [`config/souls/`](config/souls/) (deployed to `~/.hermes/profiles/<role>/SOUL.md` by `setup`).
 
+Bootstrap scope:
+
+- `bootstrap` owns the Orio profile setup and workspace wiring.
+- `setup --reinstall-orio` rebuilds the `orio_*` profiles only.
+- `default` is separate and must not be overwritten by Orio setup unless `--override-default` is explicit.
+- `USER.md` is a personal bootstrap file for `default` only, not Orio.
+
+Path tokens in source docs:
+
+- `[PERSONAL_ROOT]`
+- `[AI_DIGEST_ROOT]`
+- `[CAREER_ROOT]`
+- `[MORGANA_ROOT]`
+
 Architecture: [`../docs/ARCHITECTURE.md`](../docs/ARCHITECTURE.md).
 Runbook: [`../POC.md`](../POC.md).
 

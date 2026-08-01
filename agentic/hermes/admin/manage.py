@@ -985,6 +985,26 @@ def _ensure_profile(
     print(f"  [OK] profile {name} (created)")
 
 
+def _delete_profile(name: str, *, dry_run: bool) -> None:
+    """Delete a Hermes profile if it already exists.
+
+    Used for Orio-only reinstall flows. Does not touch the global ``default``
+    profile unless the caller explicitly names it.
+    """
+    if dry_run:
+        print(f"  would hermes profile delete -y {name}")
+        return
+    proc = _run_hermes("profile", "delete", "-y", name)
+    if proc.returncode != 0:
+        stderr = (proc.stderr or proc.stdout).strip()
+        if "does not exist" in stderr.lower():
+            print(f"  · profile {name} already absent")
+            return
+        print(stderr)
+        sys.exit(proc.returncode)
+    print(f"  [OK] profile {name} (deleted)")
+
+
 def _deploy_soul(name: str, *, dry_run: bool) -> None:
     src = SOULS_DIR / f"{name}.md"
     if not src.is_file():
@@ -1114,7 +1134,7 @@ def _configure_web(*, dry_run: bool) -> None:
         print("  · doctor finished (review web status manually)")
 
 
-def setup_agents(*, dry_run: bool = False, quiet: bool = False, override_default: bool = False, patches: bool = False) -> int:
+def setup_agents(*, dry_run: bool = False, quiet: bool = False, override_default: bool = False, patches: bool = False, reinstall_orio: bool = False) -> int:
     if not _hermes_bin():
         if quiet:
             return 0
@@ -1146,6 +1166,8 @@ def setup_agents(*, dry_run: bool = False, quiet: bool = False, override_default
         model = _resolve_model(role.get("model") or default_model, default_model, installed)
         if not quiet:
             print(f"\n== setup: {name} ==")
+        if reinstall_orio:
+            _delete_profile(name, dry_run=dry_run)
         _ensure_profile(name, description, dry_run=dry_run)
         _profile_model_config(
             name, model, provider, base_url, context_length, dry_run=dry_run
@@ -2411,7 +2433,12 @@ def cmd_bootstrap(args: argparse.Namespace) -> int:
 
 
 def cmd_setup(args: argparse.Namespace) -> int:
-    return setup_agents(dry_run=args.dry_run, override_default=args.override_default, patches=args.patches)
+    return setup_agents(
+        dry_run=args.dry_run,
+        override_default=args.override_default,
+        patches=args.patches,
+        reinstall_orio=args.reinstall_orio,
+    )
 
 
 def _set_roles_yaml_model(new_model: str, *, dry_run: bool) -> None:
@@ -2522,16 +2549,20 @@ def _rm(path: Path) -> None:
 
 def cmd_nuke(args: argparse.Namespace) -> int:
     if not args.yes:
-        print("Dry run — re-run with --yes to clear agentic/hermes/.runtime")
+        print("Dry run -- re-run with --yes to clear Orio profiles")
         sys.exit(1)
-    print("== nuke agentic ephemeral ==")
-    manifest = _load_manifest()
-    for rel in manifest.get("ephemeral", {}).get("dirs", []):
-        _rm(REPO / rel)
-    _ensure_runtime_dirs()
-    print("Agentic runtime cleared.")
+    print("== nuke orio profiles ==")
+    for name in ("orio_concierge", "orio_researcher", "orio_librarian", "orio_synthesizer"):
+        proc = _run_hermes("profile", "delete", "-y", name)
+        if proc.returncode != 0:
+            stderr = (proc.stderr or proc.stdout).strip()
+            if "does not exist" in stderr.lower():
+                print(f"  {name}: already absent")
+                continue
+            print(f"  {name}: {stderr}")
+            sys.exit(proc.returncode)
+        print(f"  {name}: deleted")
     return 0
-
 
 def cmd_hermes(args: argparse.Namespace) -> int:
     argv = list(args.hermes_args or ["profile", "list"])
@@ -2589,6 +2620,12 @@ def main() -> int:
         action="store_true",
         default=False,
         help="Apply invasive upstream CLI source patches (default: skip — safer, no source modification)",
+    )
+    p_setup.add_argument(
+        "--reinstall-orio",
+        action="store_true",
+        default=False,
+        help="delete and recreate the orio_* profiles before setup; leaves default alone",
     )
     p_setup.set_defaults(func=cmd_setup)
 
@@ -2734,7 +2771,7 @@ def main() -> int:
     )
     p_verify.set_defaults(func=cmd_verify_handover)
 
-    p_nuke = sub.add_parser("nuke", help="clear agentic/hermes/.runtime")
+    p_nuke = sub.add_parser("nuke", help="delete Orio profiles only")
     p_nuke.add_argument("--yes", action="store_true")
     p_nuke.set_defaults(func=cmd_nuke)
 
