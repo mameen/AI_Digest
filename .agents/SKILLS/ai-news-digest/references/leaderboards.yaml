@@ -1,0 +1,149 @@
+# Canonical machine-readable leaderboard sources for the ai-news-digest skill.
+#
+# Three bundles, mapped to user-facing topics:
+#
+# * ``llm-closed``  -- proprietary frontier (GPT, Claude, Gemini, Grok)
+# * ``llm-open``    -- open-weight (DeepSeek, Qwen, Kimi, Llama, GLM)
+# * ``image``       -- text-to-image + image-edit
+#
+# Fetch strategies:
+#
+# * ``web_fetch``   -- fetch the page URL directly
+# * ``web_search``  -- search with the literal query (JS-rendered SPAs)
+# * ``fixture``     -- local file under agentic POC ``fixtures/`` (tests only)
+#
+# ``shape`` is the view payload the renderer will receive:
+#
+# * ``table``       -- ``{cols, rows, numericCols}`` (most leaderboards)
+# * ``charts``      -- ``{benchmarks:[…]}`` (Vellum-style per-benchmark)
+#
+# Human-readable tables for digest runs live in ``sources.md`` (same URLs).
+# The agentic ``llm_score_board`` skill loads this file from the repo root.
+
+topics:
+  llm-closed: [leaderboards-llm-closed]
+  llm-open:   [leaderboards-llm-open]
+  image:      [leaderboards-image]
+  all:        [leaderboards-llm-closed, leaderboards-llm-open, leaderboards-image]
+
+bundles:
+
+  leaderboards-llm-closed:
+    label: "LLM Leaderboards — Closed Source"
+    sources:
+      - id: aa_all
+        name: "Artificial Analysis — All Models"
+        url: "https://artificialanalysis.ai/leaderboards/models"
+        strategy: web_fetch
+        shape: table
+        hint: "Top 20 by Intelligence score. Cols: #, Model, Provider, Intelligence, Speed (t/s), Latency (s), Context, Price /1M."
+      - id: vellum_llm
+        name: "Vellum LLM Leaderboard"
+        url: "https://www.vellum.ai/llm-leaderboard"
+        strategy: web_fetch
+        shape: charts
+        hint: "Per-benchmark top 5 (GPQA Diamond, AIME 2025, SWE-Bench, Humanity's Last Exam, ARC-AGI 2, MMMLU)."
+      - id: lm_arena
+        name: "LM Arena (Chatbot Arena)"
+        url: "https://lmarena.ai/leaderboard"
+        strategy: web_fetch
+        shape: table
+        hint: "Top 20 by Arena Elo. Cols: #, Model, Provider, Arena Elo, Votes."
+      - id: benchlm
+        name: "BenchLM"
+        url: "https://benchlm.ai"
+        strategy: web_search
+        shape: table
+        hint: "Top 10 by weighted score across 178 benchmarks."
+      - id: onyx
+        name: "Onyx LLM Leaderboard"
+        url: "https://onyx.app/llm-leaderboard"
+        strategy: web_search
+        shape: table
+        hint: "Tiers: Overall, Coding, Math, Chat, Reasoning, Agentic. Capture Overall top 10."
+      - id: ppt_coding
+        name: "PricePerToken Coding LB"
+        url: "https://pricepertoken.com/leaderboards/coding"
+        strategy: web_fetch
+        shape: table
+        hint: "Top 10 coding models with community dev votes."
+      - id: llm_stats
+        name: "LLM Stats (24h Releases)"
+        url: "https://llm-stats.com/llm-updates"
+        strategy: web_fetch
+        shape: table
+        hint: "Last 24h releases. Cols: Released, Model, Provider, License."
+
+  leaderboards-llm-open:
+    label: "LLM Leaderboards — Open Source"
+    sources:
+      - id: vellum_open
+        name: "Vellum Open LLM Leaderboard"
+        url: "https://www.vellum.ai/open-llm-leaderboard"
+        strategy: web_fetch
+        shape: charts
+        hint: "Per-benchmark top 5 for open-weight only (GPQA, AIME, SWE-Bench, HLE, Throughput)."
+      - id: hf_open_llm
+        name: "HuggingFace Open LLM Leaderboard"
+        url: "https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard"
+        strategy: web_fetch
+        shape: table
+        hint: "Top 20 community-standard open LLM rankings."
+      - id: aa_open
+        name: "Artificial Analysis (Open filter)"
+        url: "https://artificialanalysis.ai/leaderboards/models"
+        strategy: web_fetch
+        shape: table
+        hint: "Same page as aa_all but filter rows to open-weight licenses."
+      - id: llm_gateway_timeline
+        name: "LLM Gateway — Timeline"
+        url: "https://llmgateway.io/timeline"
+        strategy: web_fetch
+        shape: table
+        hint: "Top 10 newest open-model API listings."
+      - id: livebench
+        name: "LiveBench"
+        url: "https://livebench.ai"
+        strategy: web_fetch
+        shape: table
+        hint: "Contamination-free composite. Capture top 10 open-weight."
+
+  leaderboards-image:
+    label: "Image Generation Leaderboards"
+    sources:
+      - id: aa_image_t2i
+        name: "AA Image Arena (Text-to-Image)"
+        url: "https://artificialanalysis.ai/image/leaderboard/text-to-image"
+        strategy: web_fetch
+        shape: table
+        hint: "Top 5 Elo. Cols: #, Model, Provider, Elo, Votes."
+      - id: aa_image_edit
+        name: "AA Image Edit"
+        url: "https://artificialanalysis.ai/image/leaderboard/image-edit"
+        strategy: web_fetch
+        shape: table
+        hint: "Top 5 image-edit Elo."
+      - id: arena_t2i
+        name: "Arena.ai Text-to-Image"
+        url: "https://arena.ai/leaderboard/text-to-image"
+        strategy: web_fetch
+        shape: table
+        hint: "Top 8 across 8 subcategories; note the Text Rendering sub-leaderboard separately."
+      - id: arena_image_edit
+        name: "Arena.ai Image Edit"
+        url: "https://arena.ai/leaderboard/image-edit"
+        strategy: web_fetch
+        shape: table
+        hint: "Top 3 image-edit Elo (25M+ votes)."
+      - id: jai_portal
+        name: "JAI Portal Leaderboard"
+        url: "https://www.jaiportal.com/leaderboard"
+        strategy: web_fetch
+        shape: table
+        hint: "Top 5 image generators; flag any video-gen entries separately."
+      - id: lmarena_image
+        name: "LM Arena — Image"
+        url: "https://lmarena.ai/leaderboard/text-to-image"
+        strategy: web_fetch
+        shape: table
+        hint: "Top 10 by human preference Elo."

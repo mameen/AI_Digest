@@ -1,0 +1,10 @@
+# Priority 0 digest scripts (preflight, fetch_*, rebuild_*)
+# Used by direct_pipeline_py and production SKILL.md workflow
+
+yt-dlp>=2024.10.7
+
+# Optional — cleaner YouTube captions
+# youtube-transcript-api>=0.6.2
+
+# Optional — S3 upload script
+# boto3>=1.34.0
