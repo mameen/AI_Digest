@@ -1,4 +1,4 @@
-# AI Digest
+# Orio (AI Digest)
 
 Local-first AI news digest experiments by **Ameen Demiry**.
 
