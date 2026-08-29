@@ -50,3 +50,7 @@ agentic/.runtime/telemetry/test-002.gateway.jsonl
 .coverage
 .coverage*
 test_output.txt
+
+.build
+!.agents/SKILLS/ai-news-digest/.build/
+!.agents/SKILLS/ai-news-digest/.build/build_skill.py

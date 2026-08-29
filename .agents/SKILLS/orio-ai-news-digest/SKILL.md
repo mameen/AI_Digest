@@ -1,5 +1,6 @@
 ---
-name: ai-news-digest
+name: orio-ai-news-digest
+version: 0.1.20260828180700
 description: >
   Generates a daily AI news briefing as a pair of timestamped files: a structured
   JSON data file and an interactive HTML front-end with a clean editorial/news magazine
@@ -13,6 +14,11 @@ description: >
 ---
 
 # AI News Digest Skill
+
+This skill is **Orio**, a portable AI news digest capability. Refer to the
+digest as Orio when the skill is invoked. The skill is intentionally unaware of
+any parent repository or host folder. Each host supplies its own sources,
+output paths, timezone, and publication settings.
 
 Produces two timestamped output files:
 - `YYYYMMDDHHMMSS.json` — structured data (all stories, metadata, scores)
@@ -200,6 +206,7 @@ Save to `/mnt/user-data/outputs/YYYYMMDDHHMMSS.json`:
     { "id": "leaderboard", "label": "Leaderboard Rankings", "icon": "🏆", "stories": [] },
     { "id": "aisearch", "label": "AI Search", "icon": "🔍", "stories": [] },
     { "id": "image-gen", "label": "Image Generation & Processing", "icon": "🎨", "stories": [] },
+    { "id": "voice-speech", "label": "Voice & Speech AI", "icon": "🔊", "stories": [] },
     { "id": "design-ai", "label": "Design & Creative AI", "icon": "✏️", "stories": [] },
     { "id": "typography", "label": "Typography & Text Rendering", "icon": "🔤", "stories": [] },
     { "id": "robotics", "label": "Robotics & Embodied AI", "icon": "🤖", "stories": [] },
@@ -253,8 +260,8 @@ Templates in the skill folder:
 After each run:
 
 ```bash
-python skills/ai-news-digest/scripts/rebuild_html.py PREFIX --sync-work
-python skills/ai-news-digest/scripts/rebuild_index.py   # also runs from rebuild_html.py
+python skills/orio-ai-news-digest/scripts/rebuild_html.py PREFIX --sync-work
+python skills/orio-ai-news-digest/scripts/rebuild_index.py   # also runs from rebuild_html.py
 ```
 
 `index.html` embeds `index.json` plus all digest JSON at build time. Latest digest renders immediately; heatmap cells switch days in-page. Works from `file://` without a server.

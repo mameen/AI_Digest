@@ -10,6 +10,31 @@ conservative and in keeping with the surrounding code.
 
 ## Repository layout
 
+### Orio skill development
+
+**NON-NEGOTIABLE:** Orio must be prepared as a globally shippable skill. The
+skill must remain unaware of this parent repository, its folder layout, and
+its other projects. It is never used as a runtime skill from the repository
+root.
+
+The reusable Orio AI news digest skill is developed in:
+
+`C:\dev\personal\.repos\AI_Digest\.agents\SKILLS\orio-ai-news-digest`
+
+The repository-root path below is a testing link only; it is not a second
+source of truth:
+
+`C:\dev\personal\.repos\AI_Digest\SKILLS\ai-news-digest`
+
+Keep skill implementation, templates, references, and packaging self-contained
+in the development folder. Do not mix them into the pipeline or agentic POCs
+without an explicit integration task.
+
+All Orio skill development, testing, metadata, templates, assets, and package
+builds belong only in the development folder above. The linked root path is for
+testing visibility only and must never become a second source of truth or a
+runtime installation target.
+
 ```
 AI_Digest/                          ← ORIO: agentic daily AI news digest
 ├── README.md                       ← Product story, ORIO roles, evolution (canonical)

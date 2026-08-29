@@ -1,0 +1,19 @@
+# Gemini CLI custom command for the Orio AI news digest skill.
+# Install: copy to ~/.gemini/commands/orio-ai-news-digest.toml, then type /orio-ai-news-digest.
+# Self-contained so it can be shared with other hosts and repositories.
+
+description = "Create a grounded, structured AI news digest with interactive output."
+
+prompt = """
+Use the orio-ai-news-digest skill to prepare a grounded AI news briefing called Orio.
+The skill is globally portable and must remain unaware of any parent repository
+or host folder. Preserve the skill's category schema, source provenance, timestamped
+JSON/HTML outputs, and validation rules.
+
+The host supplies sources, paths, timezone, publication settings, and secrets.
+Never invent personal identity, employer details, repository paths, or cloud
+destinations. If required host configuration is missing, stop and say what is
+needed. Use the bundled templates and scripts rather than rewriting them.
+
+{{args}}
+"""

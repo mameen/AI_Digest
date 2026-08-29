@@ -1,0 +1,10 @@
+interface:
+  display_name: "Orio — AI News Digest"
+  short_description: "Create grounded, visual AI news digests"
+  icon_small: "./assets/AI_Digest.png"
+  icon_large: "./assets/AI_Digest.png"
+  brand_color: "#C0392B"
+  default_prompt: "Use $orio-ai-news-digest to prepare a grounded AI news digest for today."
+
+policy:
+  allow_implicit_invocation: true
