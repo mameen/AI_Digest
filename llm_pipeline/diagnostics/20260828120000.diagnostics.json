@@ -1,0 +1,385 @@
+{
+  "schema": "direct_pipeline_py.diagnostics/v1",
+  "prefix": "20260828120000",
+  "poc_id": "ai_digest",
+  "status": "ok",
+  "started_at": "2026-08-28T22:44:20Z",
+  "finished_at": "2026-08-28T22:55:16Z",
+  "total_duration_ms": 655923.7,
+  "total_cpu_ms": 4281.2,
+  "environment": {
+    "schema": "ai_digest.environment/v1",
+    "platform_kind": "cuda",
+    "os": "Windows",
+    "os_release": "10",
+    "machine": "AMD64",
+    "cpu": "AMD64 Family 25 Model 97 Stepping 2, AuthenticAMD",
+    "cpu_count": 24,
+    "ram_gb": null,
+    "gpu": {
+      "name": "NVIDIA GeForce RTX 4090",
+      "backend": "cuda",
+      "vram_gb": 24.0
+    },
+    "python": "3.12.4",
+    "hostname": "ML-PC-01"
+  },
+  "network": {
+    "bytes_downloaded": 7846833,
+    "duration_ms": 15224.3,
+    "throughput_mbps": 4.12
+  },
+  "llm": {
+    "enabled": true,
+    "provider": "ollama",
+    "model": "qwen3.6:35b"
+  },
+  "stages": [
+    {
+      "id": "ingestion.preflight",
+      "label": "Preflight",
+      "started_at": "2026-08-28T22:44:20Z",
+      "ended_at": "2026-08-28T22:44:22Z",
+      "duration_ms": 1828.1,
+      "cpu_ms": 531.2,
+      "ok": true,
+      "critical": true,
+      "error": null,
+      "meta": {},
+      "children": []
+    },
+    {
+      "id": "ingestion.crawl4ai",
+      "label": "Crawl4AI",
+      "started_at": "2026-08-28T22:44:22Z",
+      "ended_at": "2026-08-28T22:44:35Z",
+      "duration_ms": 13154.9,
+      "cpu_ms": 1906.2,
+      "ok": true,
+      "critical": false,
+      "error": null,
+      "meta": {},
+      "children": []
+    },
+    {
+      "id": "ingestion.structured",
+      "label": "Structured APIs",
+      "started_at": "2026-08-28T22:44:35Z",
+      "ended_at": "2026-08-28T22:44:35Z",
+      "duration_ms": 241.2,
+      "cpu_ms": 78.1,
+      "ok": true,
+      "critical": false,
+      "error": null,
+      "meta": {},
+      "children": []
+    },
+    {
+      "id": "enrich",
+      "label": "LLM enrich",
+      "started_at": "2026-08-28T22:44:35Z",
+      "ended_at": "2026-08-28T22:55:16Z",
+      "duration_ms": 640445.3,
+      "cpu_ms": 1578.1,
+      "ok": true,
+      "critical": true,
+      "error": null,
+      "meta": {},
+      "children": []
+    },
+    {
+      "id": "validate",
+      "label": "Validate",
+      "started_at": "2026-08-28T22:55:16Z",
+      "ended_at": "2026-08-28T22:55:16Z",
+      "duration_ms": 1.1,
+      "cpu_ms": 0.0,
+      "ok": true,
+      "critical": true,
+      "error": null,
+      "meta": {},
+      "children": []
+    },
+    {
+      "id": "render",
+      "label": "Render",
+      "started_at": "2026-08-28T22:55:16Z",
+      "ended_at": "2026-08-28T22:55:16Z",
+      "duration_ms": 159.3,
+      "cpu_ms": 156.2,
+      "ok": true,
+      "critical": true,
+      "error": null,
+      "meta": {},
+      "children": []
+    }
+  ],
+  "llm_calls": [
+    {
+      "name": "enrich.aisearch.batch_1/2",
+      "model": "qwen3.6:35b",
+      "started_at": "2026-08-28T22:44:37Z",
+      "ended_at": "2026-08-28T22:46:14Z",
+      "duration_ms": 97234.9,
+      "prompt_chars": 58561,
+      "prompt_tokens": 24285,
+      "completion_tokens": 3062,
+      "total_tokens": 27347,
+      "tokens_estimated": false,
+      "max_retries": 3,
+      "ok": true,
+      "error": null,
+      "ollama": {}
+    },
+    {
+      "name": "enrich.aisearch.batch_2/2",
+      "model": "qwen3.6:35b",
+      "started_at": "2026-08-28T22:46:14Z",
+      "ended_at": "2026-08-28T22:47:06Z",
+      "duration_ms": 51567.1,
+      "prompt_chars": 14885,
+      "prompt_tokens": 9487,
+      "completion_tokens": 826,
+      "total_tokens": 10313,
+      "tokens_estimated": false,
+      "max_retries": 3,
+      "ok": true,
+      "error": null,
+      "ollama": {}
+    },
+    {
+      "name": "curate.aisearch",
+      "model": "qwen3.6:35b",
+      "started_at": "2026-08-28T22:47:06Z",
+      "ended_at": "2026-08-28T22:48:03Z",
+      "duration_ms": 57092.5,
+      "prompt_chars": 10912,
+      "prompt_tokens": 8067,
+      "completion_tokens": 1824,
+      "total_tokens": 9891,
+      "tokens_estimated": false,
+      "max_retries": 3,
+      "ok": true,
+      "error": null,
+      "ollama": {}
+    },
+    {
+      "name": "enrich.leaderboard",
+      "model": "qwen3.6:35b",
+      "started_at": "2026-08-28T22:48:03Z",
+      "ended_at": "2026-08-28T22:49:17Z",
+      "duration_ms": 74126.1,
+      "prompt_chars": 24548,
+      "prompt_tokens": 13844,
+      "completion_tokens": 1634,
+      "total_tokens": 15478,
+      "tokens_estimated": false,
+      "max_retries": 3,
+      "ok": true,
+      "error": null,
+      "ollama": {}
+    },
+    {
+      "name": "enrich.gap.analytics,agentic-ai,llm",
+      "model": "qwen3.6:35b",
+      "started_at": "2026-08-28T22:49:17Z",
+      "ended_at": "2026-08-28T22:51:22Z",
+      "duration_ms": 124713.0,
+      "prompt_chars": 29555,
+      "prompt_tokens": 19815,
+      "completion_tokens": 2685,
+      "total_tokens": 22500,
+      "tokens_estimated": false,
+      "max_retries": 3,
+      "ok": true,
+      "error": null,
+      "ollama": {}
+    },
+    {
+      "name": "enrich.gap.rag,image-gen,voice-speech",
+      "model": "qwen3.6:35b",
+      "started_at": "2026-08-28T22:51:22Z",
+      "ended_at": "2026-08-28T22:53:19Z",
+      "duration_ms": 117160.1,
+      "prompt_chars": 29825,
+      "prompt_tokens": 19980,
+      "completion_tokens": 2384,
+      "total_tokens": 22364,
+      "tokens_estimated": false,
+      "max_retries": 3,
+      "ok": true,
+      "error": null,
+      "ollama": {}
+    },
+    {
+      "name": "enrich.gap.design-ai",
+      "model": "qwen3.6:35b",
+      "started_at": "2026-08-28T22:53:19Z",
+      "ended_at": "2026-08-28T22:54:58Z",
+      "duration_ms": 98843.3,
+      "prompt_chars": 30032,
+      "prompt_tokens": 18846,
+      "completion_tokens": 1112,
+      "total_tokens": 19958,
+      "tokens_estimated": false,
+      "max_retries": 3,
+      "ok": true,
+      "error": null,
+      "ollama": {}
+    },
+    {
+      "name": "enrich.summary",
+      "model": "qwen3.6:35b",
+      "started_at": "2026-08-28T22:54:58Z",
+      "ended_at": "2026-08-28T22:55:16Z",
+      "duration_ms": 18048.0,
+      "prompt_chars": 1277,
+      "prompt_tokens": 2442,
+      "completion_tokens": 116,
+      "total_tokens": 2558,
+      "tokens_estimated": false,
+      "max_retries": 3,
+      "ok": true,
+      "error": null,
+      "ollama": {}
+    }
+  ],
+  "crawls": [
+    {
+      "url": "https://artificialanalysis.ai/leaderboards/models",
+      "duration_ms": 4151.4,
+      "ok": true,
+      "output_file": "artificialanalysis.ai_leaderboards_models.md",
+      "error": null,
+      "bytes_downloaded": 92547
+    },
+    {
+      "url": "https://www.vellum.ai/llm-leaderboard",
+      "duration_ms": 1140.2,
+      "ok": true,
+      "output_file": "www.vellum.ai_llm-leaderboard.md",
+      "error": null,
+      "bytes_downloaded": 23355
+    },
+    {
+      "url": "https://www.vellum.ai/open-llm-leaderboard",
+      "duration_ms": 1476.3,
+      "ok": true,
+      "output_file": "www.vellum.ai_open-llm-leaderboard.md",
+      "error": null,
+      "bytes_downloaded": 20076
+    },
+    {
+      "url": "https://artificialanalysis.ai/image/leaderboard/text-to-image",
+      "duration_ms": 1032.7,
+      "ok": true,
+      "output_file": "artificialanalysis.ai_image_leaderboard_text-to-image.md",
+      "error": null,
+      "bytes_downloaded": 42714
+    },
+    {
+      "url": "https://arena.ai/leaderboard/text-to-image",
+      "duration_ms": 1849.5,
+      "ok": true,
+      "output_file": "arena.ai_leaderboard_text-to-image.md",
+      "error": null,
+      "bytes_downloaded": 15292
+    },
+    {
+      "url": "https://arena.ai/leaderboard/text-to-video",
+      "duration_ms": 1324.1,
+      "ok": true,
+      "output_file": "arena.ai_leaderboard_text-to-video.md",
+      "error": null,
+      "bytes_downloaded": 10510
+    },
+    {
+      "url": "https://artificialanalysis.ai/video/leaderboard/text-to-video",
+      "duration_ms": 801.9,
+      "ok": true,
+      "output_file": "artificialanalysis.ai_video_leaderboard_text-to-video.md",
+      "error": null,
+      "bytes_downloaded": 12127
+    },
+    {
+      "url": "https://raw.githubusercontent.com/SWE-bench/swe-bench.github.io/master/data/leaderboards.json",
+      "duration_ms": 191.2,
+      "ok": true,
+      "output_file": "swebench_leaderboards.json",
+      "error": null,
+      "bytes_downloaded": 7501459
+    },
+    {
+      "url": "https://evalplus.github.io/results.json",
+      "duration_ms": 49.5,
+      "ok": true,
+      "output_file": "evalplus_results.json",
+      "error": null,
+      "bytes_downloaded": 35807
+    }
+  ],
+  "tool_calls": [],
+  "log": [
+    {
+      "ts": "2026-08-28T22:44:20Z",
+      "level": "INFO",
+      "stage": null,
+      "message": "[1/4] Ingestion: preflight"
+    },
+    {
+      "ts": "2026-08-28T22:44:22Z",
+      "level": "INFO",
+      "stage": null,
+      "message": "prefix=20260828120000 preflight=C:\\dev\\personal\\.repos\\AI_Digest\\llm_pipeline\\.preflight\\preflight_20260828120000.json"
+    },
+    {
+      "ts": "2026-08-28T22:44:22Z",
+      "level": "INFO",
+      "stage": null,
+      "message": "[1b] Ingestion: Crawl4AI"
+    },
+    {
+      "ts": "2026-08-28T22:44:35Z",
+      "level": "INFO",
+      "stage": null,
+      "message": "[1c] Ingestion: structured APIs"
+    },
+    {
+      "ts": "2026-08-28T22:44:35Z",
+      "level": "INFO",
+      "stage": null,
+      "message": "[2/4] Enrich: multi-pass LLM"
+    },
+    {
+      "ts": "2026-08-28T22:55:16Z",
+      "level": "INFO",
+      "stage": null,
+      "message": "[3/4] Validate"
+    },
+    {
+      "ts": "2026-08-28T22:55:16Z",
+      "level": "INFO",
+      "stage": null,
+      "message": "[4/4] Render: HTML + archive index"
+    }
+  ],
+  "totals": {
+    "stage_count": 6,
+    "llm_call_count": 8,
+    "llm_duration_ms": 638784.9,
+    "llm_share_pct": 97.4,
+    "crawl_count": 9,
+    "crawl_duration_ms": 12016.7,
+    "tool_call_count": 0,
+    "tool_calls_ok": 0,
+    "stage_failures": 0,
+    "failed_stages": [],
+    "prompt_tokens": 116766,
+    "completion_tokens": 13643,
+    "total_tokens": 130409,
+    "tokens_estimated": false
+  },
+  "report_source": "llm-pipeline",
+  "report_source_label": "LLM Pipeline",
+  "report_source_badge": "../../docs/img/llm_pipeline/llm_pipeline.png"
+}

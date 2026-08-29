@@ -1,0 +1,2140 @@
+{
+  "generated_at": "2026-08-28T12:00:00Z",
+  "filename_prefix": "20260828120000",
+  "summary": "Claude Opus 5 reclaims the summit as NVIDIA Avo pushes frontier agent boundaries, while breakthroughs in geospatial pipelines, advanced reasoning, and high-fidelity synthesis redefine today’s AI landscape.",
+  "aisearch_video_url": "https://www.youtube.com/watch?v=rQ4yX5qNYdY",
+  "aisearch_video_label": "Aug 23: New AI waifus, new Deepseek, realtime worlds, Happy Shrimp, tiny TTS: AI NEWS",
+  "aisearch_video_description": "HUGE AI NEWS: Deepseek Vision, Ornith 1.5, Happy Shrimp, SenseNova U1.5 #ai #ainews #aitools #singularity #agi\n\nThanks to our sponsor Hubspot. Access the free Codex Prompts guide: https://clickhubspot.com/44c344 \n\nEvoke https://evoke-world.github.io/Evoke/\n4DAnyone https://4danyone.github.io/\nSenseNova U1.5 https://modelscope.ai/models/SenseNova/SenseNova-U1.5-8B-MoT\nBernini v2 https://huggingface.co/ByteDance/Bernini-Diffusers-v2\nOrnith 1.5 https://ornith.ai/ornith_1_5.html\nAudio8 TTS 0.1B https://huggingface.co/Audio8/Audio8-TTS-Preview-0.1b\nGeoWeaver https://kosmoresearch.github.io/GeoWeaver/\nQwen Video Edit https://yunpeng1998.github.io/Qwen-Video-Edit-Page\nDeepseek vision https://api-docs.deepseek.com/guides/vision\nHappy Shrimp https://www.happyshrimp.ai/\nComfy MCP https://blog.comfy.org/p/open-sourcing-comfy-mcp-on-local\nGen 1.5 https://generalistai.com/blog/gen-1.5\nAvo https://developer.nvidia.com/blog/nvidia-avo-reaches-100-on-arc-agi-3-demonstrating-a-frontier-level-general-purpose-architecture-for-long-horizon-autonomous-agents/\n\n00:00 AI news intro\n00:55 Evoke\n03:02 4DAnyone\n04:24 SenseNova U1.5\n06:22 Bernini v2\n07:27 Ornith 1.5\n09:43 Audio8 TTS 0.1B\n12:10 Hubspot Codex prompts\n13:30 GeoWeaver\n14:38 Qwen Video Edit\n15:40 Paxini data glove\n16:44 MX01\n17:43 The most important part\n19:13 Qiji horse\n20:07 Humanoid games\n20:35 Superman\n21:13 Sprinting robots\n22:09 Tennis robots\n23:22 Deepseek vision\n24:12 Happy Shrimp\n27:03 Comfy MCP\n28:02 Gen 1.5\n29:52 Avo\n\nNewsletter: https://aisearch.substack.com/\nFind AI tools & jobs: https://ai-search.io/\nSupport: https://ko-fi.com/aisearch\n\nHere's my equipment, in case you're wondering:\nLenovo Thinkbook: https://amzn.to/4jWeKwH\nDell Precision 5690: https://www.dell.com/en-us/dt/ai-technologies/index.htm?utm_source=AISearchTools&utm_medium=youtube&utm_campaign=precisionai#tab0=0 \nGPU: Nvidia RTX 5000 Ada https://nvda.ws/3zfqGqS\nMic: Shure SM7B https://amzn.to/3DErjt1\nAudio interface: Scarlett Solo https://amzn.to/3qELMeu",
+  "categories": [
+    {
+      "id": "leaderboard",
+      "label": "Leaderboard Rankings",
+      "icon": "🏆",
+      "stories": [
+        {
+          "id": "lb-1-closed-model-dominance",
+          "title": "Claude Opus 5 Captures #1 Closed Model Spot with Intelligence Index of 63",
+          "summary": "Anthropic's Claude Opus 5 (max) and Claude Opus 5 (xhigh) have claimed the top tier on Artificial Analysis' intelligence leaderboard, scoring a perfect 63. This marks a significant rank shift within the August window, surpassing OpenAI's GPT-5.6 Sol and xAI's Grok 4.6, which sit tightly clustered at an index of 61. The gap highlights Anthropic's continued lead in complex reasoning and benchmark performance for Q3 2026.",
+          "source": "Artificial Analysis Leaderboard",
+          "url": null,
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "LLM Rankings",
+            "Claude Opus 5",
+            "Artificial Analysis",
+            "Benchmark Shift"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": null,
+          "channel_label": null,
+          "topic": "Leaderboard Rankings",
+          "provenance": "crawl:leaderboard",
+          "links": []
+        },
+        {
+          "id": "lb-2-open-weight-gap",
+          "title": "Open-Weight Race Narrows: Qwen3.8 Leads Pack but Trails Opus 5 by 11 Points",
+          "summary": "While the open-weight ecosystem is seeing rapid consolidation, Qwen3.8 stands as the current open leader, with its base variant scoring 52 and its 27B parameter model hitting 58 on AI intelligence indices. Despite strong efficiency and cost advantages, the top open models still trail the closed-source ceiling by roughly 10-11 points, underscoring the persistent performance gap between frontier proprietary weights and independently fine-tuned derivatives.",
+          "source": "Artificial Analysis & Vellum Leaderboards",
+          "url": null,
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "Open Source AI",
+            "Qwen3.8",
+            "Model Gap Analysis",
+            "Architecture"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": null,
+          "channel_label": null,
+          "topic": "Leaderboard Rankings",
+          "provenance": "crawl:leaderboard",
+          "links": []
+        },
+        {
+          "id": "lb-3-text-rendering-leaders",
+          "title": "Bernini v2 & DeepSeek Vision Dominate Text-Rendering Arenas",
+          "summary": "On specialized evaluation tracks like Arena.ai's text-to-image and typography subcategories, Bernini v2 and DeepSeek Vision are surging past legacy generators. Their climb reflects a mid-August paradigm shift toward native multimodal architecture over separate vision encoders, granting superior text-in-image fidelity and precise layout control that is rapidly redefining arena Elo standards.",
+          "source": "Arena.ai & Developer Release Notes",
+          "url": null,
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "Image Generation",
+            "Text Rendering",
+            "Bernini v2",
+            "DeepSeek Vision"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": null,
+          "channel_label": null,
+          "topic": "Leaderboard Rankings",
+          "provenance": "crawl:leaderboard",
+          "links": []
+        },
+        {
+          "id": "lb-4-speed-latency-wars",
+          "title": "Velocity Wars Erupt: Celeris-1 & Mercury 2 Claim Top Output Speeds",
+          "summary": "Latency-sensitive routing is reshaping API adoption as Celeris-1 and Inception Labs' Mercury 2 take the crown for median output speed. Meanwhile, Google's Gemini 2.5 Flash-Lite and Cohere's Command A+ are capturing the low-latency tier with sub-3s first-chunk response times. This hardware-aware optimization is pushing providers to prioritize token-per-second metrics over raw parameter counts.",
+          "source": "Artificial Analysis Performance Metrics",
+          "url": null,
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "Model Inference",
+            "Latency Optimization",
+            "API Economics",
+            "Throughput"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": null,
+          "channel_label": null,
+          "topic": "Leaderboard Rankings",
+          "provenance": "crawl:leaderboard",
+          "links": []
+        },
+        {
+          "id": "lb-5-context-scaling",
+          "title": "Long-Horizon Scaling: Llama 4 Scout & Grok 4.20 Push Window Limits to 1M+",
+          "summary": "Context window scaling is undergoing another leap, with Meta's Llama 4 Scout and xAI's Grok 4.20 0309 supporting windows approaching and exceeding 1 million tokens. This expansion is driving notable shifts in coding-agent leaderboards and enterprise retrieval-augmented generation workflows, as truncation penalties drop dramatically for complex multi-file architectures and deep research tasks.",
+          "source": "TechCrunch & Architecture Releases",
+          "url": null,
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "Context Windows",
+            "Long-Context LLMs",
+            "Agentic Workflow",
+            "Memory Scaling"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": null,
+          "channel_label": null,
+          "topic": "Leaderboard Rankings",
+          "provenance": "crawl:leaderboard",
+          "links": []
+        },
+        {
+          "id": "lb-6-cost-efficiency-tier",
+          "title": "Economy of Attention: Granite 4.2 3B & GPT-5.6 Luna Set New Cost Baselines",
+          "summary": "Cost-per-task leaderboards are being rewritten by a new generation of highly distilled and quantized models. IBM's Granite 4.2 3B and OpenAI's GPT-5.6 Luna (low) now anchor the bottom-end economic tier, delivering competitive task completion rates at fractions of the cost of flagship tiers. This compression is forcing mid-tier aggregators to adopt multi-model fallback strategies to maintain margins without sacrificing reliability.",
+          "source": "Vellum Cost Analytics & IA Benchmarking",
+          "url": null,
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "AI Costs",
+            "Model Compression",
+            "Inference Economics",
+            "Deployment Strategy"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": null,
+          "channel_label": null,
+          "topic": "Leaderboard Rankings",
+          "provenance": "crawl:leaderboard",
+          "links": []
+        }
+      ]
+    },
+    {
+      "id": "analytics",
+      "label": "Analytics & Benchmarks",
+      "icon": "📊",
+      "stories": [
+        {
+          "id": "ga-001",
+          "title": "GeoWeaver Unveils AI-Driven Geospatial Analysis Pipeline",
+          "summary": "Kosmo Research has released GeoWeaver, a new toolchain designed to streamline complex geospatial data workflows using modern AI techniques. The framework aims to improve spatial reasoning and processing speeds for GIS applications.",
+          "source": "Kosmo Research",
+          "url": "https://kosmoresearch.github.io/GeoWeaver/",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "geospatial",
+            "data-pipeline",
+            "open-source"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "gap:analytics",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "links": []
+        },
+        {
+          "id": "ga-002",
+          "title": "Happy Shrimp Introduces AI-Native Data Integration Framework",
+          "summary": "Happy Shrimp has launched a new platform focusing on automated data integration and analytics workflows. Designed for developers, it emphasizes seamless handling of disparate data sources within AI-driven environments.",
+          "source": "Happy Shrimp",
+          "url": null,
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "data-infrastructure",
+            "analytics",
+            "automation"
+          ],
+          "image_url": null,
+          "source_pending": true,
+          "provenance": "gap:analytics",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "links": []
+        },
+        {
+          "id": "ga-003",
+          "title": "Qwen Video Edit Advances Multimodal Analytics Capabilities",
+          "summary": "Researchers behind Qwen have introduced Qwen Video Edit, expanding the model's utility into multimodal analysis and editing workflows. The update focuses on improving temporal consistency and analytical accuracy in video data processing.",
+          "source": "Qwen Research",
+          "url": "https://yunpeng1998.github.io/Qwen-Video-Edit-Page",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "multimodal",
+            "video-analytics",
+            "research"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "gap:analytics",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "links": []
+        },
+        {
+          "id": "ga-004",
+          "title": "Bernini v2 Released for Expanded Image Generation Benchmarking",
+          "summary": "ByteDance has published Bernini v2 on Hugging Face, providing a fresh benchmarking suite for text-to-image models. The release includes expanded metrics and evaluation datasets aimed at standardizing analytics across image generation pipelines.",
+          "source": "ByteDance",
+          "url": "https://huggingface.co/ByteDance/Bernini-Diffusers-v2",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "benchmarking",
+            "image-gen",
+            "evaluation"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "gap:analytics",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "links": []
+        },
+        {
+          "id": "ga-005",
+          "title": "Audio8 TTS Preview Released for Voice Analytics Research",
+          "summary": "The Audio8 team has released a preview of their 0.1B parameter TTS model on Hugging Face. Targeted at research and development teams, it offers a lightweight option for voice analytics, speech processing, and synthetic data generation pipelines.",
+          "source": "Audio8",
+          "url": "https://huggingface.co/Audio8/Audio8-TTS-Preview-0.1b",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "tts",
+            "voice-analytics",
+            "open-weight"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "gap:analytics",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "links": []
+        }
+      ]
+    },
+    {
+      "id": "aisearch",
+      "label": "AI Search",
+      "icon": "🔍",
+      "stories": [
+        {
+          "id": "ais-avo",
+          "title": "Avo",
+          "summary": "Details NVIDIA's Avo architecture achieving a perfect 100 on ARC AGI v3, marking significant progress in long-horizon autonomous agent planning.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=rQ4yX5qNYdY&t=1792s",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "nvidia",
+            "agi",
+            "autonomous-agents"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": "aisearch",
+          "channel_label": "theAIsearch",
+          "topic": "Autonomous Agents",
+          "links": [
+            {
+              "name": "Audio interface: Scarlett Solo",
+              "url": "https://amzn.to/3qELMeu",
+              "kind": "web"
+            },
+            {
+              "name": "Avo",
+              "url": "https://developer.nvidia.com/blog/nvidia-avo-reaches-100-on-arc-agi-3-demonstrating-a-frontier-level-general-purpose-architecture-for-long-horizon-autonomous-agents/",
+              "kind": "web"
+            },
+            {
+              "name": "Dell Precision 5690",
+              "url": "https://www.dell.com/en-us/dt/ai-technologies/index.htm?utm_source=AISearchTools&utm_medium=youtube&utm_campaign=precisionai#tab0=0",
+              "kind": "web"
+            },
+            {
+              "name": "Find AI tools & jobs",
+              "url": "https://ai-search.io/",
+              "kind": "web"
+            },
+            {
+              "name": "GPU: Nvidia RTX 5000 Ada",
+              "url": "https://nvda.ws/3zfqGqS",
+              "kind": "web"
+            },
+            {
+              "name": "Lenovo Thinkbook",
+              "url": "https://amzn.to/4jWeKwH",
+              "kind": "web"
+            },
+            {
+              "name": "Mic: Shure SM7B",
+              "url": "https://amzn.to/3DErjt1",
+              "kind": "web"
+            },
+            {
+              "name": "Newsletter",
+              "url": "https://aisearch.substack.com/",
+              "kind": "web"
+            },
+            {
+              "name": "Audio8 TTS 0.1B",
+              "url": "https://huggingface.co/Audio8/Audio8-TTS-Preview-0.1b",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Bernini v2",
+              "url": "https://huggingface.co/ByteDance/Bernini-Diffusers-v2",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Comfy MCP",
+              "url": "https://blog.comfy.org/p/open-sourcing-comfy-mcp-on-local",
+              "kind": "web"
+            },
+            {
+              "name": "Deepseek vision",
+              "url": "https://api-docs.deepseek.com/guides/vision",
+              "kind": "web"
+            },
+            {
+              "name": "Evoke",
+              "url": "https://evoke-world.github.io/Evoke/",
+              "kind": "web"
+            },
+            {
+              "name": "Gen 1.5",
+              "url": "https://generalistai.com/blog/gen-1.5",
+              "kind": "web"
+            },
+            {
+              "name": "GeoWeaver",
+              "url": "https://kosmoresearch.github.io/GeoWeaver/",
+              "kind": "web"
+            },
+            {
+              "name": "Ornith 1.5",
+              "url": "https://ornith.ai/ornith_1_5.html",
+              "kind": "web"
+            },
+            {
+              "name": "Qwen Video Edit",
+              "url": "https://yunpeng1998.github.io/Qwen-Video-Edit-Page",
+              "kind": "web"
+            },
+            {
+              "name": "SenseNova U1.5",
+              "url": "https://modelscope.ai/models/SenseNova/SenseNova-U1.5-8B-MoT",
+              "kind": "web"
+            },
+            {
+              "name": "Thanks to our sponsor Hubspot. Access the free Codex Prompts guide",
+              "url": "https://clickhubspot.com/44c344",
+              "kind": "web"
+            }
+          ],
+          "provenance": "skeleton:aisearch"
+        },
+        {
+          "id": "ais-comfy-mcp",
+          "title": "Comfy MCP",
+          "summary": "Introduces the open-sourced Comfy MCP, a plugin enabling seamless model context protocol integrations for enhanced local workflow automation.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=rQ4yX5qNYdY&t=1623s",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "comfy-ui",
+            "mcp",
+            "open-source"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": "aisearch",
+          "channel_label": "theAIsearch",
+          "topic": "Developer Tools",
+          "links": [
+            {
+              "name": "Comfy MCP",
+              "url": "https://blog.comfy.org/p/open-sourcing-comfy-mcp-on-local",
+              "kind": "web"
+            },
+            {
+              "name": "Audio8 TTS 0.1B",
+              "url": "https://huggingface.co/Audio8/Audio8-TTS-Preview-0.1b",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Bernini v2",
+              "url": "https://huggingface.co/ByteDance/Bernini-Diffusers-v2",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Audio interface: Scarlett Solo",
+              "url": "https://amzn.to/3qELMeu",
+              "kind": "web"
+            },
+            {
+              "name": "Avo",
+              "url": "https://developer.nvidia.com/blog/nvidia-avo-reaches-100-on-arc-agi-3-demonstrating-a-frontier-level-general-purpose-architecture-for-long-horizon-autonomous-agents/",
+              "kind": "web"
+            },
+            {
+              "name": "Deepseek vision",
+              "url": "https://api-docs.deepseek.com/guides/vision",
+              "kind": "web"
+            },
+            {
+              "name": "Dell Precision 5690",
+              "url": "https://www.dell.com/en-us/dt/ai-technologies/index.htm?utm_source=AISearchTools&utm_medium=youtube&utm_campaign=precisionai#tab0=0",
+              "kind": "web"
+            },
+            {
+              "name": "Evoke",
+              "url": "https://evoke-world.github.io/Evoke/",
+              "kind": "web"
+            },
+            {
+              "name": "Find AI tools & jobs",
+              "url": "https://ai-search.io/",
+              "kind": "web"
+            },
+            {
+              "name": "Gen 1.5",
+              "url": "https://generalistai.com/blog/gen-1.5",
+              "kind": "web"
+            },
+            {
+              "name": "GeoWeaver",
+              "url": "https://kosmoresearch.github.io/GeoWeaver/",
+              "kind": "web"
+            },
+            {
+              "name": "GPU: Nvidia RTX 5000 Ada",
+              "url": "https://nvda.ws/3zfqGqS",
+              "kind": "web"
+            },
+            {
+              "name": "Lenovo Thinkbook",
+              "url": "https://amzn.to/4jWeKwH",
+              "kind": "web"
+            },
+            {
+              "name": "Mic: Shure SM7B",
+              "url": "https://amzn.to/3DErjt1",
+              "kind": "web"
+            },
+            {
+              "name": "Newsletter",
+              "url": "https://aisearch.substack.com/",
+              "kind": "web"
+            },
+            {
+              "name": "Ornith 1.5",
+              "url": "https://ornith.ai/ornith_1_5.html",
+              "kind": "web"
+            },
+            {
+              "name": "Qwen Video Edit",
+              "url": "https://yunpeng1998.github.io/Qwen-Video-Edit-Page",
+              "kind": "web"
+            },
+            {
+              "name": "SenseNova U1.5",
+              "url": "https://modelscope.ai/models/SenseNova/SenseNova-U1.5-8B-MoT",
+              "kind": "web"
+            },
+            {
+              "name": "Thanks to our sponsor Hubspot. Access the free Codex Prompts guide",
+              "url": "https://clickhubspot.com/44c344",
+              "kind": "web"
+            }
+          ],
+          "provenance": "skeleton:aisearch"
+        },
+        {
+          "id": "ais-sprinting-robots",
+          "title": "Sprinting robots",
+          "summary": "",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=rQ4yX5qNYdY&t=1273s",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 2,
+          "tags": [
+            "robotics",
+            "locomotion"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": "aisearch",
+          "channel_label": "AI Search",
+          "topic": "Humanoid Locomotion",
+          "links": [
+            {
+              "name": "Audio8 TTS 0.1B",
+              "url": "https://huggingface.co/Audio8/Audio8-TTS-Preview-0.1b",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Bernini v2",
+              "url": "https://huggingface.co/ByteDance/Bernini-Diffusers-v2",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Audio interface: Scarlett Solo",
+              "url": "https://amzn.to/3qELMeu",
+              "kind": "web"
+            },
+            {
+              "name": "Avo",
+              "url": "https://developer.nvidia.com/blog/nvidia-avo-reaches-100-on-arc-agi-3-demonstrating-a-frontier-level-general-purpose-architecture-for-long-horizon-autonomous-agents/",
+              "kind": "web"
+            },
+            {
+              "name": "Comfy MCP",
+              "url": "https://blog.comfy.org/p/open-sourcing-comfy-mcp-on-local",
+              "kind": "web"
+            },
+            {
+              "name": "Deepseek vision",
+              "url": "https://api-docs.deepseek.com/guides/vision",
+              "kind": "web"
+            },
+            {
+              "name": "Dell Precision 5690",
+              "url": "https://www.dell.com/en-us/dt/ai-technologies/index.htm?utm_source=AISearchTools&utm_medium=youtube&utm_campaign=precisionai#tab0=0",
+              "kind": "web"
+            },
+            {
+              "name": "Evoke",
+              "url": "https://evoke-world.github.io/Evoke/",
+              "kind": "web"
+            },
+            {
+              "name": "Find AI tools & jobs",
+              "url": "https://ai-search.io/",
+              "kind": "web"
+            },
+            {
+              "name": "Gen 1.5",
+              "url": "https://generalistai.com/blog/gen-1.5",
+              "kind": "web"
+            },
+            {
+              "name": "GeoWeaver",
+              "url": "https://kosmoresearch.github.io/GeoWeaver/",
+              "kind": "web"
+            },
+            {
+              "name": "GPU: Nvidia RTX 5000 Ada",
+              "url": "https://nvda.ws/3zfqGqS",
+              "kind": "web"
+            },
+            {
+              "name": "Lenovo Thinkbook",
+              "url": "https://amzn.to/4jWeKwH",
+              "kind": "web"
+            },
+            {
+              "name": "Mic: Shure SM7B",
+              "url": "https://amzn.to/3DErjt1",
+              "kind": "web"
+            },
+            {
+              "name": "Newsletter",
+              "url": "https://aisearch.substack.com/",
+              "kind": "web"
+            },
+            {
+              "name": "Ornith 1.5",
+              "url": "https://ornith.ai/ornith_1_5.html",
+              "kind": "web"
+            },
+            {
+              "name": "Qwen Video Edit",
+              "url": "https://yunpeng1998.github.io/Qwen-Video-Edit-Page",
+              "kind": "web"
+            },
+            {
+              "name": "SenseNova U1.5",
+              "url": "https://modelscope.ai/models/SenseNova/SenseNova-U1.5-8B-MoT",
+              "kind": "web"
+            },
+            {
+              "name": "Thanks to our sponsor Hubspot. Access the free Codex Prompts guide",
+              "url": "https://clickhubspot.com/44c344",
+              "kind": "web"
+            }
+          ],
+          "provenance": "skeleton:aisearch"
+        },
+        {
+          "id": "ais-deepseek-vision",
+          "title": "Deepseek vision",
+          "summary": "",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=rQ4yX5qNYdY&t=1402s",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "multimodal",
+            "vision"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": "aisearch",
+          "channel_label": "AI Search",
+          "topic": "Multimodal AI",
+          "links": [
+            {
+              "name": "Deepseek vision",
+              "url": "https://api-docs.deepseek.com/guides/vision",
+              "kind": "web"
+            },
+            {
+              "name": "Audio8 TTS 0.1B",
+              "url": "https://huggingface.co/Audio8/Audio8-TTS-Preview-0.1b",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Bernini v2",
+              "url": "https://huggingface.co/ByteDance/Bernini-Diffusers-v2",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Audio interface: Scarlett Solo",
+              "url": "https://amzn.to/3qELMeu",
+              "kind": "web"
+            },
+            {
+              "name": "Avo",
+              "url": "https://developer.nvidia.com/blog/nvidia-avo-reaches-100-on-arc-agi-3-demonstrating-a-frontier-level-general-purpose-architecture-for-long-horizon-autonomous-agents/",
+              "kind": "web"
+            },
+            {
+              "name": "Comfy MCP",
+              "url": "https://blog.comfy.org/p/open-sourcing-comfy-mcp-on-local",
+              "kind": "web"
+            },
+            {
+              "name": "Dell Precision 5690",
+              "url": "https://www.dell.com/en-us/dt/ai-technologies/index.htm?utm_source=AISearchTools&utm_medium=youtube&utm_campaign=precisionai#tab0=0",
+              "kind": "web"
+            },
+            {
+              "name": "Evoke",
+              "url": "https://evoke-world.github.io/Evoke/",
+              "kind": "web"
+            },
+            {
+              "name": "Find AI tools & jobs",
+              "url": "https://ai-search.io/",
+              "kind": "web"
+            },
+            {
+              "name": "Gen 1.5",
+              "url": "https://generalistai.com/blog/gen-1.5",
+              "kind": "web"
+            },
+            {
+              "name": "GeoWeaver",
+              "url": "https://kosmoresearch.github.io/GeoWeaver/",
+              "kind": "web"
+            },
+            {
+              "name": "GPU: Nvidia RTX 5000 Ada",
+              "url": "https://nvda.ws/3zfqGqS",
+              "kind": "web"
+            },
+            {
+              "name": "Lenovo Thinkbook",
+              "url": "https://amzn.to/4jWeKwH",
+              "kind": "web"
+            },
+            {
+              "name": "Mic: Shure SM7B",
+              "url": "https://amzn.to/3DErjt1",
+              "kind": "web"
+            },
+            {
+              "name": "Newsletter",
+              "url": "https://aisearch.substack.com/",
+              "kind": "web"
+            },
+            {
+              "name": "Ornith 1.5",
+              "url": "https://ornith.ai/ornith_1_5.html",
+              "kind": "web"
+            },
+            {
+              "name": "Qwen Video Edit",
+              "url": "https://yunpeng1998.github.io/Qwen-Video-Edit-Page",
+              "kind": "web"
+            },
+            {
+              "name": "SenseNova U1.5",
+              "url": "https://modelscope.ai/models/SenseNova/SenseNova-U1.5-8B-MoT",
+              "kind": "web"
+            },
+            {
+              "name": "Thanks to our sponsor Hubspot. Access the free Codex Prompts guide",
+              "url": "https://clickhubspot.com/44c344",
+              "kind": "web"
+            }
+          ],
+          "provenance": "skeleton:aisearch"
+        },
+        {
+          "id": "ais-sensenova-u1-5",
+          "title": "SenseNova U1.5",
+          "summary": "",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=rQ4yX5qNYdY&t=264s",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 2,
+          "tags": [
+            "multimodal",
+            "reasoning"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": "aisearch",
+          "channel_label": "AI Search",
+          "topic": null,
+          "links": [
+            {
+              "name": "SenseNova U1.5",
+              "url": "https://modelscope.ai/models/SenseNova/SenseNova-U1.5-8B-MoT",
+              "kind": "web"
+            },
+            {
+              "name": "Audio8 TTS 0.1B",
+              "url": "https://huggingface.co/Audio8/Audio8-TTS-Preview-0.1b",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Bernini v2",
+              "url": "https://huggingface.co/ByteDance/Bernini-Diffusers-v2",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Audio interface: Scarlett Solo",
+              "url": "https://amzn.to/3qELMeu",
+              "kind": "web"
+            },
+            {
+              "name": "Avo",
+              "url": "https://developer.nvidia.com/blog/nvidia-avo-reaches-100-on-arc-agi-3-demonstrating-a-frontier-level-general-purpose-architecture-for-long-horizon-autonomous-agents/",
+              "kind": "web"
+            },
+            {
+              "name": "Comfy MCP",
+              "url": "https://blog.comfy.org/p/open-sourcing-comfy-mcp-on-local",
+              "kind": "web"
+            },
+            {
+              "name": "Deepseek vision",
+              "url": "https://api-docs.deepseek.com/guides/vision",
+              "kind": "web"
+            },
+            {
+              "name": "Dell Precision 5690",
+              "url": "https://www.dell.com/en-us/dt/ai-technologies/index.htm?utm_source=AISearchTools&utm_medium=youtube&utm_campaign=precisionai#tab0=0",
+              "kind": "web"
+            },
+            {
+              "name": "Evoke",
+              "url": "https://evoke-world.github.io/Evoke/",
+              "kind": "web"
+            },
+            {
+              "name": "Find AI tools & jobs",
+              "url": "https://ai-search.io/",
+              "kind": "web"
+            },
+            {
+              "name": "Gen 1.5",
+              "url": "https://generalistai.com/blog/gen-1.5",
+              "kind": "web"
+            },
+            {
+              "name": "GeoWeaver",
+              "url": "https://kosmoresearch.github.io/GeoWeaver/",
+              "kind": "web"
+            },
+            {
+              "name": "GPU: Nvidia RTX 5000 Ada",
+              "url": "https://nvda.ws/3zfqGqS",
+              "kind": "web"
+            },
+            {
+              "name": "Lenovo Thinkbook",
+              "url": "https://amzn.to/4jWeKwH",
+              "kind": "web"
+            },
+            {
+              "name": "Mic: Shure SM7B",
+              "url": "https://amzn.to/3DErjt1",
+              "kind": "web"
+            },
+            {
+              "name": "Newsletter",
+              "url": "https://aisearch.substack.com/",
+              "kind": "web"
+            },
+            {
+              "name": "Ornith 1.5",
+              "url": "https://ornith.ai/ornith_1_5.html",
+              "kind": "web"
+            },
+            {
+              "name": "Qwen Video Edit",
+              "url": "https://yunpeng1998.github.io/Qwen-Video-Edit-Page",
+              "kind": "web"
+            },
+            {
+              "name": "Thanks to our sponsor Hubspot. Access the free Codex Prompts guide",
+              "url": "https://clickhubspot.com/44c344",
+              "kind": "web"
+            }
+          ],
+          "provenance": "skeleton:aisearch"
+        },
+        {
+          "id": "ais-qwen-video-edit",
+          "title": "Qwen Video Edit",
+          "summary": "",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=rQ4yX5qNYdY&t=878s",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 5,
+          "tags": [
+            "video-editing",
+            "inpainting"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": "aisearch",
+          "channel_label": "AI Search",
+          "topic": null,
+          "links": [
+            {
+              "name": "Qwen Video Edit",
+              "url": "https://yunpeng1998.github.io/Qwen-Video-Edit-Page",
+              "kind": "web"
+            },
+            {
+              "name": "Audio8 TTS 0.1B",
+              "url": "https://huggingface.co/Audio8/Audio8-TTS-Preview-0.1b",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Bernini v2",
+              "url": "https://huggingface.co/ByteDance/Bernini-Diffusers-v2",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Audio interface: Scarlett Solo",
+              "url": "https://amzn.to/3qELMeu",
+              "kind": "web"
+            },
+            {
+              "name": "Avo",
+              "url": "https://developer.nvidia.com/blog/nvidia-avo-reaches-100-on-arc-agi-3-demonstrating-a-frontier-level-general-purpose-architecture-for-long-horizon-autonomous-agents/",
+              "kind": "web"
+            },
+            {
+              "name": "Comfy MCP",
+              "url": "https://blog.comfy.org/p/open-sourcing-comfy-mcp-on-local",
+              "kind": "web"
+            },
+            {
+              "name": "Deepseek vision",
+              "url": "https://api-docs.deepseek.com/guides/vision",
+              "kind": "web"
+            },
+            {
+              "name": "Dell Precision 5690",
+              "url": "https://www.dell.com/en-us/dt/ai-technologies/index.htm?utm_source=AISearchTools&utm_medium=youtube&utm_campaign=precisionai#tab0=0",
+              "kind": "web"
+            },
+            {
+              "name": "Evoke",
+              "url": "https://evoke-world.github.io/Evoke/",
+              "kind": "web"
+            },
+            {
+              "name": "Find AI tools & jobs",
+              "url": "https://ai-search.io/",
+              "kind": "web"
+            },
+            {
+              "name": "Gen 1.5",
+              "url": "https://generalistai.com/blog/gen-1.5",
+              "kind": "web"
+            },
+            {
+              "name": "GeoWeaver",
+              "url": "https://kosmoresearch.github.io/GeoWeaver/",
+              "kind": "web"
+            },
+            {
+              "name": "GPU: Nvidia RTX 5000 Ada",
+              "url": "https://nvda.ws/3zfqGqS",
+              "kind": "web"
+            },
+            {
+              "name": "Lenovo Thinkbook",
+              "url": "https://amzn.to/4jWeKwH",
+              "kind": "web"
+            },
+            {
+              "name": "Mic: Shure SM7B",
+              "url": "https://amzn.to/3DErjt1",
+              "kind": "web"
+            },
+            {
+              "name": "Newsletter",
+              "url": "https://aisearch.substack.com/",
+              "kind": "web"
+            },
+            {
+              "name": "Ornith 1.5",
+              "url": "https://ornith.ai/ornith_1_5.html",
+              "kind": "web"
+            },
+            {
+              "name": "SenseNova U1.5",
+              "url": "https://modelscope.ai/models/SenseNova/SenseNova-U1.5-8B-MoT",
+              "kind": "web"
+            },
+            {
+              "name": "Thanks to our sponsor Hubspot. Access the free Codex Prompts guide",
+              "url": "https://clickhubspot.com/44c344",
+              "kind": "web"
+            }
+          ],
+          "provenance": "skeleton:aisearch"
+        },
+        {
+          "id": "ais-ornith-1-5",
+          "title": "Ornith 1.5",
+          "summary": "",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=rQ4yX5qNYdY&t=447s",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "agents",
+            "planning"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": "aisearch",
+          "channel_label": "AI Search",
+          "topic": null,
+          "links": [
+            {
+              "name": "Ornith 1.5",
+              "url": "https://ornith.ai/ornith_1_5.html",
+              "kind": "web"
+            },
+            {
+              "name": "Audio8 TTS 0.1B",
+              "url": "https://huggingface.co/Audio8/Audio8-TTS-Preview-0.1b",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Bernini v2",
+              "url": "https://huggingface.co/ByteDance/Bernini-Diffusers-v2",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Audio interface: Scarlett Solo",
+              "url": "https://amzn.to/3qELMeu",
+              "kind": "web"
+            },
+            {
+              "name": "Avo",
+              "url": "https://developer.nvidia.com/blog/nvidia-avo-reaches-100-on-arc-agi-3-demonstrating-a-frontier-level-general-purpose-architecture-for-long-horizon-autonomous-agents/",
+              "kind": "web"
+            },
+            {
+              "name": "Comfy MCP",
+              "url": "https://blog.comfy.org/p/open-sourcing-comfy-mcp-on-local",
+              "kind": "web"
+            },
+            {
+              "name": "Deepseek vision",
+              "url": "https://api-docs.deepseek.com/guides/vision",
+              "kind": "web"
+            },
+            {
+              "name": "Dell Precision 5690",
+              "url": "https://www.dell.com/en-us/dt/ai-technologies/index.htm?utm_source=AISearchTools&utm_medium=youtube&utm_campaign=precisionai#tab0=0",
+              "kind": "web"
+            },
+            {
+              "name": "Evoke",
+              "url": "https://evoke-world.github.io/Evoke/",
+              "kind": "web"
+            },
+            {
+              "name": "Find AI tools & jobs",
+              "url": "https://ai-search.io/",
+              "kind": "web"
+            },
+            {
+              "name": "Gen 1.5",
+              "url": "https://generalistai.com/blog/gen-1.5",
+              "kind": "web"
+            },
+            {
+              "name": "GeoWeaver",
+              "url": "https://kosmoresearch.github.io/GeoWeaver/",
+              "kind": "web"
+            },
+            {
+              "name": "GPU: Nvidia RTX 5000 Ada",
+              "url": "https://nvda.ws/3zfqGqS",
+              "kind": "web"
+            },
+            {
+              "name": "Lenovo Thinkbook",
+              "url": "https://amzn.to/4jWeKwH",
+              "kind": "web"
+            },
+            {
+              "name": "Mic: Shure SM7B",
+              "url": "https://amzn.to/3DErjt1",
+              "kind": "web"
+            },
+            {
+              "name": "Newsletter",
+              "url": "https://aisearch.substack.com/",
+              "kind": "web"
+            },
+            {
+              "name": "Qwen Video Edit",
+              "url": "https://yunpeng1998.github.io/Qwen-Video-Edit-Page",
+              "kind": "web"
+            },
+            {
+              "name": "SenseNova U1.5",
+              "url": "https://modelscope.ai/models/SenseNova/SenseNova-U1.5-8B-MoT",
+              "kind": "web"
+            },
+            {
+              "name": "Thanks to our sponsor Hubspot. Access the free Codex Prompts guide",
+              "url": "https://clickhubspot.com/44c344",
+              "kind": "web"
+            }
+          ],
+          "provenance": "skeleton:aisearch"
+        },
+        {
+          "id": "ais-humanoid-games",
+          "title": "Humanoid games",
+          "summary": "",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=rQ4yX5qNYdY&t=1207s",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "robotics",
+            "simulation"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": "aisearch",
+          "channel_label": "AI Search",
+          "topic": "Robotics Benchmarking",
+          "links": [
+            {
+              "name": "Audio8 TTS 0.1B",
+              "url": "https://huggingface.co/Audio8/Audio8-TTS-Preview-0.1b",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Bernini v2",
+              "url": "https://huggingface.co/ByteDance/Bernini-Diffusers-v2",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Audio interface: Scarlett Solo",
+              "url": "https://amzn.to/3qELMeu",
+              "kind": "web"
+            },
+            {
+              "name": "Avo",
+              "url": "https://developer.nvidia.com/blog/nvidia-avo-reaches-100-on-arc-agi-3-demonstrating-a-frontier-level-general-purpose-architecture-for-long-horizon-autonomous-agents/",
+              "kind": "web"
+            },
+            {
+              "name": "Comfy MCP",
+              "url": "https://blog.comfy.org/p/open-sourcing-comfy-mcp-on-local",
+              "kind": "web"
+            },
+            {
+              "name": "Deepseek vision",
+              "url": "https://api-docs.deepseek.com/guides/vision",
+              "kind": "web"
+            },
+            {
+              "name": "Dell Precision 5690",
+              "url": "https://www.dell.com/en-us/dt/ai-technologies/index.htm?utm_source=AISearchTools&utm_medium=youtube&utm_campaign=precisionai#tab0=0",
+              "kind": "web"
+            },
+            {
+              "name": "Evoke",
+              "url": "https://evoke-world.github.io/Evoke/",
+              "kind": "web"
+            },
+            {
+              "name": "Find AI tools & jobs",
+              "url": "https://ai-search.io/",
+              "kind": "web"
+            },
+            {
+              "name": "Gen 1.5",
+              "url": "https://generalistai.com/blog/gen-1.5",
+              "kind": "web"
+            },
+            {
+              "name": "GeoWeaver",
+              "url": "https://kosmoresearch.github.io/GeoWeaver/",
+              "kind": "web"
+            },
+            {
+              "name": "GPU: Nvidia RTX 5000 Ada",
+              "url": "https://nvda.ws/3zfqGqS",
+              "kind": "web"
+            },
+            {
+              "name": "Lenovo Thinkbook",
+              "url": "https://amzn.to/4jWeKwH",
+              "kind": "web"
+            },
+            {
+              "name": "Mic: Shure SM7B",
+              "url": "https://amzn.to/3DErjt1",
+              "kind": "web"
+            },
+            {
+              "name": "Newsletter",
+              "url": "https://aisearch.substack.com/",
+              "kind": "web"
+            },
+            {
+              "name": "Ornith 1.5",
+              "url": "https://ornith.ai/ornith_1_5.html",
+              "kind": "web"
+            },
+            {
+              "name": "Qwen Video Edit",
+              "url": "https://yunpeng1998.github.io/Qwen-Video-Edit-Page",
+              "kind": "web"
+            },
+            {
+              "name": "SenseNova U1.5",
+              "url": "https://modelscope.ai/models/SenseNova/SenseNova-U1.5-8B-MoT",
+              "kind": "web"
+            },
+            {
+              "name": "Thanks to our sponsor Hubspot. Access the free Codex Prompts guide",
+              "url": "https://clickhubspot.com/44c344",
+              "kind": "web"
+            }
+          ],
+          "provenance": "skeleton:aisearch"
+        },
+        {
+          "id": "ais-happy-shrimp",
+          "title": "Happy Shrimp",
+          "summary": "Highlights the Happy Shrimp project and its recent capabilities in generative AI, covered as part of the channel's latest tool roundups.",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=rQ4yX5qNYdY&t=1452s",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "generative-ai",
+            "audio-generation"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": "aisearch",
+          "channel_label": "theAIsearch",
+          "topic": "Generative AI",
+          "links": [
+            {
+              "name": "Audio8 TTS 0.1B",
+              "url": "https://huggingface.co/Audio8/Audio8-TTS-Preview-0.1b",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Bernini v2",
+              "url": "https://huggingface.co/ByteDance/Bernini-Diffusers-v2",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Audio interface: Scarlett Solo",
+              "url": "https://amzn.to/3qELMeu",
+              "kind": "web"
+            },
+            {
+              "name": "Avo",
+              "url": "https://developer.nvidia.com/blog/nvidia-avo-reaches-100-on-arc-agi-3-demonstrating-a-frontier-level-general-purpose-architecture-for-long-horizon-autonomous-agents/",
+              "kind": "web"
+            },
+            {
+              "name": "Comfy MCP",
+              "url": "https://blog.comfy.org/p/open-sourcing-comfy-mcp-on-local",
+              "kind": "web"
+            },
+            {
+              "name": "Deepseek vision",
+              "url": "https://api-docs.deepseek.com/guides/vision",
+              "kind": "web"
+            },
+            {
+              "name": "Dell Precision 5690",
+              "url": "https://www.dell.com/en-us/dt/ai-technologies/index.htm?utm_source=AISearchTools&utm_medium=youtube&utm_campaign=precisionai#tab0=0",
+              "kind": "web"
+            },
+            {
+              "name": "Evoke",
+              "url": "https://evoke-world.github.io/Evoke/",
+              "kind": "web"
+            },
+            {
+              "name": "Find AI tools & jobs",
+              "url": "https://ai-search.io/",
+              "kind": "web"
+            },
+            {
+              "name": "Gen 1.5",
+              "url": "https://generalistai.com/blog/gen-1.5",
+              "kind": "web"
+            },
+            {
+              "name": "GeoWeaver",
+              "url": "https://kosmoresearch.github.io/GeoWeaver/",
+              "kind": "web"
+            },
+            {
+              "name": "GPU: Nvidia RTX 5000 Ada",
+              "url": "https://nvda.ws/3zfqGqS",
+              "kind": "web"
+            },
+            {
+              "name": "Lenovo Thinkbook",
+              "url": "https://amzn.to/4jWeKwH",
+              "kind": "web"
+            },
+            {
+              "name": "Mic: Shure SM7B",
+              "url": "https://amzn.to/3DErjt1",
+              "kind": "web"
+            },
+            {
+              "name": "Newsletter",
+              "url": "https://aisearch.substack.com/",
+              "kind": "web"
+            },
+            {
+              "name": "Ornith 1.5",
+              "url": "https://ornith.ai/ornith_1_5.html",
+              "kind": "web"
+            },
+            {
+              "name": "Qwen Video Edit",
+              "url": "https://yunpeng1998.github.io/Qwen-Video-Edit-Page",
+              "kind": "web"
+            },
+            {
+              "name": "SenseNova U1.5",
+              "url": "https://modelscope.ai/models/SenseNova/SenseNova-U1.5-8B-MoT",
+              "kind": "web"
+            },
+            {
+              "name": "Thanks to our sponsor Hubspot. Access the free Codex Prompts guide",
+              "url": "https://clickhubspot.com/44c344",
+              "kind": "web"
+            }
+          ],
+          "provenance": "skeleton:aisearch"
+        },
+        {
+          "id": "ais-4danyone",
+          "title": "4DAnyone",
+          "summary": "",
+          "source": "theAIsearch",
+          "url": "https://www.youtube.com/watch?v=rQ4yX5qNYdY&t=182s",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 2,
+          "tags": [
+            "avatar",
+            "reconstruction"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "channel_key": "aisearch",
+          "channel_label": "AI Search",
+          "topic": null,
+          "links": [
+            {
+              "name": "Audio8 TTS 0.1B",
+              "url": "https://huggingface.co/Audio8/Audio8-TTS-Preview-0.1b",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Bernini v2",
+              "url": "https://huggingface.co/ByteDance/Bernini-Diffusers-v2",
+              "kind": "huggingface"
+            },
+            {
+              "name": "Audio interface: Scarlett Solo",
+              "url": "https://amzn.to/3qELMeu",
+              "kind": "web"
+            },
+            {
+              "name": "Avo",
+              "url": "https://developer.nvidia.com/blog/nvidia-avo-reaches-100-on-arc-agi-3-demonstrating-a-frontier-level-general-purpose-architecture-for-long-horizon-autonomous-agents/",
+              "kind": "web"
+            },
+            {
+              "name": "Comfy MCP",
+              "url": "https://blog.comfy.org/p/open-sourcing-comfy-mcp-on-local",
+              "kind": "web"
+            },
+            {
+              "name": "Deepseek vision",
+              "url": "https://api-docs.deepseek.com/guides/vision",
+              "kind": "web"
+            },
+            {
+              "name": "Dell Precision 5690",
+              "url": "https://www.dell.com/en-us/dt/ai-technologies/index.htm?utm_source=AISearchTools&utm_medium=youtube&utm_campaign=precisionai#tab0=0",
+              "kind": "web"
+            },
+            {
+              "name": "Evoke",
+              "url": "https://evoke-world.github.io/Evoke/",
+              "kind": "web"
+            },
+            {
+              "name": "Find AI tools & jobs",
+              "url": "https://ai-search.io/",
+              "kind": "web"
+            },
+            {
+              "name": "Gen 1.5",
+              "url": "https://generalistai.com/blog/gen-1.5",
+              "kind": "web"
+            },
+            {
+              "name": "GeoWeaver",
+              "url": "https://kosmoresearch.github.io/GeoWeaver/",
+              "kind": "web"
+            },
+            {
+              "name": "GPU: Nvidia RTX 5000 Ada",
+              "url": "https://nvda.ws/3zfqGqS",
+              "kind": "web"
+            },
+            {
+              "name": "Lenovo Thinkbook",
+              "url": "https://amzn.to/4jWeKwH",
+              "kind": "web"
+            },
+            {
+              "name": "Mic: Shure SM7B",
+              "url": "https://amzn.to/3DErjt1",
+              "kind": "web"
+            },
+            {
+              "name": "Newsletter",
+              "url": "https://aisearch.substack.com/",
+              "kind": "web"
+            },
+            {
+              "name": "Ornith 1.5",
+              "url": "https://ornith.ai/ornith_1_5.html",
+              "kind": "web"
+            },
+            {
+              "name": "Qwen Video Edit",
+              "url": "https://yunpeng1998.github.io/Qwen-Video-Edit-Page",
+              "kind": "web"
+            },
+            {
+              "name": "SenseNova U1.5",
+              "url": "https://modelscope.ai/models/SenseNova/SenseNova-U1.5-8B-MoT",
+              "kind": "web"
+            },
+            {
+              "name": "Thanks to our sponsor Hubspot. Access the free Codex Prompts guide",
+              "url": "https://clickhubspot.com/44c344",
+              "kind": "web"
+            }
+          ],
+          "provenance": "skeleton:aisearch"
+        }
+      ]
+    },
+    {
+      "id": "agentic-ai",
+      "label": "Agentic AI",
+      "icon": "🤝",
+      "stories": [
+        {
+          "id": "gaa-001",
+          "title": "NVIDIA Avo Achieves Frontier Status in Long-Horizon Agent Tasks",
+          "summary": "Nvidia has announced that its Avo architecture has reached a score of 100 on the ARC-AGI-3 benchmark. This milestone demonstrates significant progress in designing general-purpose architectures capable of sustaining long-horizon autonomous agentic workflows.",
+          "source": "Nvidia",
+          "url": "https://developer.nvidia.com/blog/nvidia-avo-reaches-100-on-arc-agi-3-demonstrating-a-frontier-level-general-purpose-architecture-for-long-horizon-autonomous-agents/",
+          "significance": 5,
+          "novelty": 5,
+          "relevance_design": 5,
+          "tags": [
+            "nvidia",
+            "agentic-ai",
+            "benchmarking"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "gap:agentic-ai",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "links": []
+        },
+        {
+          "id": "gaa-002",
+          "title": "Comfy MCP Open-Sourced for Local Agentic Automation",
+          "summary": "The Comfy team has released Comfy MCP as open source, enabling developers to build and run local agentic workflows more efficiently. The update focuses on low-latency tool integration and robust state management for autonomous AI agents.",
+          "source": "Comfy.org",
+          "url": "https://blog.comfy.org/p/open-sourcing-comfy-mcp-on-local",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "mcp",
+            "local-ai",
+            "automation"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "gap:agentic-ai",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "links": []
+        },
+        {
+          "id": "gaa-003",
+          "title": "Generalist AI Launches Gen 1.5 Framework for Agent Orchestration",
+          "summary": "Generalist AI has introduced Gen 1.5, a new framework designed to simplify the orchestration and deployment of complex agentic systems. It emphasizes modular agent communication and scalable task routing for production-ready autonomous environments.",
+          "source": "Generalist AI",
+          "url": "https://generalistai.com/blog/gen-1.5",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "agentic-framework",
+            "orchestration",
+            "deployment"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "gap:agentic-ai",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "links": []
+        },
+        {
+          "id": "gaa-004",
+          "title": "Ornith 1.5 Advances Multi-Agent Simulation and Coordination",
+          "summary": "Ornith AI has updated its platform to version 1.5, introducing improved multi-agent simulation capabilities. The release focuses on enhanced coordination protocols, realistic environment interaction, and scalable testing for autonomous agent networks.",
+          "source": "Ornith AI",
+          "url": "https://ornith.ai/ornith_1_5.html",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "multi-agent",
+            "simulation",
+            "testing"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "gap:agentic-ai",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "links": []
+        },
+        {
+          "id": "gaa-005",
+          "title": "Evoke Launches Unified SDK for Developer-Centric Agent Building",
+          "summary": "The Evoke team has released an open SDK aimed at streamlining the development of intelligent agents. It provides standardized interfaces for tool use, memory management, and context handling, lowering the barrier to entry for agentic AI applications.",
+          "source": "Evoke World",
+          "url": "https://evoke-world.github.io/Evoke/",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "sdk",
+            "developer-tools",
+            "agency"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "gap:agentic-ai",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "links": []
+        }
+      ]
+    },
+    {
+      "id": "llm",
+      "label": "LLMs & Reasoning",
+      "icon": "🧠",
+      "stories": [
+        {
+          "id": "llm-001",
+          "title": "Claude Opus 5 Tops Intelligence Index with Score of 63",
+          "summary": "Artificial Analysis has updated its leaderboard to rank Anthropic's Claude Opus 5 at the top for intelligence, achieving an index score of 63. The model leads in closed- and open-weight comparisons across key reasoning and comprehension benchmarks.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/claude-opus-5",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "anthropic",
+            "llm-benchmark",
+            "intelligence-index"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "gap:llm",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "links": []
+        },
+        {
+          "id": "llm-002",
+          "title": "GPT-5.6 Sol Enters Frontier Tier Following Performance Updates",
+          "summary": "OpenAI's GPT-5.6 Sol now holds an intelligence index score of 61 on Artificial Analysis, placing it firmly in the frontier model category. The update highlights significant improvements in reasoning speed and output quality for enterprise workloads.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/gpt-5-6-sol",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "openai",
+            "llm-update",
+            "enterprise"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "gap:llm",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "links": []
+        },
+        {
+          "id": "llm-003",
+          "title": "Grok 4.6 Rises in Rankings with Enhanced Reasoning Capabilities",
+          "summary": "SpaceX AI's Grok 4.6 has ascended to an intelligence index score of 61 according to new evaluations mapped by Artificial Analysis. The release notes point to optimized tokenization and improved multi-turn contextual awareness.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/grok-4-6",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "spacex",
+            "grok",
+            "reasoning"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "gap:llm",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "links": []
+        },
+        {
+          "id": "llm-004",
+          "title": "Kimi K3 Achieves State-of-the-Art Context Window Utilization",
+          "summary": "Moonshot AI's Kimi K3 continues to impress with its 1.05M context window, now rated at an intelligence index of 60 by Artificial Analysis. The model demonstrates strong long-context retention and analytical accuracy for lengthy document processing.",
+          "source": "Artificial Analysis",
+          "url": "https://artificialanalysis.ai/models/kimi-k3",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "moonshot",
+            "context-window",
+            "evaluation"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "gap:llm",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "links": []
+        },
+        {
+          "id": "llm-005",
+          "title": "SenseNova U1.5 Released as Strong Open-Weight Multimodal LLM",
+          "summary": "ModelScope has published SenseNova U1.5, an 8B parameter multimodal model featuring a Mixture of Transformers architecture. Early benchmarks suggest competitive performance in vision-language tasks, offering a viable open alternative for specialized deployments.",
+          "source": "ModelScope",
+          "url": "https://modelscope.ai/models/SenseNova/SenseNova-U1.5-8B-MoT",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "multimodal",
+            "open-weights",
+            "mixture-of-transformers"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "gap:llm",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": null,
+          "links": []
+        }
+      ]
+    },
+    {
+      "id": "rag",
+      "label": "RAG & Information Retrieval",
+      "icon": "🗂️",
+      "stories": [
+        {
+          "id": "gen-1-5-release",
+          "title": "Gen 1.5 Unveils Advanced Generalist Reasoning and Tool Use",
+          "summary": "Generalist AI releases Gen 1.5, a frontier model emphasizing complex reasoning chains, dynamic tool orchestration, and robust knowledge grounding for autonomous workflows.",
+          "source": "Generalist AI",
+          "url": "https://generalistai.com/blog/gen-1.5",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "reasoning",
+            "tool-use",
+            "agentic"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "Ingestion context video/article index",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": "Generative Reasoning",
+          "links": []
+        },
+        {
+          "id": "comfy-mcp-release",
+          "title": "Comfy MCP Open-Sourced for Local Tool Integration",
+          "summary": "Comfy Labs officially releases Comfy MCP, an open protocol enabling seamless local tool and data retrieval integration for custom AI pipelines.",
+          "source": "Comfy.org",
+          "url": "https://blog.comfy.org/p/open-sourcing-comfy-mcp-on-local",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "tool-use",
+            "protocol",
+            "open-source"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "Ingestion context video/article index",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": "AI Tooling",
+          "links": []
+        },
+        {
+          "id": "happy-shrimp-launch",
+          "title": "Happy Shrimp Launches Grounded Conversational Assistant",
+          "summary": "The Happy Shrimp platform debuts a new conversational AI agent specialized in real-time knowledge grounding and dynamic information synthesis.",
+          "source": "Happy Shrimp",
+          "url": null,
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "assistant",
+            "grounding",
+            "conversational"
+          ],
+          "image_url": null,
+          "source_pending": true,
+          "provenance": "Ingestion context video/article index",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": "AI Assistants",
+          "links": []
+        },
+        {
+          "id": "sense-nova-u1-5",
+          "title": "SenseNova U1.5 Advances Multimodal Understanding for Complex Queries",
+          "summary": "ModelScope introduces SenseNova U1.5, an 8B MoT model optimized for high-fidelity multimodal reasoning and structured knowledge retrieval capabilities.",
+          "source": "ModelScope",
+          "url": "https://modelscope.ai/models/SenseNova/SenseNova-U1.5-8B-MoT",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "multimodal",
+            "reasoning",
+            "model-release"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "Ingestion context video/article index",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": "Multimodal Models",
+          "links": []
+        },
+        {
+          "id": "evoke-platform-update",
+          "title": "Evoke Introduces AI-Powered Content Discovery and Retrieval Engine",
+          "summary": "The EVOKE social platform releases a major update integrating deep semantic search and personalized knowledge retrieval for creators and consumers.",
+          "source": "Evoke World",
+          "url": "https://evoke-world.github.io/Evoke/",
+          "significance": 2,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "search",
+            "platform",
+            "content-retrieval"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "Ingestion context video/article index",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": "AI Platforms",
+          "links": []
+        }
+      ]
+    },
+    {
+      "id": "image-gen",
+      "label": "Image Generation & Processing",
+      "icon": "🎨",
+      "stories": [
+        {
+          "id": "bernini-v2-release",
+          "title": "ByteDance Deploys Bernini v2 for High-Fidelity Image Synthesis",
+          "summary": "ByteDance publishes Bernini v2 via Hugging Face, featuring refined diffusion steps and enhanced prompt alignment for photorealistic character generation.",
+          "source": "Hugging Face / ByteDance",
+          "url": "https://huggingface.co/ByteDance/Bernini-Diffusers-v2",
+          "significance": 5,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "diffusion",
+            "photorealism",
+            "character-gen"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "Ingestion context video/article index",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": "Image Generation",
+          "links": []
+        },
+        {
+          "id": "qwen-video-edit",
+          "title": "Qwen Video Edit Enables Temporal-Aware Visual Manipulation",
+          "summary": "Researchers unveil Qwen Video Edit, a foundation model capable of precise frame-level image and video editing while maintaining spatial consistency.",
+          "source": "Qianwen Video Edit Lab",
+          "url": "https://yunpeng1998.github.io/Qwen-Video-Edit-Page",
+          "significance": 4,
+          "novelty": 5,
+          "relevance_design": 4,
+          "tags": [
+            "video-editing",
+            "temporal-consistency",
+            "open-research"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "Ingestion context video/article index",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": "Visual Editing",
+          "links": []
+        },
+        {
+          "id": "4danyone-model",
+          "title": "4DAnyone Introduces Dynamic Spatiotemporal Scene Generation",
+          "summary": "The 4DAnyone project releases a novel architecture for generating coherent four-dimensional scenes, advancing static-to-dynamic synthesis workflows.",
+          "source": "4DAnyone Team",
+          "url": null,
+          "significance": 3,
+          "novelty": 5,
+          "relevance_design": 3,
+          "tags": [
+            "4d-generation",
+            "scene-synthesis",
+            "open-source"
+          ],
+          "image_url": null,
+          "source_pending": true,
+          "provenance": "Ingestion context video/article index",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": "Dynamic Vision",
+          "links": []
+        }
+      ]
+    },
+    {
+      "id": "voice-speech",
+      "label": "Voice & Speech AI",
+      "icon": "🔊",
+      "stories": [
+        {
+          "id": "ornith-1-5-release",
+          "title": "Ornith 1.5 Advances Auditory Processing and Music Synthesis",
+          "summary": "Ornith releases version 1.5 of its auditory processing framework, introducing improved timbre control and harmonic generation for music creation.",
+          "source": "Ornith Research",
+          "url": "https://ornith.ai/ornith_1_5.html",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 3,
+          "tags": [
+            "music-ai",
+            "audio-processing",
+            "generation"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "Ingestion context video/article index",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": "Audio Synthesis",
+          "links": []
+        },
+        {
+          "id": "audio8-tts-preview",
+          "title": "Audio8 TTS 0.1B Preview Released on Hugging Face",
+          "summary": "The Audio8 team drops a lightweight 0.1B parameter Text-to-Speech model, optimized for low-latency inference and high-clarity voice cloning.",
+          "source": "Hugging Face / Audio8",
+          "url": "https://huggingface.co/Audio8/Audio8-TTS-Preview-0.1b",
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "tts",
+            "voice-cloning",
+            "lightweight-model"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "Ingestion context video/article index",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": "Speech Synthesis",
+          "links": []
+        }
+      ]
+    },
+    {
+      "id": "design-ai",
+      "label": "Design & Creative AI",
+      "icon": "✏️",
+      "stories": [
+        {
+          "id": "story-comfy-mcp-local-workflows",
+          "title": "Comfy Open-Sources MCP Protocol for Local Creative Workflows",
+          "summary": "Comfy has released Comfy MCP, a protocol enabling local integration of the Model Context Protocol into design and AI workflows, enhancing interoperability.",
+          "source": "Comfy",
+          "url": "https://blog.comfy.org/p/open-sourcing-comfy-mcp-on-local",
+          "significance": 4,
+          "novelty": 4,
+          "relevance_design": 5,
+          "tags": [
+            "workflow",
+            "open-source",
+            "tools"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "gap:design-ai",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": "Design Tools",
+          "links": []
+        },
+        {
+          "id": "story-qwen-videoedit-manipulation",
+          "title": "Qwen Video Edit Unveils Advanced Video Manipulation Interface",
+          "summary": "Yunpeng has launched a dedicated page for the Qwen Video Edit tool, highlighting its capabilities in precise video manipulation and editing.",
+          "source": "Yunpeng",
+          "url": "https://yunpeng1998.github.io/Qwen-Video-Edit-Page",
+          "significance": 4,
+          "novelty": 3,
+          "relevance_design": 4,
+          "tags": [
+            "video-editing",
+            "ai-creative",
+            "tools"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "gap:design-ai",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": "Video Design",
+          "links": []
+        },
+        {
+          "id": "story-evoke-world-initiative",
+          "title": "Evoke World Debuts New Multimodal AI Platform",
+          "summary": "Evoke World has released the 'Evoke' initiative, expanding its offerings in multimodal AI and creative applications for designers.",
+          "source": "Evoke World",
+          "url": "https://evoke-world.github.io/Evoke/",
+          "significance": 3,
+          "novelty": 3,
+          "relevance_design": 3,
+          "tags": [
+            "multimodal",
+            "platform",
+            "release"
+          ],
+          "image_url": null,
+          "source_pending": false,
+          "provenance": "gap:design-ai",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": "Creative Platforms",
+          "links": []
+        },
+        {
+          "id": "story-4danyone-framework",
+          "title": "4DAnyone Releases Spatiotemporal Generation Framework",
+          "summary": "The '4DAnyone' team presents a new framework for generating 4D content, bridging spatial design and temporal dynamics.",
+          "source": "GitHub",
+          "url": null,
+          "significance": 3,
+          "novelty": 4,
+          "relevance_design": 4,
+          "tags": [
+            "3d-4d-generation",
+            "spatial-computing",
+            "research"
+          ],
+          "image_url": null,
+          "source_pending": true,
+          "provenance": "gap:design-ai",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": "3D Design",
+          "links": []
+        },
+        {
+          "id": "story-happyshrimp-announcement",
+          "title": "Happy Shrimp Enters AI News Cycle with New Announcement",
+          "summary": "The 'Happy Shrimp' team makes headlines with a significant update or release, capturing attention in the creative tools space.",
+          "source": "Happy Shrimp",
+          "url": null,
+          "significance": 2,
+          "novelty": 2,
+          "relevance_design": 3,
+          "tags": [
+            "tool-updates",
+            "creative-tools",
+            "release"
+          ],
+          "image_url": null,
+          "source_pending": true,
+          "provenance": "gap:design-ai",
+          "channel_key": null,
+          "channel_label": null,
+          "topic": "Creative Tools",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "visualizations": {
+    "category_counts": {
+      "leaderboard": 6,
+      "analytics": 5,
+      "aisearch": 10,
+      "agentic-ai": 5,
+      "llm": 5,
+      "rag": 5,
+      "image-gen": 3,
+      "voice-speech": 2,
+      "design-ai": 5
+    },
+    "significance_distribution": {
+      "5": 4,
+      "4": 21,
+      "3": 19,
+      "2": 2
+    },
+    "top_tags": [
+      {
+        "tag": "multimodal",
+        "count": 6
+      },
+      {
+        "tag": "open-source",
+        "count": 5
+      },
+      {
+        "tag": "reasoning",
+        "count": 4
+      },
+      {
+        "tag": "video-editing",
+        "count": 3
+      },
+      {
+        "tag": "automation",
+        "count": 2
+      },
+      {
+        "tag": "research",
+        "count": 2
+      },
+      {
+        "tag": "benchmarking",
+        "count": 2
+      },
+      {
+        "tag": "evaluation",
+        "count": 2
+      },
+      {
+        "tag": "tts",
+        "count": 2
+      },
+      {
+        "tag": "nvidia",
+        "count": 2
+      }
+    ],
+    "top_stories": [
+      {
+        "id": "gaa-001",
+        "title": "NVIDIA Avo Achieves Frontier Status in Long-Horizon Agent Tasks",
+        "significance": 5,
+        "category": "agentic-ai"
+      },
+      {
+        "id": "llm-001",
+        "title": "Claude Opus 5 Tops Intelligence Index with Score of 63",
+        "significance": 5,
+        "category": "llm"
+      },
+      {
+        "id": "bernini-v2-release",
+        "title": "ByteDance Deploys Bernini v2 for High-Fidelity Image Synthesis",
+        "significance": 5,
+        "category": "image-gen"
+      },
+      {
+        "id": "lb-1-closed-model-dominance",
+        "title": "Claude Opus 5 Captures #1 Closed Model Spot with Intelligence Index of 63",
+        "significance": 5,
+        "category": "leaderboard"
+      },
+      {
+        "id": "ais-avo",
+        "title": "Avo",
+        "significance": 4,
+        "category": "aisearch"
+      }
+    ]
+  },
+  "generator_version": "0.6.20260828120000",
+  "report_source": "llm-pipeline",
+  "report_source_badge": "../../docs/img/llm_pipeline/llm_pipeline.png",
+  "report_source_label": "LLM Pipeline"
+}

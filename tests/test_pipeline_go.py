@@ -57,10 +57,10 @@ class PipelineGoWindowTest(unittest.TestCase):
 
 
 class DigestScaffoldTest(unittest.TestCase):
-    def test_empty_digest_has_twelve_categories(self) -> None:
+    def test_empty_digest_has_thirteen_categories(self) -> None:
         digest = digest_scaffold.empty_digest("20260709120000")
         self.assertEqual(digest["filename_prefix"], "20260709120000")
-        self.assertEqual(len(digest.get("categories") or []), 12)
+        self.assertEqual(len(digest.get("categories") or []), 13)
         self.assertEqual(
             sum(len(c.get("stories") or []) for c in digest["categories"]),
             0,

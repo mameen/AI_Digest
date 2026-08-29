@@ -21,6 +21,7 @@ CATEGORY_CATALOG: dict[str, dict[str, str]] = {
     "llm": {"label": "LLMs & Reasoning", "icon": "🧠"},
     "rag": {"label": "RAG & Information Retrieval", "icon": "🗂️"},
     "image-gen": {"label": "Image Generation & Processing", "icon": "🎨"},
+    "voice-speech": {"label": "Voice & Speech AI", "icon": "🔊"},
     "design-ai": {"label": "Design & Creative AI", "icon": "✏️"},
     "typography": {"label": "Typography & Text Rendering", "icon": "🔤"},
     "robotics": {"label": "Robotics & Embodied AI", "icon": "🤖"},
@@ -35,6 +36,7 @@ GAP_CATEGORY_IDS = frozenset({
     "llm",
     "rag",
     "image-gen",
+    "voice-speech",
     "design-ai",
 })
 # Preflight uses "category" on some sections; production JSON uses "id"
@@ -249,6 +251,7 @@ DEFAULT_CATEGORY_TARGETS: dict[str, int | None] = {
     "llm": 5,
     "rag": 5,
     "image-gen": 5,
+    "voice-speech": 5,
     "design-ai": 5,
     "typography": 4,
     "robotics": 5,

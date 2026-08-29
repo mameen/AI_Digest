@@ -72,6 +72,7 @@ enrich:
     llm: 5
     rag: 5
     image-gen: 5
+    voice-speech: 5
     design-ai: 5
     typography: 4
     robotics: 5
@@ -79,7 +80,7 @@ enrich:
 
 validation:
   min_total_stories: 55
-  min_categories: 12
+  min_categories: 13
   required_category_ids:
     - leaderboard
     - analytics
@@ -89,6 +90,7 @@ validation:
     - llm
     - rag
     - image-gen
+    - voice-speech
     - design-ai
     - typography
     - robotics

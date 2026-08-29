@@ -20,7 +20,7 @@ Cover news within the run's lookback window. De-emphasize stories outside that w
 
 Categories (in this order): leaderboard, analytics, **aisearch** (theAIsearch only — special case),
 **youtube** (all other tracked channels grouped here), agentic-ai, llm, rag,
-image-gen, design-ai, typography, robotics, research.
+image-gen, voice-speech, design-ai, typography, robotics, research.
 
 Aim for **3-8 stories** per editorial category (except aisearch and youtube: keep **every** scraped topic).
 
@@ -58,6 +58,14 @@ Do not duplicate pure rank-list stories already in leaderboard. Focus on trends 
 
 Vector DB releases, retrieval benchmarks, chunking/reranking research, enterprise search
 integrations, and production RAG stack news. Prefer real URLs from ingestion context.
+
+## Voice & Speech AI
+
+Cover speech recognition, text-to-speech, voice generation, audio understanding,
+voice agents, expressive and multilingual speech, audio editing, and relevant
+benchmarks. Prefer concrete product releases, research results, model launches,
+and open-source tools with verifiable URLs. Do not reduce the category to agent
+or podcast news unless the story materially concerns speech or audio technology.
 
 ## Story fields
 
