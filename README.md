@@ -64,6 +64,14 @@ Kaggle POC commands live in [`agentic/kaggle_ai_agents/HOWTO.md`](agentic/kaggle
 
 [`SKILLS/`](SKILLS/) contains repo-assistant skills for contributors and coding agents. These are not product/runtime skills. Runtime skill experiments live under [`agentic/`](agentic/), especially [`agentic/single_hermes_agent/`](agentic/single_hermes_agent/).
 
+### Orio AI News Digest skill
+
+[`orio-ai-news-digest/`](.agents/SKILLS/orio-ai-news-digest/) is a small,
+portable sample of what the staged pipeline can produce: grounded AI news,
+structured JSON, and an interactive HTML digest. It is a reduced-capability
+development sample, provided without support. The skill is prepared for
+external sharing, but is not part of the repository's runtime pipeline.
+
 ## Documentation
 
 | Topic | Read |
