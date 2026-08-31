@@ -29,7 +29,7 @@ CATEGORY_CATALOG: dict[str, dict[str, str]] = {
 }
 
 CANONICAL_ORDER: list[str] = list(CATEGORY_CATALOG.keys())
-SKELETON_CATEGORY_IDS = frozenset({"aisearch", "youtube", "typography", "research", "robotics"})
+SKELETON_CATEGORY_IDS = frozenset({"aisearch", "youtube", "typography", "research", "robotics", "voice-speech"})
 GAP_CATEGORY_IDS = frozenset({
     "analytics",
     "agentic-ai",

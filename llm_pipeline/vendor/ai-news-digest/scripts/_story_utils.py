@@ -114,6 +114,7 @@ CATEGORY_META = {
     "youtube":    {"label": "YouTube",                        "icon": "📺"},
     "typography": {"label": "Typography & Text Rendering",    "icon": "🔤"},
     "research":   {"label": "Research & Papers",              "icon": "📄"},
+    "voice-speech":{"label": "Voice & Speech AI",             "icon": "🔊"},
     "llm":        {"label": "LLMs & Reasoning",               "icon": "🧠"},
     "image-gen":  {"label": "Image Generation & Processing",  "icon": "🎨"},
     "design-ai":  {"label": "Design & Creative AI",           "icon": "✏️"},

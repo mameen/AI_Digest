@@ -50,6 +50,8 @@ sys.path.insert(0, str(SCRIPTS_DIR))
 
 from fetch_typography_news  import fetch_stories as fetch_typography_stories
 from fetch_research_papers  import fetch_stories as fetch_research_stories
+from fetch_huggingface_models import fetch_stories as fetch_huggingface_model_stories
+from fetch_huggingface_hub import fetch_stories as fetch_huggingface_hub_stories
 from fetch_robotics_news    import fetch_stories as fetch_robotics_stories
 from fetch_video_chapters   import (
     attach_video_metadata,
@@ -169,6 +171,8 @@ def run_preflight(prefix: str, force: bool = False) -> dict:
         "youtube":    "fetch_youtube_secondary",
         "typography": "fetch_typography",
         "research":   "fetch_research",
+        "voice-speech": "fetch_huggingface_models",
+        "huggingface-hub": "fetch_huggingface_hub",
         "robotics":   "fetch_robotics",
         "llm_stats":  "fetch_llm_stats",
     }
@@ -178,6 +182,8 @@ def run_preflight(prefix: str, force: bool = False) -> dict:
         "youtube":    _fetch_youtube_category,
         "typography": fetch_typography_stories,
         "research":   fetch_research_stories,
+        "voice-speech": fetch_huggingface_model_stories,
+        "huggingface-hub": fetch_huggingface_hub_stories,
         "robotics":   fetch_robotics_stories,
         "llm_stats":  _fetch_llm_stats,
     }
@@ -225,8 +231,11 @@ def run_preflight(prefix: str, force: bool = False) -> dict:
 
     # Build canonical categories list (same order as the final digest)
     categories = []
-    for cat_id in ("aisearch", "youtube", "typography", "research", "robotics"):
+    for cat_id in ("aisearch", "youtube", "typography", "research", "robotics", "voice-speech"):
         sec = sections.get(cat_id, {})
+        if cat_id == "research" and sections.get("huggingface-hub", {}).get("stories"):
+            sec = dict(sec)
+            sec["stories"] = list(sec.get("stories") or []) + sections["huggingface-hub"]["stories"]
         if "stories" in sec:
             categories.append(sec)
 

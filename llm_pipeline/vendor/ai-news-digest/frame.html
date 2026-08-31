@@ -62,6 +62,22 @@ let currentPrefix = null;
 let heatmapCells = {};
 let heatmapYear = null;
 
+function parseDigestHash() {
+  const raw = decodeURIComponent(location.hash.replace(/^#/, ''));
+  const [prefix, category] = raw.split('/');
+  return { prefix, category: category || 'all' };
+}
+
+function digestHash(prefix, category) {
+  return '#' + prefix + (category && category !== 'all' ? '/' + encodeURIComponent(category) : '');
+}
+
+window.updateDigestHash = function(category) {
+  if (!currentPrefix) return;
+  const next = digestHash(currentPrefix, category);
+  if (location.hash !== next) history.replaceState(null, '', next);
+};
+
 function heatmapEntries(index) {
   return index.by_date || index.digests || [];
 }
@@ -155,14 +171,16 @@ function selectDigest(prefix, opts) {
     syncYearPills();
   }
   highlightHeatmap(prefix);
-  if (opts.updateHash !== false && location.hash !== '#' + prefix) {
-    history.replaceState(null, '', '#' + prefix);
+  if (opts.category) setFilter(opts.category);
+  if (opts.updateHash !== false) {
+    const next = digestHash(prefix, opts.category || 'all');
+    if (location.hash !== next) history.replaceState(null, '', next);
   }
 }
 
 function initialPrefix(index) {
-  const hash = location.hash.replace(/^#/, '');
-  if (hash && window.__AIDIGEST_DIGESTS__ && window.__AIDIGEST_DIGESTS__[hash]) return hash;
+  const hash = parseDigestHash();
+  if (hash.prefix && window.__AIDIGEST_DIGESTS__ && window.__AIDIGEST_DIGESTS__[hash.prefix]) return hash.prefix;
   return index.latest || (index.digests || []).slice(-1)[0]?.prefix;
 }
 
@@ -263,15 +281,17 @@ function init() {
   });
   renderHeatmap(index);
   renderArchiveTrends(index);
-  selectDigest(prefix);
+  selectDigest(prefix, { category: parseDigestHash().category });
   document.addEventListener('aidigest-theme-change', () => {
     renderHeatmap(index);
     highlightHeatmap(currentPrefix);
   });
   window.addEventListener('hashchange', () => {
-    const prefix = location.hash.replace(/^#/, '');
-    if (prefix && prefix !== currentPrefix && window.__AIDIGEST_DIGESTS__[prefix]) {
-      selectDigest(prefix, { updateHash: false });
+    const state = parseDigestHash();
+    if (state.prefix && state.prefix !== currentPrefix && window.__AIDIGEST_DIGESTS__[state.prefix]) {
+      selectDigest(state.prefix, { category: state.category, updateHash: false });
+    } else if (state.prefix === currentPrefix) {
+      setFilter(state.category);
     }
   });
 }

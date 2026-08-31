@@ -176,6 +176,7 @@ function setFilter(id) {
     p.className = 'pill ' + (p.dataset.filter === id ? 'active' : 'inactive');
   });
   renderCards(id);
+  if (typeof window.updateDigestHash === 'function') window.updateDigestHash(id);
 }
 
 function renderAISearch(grid) {
